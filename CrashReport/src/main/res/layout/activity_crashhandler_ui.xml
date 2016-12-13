@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:gravity="top">
+
+	<View
+		android:layout_height="1dp"
+		android:layout_width="match_parent"/>
+
+	<TextView
+		android:layout_height="wrap_content"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="match_parent"
+		android:text="@string/crashreport_ask_for_report"
+		android:padding="5dp"/>
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="horizontal"
+		android:gravity="center">
+
+		<Button
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="@string/crashreport_nosend_report"
+			android:id="@+id/button_nosendcrashlog"/>
+
+		<View
+			android:layout_height="1dp"
+			android:layout_width="50dp"/>
+
+		<Button
+			android:layout_height="wrap_content"
+			android:layout_width="140dp"
+			android:text="@string/crashreport_send_report"
+			android:id="@+id/button_sendcrashlog"/>
+
+	</LinearLayout>
+
+	<TextView
+		android:layout_height="wrap_content"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="match_parent"
+		android:text="@string/crashreport_err_report"
+		android:paddingLeft="5dp"/>
+
+	<ScrollView
+		android:layout_height="match_parent"
+		android:layout_width="match_parent"
+		android:padding="8dp">
+
+		<TextView
+			android:layout_height="match_parent"
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			android:layout_width="match_parent"
+			android:id="@+id/textview_crashlog"/>
+
+	</ScrollView>
+
+</LinearLayout>
+

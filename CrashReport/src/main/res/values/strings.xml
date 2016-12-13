@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="crashreport_lib_name">错误反馈</string>
+    <string name="crashreport_toast_info">很抱歉,程序出现异常,正在收集日志...</string>
+    <string name="crashreport_mail_main">运行时出现错误</string>
+    <string name="crashreport_mail_title">错误反馈报告</string>
+    <string name="crashreport_mail_reason">导致错误的操作</string>
+    <string name="crashreport_mail_report">错误日志</string>
+    <string name="crashreport_ask_for_report">很抱歉，应用程序已经停止运行\n为了能够更好的体验本应用，请填写导致错误的原因\n发送错误报告给我们,我们将会尽快修复</string>
+    <string name="crashreport_err_report">错误报告:</string>
+    <string name="crashreport_send_report">发送错误报告</string>
+    <string name="crashreport_nosend_report">不了</string>
+    <string name="crashreport_no_mail_app">你没有安装可以发送邮件的应用，请用截图直接和作者反馈错误！\n邮箱:</string>
+</resources>

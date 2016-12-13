@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen 
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceScreen  
+        android:title="@string/xml_about_thirdcode"  
+        android:summary="@string/xml_about_support">
+        <Preference
+            android:title="ColorPickerPreference"
+            android:summary="https://github.com/attenzione/android-ColorPickerPreference" 
+        />
+        <Preference
+            android:title="Android-Material-Icons"
+            android:summary="https://github.com/MajeurAndroid/Android-Material-Icons" 
+        />
+        <Preference
+            android:title="@string/others"
+            android:summary="CSDN，cnBlogs" 
+        />
+    </PreferenceScreen> 
+    <Preference
+        android:title="@string/xml_about_thanklist"
+        android:summary="@string/xml_about_thanklist_sum"
+        android:key="ThankList"
+    />
+    <PreferenceScreen
+        android:title="@string/licence"
+        android:summary="Apache License 2.0">
+        <intent
+            android:action="android.intent.action.MAIN"  
+            android:targetPackage="tool.xfy9326.floattext"  
+            android:targetClass="tool.xfy9326.floattext.Activity.LicenceActivity" />
+    </PreferenceScreen>
+    <PreferenceScreen
+        android:title="@string/xml_about_indexurl"
+        android:summary="https://xfy9326.github.io/FloatText/">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://xfy9326.github.io/FloatText/" />
+    </PreferenceScreen>
+    <PreferenceScreen
+        android:title="@string/xml_about_feedback"
+        android:summary="QQ：542664202">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://jq.qq.com/?_wv=1027&amp;k=42PEzhi" />
+    </PreferenceScreen>
+    <Preference
+        android:title="@string/xml_about_author"
+        android:summary="Made By XFY9326\nEmail:1069665464@qq.com" 
+    />
+    <Preference
+        android:title="@string/xml_about_version"
+        android:key="Version"
+    />
+</PreferenceScreen>

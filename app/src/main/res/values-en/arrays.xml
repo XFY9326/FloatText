@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="floatsetting_tips">
+        <item>Lock the application in the background in order to prevent be shut down.</item>
+        <item>When you lock the floating window in the horizon mode, the location will not change if you spin your mobilephone again.</item>
+        <item>Unlocked floating window will back to the initial position after you restart the application.</item>
+        <item>You can adjust whether to show the window in the edit tab in management interface.</item>
+        <item>If the floating window close to the top and cannot be removed, you can unlock it and restart your application.</item>
+        <item>Open the About Us interface, you can join our QQ group to feedback quickly.</item>
+        <item>It will not disturb your operate on the application used currently when the floating window is locked.</item>
+        <item>Your application does not show the floating window and always crashes? \n Maybe you forget to give the floating window permissions.</item>
+        <item>You can find more uses in the global settings.</item>
+        <item>Is the power consumption  too large? Close useless service in the global settings.</item>
+        <item>If the floating windows are slow in reacting, you should close too much floating windows.</item>
+        <item>You can set the transparent color through hexadecimal color code.</item>
+        <item>Color has always been transparent? You can change it back through hexadecimal color code.</item>
+        <item>Use Dynamic Word with sensors will use a lot of battery.</item>
+        <item>If you do not use Dynamic Word, you can close its service in Global Settings</item>
+        <item>You can set your own font in Global Settings.</item>
+        <item>You can also lock the float text by long click at it</item>
+    </string-array>
+    <string-array name="floatsetting_dynamic_name">
+        <item>Date &amp; Time</item>
+        <item>Date &amp; Time(24 hours system)</item>
+        <item>Clock</item>
+        <item>Clock(24 hours system)</item>
+        <item>Date</item>
+        <item>Cpu utilization</item>
+        <item>Network speed</item>
+        <item>RAM utilization</item>
+        <item>The date of the countdown(custom date)</item>
+        <item>The date of the countdown(custom date)</item>
+        <item>The date of the countdown(custom date)</item>
+        <item>The date of the countdown(custom date)</item>
+        <item>Local IP Address</item>
+        <item>Battery Percent</item>
+        <item>Light Sensor</item>
+        <item>Gravity Sensor</item>
+        <item>Pressure Sensor</item>
+        <item>CPU Temperature Sensor</item>
+        <item>Distance Sensor</item>
+        <item>Walk Step Sensor</item>
+        <item>ClipBoard</item>
+    </string-array>
+    <string-array name="floatmanage_choose">
+        <item>Text Floating Window</item>
+        <item>Web Floating Window(UNSTABLE)</item>
+    </string-array>
+    <string-array name="language_list">
+        <item>Default</item>
+        <item>简体中文</item>
+        <item>繁體中文</item>
+        <item>English (Unknown Group translate)</item>
+    </string-array>
+</resources>

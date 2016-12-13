@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="lib.xfy9326.crashreport" >
+    
+    <application>
+        <activity
+            android:name=".CrashHandlerUI"
+            android:noHistory="true"
+            android:label="@string/crashreport_lib_name" >
+        </activity>
+    </application>
+
+</manifest>
+

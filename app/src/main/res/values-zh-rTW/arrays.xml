@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="floatsetting_tips">
+        <item>將應用程式在背景鎖定可以防止被清除</item>
+        <item>在橫向螢幕時鎖定懸浮視窗位置後，再次旋轉不會改變其位置</item>
+        <item>未鎖定的懸浮視窗\n重新啟動應用程式後會回到初始位置</item>
+        <item>在管理中的編輯裡可以調整是否顯示該視窗</item>
+        <item>懸浮窗置頂拿不下來？\n取消鎖定重新啟動應用程式即可</item>
+        <item>打開選單中的"關於"，進入 QQ群 可以快速回饋</item>
+        <item>懸浮視窗鎖定時不會干擾對視窗下的操作</item>
+        <item>應用程式不顯示懸浮視窗且總是崩潰？\n大多是沒給懸浮視窗權限</item>
+        <item>進入"整體設定"，可檢視更多功能！</item>
+        <item>耗電量太大？進入"整體設定"關閉不用的服務！</item>
+        <item>懸浮視窗太卡了怎麼辦？儘量減少過多的懸浮視窗</item>
+        <item>通過 16進位 顏色代碼可以設置透明的顏色</item>
+        <item>顏色一直是透明的怎麼辦？16進位代碼調整回來</item>
+        <item>使用傳感器的動態變量會加速耗電！</item>
+        <item>不使用動態變量時可以在整體設定裡關閉它的服務</item>
+        <item>進入整體設定可以為懸浮的文字設定定義的字體</item>
+        <item>長按文字懸浮窗也可以鎖定它！</item>
+    </string-array>
+    <string-array name="floatsetting_dynamic_name">
+        <item>日期與時間</item>
+        <item>日期與時間(24小時制)</item>
+        <item>時鐘</item>
+        <item>時鐘(24小時制)</item>
+        <item>日期</item>
+        <item>CPU使用率</item>
+        <item>網路速度</item>
+        <item>記憶體使用率</item>
+        <item>日期倒數計時(自訂日期)</item>
+        <item>日期倒數計時(自訂日期)</item>
+        <item>日期倒數計時(自訂日期)</item>
+        <item>日期倒數計時(自訂日期)</item>
+        <item>區域網路的 IP地址</item>
+        <item>電量</item>
+        <item>傳感器_光線強度</item>
+        <item>傳感器_重力加速度</item>
+        <item>傳感器_氣壓</item>
+        <item>傳感器_CPU温度</item>
+        <item>傳感器_距離</item>
+        <item>傳感器_計步器</item>
+        <item>剪切板</item>
+    </string-array>
+    <string-array name="floatmanage_choose">
+        <item>文字懸浮視窗</item>
+        <item>Web懸浮視窗(不穩定)</item>
+    </string-array>
+    <string-array name="language_list">
+        <item>預設語言</item>
+        <item>简体中文</item>
+        <item>繁體中文(孟武.尼德霍格.龍 官方繁體中文化)</item>
+        <item>English</item>
+    </string-array>
+</resources>

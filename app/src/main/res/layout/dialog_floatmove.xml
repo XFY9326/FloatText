@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="wrap_content"
+	android:layout_width="match_parent"
+	android:orientation="vertical"
+	android:gravity="center"
+	android:paddingBottom="20dp"
+	android:paddingTop="20dp">
+
+	<RelativeLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:layout_gravity="center"
+		android:paddingLeft="10dp"
+		android:paddingRight="10dp">
+
+		<Button
+			android:layout_height="40dp"
+			android:layout_width="40dp"
+			android:background="@drawable/ic_arrow_left_bold"
+			android:id="@+id/button_floatmove_left"
+			android:layout_alignParentLeft="true"
+			android:layout_centerInParent="true"
+			android:layout_marginLeft="50dp"/>
+
+		<Button
+			android:layout_height="40dp"
+			android:layout_width="40dp"
+			android:background="@drawable/ic_arrow_right_bold"
+			android:layout_alignParentRight="true"
+			android:id="@+id/button_floatmove_right"
+			android:layout_centerInParent="true"
+			android:layout_marginRight="50dp"/>
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="wrap_content"
+			android:layout_centerInParent="true"
+			android:id="@+id/textview_floatmove_x"/>
+
+	</RelativeLayout>
+
+	<View
+		android:layout_height="15dp"
+		android:layout_width="match_parent"/>
+
+	<RelativeLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:layout_gravity="center"
+		android:paddingLeft="10dp"
+		android:paddingRight="10dp">
+
+		<Button
+			android:layout_height="40dp"
+			android:layout_width="40dp"
+			android:background="@drawable/ic_arrow_up_bold"
+			android:layout_alignParentLeft="true"
+			android:id="@+id/button_floatmove_up"
+			android:layout_centerInParent="true"
+			android:layout_marginLeft="50dp"/>
+
+		<Button
+			android:layout_height="40dp"
+			android:layout_width="40dp"
+			android:layout_alignParentRight="true"
+			android:background="@drawable/ic_arrow_down_bold"
+			android:id="@+id/button_floatmove_down"
+			android:layout_centerInParent="true"
+			android:layout_marginRight="50dp"/>
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="wrap_content"
+			android:layout_centerInParent="true"
+			android:id="@+id/textview_floatmove_y"/>
+
+	</RelativeLayout>
+
+</LinearLayout>
+

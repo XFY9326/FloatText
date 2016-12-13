@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="crashreport_lib_name">錯誤反饋</string>
+    <string name="crashreport_toast_info">很抱歉,程序出現異常,正在收集日誌...</string>
+    <string name="crashreport_mail_main">運行時出現錯誤</string>
+    <string name="crashreport_mail_title">錯誤反饋報告</string>
+    <string name="crashreport_mail_reason">導致錯誤的操作</string>
+    <string name="crashreport_mail_report">錯誤日誌</string>
+    <string name="crashreport_ask_for_report">很抱歉，應用程序已經停止運行\n為了能夠更好的體驗本應用，請填寫導致錯誤的原因\n發送錯誤報告給我們,我們將會儘快修複</string>
+    <string name="crashreport_err_report">錯誤報告:</string>
+    <string name="crashreport_send_report">發送錯誤報告</string>
+    <string name="crashreport_nosend_report">不了</string>
+    <string name="crashreport_no_mail_app">你沒有安裝可以發送郵件的應用，請用截圖直接和作者反饋錯誤！\n郵箱:</string>
+</resources>

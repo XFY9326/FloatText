@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen 
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/xml_set_tip"> 
+        <Preference
+            android:key="tips"
+            android:title="@string/xml_web_defaulttip"
+            android:summary="@string/xml_web_defaulttip_sum"
+        /> 
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/xml_web_webset"> 
+        <EditTextPreference 
+            android:key="WebUrl"
+            android:title="@string/xml_web_url"
+            android:summary="@string/xml_web_url_sum"
+            android:dialogTitle="@string/xml_web_url_title"
+            android:defaultValue="http://www.baidu.com/"
+        />
+        <Preference
+            android:key="WebReload"
+            android:title="@string/xml_web_reload"
+            android:summary="@string/xml_web_reload_sum"
+        /> 
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/xml_set_win"> 
+        <EditTextPreference 
+            android:key="WebWidth"
+            android:title="@string/xml_web_win_width"
+            android:summary="@string/xml_web_win_width_sum"
+            android:dialogTitle="@string/xml_web_win_width_title"
+            android:numeric="integer"
+            android:defaultValue="500"
+        />
+        <EditTextPreference 
+            android:key="WebHeight"
+            android:title="@string/xml_web_win_height"
+            android:summary="@string/xml_web_win_height_sum"
+            android:dialogTitle="@string/xml_web_win_height_title"
+            android:numeric="integer"
+            android:defaultValue="800"
+        />
+    </PreferenceCategory>
+</PreferenceScreen>

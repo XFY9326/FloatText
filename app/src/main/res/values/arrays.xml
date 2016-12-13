@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="floatsetting_tips">
+        <item>将应用在后台锁定可以防止被清除</item>
+        <item>在横屏时锁定悬浮窗位置后,再次旋转不会改变其位置</item>
+        <item>未锁定的悬浮窗\n重启应用后会回到初始位置</item>
+        <item>在管理界面中的编辑里可以调整是否显示该窗口</item>
+        <item>悬浮窗吸顶拿不下来？\n取消锁定重启应用即可</item>
+        <item>打开菜单中的关于界面,进入QQ群可以快速反馈</item>
+        <item>悬浮窗锁定时不会干扰对窗口下的操作</item>
+        <item>应用不显示悬浮窗总是崩溃？\n多是没给悬浮窗权限</item>
+        <item>进入全局设置，可查看更多功能！</item>
+        <item>耗电量太大？进入全局设置关闭不用的服务！</item>
+        <item>悬浮窗太卡了怎么办？尽量减少过多的悬浮窗</item>
+        <item>通过16进制颜色代码可以设置透明的颜色</item>
+        <item>颜色一直是透明的怎么办？16进制代码调整回来</item>
+        <item>使用传感器的动态变量会加大耗电！</item>
+        <item>不使用动态变量时可以在全局设置里关闭它的服务</item>
+        <item>进入全局设置可以为悬浮文字设定自定义的字体</item>
+        <item>长按文字悬浮窗也可以锁定它！</item>
+    </string-array>
+    <string-array name="floatsetting_dynamic_list">
+        <item>SystemTime</item>
+        <item>SystemTime_24</item>
+        <item>Clock</item>
+        <item>Clock_24</item>
+        <item>Date</item>
+        <item>CPURate</item>
+        <item>NetSpeed</item>
+        <item>MemRate</item>
+        <item>DateCount_yyyy-MM-dd-HH-mm-ss</item>
+        <item>DateCount_yyyy-MM-dd-HH-mm</item>
+        <item>DateCount_yyyy-MM-dd-HH</item>
+        <item>DateCount_yyyy-MM-dd</item>
+        <item>LocalIP</item>
+        <item>Battery</item>
+        <item>Sensor_Light</item>
+        <item>Sensor_Gravity</item>
+        <item>Sensor_Pressure</item>
+        <item>Sensor_CPUTemperature</item>
+        <item>Sensor_Proximity</item>
+        <item>Sensor_Step</item>
+        <item>ClipBoard</item>
+    </string-array>
+    <string-array name="floatsetting_dynamic_name">
+        <item>日期与时间</item>
+        <item>日期与时间(24小时制)</item>
+        <item>时钟</item>
+        <item>时钟(24小时制)</item>
+        <item>日期</item>
+        <item>CPU使用率</item>
+        <item>网络速度</item>
+        <item>内存使用率</item>
+        <item>日期倒计时(自定义日期)</item>
+        <item>日期倒计时(自定义日期)</item>
+        <item>日期倒计时(自定义日期)</item>
+        <item>日期倒计时(自定义日期)</item>
+        <item>局域网IP地址</item>
+        <item>电量</item>
+        <item>传感器_光线强度</item>
+        <item>传感器_重力加速度</item>
+        <item>传感器_气压</item>
+        <item>传感器_CPU温度</item>
+        <item>传感器_距离</item>
+        <item>传感器_计步器</item>
+        <item>剪切板</item>
+    </string-array>
+    <string-array name="floatmanage_choose">
+        <item>文本悬浮窗</item>
+        <item>Web悬浮窗(不稳定)</item>
+    </string-array>
+    <string-array name="language_list">
+        <item>默认语言</item>
+        <item>简体中文</item>
+        <item>繁體中文</item>
+        <item>English</item>
+    </string-array>
+</resources>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen 
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/xml_global_manageset"> 
+        <Preference 
+            android:key="Language"
+            android:title="@string/xml_global_language"
+            android:summary="@string/xml_global_language_sum"
+        />
+        <CheckBoxPreference 
+            android:key="FloatDeleteAlert"
+            android:title="@string/xml_global_deletealert"
+            android:summaryOn="@string/xml_global_deletealert_on"
+            android:summaryOff="@string/xml_global_deletealert_off"
+            android:defaultValue="false"
+        />
+        <CheckBoxPreference 
+            android:key="ListTextHide"
+            android:title="@string/xml_global_hideline"
+            android:summaryOn="@string/xml_global_hideline_on"
+            android:summaryOff="@string/xml_global_hideline_off"
+            android:defaultValue="false"
+        />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/xml_global_win"> 
+        <CheckBoxPreference 
+            android:key="WinLongClickLock"
+            android:title="@string/xml_global_win_longclicklock"
+            android:summaryOn="@string/xml_global_win_longclicklock_on"
+            android:summaryOff="@string/xml_global_win_longclicklock_off"
+            android:defaultValue="true"
+        />
+        <CheckBoxPreference 
+            android:key="WinOnlyShowInHome"
+            android:title="@string/xml_global_win_onlyshowinhome"
+            android:summary="@string/xml_global_win_onlyshowinhome_sum"
+            android:defaultValue="false"
+            android:dependency="StayAliveService"
+        />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/xml_global_text"> 
+        <Preference 
+            android:key="TextTypeface"
+            android:title="@string/xml_global_text_typeface"
+            android:summary="@string/xml_global_text_typeface_summary"
+        />
+        <CheckBoxPreference 
+            android:key="TextMovingMethod"
+            android:title="@string/xml_global_text_type"
+            android:summaryOn="@string/xml_global_text_advanced"
+            android:summaryOff="@string/xml_global_text_common"
+            android:defaultValue="false"
+        />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/xml_global_serviceset"> 
+        <CheckBoxPreference 
+            android:key="StayAliveService"
+            android:title="@string/xml_global_service_stayalive"
+            android:summaryOn="@string/xml_global_service_stayalive_on"
+            android:summaryOff="@string/xml_global_service_stayalive_off"
+            android:defaultValue="false"
+        />
+        <CheckBoxPreference 
+            android:key="DynamicNumService"
+            android:title="@string/xml_global_service_dynamicnum"
+            android:summaryOn="@string/xml_global_service_dynamicnum_on"
+            android:summaryOff="@string/xml_global_service_dynamicnum_off"
+            android:defaultValue="false"
+        />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/xml_global_advanced"> 
+        <CheckBoxPreference 
+            android:key="HtmlMode"
+            android:title="@string/xml_global_htmlmode"
+            android:summaryOn="@string/xml_global_htmlmode_on"
+            android:summaryOff="@string/xml_global_htmlmode_off"
+            android:defaultValue="false"
+        />
+        <CheckBoxPreference 
+            android:key="DevelopMode"
+            android:title="@string/xml_global_devlopmode"
+            android:summaryOn="@string/xml_global_devlopmode_on"
+            android:summaryOff="@string/xml_global_devlopmode_off"
+            android:defaultValue="false"
+        />
+    </PreferenceCategory>
+</PreferenceScreen>
