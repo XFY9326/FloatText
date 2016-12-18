@@ -2,13 +2,13 @@ package tool.xfy9326.floattext;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.KeyEvent;
@@ -21,8 +21,10 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.ListView;
 import android.widget.Toast;
 import java.util.ArrayList;
+import lib.xfy9326.fileselector.SelectFile;
 import tool.xfy9326.floattext.Activity.AboutActivity;
 import tool.xfy9326.floattext.Activity.GlobalSetActivity;
+import tool.xfy9326.floattext.FloatManage;
 import tool.xfy9326.floattext.Method.FloatManageMethod;
 import tool.xfy9326.floattext.R;
 import tool.xfy9326.floattext.Utils.App;
@@ -35,6 +37,7 @@ public class FloatManage extends Activity
     public static int FLOATTEXT_RESULT_CODE = 0;
     public static int RESHOW_PERMISSION_RESULT_CODE = 2;
     public static int FLOATSET_RESULT_CODE = 3;
+    public static int FLOAT_TEXT_IMPORT_CODE = 5;
     private ListView listview = null;
     private ListViewAdapter listadapter = null;
     private SharedPreferences spdata;
@@ -42,6 +45,40 @@ public class FloatManage extends Activity
     private ArrayList<FloatTextView> FloatViewData;
     private ArrayList<String> FloatDataName;
     private LayoutAnimationController lac;
+    private AlertDialog ag_loading;
+    private Handler mHandler = new Handler() {
+        public void handleMessage (Message msg)
+        {
+            switch (msg.what)
+            {
+                case 0:
+                    boolean close_ag = false;
+                    App utils = ((App)getApplicationContext());
+                    Thread r = FloatManageMethod.PrepareSave(FloatManage.this, mHandler);
+                    if (r != null)
+                    {
+                        if (utils.FloatWinReshow)
+                        {
+                            r.start();
+                            close_ag = true;
+                            utils.setFloatReshow(false);
+                        }
+                    }
+                    FloatManageMethod.floattext_typeface_check(FloatManage.this);
+                    FloatManageMethod.startservice(FloatManage.this);
+                    FloatManageMethod.first_ask_for_premission(FloatManage.this);
+                    ListViewSet();
+                    if (!close_ag)
+                    {
+                        closeag();
+                    }
+                    System.gc();
+                    break;
+                case 1:
+                    closeag();
+                    break;
+            }
+        }};
 
     @Override
     protected void onCreate (Bundle savedInstanceState)
@@ -49,60 +86,50 @@ public class FloatManage extends Activity
         super.onCreate(savedInstanceState);
         FloatManageMethod.LanguageInit(this);
         setContentView(R.layout.activity_float_manage);
+        ag_loading = FloatManageMethod.setLoadingDialog(this);
         SetAll(this);
-        ListViewSet();
     }
 
-    public void SetAll (Activity ctx)
+    private void SetAll (final Activity ctx)
     {
-        FloatManageMethod.preparefolder();
-        FloatManageMethod.setWinManager(ctx);
-        FloatManageMethod.floattext_typeface_check(ctx);
-        getSaveData(ctx);
-        FloatManageMethod.startservice(ctx);
-        FloatManageMethod.first_ask_for_premission(ctx);
-    }
-
-    private void getSaveData (Context ctx)
-    {
-        App utils = ((App)ctx.getApplicationContext());
+        App utils = ((App)getApplicationContext());
         spdata = PreferenceManager.getDefaultSharedPreferences(ctx);
         spedit = spdata.edit();
-        FloatManageMethod.getSaveData(ctx, utils, spdata);
-        FloatDataName = utils.getFloatText();
-        FloatViewData = utils.getFloatView();
-        if (utils.FloatWinReshow)
+        if (!utils.GetSave)
         {
-            PrepareSave(ctx);
-            utils.setFloatReshow(false);
+            runOnUiThread(new Runnable(){
+                    public void run ()
+                    {
+                        ag_loading.show();
+                    }
+                });
+            Thread t = FloatManageMethod.getSaveData(ctx, utils, spdata, mHandler);
+            t.start();
+            FloatManageMethod.preparefolder();
+            FloatManageMethod.setWinManager(FloatManage.this);
+            utils.setGetSave(true);
         }
-    }
-
-    private void PrepareSave (Context ctx)
-    {
-        if (((App)ctx.getApplicationContext()).getTextData().size() > 0)
+        else
         {
-            if (Build.VERSION.SDK_INT >= 23)
-            {
-                if (!Settings.canDrawOverlays(ctx))
-                {
-                    FloatManageMethod.askforpermission((Activity)ctx, RESHOW_PERMISSION_RESULT_CODE);
-                }
-                else
-                {
-                    FloatManageMethod.delayaskforpermission((Activity)ctx, RESHOW_PERMISSION_RESULT_CODE);
-                    FloatManageMethod.Reshow(ctx);
-                }
-            }
-            else
-            {
-                FloatManageMethod.Reshow(ctx);
-            }
+            ListViewSet();
+        }
+        Intent intent = getIntent();
+        int importresult = intent.getIntExtra("ImportText", 0);
+        if (importresult == 1)
+        {
+            Toast.makeText(ctx, R.string.text_import_success, Toast.LENGTH_SHORT).show();
+        }
+        else if (importresult == 2)
+        {
+            Toast.makeText(ctx, R.string.text_import_error, Toast.LENGTH_SHORT).show();
         }
     }
 
     private void ListViewSet ()
     {
+        App utils = ((App)getApplicationContext());
+        FloatDataName = utils.getFloatText();
+        FloatViewData = utils.getFloatView();
         listview = (ListView) findViewById(R.id.listview_floatmanage);
         listview.setEmptyView(findViewById(R.id.textview_floatmanage_empty));
         listadapter = new ListViewAdapter(this, FloatDataName);
@@ -113,6 +140,49 @@ public class FloatManage extends Activity
         lac.setOrder(LayoutAnimationController.ORDER_NORMAL);
         listview.setLayoutAnimation(lac);
         ((App)getApplicationContext()).setListviewadapter(listadapter);
+    }
+    
+    private void closeag ()
+    {
+        FloatManage.this.runOnUiThread(new Runnable(){
+                public void run ()
+                {
+                    ag_loading.dismiss();
+                }
+            });
+    }
+
+    private void importtxt (Intent data)
+    {
+        final String Path = data.getStringExtra("FilePath");
+        final Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        Thread thread = new Thread(new Runnable(){
+                public void run ()
+                {
+                    boolean result = FloatManageMethod.importtxt(FloatManage.this, Path);
+                    if (result)
+                    {
+                        intent.putExtra("ImportText", 1);
+                    }
+                    else
+                    {
+                        intent.putExtra("ImportText", 2);
+                    }
+                }
+            });
+        thread.start();
+        try
+        {
+            thread.join();
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        startActivity(intent);
+        finish();
+        System.exit(0);
     }
 
     @Override 
@@ -129,6 +199,14 @@ public class FloatManage extends Activity
     {
         switch (item.getItemId())
         {
+            case R.id.menu_import:
+                Toast.makeText(this, R.string.text_import_notice, Toast.LENGTH_LONG).show();
+                SelectFile sf = new SelectFile(FLOAT_TEXT_IMPORT_CODE, SelectFile.TYPE_ChooseFile);
+                sf.start(this);
+                break;
+            case R.id.menu_export:
+                FloatManageMethod.exporttxt(this);
+                break;
             case R.id.menu_about:
                 Intent aboutintent = new Intent(this, AboutActivity.class);
                 startActivity(aboutintent);
@@ -152,9 +230,6 @@ public class FloatManage extends Activity
     {
         if (requestCode == FLOATTEXT_RESULT_CODE)
         {
-            App utils = ((App)getApplicationContext());
-            FloatDataName = utils.getFloatText();
-            FloatViewData = utils.getFloatView();
             ListViewSet();
             if (FloatDataName.size() > 0)
             {
@@ -169,12 +244,20 @@ public class FloatManage extends Activity
             {
                 if (Settings.canDrawOverlays(this))
                 {
-                    FloatManageMethod.Reshow(this);
+                    Thread t = FloatManageMethod.Reshow(this, null);
+                    t.start();
                 }
                 else
                 {
                     Toast.makeText(this, R.string.premission_ask_failed, Toast.LENGTH_SHORT).show();
                 }
+            }
+        }
+        if (requestCode == FLOAT_TEXT_IMPORT_CODE)
+        {
+            if (data != null)
+            {
+                importtxt(data);
             }
         }
         listadapter.notifyDataSetChanged();
@@ -186,37 +269,7 @@ public class FloatManage extends Activity
     {
         if (keyCode == KeyEvent.KEYCODE_BACK)
         {
-            AlertDialog.Builder exit = new AlertDialog.Builder(this)
-                .setTitle(R.string.exit_title)
-                .setMessage(R.string.exit_msg)
-                .setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
-                    public void onClick (DialogInterface p1, int p2)
-                    {
-                        FloatManageMethod.stopservice(FloatManage.this);
-                        FloatManageMethod.closeAllWin(FloatManage.this);
-                        finish();
-                        System.exit(0);
-                    }
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .setNeutralButton(R.string.back_to_launcher, new DialogInterface.OnClickListener(){
-                    public void onClick (DialogInterface p1, int p2)
-                    {
-                        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(FloatManage.this);
-                        if (sp.getBoolean("WinOnlyShowInHome", false))
-                        {
-                            Intent intent = new Intent(Intent.ACTION_MAIN);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent.addCategory(Intent.CATEGORY_HOME);
-                            startActivity(intent);
-                        }
-                        else
-                        {
-                            finish();
-                        }
-                    }
-                });
-            exit.show();
+            FloatManageMethod.CloseApp(this);
         }
         return false;
     }
@@ -225,11 +278,8 @@ public class FloatManage extends Activity
     public void onConfigurationChanged (Configuration newConfig)
     {
         super.onConfigurationChanged(newConfig);
-        App utils = ((App)getApplicationContext());
         spdata = PreferenceManager.getDefaultSharedPreferences(this);
         spedit = spdata.edit();
-        FloatDataName = utils.getFloatText();
-        FloatViewData = utils.getFloatView();
         ListViewSet();
     }
 

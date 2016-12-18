@@ -49,13 +49,26 @@ public class FloatWebSetting extends PreferenceActivity
         spdata = PreferenceManager.getDefaultSharedPreferences(this);
         spedit = spdata.edit();
         wm = ((App)getApplicationContext()).getFloatwinmanager();
+        wmcheck();
         addPreferencesFromResource(R.xml.floatweb_settings);
         preferenceset();
         defaultkeyget();
         prepareshow();
     }
 
-
+    private void wmcheck ()
+    {
+        if (wm == null)
+        {
+            wm = (WindowManager)getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
+            ((App)getApplicationContext()).setFloatwinmanager(wm);
+        }
+        if (wm == null)
+        {
+            throw new Error(new NullPointerException());
+        }
+    }
+    
     private void defaultkeyget ()
     {
         webwidth = Integer.parseInt(spdata.getString("WebWidth", "500"));

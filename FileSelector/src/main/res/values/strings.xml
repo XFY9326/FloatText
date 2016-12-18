@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="fileselect_activity_title">文件选择器</string>
+    <string name="fileselect_defaultpath_error">默认路径设置错误！</string>
+    <string name="fileselect_file_nofound">未找到该文件！</string>
+    <string name="fileselect_file_nopremission">无权限打开该文件！</string>
+    <string name="fileselect_folder_select">选中文件夹</string>
+    <string name="fileselect_folder_enter">进入文件夹</string>
+    <string name="fileselect_save">保存</string>
+    <string name="fileselect_cancel">取消</string>
+    <string name="fileselect_file_rename_error">该文件名不合法！</string>
+    <string name="fileselect_file_rename_found">该文件名已存在！</string>
+    <string name="fileselect_file_rename_ok">重命名成功</string>
+    <string name="fileselect_folder_new">新建文件夹</string>
+    <string name="fileselect_folder_new_ok">新建文件夹成功</string>
+    <string name="fileselect_select">选定</string>
+    <string name="fileselect_delete">删除</string>
+    <string name="fileselect_rename">重命名</string>
+
+</resources>

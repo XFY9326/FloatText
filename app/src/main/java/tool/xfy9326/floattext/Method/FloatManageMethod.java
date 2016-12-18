@@ -12,11 +12,16 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 import tool.xfy9326.floattext.FloatManage;
 import tool.xfy9326.floattext.R;
@@ -31,6 +36,71 @@ import tool.xfy9326.floattext.View.FloatTextView;
 
 public class FloatManageMethod
 {
+    public static AlertDialog setLoadingDialog (Context ctx)
+    {
+        LayoutInflater inflater = LayoutInflater.from(ctx);  
+        View layout = inflater.inflate(R.layout.dialog_loading, null);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(ctx)
+            .setView(layout)
+            .setCancelable(false);
+        AlertDialog ag = dialog.create();
+        return ag;
+    }
+
+    public static boolean importtxt (Context ctx, String path)
+    {
+        File file = new File(path);
+        App utils = (App)ctx.getApplicationContext();
+        String[] lines = IOMethod.readfile(file);
+        ArrayList<String> fixline = new ArrayList<String>();
+        for (int i = 0;i < lines.length;i++)
+        {
+            if (!lines[i].toString().replaceAll("\\s+", "").equalsIgnoreCase(""))
+            {
+                fixline.add(lines[i]);
+            }
+        }
+        if (fixline.size() != 0 && fixline.size() < 100)
+        {
+            ArrayList<String> data = utils.getTextData();
+            for (int a = 0;a < fixline.size();a++)
+            {
+                data.add(fixline.get(a).toString());
+            }
+            closeAllWin(ctx);
+            FloatData dat = new FloatData();
+            dat.savedata(ctx);
+            dat.getSaveArrayData(ctx);
+            dat.savedata(ctx);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public static void exporttxt (Context ctx)
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String path = Environment.getExternalStorageDirectory().toString() + "/FloatText/Export/FloatText>" + sdf.format(new Date()) + ".txt";
+        String str = "";
+        ArrayList<String> str_arr = ((App)ctx.getApplicationContext()).getTextData();
+        for (int i = 0;i < str_arr.size();i++)
+        {
+            str += str_arr.get(i).toString() + "\n";
+        }
+        if (!str.replace("\n", "").replaceAll("\\s+", "").equalsIgnoreCase(""))
+        {
+            IOMethod.writefile(path, str);
+            Toast.makeText(ctx, ctx.getString(R.string.text_export_success) + path, Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(ctx, R.string.text_export_error, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public static void closeAllWin (Context ctx)
     {
         WindowManager wm =((App)ctx.getApplicationContext()).getFloatwinmanager();
@@ -43,6 +113,65 @@ public class FloatManageMethod
                 wm.removeView(layout.get(i));
             }
         }
+    }
+
+    public static Thread PrepareSave (Activity ctx, Handler han)
+    {
+        if (((App)ctx.getApplicationContext()).getTextData().size() > 0)
+        {
+            if (Build.VERSION.SDK_INT >= 23)
+            {
+                if (!Settings.canDrawOverlays(ctx))
+                {
+                    FloatManageMethod.askforpermission(ctx, FloatManage.RESHOW_PERMISSION_RESULT_CODE);
+                }
+                else
+                {
+                    FloatManageMethod.delayaskforpermission(ctx, FloatManage.RESHOW_PERMISSION_RESULT_CODE);
+                    return FloatManageMethod.Reshow(ctx, han);
+                }
+            }
+            else
+            {
+                return FloatManageMethod.Reshow(ctx, han);
+            }
+        }
+        return null;
+    }
+
+    public static void CloseApp (final Activity ctx)
+    {
+        AlertDialog.Builder exit = new AlertDialog.Builder(ctx)
+            .setTitle(R.string.exit_title)
+            .setMessage(R.string.exit_msg)
+            .setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
+                public void onClick (DialogInterface p1, int p2)
+                {
+                    FloatManageMethod.stopservice(ctx);
+                    FloatManageMethod.closeAllWin(ctx);
+                    ctx.finish();
+                    System.exit(0);
+                }
+            })
+            .setNegativeButton(R.string.cancel, null)
+            .setNeutralButton(R.string.back_to_launcher, new DialogInterface.OnClickListener(){
+                public void onClick (DialogInterface p1, int p2)
+                {
+                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
+                    if (sp.getBoolean("WinOnlyShowInHome", false))
+                    {
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        ctx.startActivity(intent);
+                    }
+                    else
+                    {
+                        ctx.finish();
+                    }
+                }
+            });
+        exit.show();
     }
 
     public static void setWinManager (Context ctx)
@@ -127,72 +256,96 @@ public class FloatManageMethod
         dialog.show();
     }
 
-    public static void getSaveData (Context ctx, App utils, SharedPreferences spdata)
+    public static Thread getSaveData (final Activity ctx, final App utils, final SharedPreferences spdata, final Handler han)
     {
-        FloatData dat = new FloatData();
-        dat.getSaveArrayData(ctx);
-        utils.setMovingMethod(spdata.getBoolean("TextMovingMethod", false));
-        utils.setStayAliveService(spdata.getBoolean("StayAliveService", false));
-        utils.setDynamicNumService(spdata.getBoolean("DynamicNumService", false));
-        utils.setDevelopMode(spdata.getBoolean("DevelopMode", false));
-        utils.setHtmlMode(spdata.getBoolean("HtmlMode", true));
-        utils.setListTextHide(spdata.getBoolean("ListTextHide", false));
+        Thread thread = new Thread() {
+            public void run ()
+            {
+                FloatData dat = new FloatData();
+                dat.getSaveArrayData(ctx);
+                utils.setMovingMethod(spdata.getBoolean("TextMovingMethod", false));
+                utils.setStayAliveService(spdata.getBoolean("StayAliveService", false));
+                utils.setDynamicNumService(spdata.getBoolean("DynamicNumService", false));
+                utils.setDevelopMode(spdata.getBoolean("DevelopMode", false));
+                utils.setHtmlMode(spdata.getBoolean("HtmlMode", true));
+                utils.setListTextHide(spdata.getBoolean("ListTextHide", false));
+                han.obtainMessage(0).sendToTarget();
+            }};
+        return thread;
     }
 
-    public static void Reshow (Context ctx)
+    public static Thread Reshow (final Activity ctx, final Handler han)
     {
-        App utils = ((App)ctx.getApplicationContext());
-        ArrayList<String> Text = utils.getTextData();
-        ArrayList<Float> Size = utils.getSizeData();
-        ArrayList<Integer> Color = utils.getColorData();
-        ArrayList<Boolean> Thick = utils.getThickData();
-        ArrayList<Boolean> Show = utils.getShowFloat();
-        ArrayList<String> Position = utils.getPosition();
-        ArrayList<Boolean> Lock = utils.getLockPosition();
-        ArrayList<Boolean> Top = utils.getTextTop();
-        ArrayList<Boolean> AutoTop = utils.getAutoTop();
-        ArrayList<Boolean> Move = utils.getTextMove();
-        ArrayList<Integer> Speed = utils.getTextSpeed();
-        ArrayList<Boolean> Shadow = utils.getTextShadow();
-        ArrayList<Float> ShadowX = utils.getTextShadowX();
-        ArrayList<Float> ShadowY = utils.getTextShadowY();
-        ArrayList<Float> ShadowRadius = utils.getTextShadowRadius();
-        ArrayList<Integer> BackgroundColor = utils.getBackgroundColor();
-        ArrayList<Integer> ShadowColor = utils.getTextShadowColor();
-        if (Text.size() != 0 && Size.size() != 0 && Color.size() != 0 && Thick.size() != 0)
-        {
-            WindowManager wm = utils.getFloatwinmanager();
-            for (int i = 0;i < Text.size();i++)
+        Thread thread = new Thread() {
+			public void run ()
             {
-                FloatTextView fv = FloatTextSettingMethod.CreateFloatView(ctx, Text.get(i), Size.get(i), Color.get(i), Thick.get(i), Speed.get(i), i, Shadow.get(i), ShadowX.get(i), ShadowY.get(i), ShadowRadius.get(i), ShadowColor.get(i));
-                FloatLinearLayout fll = FloatTextSettingMethod.CreateLayout(ctx, i);
-                fll.changeShowState(Show.get(i));
-                String[] ptemp = new String[]{"100", "150"};
-                if (Lock.get(i))
-                {
-                    ptemp = Position.get(i).toString().split("_");
-                    fll.setAddPosition(Float.parseFloat(ptemp[0]), Float.parseFloat(ptemp[1]));
-                }
-                WindowManager.LayoutParams layout = FloatTextSettingMethod.CreateFloatLayout(ctx, wm, fv, fll, Show.get(i), Float.parseFloat(ptemp[0]), Float.parseFloat(ptemp[1]), Top.get(i), Move.get(i), BackgroundColor.get(i));
-                fll.setFloatLayoutParams(layout);
-                fll.setPositionLocked(Lock.get(i));
-                fll.setTop(AutoTop.get(i));
-                if (utils.getMovingMethod())
-                {
-                    fv.setMoving(Move.get(i), 0);
-                }
-                else
-                {
-                    fv.setMoving(Move.get(i), 1);
-                    if (Move.get(i))
-                    {
-                        fll.setShowState(false);
-                        fll.setShowState(true);
+                final App utils = ((App)ctx.getApplicationContext());
+                final ArrayList<String> Text = utils.getTextData();
+                final ArrayList<Float> Size = utils.getSizeData();
+                final ArrayList<Integer> Color = utils.getColorData();
+                final ArrayList<Boolean> Thick = utils.getThickData();
+                final ArrayList<Boolean> Show = utils.getShowFloat();
+                final ArrayList<String> Position = utils.getPosition();
+                final ArrayList<Boolean> Lock = utils.getLockPosition();
+                final ArrayList<Boolean> Top = utils.getTextTop();
+                final ArrayList<Boolean> AutoTop = utils.getAutoTop();
+                final ArrayList<Boolean> Move = utils.getTextMove();
+                final ArrayList<Integer> Speed = utils.getTextSpeed();
+                final ArrayList<Boolean> Shadow = utils.getTextShadow();
+                final ArrayList<Float> ShadowX = utils.getTextShadowX();
+                final ArrayList<Float> ShadowY = utils.getTextShadowY();
+                final ArrayList<Float> ShadowRadius = utils.getTextShadowRadius();
+                final ArrayList<Integer> BackgroundColor = utils.getBackgroundColor();
+                final ArrayList<Integer> ShadowColor = utils.getTextShadowColor();
+                ctx.runOnUiThread(new Runnable(){
+                        @Override
+                        public void run ()
+                        {
+                            if (Text.size() != 0 && Size.size() != 0 && Color.size() != 0 && Thick.size() != 0)
+                            {
+                                WindowManager wm = utils.getFloatwinmanager();
+                                for (int i = 0;i < Text.size();i++)
+                                {
+                                    FloatTextView fv = FloatTextSettingMethod.CreateFloatView(ctx, Text.get(i), Size.get(i), Color.get(i), Thick.get(i), Speed.get(i), i, Shadow.get(i), ShadowX.get(i), ShadowY.get(i), ShadowRadius.get(i), ShadowColor.get(i));
+                                    FloatLinearLayout fll = FloatTextSettingMethod.CreateLayout(ctx, i);
+                                    fll.changeShowState(Show.get(i));
+                                    String[] ptemp = new String[]{"100", "150"};
+                                    if (Lock.get(i))
+                                    {
+                                        ptemp = Position.get(i).toString().split("_");
+                                        fll.setAddPosition(Float.parseFloat(ptemp[0]), Float.parseFloat(ptemp[1]));
+                                    }
+                                    WindowManager.LayoutParams layout = FloatTextSettingMethod.CreateFloatLayout(ctx, wm, fv, fll, Show.get(i), Float.parseFloat(ptemp[0]), Float.parseFloat(ptemp[1]), Top.get(i), Move.get(i), BackgroundColor.get(i));
+                                    fll.setFloatLayoutParams(layout);
+                                    fll.setPositionLocked(Lock.get(i));
+                                    fll.setTop(AutoTop.get(i));
+                                    if (utils.getMovingMethod())
+                                    {
+                                        fv.setMoving(Move.get(i), 0);
+                                    }
+                                    else
+                                    {
+                                        fv.setMoving(Move.get(i), 1);
+                                        if (Move.get(i))
+                                        {
+                                            fll.setShowState(false);
+                                            fll.setShowState(true);
+                                        }
+                                    }
+                                    FloatTextSettingMethod.savedata(ctx, fv, fll, Text.get(i), layout);
+                                }
+                            }
+                            utils.getListviewadapter().notifyDataSetChanged();
+                        }
                     }
+                );
+                if (han != null)
+                {
+                    han.obtainMessage(1).sendToTarget();
                 }
-                FloatTextSettingMethod.savedata(ctx, fv, fll, Text.get(i), layout);
             }
-        }
+        };
+        return thread;
     }
 
     public static void floattext_typeface_check (Context ctx)

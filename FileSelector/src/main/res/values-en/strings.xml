@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="fileselect_activity_title">File Selector</string>
+    <string name="fileselect_defaultpath_error">Default File Path Error！</string>
+    <string name="fileselect_file_nofound">File No Found！</string>
+    <string name="fileselect_file_nopremission">No Permission！</string>
+    <string name="fileselect_folder_select">Select Folder</string>
+    <string name="fileselect_folder_enter">Enter Folder</string>
+    <string name="fileselect_save">Save</string>
+    <string name="fileselect_cancel">Cancel</string>
+    <string name="fileselect_file_rename_error">File name is not legal！</string>
+    <string name="fileselect_file_rename_found">Existed File Name！</string>
+    <string name="fileselect_file_rename_ok">Rename Success</string>
+    <string name="fileselect_folder_new">Add new Folder</string>
+    <string name="fileselect_folder_new_ok">Add new Folder Success</string>
+    <string name="fileselect_select">Select</string>
+    <string name="fileselect_delete">Delete</string>
+    <string name="fileselect_rename">Rename</string>
+
+</resources>

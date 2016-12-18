@@ -45,6 +45,7 @@
     <string name="text_edit_color_transparency">Adjust color transparency</string>
     <string name="text_edit_color_transparency_now">Now color transparency:</string>
     <string name="add_text">Click + Botton，Add a new float</string>
+    <string name="add_button_title">Add a new float</string>
     <string name="text_add_title">Add a new text float</string>
     <string name="web_add_title">Add a new Web float</string>
     <string name="ttf_import_title">Import TTF File</string>
@@ -66,7 +67,14 @@
     <string name="set_save">Please save your changes</string>
     <string name="float_can_not_edit">Can not edit now！\nPlease close Only show float in home ！</string>
     <string name="float_list_del_err">Failed！Please restart the appliance or empty appliance data to try again！</string>
-    <string name="run_in_background">is running in the background ...</string>
+    <string name="import_txt">Import Txt</string>
+    <string name="export_txt">Export Txt</string>
+    <string name="text_import_success">Txt Import Success!</string>
+    <string name="text_export_success">Txt Export Success!\nExport to:</string>
+    <string name="text_import_error">Too much text, import failed！</string>
+    <string name="text_export_error">No text can be exported！</string>
+    <string name="text_import_notice">Select Text File，Import Text According To The Line</string>
+    <string name="loading">Loading...</string>
     <!-- Color Picker -->
     <string name="dialog_color_picker">Color Picker</string>
     <string name="press_color_to_apply">Choose color to apply changes</string>

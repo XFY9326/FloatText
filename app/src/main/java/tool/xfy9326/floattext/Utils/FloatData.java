@@ -5,14 +5,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
 import java.util.ArrayList;
+import tool.xfy9326.floattext.SafeGuard;
 
 public class FloatData
 {
     private int DataNum = 0;
-    private static int FloatDataVersion = 1;
+    public static int FloatDataVersion = 1;
 
     public void savedata (Context ctx)
     {
+        SafeGuard.isSignatureAvailable(ctx);
+        SafeGuard.isPackageNameAvailable(ctx);
         SharedPreferences spdata = ctx.getSharedPreferences("FloatShowList", Activity.MODE_WORLD_READABLE);
         SharedPreferences.Editor spedit = spdata.edit();
         App utils = ((App)ctx.getApplicationContext());
@@ -47,33 +50,33 @@ public class FloatData
         if (version < 1)
         {
             SharedPreferences.Editor spedit = sp.edit();
-            textarr = StringToStringArrayList(text);
+            textarr.addAll(StringToStringArrayList(text));
             spedit.putInt("Version", 1);
             spedit.putString("TextArray", TextArr_encode(textarr).toString());
             spedit.commit();
         }
         else
         {
-            textarr = TextArr_decode(StringToStringArrayList(text));
+            textarr.addAll(TextArr_decode(StringToStringArrayList(text)));
         }
         DataNum = textarr.size();
-        String size = NewKey(sp.getString("SizeArray", "[]"), "20.0");
-        String color = NewKey(sp.getString("ColorArray", "[]"), "-61441");
-        String thick = NewKey(sp.getString("ThickArray", "[]"), "false");
-        String show = NewKey(sp.getString("ShowArray", "[]"), "true");
-        String lock = NewKey(sp.getString("LockArray", "[]"), "false");
-        String position = NewKey(sp.getString("PositionArray", "[]"), "50_50");
-        String top = NewKey(sp.getString("TopArray", "[]"), "false");
-        String autotop = NewKey(sp.getString("AutoTopArray", "[]"), "true");
-        String move = NewKey(sp.getString("MoveArray", "[]"), "false");
-        String speed = NewKey(sp.getString("SpeedArray", "[]"), "5");
-        String shadow = NewKey(sp.getString("ShadowArray", "[]"), "false");
-        String shadowx = NewKey(sp.getString("ShadowXArray", "[]"), "10.0");
-        String shadowy = NewKey(sp.getString("ShadowYArray", "[]"), "10.0");
-        String shadowradius = NewKey(sp.getString("ShadowRadiusArray", "[]"), "5.0");
-        String backgroundcolor = NewKey(sp.getString("BackgroundColorArray", "[]"), "16777215");
-        String textshadowcolor = NewKey(sp.getString("TextShadowColorArray", "[]"), "1660944384");
-        utils.replaceDatas(textarr, StringToIntegerArrayList(color), StringToFloatArrayList(size), StringToBooleanArrayList(thick), StringToBooleanArrayList(show), StringToStringArrayList(position), StringToBooleanArrayList(lock), StringToBooleanArrayList(top), StringToBooleanArrayList(autotop), StringToBooleanArrayList(move), StringToIntegerArrayList(speed), StringToBooleanArrayList(shadow), StringToFloatArrayList(shadowx), StringToFloatArrayList(shadowy), StringToFloatArrayList(shadowradius), StringToIntegerArrayList(backgroundcolor), StringToIntegerArrayList(textshadowcolor));
+        ArrayList<Float> size = NewFloatKey(sp.getString("SizeArray", "[]"), "20.0");
+        ArrayList<Integer> color = NewIntegerKey(sp.getString("ColorArray", "[]"), "-61441");
+        ArrayList<Boolean> thick = NewBooleanKey(sp.getString("ThickArray", "[]"), "false");
+        ArrayList<Boolean> show = NewBooleanKey(sp.getString("ShowArray", "[]"), "true");
+        ArrayList<Boolean> lock = NewBooleanKey(sp.getString("LockArray", "[]"), "false");
+        ArrayList<String> position = NewStringKey(sp.getString("PositionArray", "[]"), "50_50");
+        ArrayList<Boolean> top = NewBooleanKey(sp.getString("TopArray", "[]"), "false");
+        ArrayList<Boolean> autotop = NewBooleanKey(sp.getString("AutoTopArray", "[]"), "true");
+        ArrayList<Boolean> move = NewBooleanKey(sp.getString("MoveArray", "[]"), "false");
+        ArrayList<Integer> speed = NewIntegerKey(sp.getString("SpeedArray", "[]"), "5");
+        ArrayList<Boolean> shadow = NewBooleanKey(sp.getString("ShadowArray", "[]"), "false");
+        ArrayList<Float> shadowx = NewFloatKey(sp.getString("ShadowXArray", "[]"), "10.0");
+        ArrayList<Float> shadowy = NewFloatKey(sp.getString("ShadowYArray", "[]"), "10.0");
+        ArrayList<Float> shadowradius = NewFloatKey(sp.getString("ShadowRadiusArray", "[]"), "5.0");
+        ArrayList<Integer> backgroundcolor = NewIntegerKey(sp.getString("BackgroundColorArray", "[]"), "16777215");
+        ArrayList<Integer> textshadowcolor = NewIntegerKey(sp.getString("TextShadowColorArray", "[]"), "1660944384");
+        utils.replaceDatas(textarr, color, size, thick, show, position, lock, top, autotop, move, speed, shadow, shadowx, shadowy, shadowradius, backgroundcolor, textshadowcolor);
     }
 
     private ArrayList<String> TextArr_decode (ArrayList<String> str)
@@ -106,6 +109,34 @@ public class FloatData
         return output;
     }
 
+    private ArrayList<String> NewStringKey (String fix, String def)
+    {
+        fix = NewKey(fix, def);
+        ArrayList<String> res = StringToStringArrayList(fix);
+        return FixKey(res, def);
+    }
+
+    private ArrayList<Integer> NewIntegerKey (String fix, String def)
+    {
+        fix = NewKey(fix, def);
+        ArrayList<Integer> res = StringToIntegerArrayList(fix);
+        return FixKey(res, Integer.valueOf(def));
+    }
+
+    private ArrayList<Float> NewFloatKey (String fix, String def)
+    {
+        fix = NewKey(fix, def);
+        ArrayList<Float> res = StringToFloatArrayList(fix);
+        return FixKey(res, Float.valueOf(def));
+    }
+
+    private ArrayList<Boolean> NewBooleanKey (String fix, String def)
+    {
+        fix = NewKey(fix, def);
+        ArrayList<Boolean> res = StringToBooleanArrayList(fix);
+        return FixKey(res, Boolean.valueOf(def));
+    }
+
     private String NewKey (String fix, String def)
     {
         if (fix.equalsIgnoreCase("[]") && DataNum != 0)
@@ -118,6 +149,42 @@ public class FloatData
             fix = str.toString();
         }
         return fix;
+    }
+
+    private ArrayList<String> FixKey (ArrayList<String> str, String def)
+    {
+        while (str.size() < DataNum)
+        {
+            str.add(def);
+        }
+        return str;
+    }
+
+    private ArrayList<Float> FixKey (ArrayList<Float> str, Float def)
+    {
+        while (str.size() < DataNum)
+        {
+            str.add(def);
+        }
+        return str;
+    }
+
+    private ArrayList<Integer> FixKey (ArrayList<Integer> str, Integer def)
+    {
+        while (str.size() < DataNum)
+        {
+            str.add(def);
+        }
+        return str;
+    }
+
+    private ArrayList<Boolean> FixKey (ArrayList<Boolean> str, Boolean def)
+    {
+        while (str.size() < DataNum)
+        {
+            str.add(def);
+        }
+        return str;
     }
 
     private ArrayList<String> StringToStringArrayList (String str)

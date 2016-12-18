@@ -80,8 +80,8 @@ public class CrashHandlerUI extends Activity
 
     private void exit()
     {
-        System.exit(0);
         this.finish();
+        System.exit(0);
     }
 
     @Override

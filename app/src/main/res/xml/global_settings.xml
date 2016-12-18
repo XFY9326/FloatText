@@ -58,7 +58,7 @@
             android:title="@string/xml_global_service_stayalive"
             android:summaryOn="@string/xml_global_service_stayalive_on"
             android:summaryOff="@string/xml_global_service_stayalive_off"
-            android:defaultValue="false"
+            android:defaultValue="true"
         />
         <CheckBoxPreference 
             android:key="DynamicNumService"

@@ -20,6 +20,7 @@ import tool.xfy9326.floattext.Service.FloatWindowStayAliveService;
 import tool.xfy9326.floattext.Utils.App;
 import tool.xfy9326.floattext.View.FloatLinearLayout;
 import tool.xfy9326.floattext.View.ListViewAdapter;
+import android.content.Context;
 
 public class GlobalSetActivity extends PreferenceActivity
 {
@@ -141,7 +142,7 @@ public class GlobalSetActivity extends PreferenceActivity
                                 setdata.edit().putInt("Language", language_choice).commit();
                                 FloatManageMethod.LanguageSet(GlobalSetActivity.this, language_choice);
                                 pre.setSummary(getString(R.string.xml_global_language_sum) + lan_list[language_choice]);
-                                restartApplication();
+                                restartApplication(GlobalSetActivity.this);
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
@@ -236,11 +237,11 @@ public class GlobalSetActivity extends PreferenceActivity
             });
     }
 
-    private void restartApplication ()
+    private void restartApplication (Context ctx)
     {
-        Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
+        Intent intent = ctx.getPackageManager().getLaunchIntentForPackage(ctx.getPackageName());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        ctx.startActivity(intent);
         System.exit(0);
     }
 

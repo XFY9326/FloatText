@@ -4,6 +4,7 @@ import android.app.Application;
 import android.view.WindowManager;
 import java.util.ArrayList;
 import lib.xfy9326.crashreport.CrashHandler;
+import tool.xfy9326.floattext.SafeGuard;
 import tool.xfy9326.floattext.View.FloatLinearLayout;
 import tool.xfy9326.floattext.View.FloatTextView;
 import tool.xfy9326.floattext.View.ListViewAdapter;
@@ -35,19 +36,32 @@ public class App extends Application
     private WindowManager floatwinmanager = null;
     public boolean MovingMethod = false;
     public boolean FloatWinReshow = true;
-    public boolean StayAliveService = false;
+    public boolean StayAliveService = true;
     public boolean DynamicNumService = false;
     public boolean DevelopMode = false;
     public boolean HtmlMode = false;
     public boolean ListTextHide = false;
     public int language = 0;
+    public boolean GetSave = false;
 
     @Override
     public void onCreate ()
     {
         super.onCreate();
+        init();
         CrashHandler crashHandler = CrashHandler.getInstance();
-        crashHandler.init(this, "FloatText", "tool.xfy9326.floattext.FloatManage", "xfy9326@126.com");
+        crashHandler.init(this, "FloatText", "tool.xfy9326.floattext.FloatManage", "1069665464@qq.com");
+    }
+    
+    private void init()
+    {
+        SafeGuard.isSignatureAvailable(this);
+        SafeGuard.isPackageNameAvailable(this);
+    }
+    
+    public void setGetSave (boolean b)
+    {
+        this.GetSave = b;
     }
 
     public ArrayList<Integer> getTextShadowColor ()

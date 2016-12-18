@@ -84,6 +84,7 @@ public class FloatTextSetting extends PreferenceActivity
         spdata = PreferenceManager.getDefaultSharedPreferences(this);
         spedit = spdata.edit();
         wm = ((App)getApplicationContext()).getFloatwinmanager();
+        wmcheck();
         setkeys();
         addPreferencesFromResource(R.xml.floattext_settings);
         buttonset();
@@ -97,6 +98,19 @@ public class FloatTextSetting extends PreferenceActivity
         }
     }
 
+    private void wmcheck ()
+    {
+        if (wm == null)
+        {
+            wm = (WindowManager)getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
+            ((App)getApplicationContext()).setFloatwinmanager(wm);
+        }
+        if (wm == null)
+        {
+            throw new Error(new NullPointerException());
+        }
+    }
+    
     private void setkeys ()
     {
         Intent intent = getIntent();
@@ -976,6 +990,7 @@ public class FloatTextSetting extends PreferenceActivity
                 stopshow();
             }
         }
+        System.gc();
         super.onDestroy();
     }
 

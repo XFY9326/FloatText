@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.text.SpannableString;
@@ -56,6 +55,11 @@ public class ListViewAdapter extends BaseAdapter
         {
             typeface = Typeface.createFromFile(ttf);
         }
+    }
+
+    public void setTextShow (ArrayList<String> ts)
+    {
+        this.textshow = ts;
     }
 
     @Override

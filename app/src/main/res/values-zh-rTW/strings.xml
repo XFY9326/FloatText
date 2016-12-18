@@ -5,7 +5,7 @@
     <string name="cancel">取消</string>
     <string name="close">關閉</string>
     <string name="others">其它</string>
-    <string name="importfile">導入</string>
+    <string name="importfile">匯入</string>
     <string name="exit">退出</string>
     <string name="show">顯示</string>
     <string name="noshow">不顯示</string>
@@ -45,12 +45,13 @@
     <string name="text_edit_color_transparency">調整顏色透明度</string>
     <string name="text_edit_color_transparency_now">當前透明度:</string>
     <string name="add_text">點擊"+"按鈕，新增懸浮視窗</string>
+    <string name="add_button_title">新增懸浮視窗</string>
     <string name="text_add_title">新增 文字懸浮視窗</string>
     <string name="web_add_title">新增 Web懸浮視窗</string>
-    <string name="ttf_import_title">導入TTF字體文件</string>
+    <string name="ttf_import_title">導入TTF字體檔案</string>
     <string name="ttf_import_success">字體導入成功！</string>
     <string name="ttf_import_failed">字體導入失敗！</string>
-    <string name="ttf_import_exist">該名稱的字體文件已經存在！</string>
+    <string name="ttf_import_exist">該名稱的字體檔案已經存在！</string>
     <string name="about">關於本應用程式</string>
     <string name="settings">整體設定</string>
     <string name="licence">開放原始碼協議</string>
@@ -66,7 +67,14 @@
     <string name="set_save">請儲存目前的變更！</string>
     <string name="float_can_not_edit">當前無法編輯懸浮視窗！\n請關閉 只在桌面顯示懸浮視窗 功能後再編輯！</string>
     <string name="float_list_del_err">刪除失敗！請重新啟動應用程式或是清除資料後重試！</string>
-    <string name="run_in_background">正在後台運行...</string>
+    <string name="import_txt">匯入文本</string>
+    <string name="export_txt">匯出文本</string>
+    <string name="text_import_success">文字匯入成功!</string>
+    <string name="text_export_success">文字匯出成功!\n匯出到：</string>
+    <string name="text_import_error">文字量過多，匯入失敗！</string>
+    <string name="text_export_error">沒有文字可以匯出！</string>
+    <string name="text_import_notice">選擇文字檔案，按行匯入文字</string>
+    <string name="loading">正在加載中...</string>
     <!-- Color Picker -->
     <string name="dialog_color_picker">顏色選擇器</string>
     <string name="press_color_to_apply">選擇顏色以套用變更</string>

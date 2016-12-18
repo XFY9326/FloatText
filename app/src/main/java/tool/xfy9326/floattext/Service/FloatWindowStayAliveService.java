@@ -73,7 +73,7 @@ public class FloatWindowStayAliveService extends Service
                         sendbroadcast();
                     }
                 }
-            }, 100, 1200);
+            }, 100, 1500);
     }
 
     private void sendbroadcast ()

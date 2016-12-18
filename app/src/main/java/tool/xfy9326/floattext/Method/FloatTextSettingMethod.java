@@ -182,10 +182,6 @@ public class FloatTextSettingMethod
         floattext.add(text);
         floatlayout.add(layout);
         floatlinearlayout.add(fll);
-        utils.setFloatView(floatdata);
-        utils.setFloatText(floattext);
-        utils.setFloatLayout(floatlayout);
-        utils.setFloatlinearlayout(floatlinearlayout);
     }
 
     public OnTouchListener ButtonOnLongRepeatClickListener (final int Code, final Handler handler)

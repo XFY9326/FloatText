@@ -45,6 +45,7 @@
     <string name="text_edit_color_transparency">调整颜色透明度</string>
     <string name="text_edit_color_transparency_now">当前透明度:</string>
     <string name="add_text">点击+按钮，新建悬浮窗</string>
+    <string name="add_button_title">新建悬浮窗</string>
     <string name="text_add_title">新建文本悬浮窗</string>
     <string name="web_add_title">新建Web悬浮窗</string>
     <string name="ttf_import_title">导入ttf字体文件</string>
@@ -66,7 +67,14 @@
     <string name="set_save">请保存当前更改！</string>
     <string name="float_can_not_edit">当前无法编辑悬浮窗！\n请关闭 只在桌面显示悬浮窗 功能后再编辑！</string>
     <string name="float_list_del_err">删除失败！请重启应用或清空应用数据重试！</string>
-    <string name="run_in_background">正在后台运行...</string>
+    <string name="import_txt">导入文本</string>
+    <string name="export_txt">导出文本</string>
+    <string name="text_import_success">文本导入成功!</string>
+    <string name="text_export_success">文本导出成功!\n导出到:</string>
+    <string name="text_import_error">文本量过多，导入失败！</string>
+    <string name="text_export_error">没有文本可以导出！</string>
+    <string name="text_import_notice">选择文本文件，按行导入文字</string>
+    <string name="loading">正在加载中...</string>
     <!-- Color Picker -->
     <string name="dialog_color_picker">颜色选择器</string>
     <string name="press_color_to_apply">选择颜色以应用更改</string>
