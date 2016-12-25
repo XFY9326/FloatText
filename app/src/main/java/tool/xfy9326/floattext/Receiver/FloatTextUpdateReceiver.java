@@ -1,17 +1,13 @@
 package tool.xfy9326.floattext.Receiver;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import java.util.ArrayList;
-import tool.xfy9326.floattext.Method.FloatServiceMethod;
-import tool.xfy9326.floattext.Method.DynamicWordUpdateMethod;
-import tool.xfy9326.floattext.Utils.App;
-import tool.xfy9326.floattext.View.FloatLinearLayout;
-import tool.xfy9326.floattext.View.ListViewAdapter;
+import android.content.*;
+import android.os.*;
+import android.preference.*;
+import android.util.*;
+import java.util.*;
+import tool.xfy9326.floattext.Method.*;
+import tool.xfy9326.floattext.Utils.*;
+import tool.xfy9326.floattext.View.*;
 
 public class FloatTextUpdateReceiver extends BroadcastReceiver
 {
@@ -24,10 +20,11 @@ public class FloatTextUpdateReceiver extends BroadcastReceiver
         String action = p2.getAction();
         if (action == TextAction)
         {
+			Log.d("FT", "Receive Update Package");
             DynamicWordUpdateMethod updater = new DynamicWordUpdateMethod(p1);
             updater.UpdateText(p2);
         }
-        else if(action == StateAction)
+        else if (action == StateAction)
         {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(p1);
             if (sp.getBoolean("WinOnlyShowInHome", false))

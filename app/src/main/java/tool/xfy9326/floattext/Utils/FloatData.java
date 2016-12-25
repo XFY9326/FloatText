@@ -1,11 +1,10 @@
 package tool.xfy9326.floattext.Utils;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Base64;
-import java.util.ArrayList;
-import tool.xfy9326.floattext.SafeGuard;
+import android.app.*;
+import android.content.*;
+import android.util.*;
+import java.util.*;
+import tool.xfy9326.floattext.*;
 
 public class FloatData
 {
@@ -37,6 +36,9 @@ public class FloatData
         spedit.putString("ShadowRadiusArray", utils.getTextShadowRadius().toString());
         spedit.putString("BackgroundColorArray", utils.getBackgroundColor().toString());
         spedit.putString("TextShadowColorArray", utils.getTextShadowColor().toString());
+		spedit.putString("FloatSizeArray", utils.getFloatSize().toString());
+		spedit.putString("FloatLongArray", utils.getFloatLong().toString());
+		spedit.putString("FloatWideArray", utils.getFloatWide().toString());
         spedit.apply();
     }
 
@@ -76,7 +78,10 @@ public class FloatData
         ArrayList<Float> shadowradius = NewFloatKey(sp.getString("ShadowRadiusArray", "[]"), "5.0");
         ArrayList<Integer> backgroundcolor = NewIntegerKey(sp.getString("BackgroundColorArray", "[]"), "16777215");
         ArrayList<Integer> textshadowcolor = NewIntegerKey(sp.getString("TextShadowColorArray", "[]"), "1660944384");
-        utils.replaceDatas(textarr, color, size, thick, show, position, lock, top, autotop, move, speed, shadow, shadowx, shadowy, shadowradius, backgroundcolor, textshadowcolor);
+		ArrayList<Boolean> floatsize = NewBooleanKey(sp.getString("FloatSizeArray", "[]"), "false");
+		ArrayList<Float> floatlong = NewFloatKey(sp.getString("FloatLongArray", "[]"), "100");
+		ArrayList<Float> floatwide = NewFloatKey(sp.getString("FloatWideArray", "[]"), "100");
+        utils.replaceDatas(textarr, color, size, thick, show, position, lock, top, autotop, move, speed, shadow, shadowx, shadowy, shadowradius, backgroundcolor, textshadowcolor, floatsize, floatlong, floatwide);
     }
 
     private ArrayList<String> TextArr_decode (ArrayList<String> str)

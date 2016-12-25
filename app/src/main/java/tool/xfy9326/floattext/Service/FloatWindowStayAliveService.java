@@ -1,19 +1,12 @@
 package tool.xfy9326.floattext.Service;
 
-import android.app.Notification;
-import android.app.Service;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.os.IBinder;
-import android.preference.PreferenceManager;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import tool.xfy9326.floattext.Method.FloatServiceMethod;
-import tool.xfy9326.floattext.Utils.App;
+import android.app.*;
+import android.content.*;
+import android.os.*;
+import android.preference.*;
+import java.util.*;
+import tool.xfy9326.floattext.Method.*;
+import tool.xfy9326.floattext.Utils.*;
 
 public class FloatWindowStayAliveService extends Service
 {

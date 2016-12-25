@@ -1,32 +1,19 @@
 package tool.xfy9326.floattext.View;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Typeface;
-import android.preference.PreferenceManager;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextUtils;
-import android.text.style.StrikethroughSpan;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-import java.util.ArrayList;
-import tool.xfy9326.floattext.Method.FloatTextSettingMethod;
-import tool.xfy9326.floattext.R;
-import tool.xfy9326.floattext.Setting.FloatTextSetting;
-import tool.xfy9326.floattext.Utils.App;
-import tool.xfy9326.floattext.Utils.FloatData;
+import android.app.*;
+import android.content.*;
+import android.graphics.*;
+import android.preference.*;
+import android.text.*;
+import android.text.style.*;
+import android.view.*;
+import android.view.View.*;
+import android.widget.*;
+import java.util.*;
+import tool.xfy9326.floattext.*;
+import tool.xfy9326.floattext.Method.*;
+import tool.xfy9326.floattext.Setting.*;
+import tool.xfy9326.floattext.Utils.*;
 
 public class ListViewAdapter extends BaseAdapter
 {
@@ -81,6 +68,10 @@ public class ListViewAdapter extends BaseAdapter
         final TextView textView = (TextView) view.findViewById(R.id.textview_titleshow_floatmanage);
         App utils = ((App)context.getApplicationContext());
         ArrayList<Boolean> Show = utils.getShowFloat();
+		if(Show.size() != textshow.size())
+		{
+			restoredata();
+		}
         String listtext = textshow.get(p1);
         if (!Show.get(index))
         {
@@ -107,9 +98,6 @@ public class ListViewAdapter extends BaseAdapter
         final Button del_button = (Button) view.findViewById(R.id.button_delete_floatmanage);
         final Button edit_button = (Button) view.findViewById(R.id.button_edit_floatmanage);
         final Button lock_button = (Button) view.findViewById(R.id.button_lock_floatmanage);
-        del_button.setFocusable(false);
-        edit_button.setFocusable(false);
-        lock_button.setFocusable(false);
         ArrayList<Boolean> lock = ((App)context.getApplicationContext()).getLockPosition();
         if (lock.get(index))
         {
@@ -259,6 +247,8 @@ public class ListViewAdapter extends BaseAdapter
     {
         FloatData dat = new FloatData();
         dat.getSaveArrayData(context);
+		textshow.clear();
+		textshow.addAll(((App)context.getApplicationContext()).getFloatText());
         notifyDataSetChanged();
     }
 

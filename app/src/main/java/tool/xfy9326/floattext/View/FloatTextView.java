@@ -1,15 +1,11 @@
 package tool.xfy9326.floattext.View;
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Typeface;
-import android.text.Html;
-import android.text.TextUtils;
-import android.view.WindowManager;
-import android.widget.TextView;
-import tool.xfy9326.floattext.Utils.App;
-import android.graphics.Color;
+import android.content.*;
+import android.graphics.*;
+import android.text.*;
+import android.view.*;
+import android.widget.*;
+import tool.xfy9326.floattext.Utils.*;
 
 public class FloatTextView extends TextView implements Runnable
 {

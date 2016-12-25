@@ -1,14 +1,12 @@
 package tool.xfy9326.floattext.Activity;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
-import android.widget.Toast;
-import tool.xfy9326.floattext.R;
+import android.app.*;
+import android.content.*;
+import android.content.pm.*;
+import android.os.*;
+import android.preference.*;
+import android.widget.*;
+import tool.xfy9326.floattext.*;
 
 public class AboutActivity extends PreferenceActivity
 {

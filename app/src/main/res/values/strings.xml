@@ -123,6 +123,13 @@
     <string name="xml_set_win_color_sum">让窗口背景显示不同的颜色</string>
     <string name="xml_set_win_colorend">窗口颜色透明度</string>
     <string name="xml_set_win_colorend_sum">调整窗口颜色的透明度</string>
+	<string name="xml_set_win_size">窗口大小调整</string>
+	<string name="xml_set_win_size_sum_on">手动调整窗口大小</string>
+	<string name="xml_set_win_size_sum_off">自动调整窗口大小</string>
+	<string name="xml_set_win_long">窗口宽度</string>
+	<string name="xml_set_win_wide">窗口高度</string>
+	<string name="xml_set_win_long_sum">手动设置窗口宽度(Y)</string>
+	<string name="xml_set_win_wide_sum">手动设置窗口高度(X)</string>
     <string name="xml_set_top">悬浮窗可以移到通知栏上</string>
     <string name="xml_set_top_on">可移至通知栏上</string>
     <string name="xml_set_top_off">不可移到通知栏上</string>

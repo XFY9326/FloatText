@@ -1,36 +1,22 @@
 package tool.xfy9326.floattext;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.preference.PreferenceManager;
-import android.provider.Settings;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
-import android.widget.ListView;
-import android.widget.Toast;
-import java.util.ArrayList;
-import lib.xfy9326.fileselector.SelectFile;
-import tool.xfy9326.floattext.Activity.AboutActivity;
-import tool.xfy9326.floattext.Activity.GlobalSetActivity;
-import tool.xfy9326.floattext.FloatManage;
-import tool.xfy9326.floattext.Method.FloatManageMethod;
+import android.app.*;
+import android.content.*;
+import android.content.res.*;
+import android.os.*;
+import android.preference.*;
+import android.provider.*;
+import android.view.*;
+import android.view.animation.*;
+import android.widget.*;
+import java.util.*;
+import lib.xfy9326.fileselector.*;
+import tool.xfy9326.floattext.*;
+import tool.xfy9326.floattext.Activity.*;
+import tool.xfy9326.floattext.Method.*;
+import tool.xfy9326.floattext.Utils.*;
+import tool.xfy9326.floattext.View.*;
 import tool.xfy9326.floattext.R;
-import tool.xfy9326.floattext.Utils.App;
-import tool.xfy9326.floattext.Utils.FloatData;
-import tool.xfy9326.floattext.View.FloatTextView;
-import tool.xfy9326.floattext.View.ListViewAdapter;
 
 public class FloatManage extends Activity
 {

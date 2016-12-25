@@ -1,12 +1,10 @@
 package tool.xfy9326.floattext.Activity;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.widget.TextView;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import tool.xfy9326.floattext.R;
+import android.app.*;
+import android.os.*;
+import android.widget.*;
+import java.io.*;
+import tool.xfy9326.floattext.*;
 
 public class LicenceActivity extends Activity
 {

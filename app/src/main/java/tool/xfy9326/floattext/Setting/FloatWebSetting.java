@@ -1,31 +1,16 @@
 package tool.xfy9326.floattext.Setting;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Build;
-import android.os.Bundle;
-import android.preference.EditTextPreference;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
-import android.provider.Settings;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.TableRow;
-import android.widget.Toast;
-import tool.xfy9326.floattext.Method.FloatTextSettingMethod;
-import tool.xfy9326.floattext.Method.FloatWebSettingMethod;
-import tool.xfy9326.floattext.R;
-import tool.xfy9326.floattext.Utils.App;
-import tool.xfy9326.floattext.View.FloatLinearLayout;
-import tool.xfy9326.floattext.View.FloatWebView;
+import android.content.*;
+import android.os.*;
+import android.preference.*;
+import android.provider.*;
+import android.view.*;
+import android.view.View.*;
+import android.widget.*;
+import tool.xfy9326.floattext.*;
+import tool.xfy9326.floattext.Method.*;
+import tool.xfy9326.floattext.Utils.*;
+import tool.xfy9326.floattext.View.*;
 
 public class FloatWebSetting extends PreferenceActivity
 {
@@ -71,9 +56,9 @@ public class FloatWebSetting extends PreferenceActivity
     
     private void defaultkeyget ()
     {
-        webwidth = Integer.parseInt(spdata.getString("WebWidth", "500"));
+        webwidth = Integer.parseInt(spdata.getString("WebWidth", "600"));
         webheight = Integer.parseInt(spdata.getString("WebHeight", "800"));
-        WebUrl = spdata.getString("WebUrl", "http://www.baidu.com/");
+        WebUrl = spdata.getString("WebUrl", "https://xfy9326.github.io/FloatText/");
     }
 
     private void preferenceset ()
@@ -179,7 +164,7 @@ public class FloatWebSetting extends PreferenceActivity
         close.setOnClickListener(new OnClickListener(){
                 public void onClick (View v)
                 {
-                    stopshow();
+                    stopshow(FloatWebSetting.this);
                     FloatWebSetting.this.finish();
                 }
             });
@@ -219,7 +204,7 @@ public class FloatWebSetting extends PreferenceActivity
         webview.loadUrl(WebUrl);
     }
 
-    private void stopshow ()
+    private void stopshow (Context ctx)
     {
         if (wm != null)
         {
@@ -240,6 +225,7 @@ public class FloatWebSetting extends PreferenceActivity
                 webview.clearAnimation();
                 webview.clearSslPreferences();
                 webview.destroy();
+				ctx.getCacheDir().delete();
             }
             wm = null;
             wmParams = null;
@@ -299,7 +285,7 @@ public class FloatWebSetting extends PreferenceActivity
     {
         if (!savewin)
         {
-            stopshow();
+            stopshow(this);
         }
         super.onDestroy();
     }

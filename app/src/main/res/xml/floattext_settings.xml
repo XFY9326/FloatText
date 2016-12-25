@@ -121,6 +121,26 @@
             android:summary="@string/xml_set_move_sum"
             android:dependency="FloatShow"
         />
+		<CheckBoxPreference 
+            android:key="FloatSize" 
+            android:title="@string/xml_set_win_size" 
+            android:summaryOn="@string/xml_set_win_size_sum_on" 
+            android:summaryOff="@string/xml_set_win_size_sum_off"
+            android:dependency="FloatShow"
+            android:defaultValue="false"
+        /> 
+		<Preference 
+            android:key="FloatWide"
+            android:title="@string/xml_set_win_wide"
+            android:summary="@string/xml_set_win_wide_sum"
+            android:dependency="FloatSize"
+        />
+		<Preference 
+            android:key="FloatLong"
+            android:title="@string/xml_set_win_long"
+            android:summary="@string/xml_set_win_long_sum"
+            android:dependency="FloatSize"
+        />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/xml_set_dynamicstr"> 
         <Preference 

@@ -1,19 +1,14 @@
 package tool.xfy9326.floattext.View;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Rect;
-import android.os.Handler;
-import android.os.Message;
-import android.preference.PreferenceManager;
-import android.view.MotionEvent;
-import android.view.WindowManager;
-import android.widget.LinearLayout;
-import android.widget.Toast;
-import java.util.ArrayList;
-import tool.xfy9326.floattext.R;
-import tool.xfy9326.floattext.Utils.App;
-import tool.xfy9326.floattext.Utils.FloatData;
+import android.content.*;
+import android.graphics.*;
+import android.os.*;
+import android.preference.*;
+import android.view.*;
+import android.widget.*;
+import java.util.*;
+import tool.xfy9326.floattext.*;
+import tool.xfy9326.floattext.Utils.*;
 
 public class FloatLinearLayout extends LinearLayout
 {

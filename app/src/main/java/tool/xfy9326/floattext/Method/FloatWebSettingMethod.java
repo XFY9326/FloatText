@@ -1,25 +1,20 @@
 package tool.xfy9326.floattext.Method;
 
-import android.animation.LayoutTransition;
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PixelFormat;
-import android.os.Environment;
-import android.view.Gravity;
-import android.view.View;
-import android.view.WindowManager;
-import android.view.WindowManager.LayoutParams;
-import android.webkit.WebSettings;
-import android.webkit.WebViewClient;
-import android.widget.TableRow;
-import tool.xfy9326.floattext.View.FloatLinearLayout;
-import tool.xfy9326.floattext.View.FloatWebView;
+import android.animation.*;
+import android.content.*;
+import android.graphics.*;
+import android.os.*;
+import android.view.*;
+import android.view.WindowManager.*;
+import android.webkit.*;
+import android.widget.*;
+import tool.xfy9326.floattext.View.*;
 
 public class FloatWebSettingMethod
 {
     public static FloatWebView CreateFloatWebView (Context ctx, String url)
     {
-        String cachePath = Environment.getExternalStorageDirectory().getPath().toString() + "/FloatText/webcache/";
+        String cachePath = Environment.getExternalStorageDirectory().getAbsolutePath().toString() + "/FloatText/WebCache/";
         FloatWebView webview = new FloatWebView(ctx);
         webview.setVerticalScrollbarOverlay(true);
         webview.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
@@ -37,8 +32,6 @@ public class FloatWebSettingMethod
         webSettings.setAppCachePath(cachePath);
         webSettings.setAppCacheEnabled(true);
         webSettings.setAppCacheMaxSize(5 * 1024 * 1024);
-        webSettings.setDomStorageEnabled(true);
-        webSettings.setDatabaseEnabled(true);
 		webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
         webview.setWebViewClient(new WebViewClient(){
                 public boolean shouldOverrideUrlLoading (FloatWebView view, String url)

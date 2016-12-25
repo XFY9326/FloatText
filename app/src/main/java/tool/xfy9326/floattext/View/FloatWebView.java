@@ -1,7 +1,7 @@
 package tool.xfy9326.floattext.View;
 
-import android.content.Context;
-import android.webkit.WebView;
+import android.content.*;
+import android.webkit.*;
 
 public class FloatWebView extends WebView
 {

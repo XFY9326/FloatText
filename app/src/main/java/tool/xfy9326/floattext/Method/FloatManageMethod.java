@@ -1,38 +1,22 @@
 package tool.xfy9326.floattext.Method;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import android.os.Handler;
-import android.preference.PreferenceManager;
-import android.provider.Settings;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.Toast;
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-import tool.xfy9326.floattext.FloatManage;
-import tool.xfy9326.floattext.R;
-import tool.xfy9326.floattext.Service.FloatTextUpdateService;
-import tool.xfy9326.floattext.Service.FloatWindowStayAliveService;
-import tool.xfy9326.floattext.Setting.FloatTextSetting;
-import tool.xfy9326.floattext.Setting.FloatWebSetting;
-import tool.xfy9326.floattext.Utils.App;
-import tool.xfy9326.floattext.Utils.FloatData;
-import tool.xfy9326.floattext.View.FloatLinearLayout;
-import tool.xfy9326.floattext.View.FloatTextView;
+import android.app.*;
+import android.content.*;
+import android.content.res.*;
+import android.net.*;
+import android.os.*;
+import android.preference.*;
+import android.provider.*;
+import android.view.*;
+import android.widget.*;
+import java.io.*;
+import java.text.*;
+import java.util.*;
+import tool.xfy9326.floattext.*;
+import tool.xfy9326.floattext.Service.*;
+import tool.xfy9326.floattext.Setting.*;
+import tool.xfy9326.floattext.Utils.*;
+import tool.xfy9326.floattext.View.*;
 
 public class FloatManageMethod
 {
@@ -297,6 +281,9 @@ public class FloatManageMethod
                 final ArrayList<Float> ShadowRadius = utils.getTextShadowRadius();
                 final ArrayList<Integer> BackgroundColor = utils.getBackgroundColor();
                 final ArrayList<Integer> ShadowColor = utils.getTextShadowColor();
+				final ArrayList<Boolean> FloatSize = utils.getFloatSize();
+				final ArrayList<Float> FloatLong = utils.getFloatLong();
+				final ArrayList<Float> FloatWide = utils.getFloatWide();
                 ctx.runOnUiThread(new Runnable(){
                         @Override
                         public void run ()
@@ -315,7 +302,7 @@ public class FloatManageMethod
                                         ptemp = Position.get(i).toString().split("_");
                                         fll.setAddPosition(Float.parseFloat(ptemp[0]), Float.parseFloat(ptemp[1]));
                                     }
-                                    WindowManager.LayoutParams layout = FloatTextSettingMethod.CreateFloatLayout(ctx, wm, fv, fll, Show.get(i), Float.parseFloat(ptemp[0]), Float.parseFloat(ptemp[1]), Top.get(i), Move.get(i), BackgroundColor.get(i));
+                                    WindowManager.LayoutParams layout = FloatTextSettingMethod.CreateFloatLayout(ctx, wm, fv, fll, Show.get(i), Float.parseFloat(ptemp[0]), Float.parseFloat(ptemp[1]), Top.get(i), Move.get(i), BackgroundColor.get(i), FloatSize.get(i), FloatLong.get(i), FloatWide.get(i));
                                     fll.setFloatLayoutParams(layout);
                                     fll.setPositionLocked(Lock.get(i));
                                     fll.setTop(AutoTop.get(i));

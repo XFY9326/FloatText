@@ -1,31 +1,20 @@
 package tool.xfy9326.floattext.Method;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.PixelFormat;
-import android.net.Uri;
-import android.os.Environment;
-import android.os.Handler;
-import android.provider.Settings;
-import android.view.Gravity;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
-import android.view.WindowManager;
-import android.view.WindowManager.LayoutParams;
-import android.widget.Toast;
-import java.io.File;
-import java.util.ArrayList;
-import tool.xfy9326.floattext.R;
-import tool.xfy9326.floattext.Utils.App;
-import tool.xfy9326.floattext.View.FloatLinearLayout;
-import tool.xfy9326.floattext.View.FloatTextView;
-import android.view.View.OnLongClickListener;
+import android.app.*;
+import android.content.*;
+import android.graphics.*;
+import android.net.*;
+import android.os.*;
+import android.provider.*;
+import android.view.*;
+import android.view.View.*;
+import android.view.WindowManager.*;
+import android.widget.*;
+import java.io.*;
+import java.util.*;
+import tool.xfy9326.floattext.*;
+import tool.xfy9326.floattext.Utils.*;
+import tool.xfy9326.floattext.View.*;
 
 public class FloatTextSettingMethod
 {
@@ -96,15 +85,16 @@ public class FloatTextSettingMethod
     public static FloatLinearLayout CreateLayout (Context ctx, int ID)
     {
         FloatLinearLayout layout = new FloatLinearLayout(ctx, ID);
+		layout.setGravity(Gravity.CENTER_HORIZONTAL);
         return layout;
     }
 
-    public static WindowManager.LayoutParams CreateFloatLayout (Context ctx, WindowManager wm, FloatTextView floatview, FloatLinearLayout layout, boolean show, boolean top, boolean move, int bac)
+    public static WindowManager.LayoutParams CreateFloatLayout (Context ctx, WindowManager wm, FloatTextView floatview, FloatLinearLayout layout, boolean show, boolean top, boolean move, int bac, boolean fs, float fl, float fw)
     {
-        return CreateFloatLayout(ctx, wm, floatview, layout, show, 100, 150, top, move, bac);
+        return CreateFloatLayout(ctx, wm, floatview, layout, show, 100, 150, top, move, bac, fs, fl, fw);
     }
 
-    public static WindowManager.LayoutParams CreateFloatLayout (Context ctx, WindowManager wm, FloatTextView floatview, FloatLinearLayout layout, boolean show, float px, float py, boolean top, boolean move, int bac)
+    public static WindowManager.LayoutParams CreateFloatLayout (Context ctx, WindowManager wm, FloatTextView floatview, FloatLinearLayout layout, boolean show, float px, float py, boolean top, boolean move, int bac, boolean fs, float fl, float fw)
     {
         WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams();
         wmParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
@@ -120,15 +110,23 @@ public class FloatTextSettingMethod
         wmParams.x = (int)px;
         wmParams.y = (int)py;
         wmParams.format = PixelFormat.TRANSLUCENT;
-        wmParams.width = LayoutParams.WRAP_CONTENT;
-        wmParams.height = LayoutParams.WRAP_CONTENT;
+		if (fs)
+		{
+			wmParams.width = (int)fl;
+			wmParams.height = (int)fw;
+		}
+		else
+		{
+			wmParams.width = LayoutParams.WRAP_CONTENT;
+			wmParams.height = LayoutParams.WRAP_CONTENT;
+		}
         layout.setLayout_default_flags(wmParams.flags);
         layout.setTop(true);
         layout.setAddPosition(px, py);
         layout.setBackgroundColor(bac);
         layout.setFloatLayoutParams(wmParams);
         layout.changeShowState(show);
-        layout.setPadding(5, 5, 5, 5);
+        layout.setPadding(3, 3, 3, 3);
         layout.addView(floatview);
         if (show)
         {

@@ -1,13 +1,11 @@
 package tool.xfy9326.floattext.Utils;
 
-import android.app.Application;
-import android.view.WindowManager;
-import java.util.ArrayList;
-import lib.xfy9326.crashreport.CrashHandler;
-import tool.xfy9326.floattext.SafeGuard;
-import tool.xfy9326.floattext.View.FloatLinearLayout;
-import tool.xfy9326.floattext.View.FloatTextView;
-import tool.xfy9326.floattext.View.ListViewAdapter;
+import android.app.*;
+import android.view.*;
+import java.util.*;
+import lib.xfy9326.crashreport.*;
+import tool.xfy9326.floattext.*;
+import tool.xfy9326.floattext.View.*;
 
 public class App extends Application
 {
@@ -32,6 +30,9 @@ public class App extends Application
     private ArrayList<Float> TextShadowRadius = new ArrayList<Float>();
     private ArrayList<Integer> TextShadowColor = new ArrayList<Integer>();
     private ArrayList<Integer> BackgroundColor = new ArrayList<Integer>();
+	private ArrayList<Boolean> FloatSize = new ArrayList<Boolean>();
+	private ArrayList<Float> FloatLong = new ArrayList<Float>();
+	private ArrayList<Float> FloatWide = new ArrayList<Float>();
     private ListViewAdapter listviewadapter = null;
     private WindowManager floatwinmanager = null;
     public boolean MovingMethod = false;
@@ -58,6 +59,21 @@ public class App extends Application
         SafeGuard.isSignatureAvailable(this);
         SafeGuard.isPackageNameAvailable(this);
     }
+	
+	public ArrayList<Float> getFloatWide ()
+	{
+		return FloatWide;
+	}
+
+	public ArrayList<Float> getFloatLong ()
+	{
+		return FloatLong;
+	}
+
+	public ArrayList<Boolean> getFloatSize ()
+	{
+		return FloatSize;
+	}
     
     public void setGetSave (boolean b)
     {
@@ -294,7 +310,7 @@ public class App extends Application
         return ThickShow;
     }
 
-    public void addDatas (String text, int color, float size, boolean thick, boolean show, String position, boolean lp, boolean tp, boolean ap, boolean tm, int sp, boolean sha, float shax, float shay, float shad, int bac, int tsc)
+    public void addDatas (String text, int color, float size, boolean thick, boolean show, String position, boolean lp, boolean tp, boolean ap, boolean tm, int sp, boolean sha, float shax, float shay, float shad, int bac, int tsc, boolean fs, float fl, float fw)
     {
         TextShow.add(text);
         ColorShow.add(color);
@@ -313,9 +329,12 @@ public class App extends Application
         TextShadowRadius.add(shad);
         BackgroundColor.add(bac);
         TextShadowColor.add(tsc);
+		FloatSize.add(fs);
+		FloatLong.add(fl);
+		FloatWide.add(fw);
     }
 
-    public void setDatas (int i, FloatTextView fv, FloatLinearLayout fll, WindowManager.LayoutParams layout, String text, int color, float size, boolean thick, boolean show, String position, boolean lp, boolean tp, boolean ap, boolean tm, int sp, boolean sha, float shax, float shay, float shad, int bac, int tsc)
+    public void setDatas (int i, FloatTextView fv, FloatLinearLayout fll, WindowManager.LayoutParams layout, String text, int color, float size, boolean thick, boolean show, String position, boolean lp, boolean tp, boolean ap, boolean tm, int sp, boolean sha, float shax, float shay, float shad, int bac, int tsc, boolean fs, float fl, float fw)
     {
         floatview.set(i, fv);
         floatlinearlayout.set(i, fll);
@@ -338,9 +357,12 @@ public class App extends Application
         TextShadowRadius.set(i, shad);
         BackgroundColor.set(i, bac);
         TextShadowColor.set(i, tsc);
+		FloatSize.set(i, fs);
+		FloatLong.set(i, fl);
+		FloatWide.set(i, fw);
     }
 
-    public void replaceDatas (ArrayList<String> text, ArrayList<Integer> color, ArrayList<Float> size, ArrayList<Boolean> thick, ArrayList<Boolean> show, ArrayList<String> position, ArrayList<Boolean> lp, ArrayList<Boolean> tp, ArrayList<Boolean> ap, ArrayList<Boolean> tm, ArrayList<Integer> sp, ArrayList<Boolean> sha, ArrayList<Float> shax, ArrayList<Float> shay, ArrayList<Float> shad, ArrayList<Integer> bac, ArrayList<Integer> tsc)
+    public void replaceDatas (ArrayList<String> text, ArrayList<Integer> color, ArrayList<Float> size, ArrayList<Boolean> thick, ArrayList<Boolean> show, ArrayList<String> position, ArrayList<Boolean> lp, ArrayList<Boolean> tp, ArrayList<Boolean> ap, ArrayList<Boolean> tm, ArrayList<Integer> sp, ArrayList<Boolean> sha, ArrayList<Float> shax, ArrayList<Float> shay, ArrayList<Float> shad, ArrayList<Integer> bac, ArrayList<Integer> tsc, ArrayList<Boolean> fs, ArrayList<Float> fl, ArrayList<Float> fw)
     {
         TextShow = text;
         ColorShow = color;
@@ -359,6 +381,9 @@ public class App extends Application
         TextShadowRadius = shad;
         BackgroundColor = bac;
         TextShadowColor = tsc;
+		FloatSize = fs;
+		FloatLong = fl;
+		FloatWide = fw;
     }
 
     public void removeDatas (int i)
@@ -380,6 +405,9 @@ public class App extends Application
         TextShadowRadius.remove(i);
         BackgroundColor.remove(i);
         TextShadowColor.remove(i);
+		FloatSize.remove(i);
+		FloatLong.remove(i);
+		FloatWide.remove(i);
     }
 
 }

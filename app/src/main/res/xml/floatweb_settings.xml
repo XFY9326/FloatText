@@ -14,7 +14,7 @@
             android:title="@string/xml_web_url"
             android:summary="@string/xml_web_url_sum"
             android:dialogTitle="@string/xml_web_url_title"
-            android:defaultValue="http://www.baidu.com/"
+            android:defaultValue="https://xfy9326.github.io/FloatText/"
         />
         <Preference
             android:key="WebReload"
@@ -29,7 +29,7 @@
             android:summary="@string/xml_web_win_width_sum"
             android:dialogTitle="@string/xml_web_win_width_title"
             android:numeric="integer"
-            android:defaultValue="500"
+            android:defaultValue="600"
         />
         <EditTextPreference 
             android:key="WebHeight"

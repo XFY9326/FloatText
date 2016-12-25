@@ -1,26 +1,17 @@
 package tool.xfy9326.floattext.Activity;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.os.Environment;
-import android.preference.CheckBoxPreference;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
-import android.widget.Toast;
-import java.io.File;
-import java.util.ArrayList;
-import tool.xfy9326.floattext.Method.FloatManageMethod;
-import tool.xfy9326.floattext.R;
-import tool.xfy9326.floattext.Service.FloatTextUpdateService;
-import tool.xfy9326.floattext.Service.FloatWindowStayAliveService;
-import tool.xfy9326.floattext.Utils.App;
-import tool.xfy9326.floattext.View.FloatLinearLayout;
-import tool.xfy9326.floattext.View.ListViewAdapter;
-import android.content.Context;
+import android.app.*;
+import android.content.*;
+import android.os.*;
+import android.preference.*;
+import android.widget.*;
+import java.io.*;
+import java.util.*;
+import tool.xfy9326.floattext.*;
+import tool.xfy9326.floattext.Method.*;
+import tool.xfy9326.floattext.Service.*;
+import tool.xfy9326.floattext.Utils.*;
+import tool.xfy9326.floattext.View.*;
 
 public class GlobalSetActivity extends PreferenceActivity
 {
@@ -111,7 +102,7 @@ public class GlobalSetActivity extends PreferenceActivity
                                     pre.setSummary(getString(R.string.xml_global_text_typeface_summary) + ttfname[typeface_choice]);
                                     default_typeface = ttfname[typeface_choice];
                                 }
-                                Toast.makeText(GlobalSetActivity.this, R.string.restart_to_apply, Toast.LENGTH_LONG).show();
+                                restartApplication(GlobalSetActivity.this);
                             }
                         })
                         .setNegativeButton(R.string.cancel, null);

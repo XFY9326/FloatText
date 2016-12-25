@@ -1,46 +1,21 @@
 package tool.xfy9326.floattext.Setting;
 
-import android.app.AlertDialog;
-import android.content.ClipboardManager;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.preference.CheckBoxPreference;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
-import android.provider.Settings;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.WindowManager;
-import android.view.WindowManager.LayoutParams;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.Switch;
-import android.widget.TextView;
-import android.widget.Toast;
-import java.util.ArrayList;
-import java.util.Random;
-import net.margaritov.preference.colorpicker.ColorPickerPreference;
-import tool.xfy9326.floattext.Method.FloatTextSettingMethod;
-import tool.xfy9326.floattext.R;
-import tool.xfy9326.floattext.Utils.App;
-import tool.xfy9326.floattext.View.FloatLinearLayout;
-import tool.xfy9326.floattext.View.FloatTextView;
+import android.app.*;
+import android.content.*;
+import android.graphics.*;
+import android.os.*;
+import android.preference.*;
+import android.provider.*;
+import android.view.*;
+import android.view.WindowManager.*;
+import android.widget.*;
+import android.widget.SeekBar.*;
+import java.util.*;
+import net.margaritov.preference.colorpicker.*;
+import tool.xfy9326.floattext.*;
+import tool.xfy9326.floattext.Method.*;
+import tool.xfy9326.floattext.Utils.*;
+import tool.xfy9326.floattext.View.*;
 
 public class FloatTextSetting extends PreferenceActivity
 {
@@ -76,6 +51,9 @@ public class FloatTextSetting extends PreferenceActivity
     private String WinTransparency;
     private int TextShadowColor;
     private String TextShadowTransparency;
+	private boolean FloatSize;
+	private float FloatLong;
+	private float FloatWide;
 
     @Override
     protected void onCreate (Bundle savedInstanceState)
@@ -107,10 +85,10 @@ public class FloatTextSetting extends PreferenceActivity
         }
         if (wm == null)
         {
-            throw new Error(new NullPointerException());
+            throw new Error(new NullPointerException("Window Manager No Found"));
         }
     }
-    
+
     private void setkeys ()
     {
         Intent intent = getIntent();
@@ -149,6 +127,9 @@ public class FloatTextSetting extends PreferenceActivity
         TextShadowRadius = utils.getTextShadowRadius().get(i);
         BackgroundColor = utils.getBackgroundColor().get(i);
         TextShadowColor = utils.getTextShadowColor().get(i);
+		FloatSize = utils.getFloatSize().get(i);
+		FloatLong = utils.getFloatLong().get(i);
+		FloatWide = utils.getFloatWide().get(i);
     }
 
     private void editkeyset ()
@@ -168,6 +149,9 @@ public class FloatTextSetting extends PreferenceActivity
         spedit.putFloat("TextShadowRadius", TextShadowRadius);
         spedit.putInt("BackgroundColor", BackgroundColor);
         spedit.putInt("TextShadowColor", TextShadowColor);
+		spedit.putBoolean("FloatSize", FloatSize);
+		spedit.putFloat("FloatLong", FloatLong);
+		spedit.putFloat("FloatWide", FloatWide);
         spedit.commit();
     }
 
@@ -191,6 +175,9 @@ public class FloatTextSetting extends PreferenceActivity
         TextShadowRadius = spdata.getFloat("TextShadowRadius", 5f);
         BackgroundColor = spdata.getInt("BackgroundColor", 0x00ffffff);
         TextShadowColor = spdata.getInt("TextShadowColor", 0x99000000);
+		FloatSize = spdata.getBoolean("FloatSize", false);
+		FloatLong = spdata.getFloat("FloatLong", 100);
+		FloatWide = spdata.getFloat("FloatWide", 100);
     }
 
     private void buttonset ()
@@ -747,6 +734,83 @@ public class FloatTextSetting extends PreferenceActivity
                     return true;
                 }
             });
+		CheckBoxPreference floatsize = (CheckBoxPreference) findPreference("FloatSize");
+		floatsize.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
+				public boolean onPreferenceChange (Preference p, Object o)
+				{
+					FloatSize = o;
+					updateview();
+					return true;
+				}
+			});
+		Preference floatwide = findPreference("FloatWide");
+        floatwide.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
+                public boolean onPreferenceClick (Preference p)
+                {
+					LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
+                    View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
+                    dialog.setTitle(R.string.xml_set_win_wide);
+                    final TextView text = (TextView) layout.findViewById(R.id.textview_size_now);
+                    SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_size);
+                    text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
+                    bar.setMax(wm.getDefaultDisplay().getHeight());
+                    bar.setProgress((int)FloatWide);
+                    bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+                            public void onStartTrackingTouch (SeekBar bar)
+                            {}
+                            public void onStopTrackingTouch (SeekBar bar)
+                            {
+                                spedit.putFloat("FloatWide", FloatWide);
+                                spedit.commit();
+                            }
+                            public void onProgressChanged (SeekBar bar , int i , boolean state)
+                            {
+                                FloatWide = i;
+                                text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
+                                updateview();
+                            }
+                        });
+                    dialog.setView(layout);
+                    dialog.setPositiveButton(R.string.close, null);
+                    dialog.show();
+					return true;
+				}
+			});
+		Preference floatlong = findPreference("FloatLong");
+        floatlong.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
+                public boolean onPreferenceClick (Preference p)
+                {
+					LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
+                    View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
+                    dialog.setTitle(R.string.xml_set_win_long);
+                    final TextView text = (TextView) layout.findViewById(R.id.textview_size_now);
+                    SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_size);
+                    text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
+                    bar.setMax(wm.getDefaultDisplay().getWidth());
+                    bar.setProgress((int)FloatLong);
+                    bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+                            public void onStartTrackingTouch (SeekBar bar)
+                            {}
+                            public void onStopTrackingTouch (SeekBar bar)
+                            {
+                                spedit.putFloat("FloatLong", FloatLong);
+                                spedit.commit();
+                            }
+                            public void onProgressChanged (SeekBar bar , int i , boolean state)
+                            {
+                                FloatLong = i;
+                                text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
+                                updateview();
+                            }
+                        });
+                    dialog.setView(layout);
+                    dialog.setPositiveButton(R.string.close, null);
+                    dialog.show();
+					return true;
+				}
+			});
     }
 
     private void prepareshow ()
@@ -770,14 +834,14 @@ public class FloatTextSetting extends PreferenceActivity
 
     private void updateview ()
     {
-        updatefloatview(FloatShow, TextShow, TextSize, TextColor, TextThick, TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor);
+        updatefloatview(FloatShow, TextShow, TextSize, TextColor, TextThick, TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide);
     }
 
     private void startshow ()
     {
         floatview = FloatTextSettingMethod.CreateFloatView(this, TextShow, TextSize, TextColor, TextThick, TextSpeed, EditID, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, TextShadowColor);
         linearlayout = FloatTextSettingMethod.CreateLayout(this, EditID);
-        wmParams = FloatTextSettingMethod.CreateFloatLayout(this, wm, floatview, linearlayout, FloatShow, TextTop, TextMove, BackgroundColor);
+        wmParams = FloatTextSettingMethod.CreateFloatLayout(this, wm, floatview, linearlayout, FloatShow, TextTop, TextMove, BackgroundColor, FloatSize, FloatLong, FloatWide);
     }
 
     private void stopshow ()
@@ -795,7 +859,7 @@ public class FloatTextSetting extends PreferenceActivity
         }
     }
 
-    private void updatefloatview (boolean show, String Text, Float Size, int Paint, boolean Thick, boolean TextTop, boolean autotop, boolean move, int speed, boolean shadow, float shadowx, float shadowy, float shadowradius, int bac, int shadowcolor)
+    private void updatefloatview (boolean show, String Text, Float Size, int Paint, boolean Thick, boolean TextTop, boolean autotop, boolean move, int speed, boolean shadow, float shadowx, float shadowy, float shadowradius, int bac, int shadowcolor, boolean fs, float fl, float fw)
     {
         App utils = ((App)getApplicationContext());
         if (wm != null)
@@ -851,11 +915,21 @@ public class FloatTextSetting extends PreferenceActivity
             linearlayout.setLayout_default_flags(wmParams.flags);
             linearlayout.setShowState(show);
             linearlayout.setBackgroundColor(bac);
+			if (fs)
+			{
+				wmParams.width = (int)fl;
+				wmParams.height = (int)fw;
+			}
+			else
+			{
+				wmParams.width = LayoutParams.WRAP_CONTENT;
+				wmParams.height = LayoutParams.WRAP_CONTENT;
+			}
             if (EditMode)
             {
-                ArrayList<Boolean> fs = utils.getShowFloat();
-                fs.set(EditID, show);
-                utils.setShowFloat(fs);
+                ArrayList<Boolean> sf = utils.getShowFloat();
+                sf.set(EditID, show);
+                utils.setShowFloat(sf);
             }
             wm.updateViewLayout(linearlayout, wmParams);
         }
@@ -871,7 +945,7 @@ public class FloatTextSetting extends PreferenceActivity
         }
         if (savedetails)
         {
-            utils.addDatas(TextShow, TextColor, TextSize, TextThick, show, position, false, texttop, autotop, textmove, speed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor);
+            utils.addDatas(TextShow, TextColor, TextSize, TextThick, show, position, false, texttop, autotop, textmove, speed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide);
         }
     }
 
@@ -879,7 +953,7 @@ public class FloatTextSetting extends PreferenceActivity
     {
         Position = linearlayout.getPosition();
         App utils = ((App)getApplicationContext());
-        utils.setDatas(i, floatview, linearlayout, wmParams, TextShow, TextColor, TextSize, TextThick, FloatShow, Position, LockPosition, TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor);
+        utils.setDatas(i, floatview, linearlayout, wmParams, TextShow, TextColor, TextSize, TextThick, FloatShow, Position, LockPosition, TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide);
     }
 
     @Override

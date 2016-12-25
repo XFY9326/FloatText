@@ -1,32 +1,20 @@
 package tool.xfy9326.floattext.Service;
 
-import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.ClipboardManager;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.os.Bundle;
-import android.os.IBinder;
-import android.preference.PreferenceManager;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import tool.xfy9326.floattext.Method.FloatServiceMethod;
-import tool.xfy9326.floattext.Utils.App;
+import android.app.*;
+import android.content.*;
+import android.hardware.*;
+import android.os.*;
+import android.util.*;
+import java.text.*;
+import java.util.*;
+import java.util.regex.*;
+import tool.xfy9326.floattext.Method.*;
+import tool.xfy9326.floattext.Utils.*;
 
 public class FloatTextUpdateService extends Service
 {
+	private String[] LIST;
+	private boolean[] INFO;
     private Timer timer = null;
     private Timer timer_f = null;
     private Timer timer_s = null;
@@ -36,9 +24,15 @@ public class FloatTextUpdateService extends Service
     private SimpleDateFormat sdf_clock_12 = null;
     private SimpleDateFormat sdf_clock_24 = null;
     private SimpleDateFormat sdf_date = null;
+	private String time0 = "";
+	private String time1 = "";
+	private String time2 = "";
+	private String time3 = "";
+	private String time4 = "";
     private Intent timeIntent = null;
     private boolean timer_run = false;
     private boolean high_cpu_use_dynamicword = false;
+	private boolean time_dynamicword = false;
 	private Bundle bundle = null;
     private String cpurate = "0%";
     private String meminfo = "0%";
@@ -77,9 +71,34 @@ public class FloatTextUpdateService extends Service
     public void onCreate ()
     {
         super.onCreate();
+		Log.d("FT", "Update Service Start");
         init();
         timerset();
     }
+
+	private String[] SetPostKey ()
+	{
+		String[] PostList = new String[18];
+		PostList[0] = time0;
+		PostList[1] = time1;
+		PostList[2] = time2;
+		PostList[3] = time3;
+		PostList[4] = time4;
+		PostList[5] = cpurate;
+		PostList[6] = getNetSpeed();
+		PostList[7] = meminfo;
+		PostList[8] = localip;
+		PostList[9] = battery_percent;
+		PostList[10] = sensorlight;
+		PostList[11] = sensorgravity;
+		PostList[12] = sensorpressure;
+		PostList[13] = cputemperature;
+		PostList[14] = sensorproximity;
+		PostList[15] = sensorstep + "";
+		PostList[16] = clip.getText().toString();
+		PostList[17] = "NULL";
+		return PostList;
+	}
 
     private void init ()
     {
@@ -103,56 +122,32 @@ public class FloatTextUpdateService extends Service
         sensor_proximity = msensor.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         sensor_step = msensor.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         clip = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+		if (clip.getText() == null)
+		{
+			clip.setText("");
+		}
+		SetListKeys();
     }
 
     private void sendBroadcast ()
     {
-        bundle.putString("SystemTime", getTime(0));
-        bundle.putString("SystemTime_24", getTime(1));
-        bundle.putString("Clock", getTime(2));
-        bundle.putString("Clock_24", getTime(3));
-        bundle.putString("Date", getTime(4));
-        bundle.putString("CPURate", cpurate);
-        bundle.putString("NetSpeed", getNetSpeed());
-        bundle.putString("MemInfo", meminfo);
-        bundle.putString("LocalIP", localip);
-        bundle.putString("Battery", battery_percent);
-        bundle.putString("Sensor_CPUTemperature", cputemperature);
-        bundle.putString("Sensor_Light", sensorlight);
-        bundle.putString("Sensor_Gravity", sensorgravity);
-        bundle.putString("Sensor_Pressure", sensorpressure);
-        bundle.putString("Sensor_Proximity", sensorproximity);
-        bundle.putString("Sensor_Step", sensorstep + "");
-        bundle.putString("ClipBoard", clip.getText() + "");
+		String[] DATA = SetPostKey();
+		Log.d("FT", "Update Sending");
+        bundle.putStringArray("LIST", LIST);
+		bundle.putBooleanArray("INFO", INFO);
+		bundle.putStringArray("DATA", DATA);
         timeIntent.putExtras(bundle);
         timeIntent.setAction(FloatServiceMethod.TEXT_UPDATE_ACTION);
         sendBroadcast(timeIntent);
 	}
 
-    private String getTime (int i)
+    private void getTime ()
     {
-        String str = "";
-        switch (i)
-        {
-            case 0:
-                str = sdf12.format(new Date());
-                break;
-            case 1:
-                str = sdf24.format(new Date());
-                break;
-            case 2:
-                str = sdf_clock_12.format(new Date());
-                break;
-            case 3:
-                str = sdf_clock_24.format(new Date());
-                break;
-            case 4:
-                str = sdf_date.format(new Date());
-                break;
-            default:
-                str = sdf12.format(new Date());
-        }
-        return str;
+		time0 = sdf12.format(new Date());
+		time1 = sdf24.format(new Date());
+		time2 = sdf_clock_12.format(new Date());
+		time3 = sdf_clock_24.format(new Date());
+		time4 = sdf_date.format(new Date());
 	}
 
     private String getNetSpeed ()
@@ -180,14 +175,13 @@ public class FloatTextUpdateService extends Service
                 @Override
                 public void run ()
                 {
-                    if (hasFloatWin(FloatTextUpdateService.this) && !timer_run && FloatServiceMethod.isScreenOn(FloatTextUpdateService.this))
+					Log.d("FT", "Update Running");
+					boolean FloatWinMode = hasFloatWin(FloatTextUpdateService.this);
+					boolean FloatScreenMode = FloatServiceMethod.isScreenOn(FloatTextUpdateService.this);
+                    if (FloatWinMode && FloatScreenMode)
                     {
-                        timer_run = true;
-                        timer = new Timer();
-                        timer_f = new Timer();
-                        timer_s = new Timer();
-                        registerReceiver(breceiver, battery_filter);
-                        if (sensor_use_dynamic_word && !register_sensor)
+						Log.d("FT", "Update Text Found");
+						if (sensor_use_dynamic_word && !register_sensor)
                         {
                             register_sensor = true;
                             msensor.registerListener(sreceiver, sensor_tem, SensorManager.SENSOR_DELAY_UI);
@@ -197,40 +191,53 @@ public class FloatTextUpdateService extends Service
                             msensor.registerListener(sreceiver, sensor_pressure, SensorManager.SENSOR_DELAY_UI);
                             msensor.registerListener(sreceiver, sensor_proximity, SensorManager.SENSOR_DELAY_UI);
                         }
-                        timer.schedule(new TimerTask()
-                            {
-                                @Override
-                                public void run ()
-                                {
-                                    sendBroadcast();
-                                }
-                            }, 150, 1000);
-                        timer_s.schedule(new TimerTask()
-                            {
-                                @Override
-                                public void run ()
-                                {
-                                    localip = FloatServiceMethod.getIP(FloatTextUpdateService.this);
-                                }
-                            }, 300, 5000);
-                        timer_f.schedule(new TimerTask()
-                            {
-                                @Override
-                                public void run ()
-                                {
-                                    if (high_cpu_use_dynamicword)
-                                    {
-                                        cpurate = FloatServiceMethod.getProcessCpuRate() + "%";
-                                        meminfo = FloatServiceMethod.getMeminfo(FloatTextUpdateService.this);
-                                    }
-                                }
-                            }, 200, 2500);
+						if (!timer_run)
+						{
+							timer_run = true;
+							timer = new Timer();
+							timer_f = new Timer();
+							timer_s = new Timer();
+							registerReceiver(breceiver, battery_filter);
+							timer.schedule(new TimerTask()
+								{
+									@Override
+									public void run ()
+									{
+										if (time_dynamicword)
+										{
+											getTime();
+										}
+										sendBroadcast();
+									}
+								}, 150, 1000);
+							timer_s.schedule(new TimerTask()
+								{
+									@Override
+									public void run ()
+									{
+										localip = FloatServiceMethod.getIP(FloatTextUpdateService.this);
+									}
+								}, 300, 5000);
+							timer_f.schedule(new TimerTask()
+								{
+									@Override
+									public void run ()
+									{
+										if (high_cpu_use_dynamicword)
+										{
+											cpurate = FloatServiceMethod.getProcessCpuRate() + "%";
+											meminfo = FloatServiceMethod.getMeminfo(FloatTextUpdateService.this);
+										}
+									}
+								}, 200, 2000);
+						}
                     }
-                    else if (!hasFloatWin(FloatTextUpdateService.this) && timer_run || !FloatServiceMethod.isScreenOn(FloatTextUpdateService.this) && timer_run)
+                    else if (!FloatWinMode && timer_run || !FloatScreenMode && timer_run)
                     {
                         timer_run = false;
                         if (timer != null && timer_f != null && timer_s != null)
                         {
+							Log.d("FT", "Cancel All Update");
                             timer.cancel();
                             timer_f.cancel();
                             timer_s.cancel();
@@ -248,8 +255,52 @@ public class FloatTextUpdateService extends Service
                         register_sensor = false;
                     }
                 }
-            }, 100, 3000);
+            }, 100, 3500);
     }
+
+	private void SetListKeys ()
+	{
+		ArrayList<String> KeyList = new ArrayList<String>();
+		ArrayList<Boolean> InfoList = new ArrayList<Boolean>();
+		KeyList.add("SystemTime");
+		InfoList.add(false);
+		KeyList.add("SystemTime_24");
+		InfoList.add(false);
+		KeyList.add("Clock");
+		InfoList.add(false);
+		KeyList.add("Clock_24");
+		InfoList.add(false);
+		KeyList.add("Date");
+		InfoList.add(false);
+		KeyList.add("CPURate");
+		InfoList.add(false);
+		KeyList.add("NetSpeed");
+		InfoList.add(false);
+		KeyList.add("MemRate");
+		InfoList.add(false);
+		KeyList.add("LocalIP");
+		InfoList.add(false);
+		KeyList.add("Battery");
+		InfoList.add(false);
+		KeyList.add("Sensor_Light");
+		InfoList.add(false);
+		KeyList.add("Sensor_Gravity");
+		InfoList.add(false);
+		KeyList.add("Sensor_Pressure");
+		InfoList.add(false);
+		KeyList.add("Sensor_CPUTemperature");
+		InfoList.add(false);
+		KeyList.add("Sensor_Proximity");
+		InfoList.add(false);
+		KeyList.add("Sensor_Step");
+		InfoList.add(false);
+		KeyList.add("ClipBoard");
+		InfoList.add(false);
+		KeyList.add("(DateCount_)(.*?)");
+		InfoList.add(true);
+		LIST = KeyList.toArray(new String[KeyList.size()]);
+		INFO = FloatServiceMethod.Btob(InfoList.toArray(new Boolean[InfoList.size()]));
+	}
 
     @Override
     public void onDestroy ()
@@ -263,8 +314,8 @@ public class FloatTextUpdateService extends Service
             unregisterReceiver(breceiver);
             if (sensor_use_dynamic_word && register_sensor)
             {
-                register_sensor = false;
                 msensor.unregisterListener(sreceiver);
+				register_sensor = false;
             }
         }
         super.onDestroy();
@@ -274,6 +325,7 @@ public class FloatTextUpdateService extends Service
     {
         boolean highcpudynamicset = false;
         boolean sensordynamicset = false;
+		boolean timedynamicset = false;
         Pattern pat = Pattern.compile("<(.*?)>");
         Pattern pat2 = Pattern.compile("#(.*?)#");
         ArrayList<String> list = ((App)ctx.getApplicationContext()).getFloatText();
@@ -282,37 +334,54 @@ public class FloatTextUpdateService extends Service
         {
             for (int i = 0;i < list.size();i++)
             {
-                String str = list.get(i);
+                String str = list.get(i).toString();
                 Matcher mat = pat.matcher(str);
                 Matcher mat2 = pat2.matcher(str);
                 if (mat.find() || mat2.find())
                 {
-                    if (!highcpudynamicset)
+					dynamicnum = true;
+					if (!timedynamicset)
                     {
-                        if (hasWord(str, "CPURate") || hasWord(str, "MemRate"))
+                        if (hasWord(str, "SystemTime") || hasWord(str, "Date") || hasWord(str, "Clock"))
                         {
-                            high_cpu_use_dynamicword = true;
-                            highcpudynamicset = true;
+							Log.d("FT", "Found Time Text");
+                            time_dynamicword = true;
+                            timedynamicset = true;
+							continue;
                         }
                         else
                         {
-                            high_cpu_use_dynamicword = false;
+                            time_dynamicword = false;
                         }
                     }
                     if (!sensordynamicset)
                     {
                         if (hasWord(str, "Sensor_"))
                         {
+							Log.d("FT", "Found Sensor Text");
                             sensor_use_dynamic_word = true;
                             sensordynamicset = true;
+							continue;
                         }
                         else
                         {
                             sensor_use_dynamic_word = false;
                         }
                     }
-                    dynamicnum = true;
-                    break;
+					if (!highcpudynamicset)
+                    {
+                        if (hasWord(str, "CPURate") || hasWord(str, "MemRate"))
+                        {
+							Log.d("FT", "Found High CPU Text");
+                            high_cpu_use_dynamicword = true;
+                            highcpudynamicset = true;
+							continue;
+                        }
+                        else
+                        {
+                            high_cpu_use_dynamicword = false;
+                        }
+                    }
                 }
             }
         }
@@ -321,7 +390,7 @@ public class FloatTextUpdateService extends Service
 
     private boolean hasWord (String all, String part)
     {
-        return all.indexOf(part) >= 0;
+        return all.contains(part);
     }
 
     private class BatteryReceiver extends BroadcastReceiver

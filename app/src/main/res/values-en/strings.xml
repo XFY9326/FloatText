@@ -123,6 +123,13 @@
     <string name="xml_set_win_color_sum">Display the color in different colors</string>
     <string name="xml_set_win_colorend">Window color transparency</string>
     <string name="xml_set_win_colorend_sum">Adjust window color transparency</string>
+	<string name="xml_set_win_size">Adjust the Float Size</string>
+	<string name="xml_set_win_size_sum_on">Adjust it by hand</string>
+	<string name="xml_set_win_size_sum_off">Auto Adjust</string>
+	<string name="xml_set_win_long">Float Width</string>
+	<string name="xml_set_win_wide">Float Height</string>
+	<string name="xml_set_win_long_sum">Set Float Width(Y)</string>
+	<string name="xml_set_win_wide_sum">Set Float Height(X)</string>
     <string name="xml_set_top">Float can be moved to notification bar</string>
     <string name="xml_set_top_on">Can be moved to notification bar</string>
     <string name="xml_set_top_off">Can not be moved to notification bar</string>

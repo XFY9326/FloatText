@@ -1,27 +1,18 @@
 package tool.xfy9326.floattext.Method;
 
-import android.app.ActivityManager;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.TrafficStats;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
-import android.os.PowerManager;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.NetworkInterface;
-import java.text.DateFormat;
+import android.app.*;
+import android.content.*;
+import android.content.pm.*;
+import android.net.*;
+import android.net.wifi.*;
+import android.os.*;
+import java.io.*;
+import java.net.*;
+import java.text.*;
+import java.util.*;
+import tool.xfy9326.floattext.*;
+import java.lang.Process;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.List;
-import tool.xfy9326.floattext.R;
 
 public class FloatServiceMethod
 {
@@ -42,7 +33,17 @@ public class FloatServiceMethod
             return homes.contains(Top);
         }
     }
-
+	
+	public static boolean[] Btob (Boolean[] B)
+	{
+		boolean[] b = new boolean[B.length];
+		for (int i = 0;i < B.length;i++)
+		{
+			b[i] = B[i];
+		}
+		return b;
+	}
+	
     public static List<String> getHomes (Context ctx)
     {
         List<String> names = new ArrayList<String>();

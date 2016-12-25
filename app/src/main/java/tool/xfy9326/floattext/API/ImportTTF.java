@@ -1,22 +1,15 @@
 package tool.xfy9326.floattext.API;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Environment;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import tool.xfy9326.floattext.Method.FloatManageMethod;
-import tool.xfy9326.floattext.R;
+import android.app.*;
+import android.content.*;
+import android.net.*;
+import android.os.*;
+import android.view.*;
+import android.view.View.*;
+import android.widget.*;
+import java.io.*;
+import tool.xfy9326.floattext.*;
+import tool.xfy9326.floattext.Method.*;
 
 public class ImportTTF extends Activity
 {
