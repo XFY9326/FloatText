@@ -24,11 +24,11 @@ public class FloatTextUpdateService extends Service
     private SimpleDateFormat sdf_clock_12 = null;
     private SimpleDateFormat sdf_clock_24 = null;
     private SimpleDateFormat sdf_date = null;
-	private String time0 = "";
-	private String time1 = "";
-	private String time2 = "";
-	private String time3 = "";
-	private String time4 = "";
+	private String time0 = "0";
+	private String time1 = "0";
+	private String time2 = "0";
+	private String time3 = "0";
+	private String time4 = "0";
     private Intent timeIntent = null;
     private boolean timer_run = false;
     private boolean high_cpu_use_dynamicword = false;
@@ -55,7 +55,7 @@ public class FloatTextUpdateService extends Service
     private Sensor sensor_pressure = null;
     private String sensorpressure = "0Pa";
     private Sensor sensor_proximity = null;
-    private String sensorproximity = "";
+    private String sensorproximity = "0cm";
     private Sensor sensor_step = null;
     private int sensorstep = 0;
     private ClipboardManager clip = null;
@@ -96,7 +96,7 @@ public class FloatTextUpdateService extends Service
 		PostList[14] = sensorproximity;
 		PostList[15] = sensorstep + "";
 		PostList[16] = clip.getText().toString();
-		PostList[17] = "NULL";
+		PostList[17] = "None";
 		return PostList;
 	}
 
@@ -109,7 +109,11 @@ public class FloatTextUpdateService extends Service
         sdf_clock_24 = new SimpleDateFormat("HH:mm:ss");
         sdf_date = new SimpleDateFormat("yyyy-MM-dd");
         timeIntent = new Intent();
-		bundle = new Bundle();
+		timeIntent.setAction(FloatServiceMethod.TEXT_UPDATE_ACTION);
+		if (Build.VERSION.SDK_INT >= 12)
+		{
+			timeIntent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+		}
         lastTotalRxBytes = FloatServiceMethod.getTotalRxBytes(this);
         lastTotalTxBytes = FloatServiceMethod.getTotalTxBytes(this);
         lastTimeStamp = System.currentTimeMillis();
@@ -131,13 +135,12 @@ public class FloatTextUpdateService extends Service
 
     private void sendBroadcast ()
     {
-		String[] DATA = SetPostKey();
 		Log.d("FT", "Update Sending");
+		bundle = new Bundle();
         bundle.putStringArray("LIST", LIST);
 		bundle.putBooleanArray("INFO", INFO);
-		bundle.putStringArray("DATA", DATA);
+		bundle.putStringArray("DATA", SetPostKey());
         timeIntent.putExtras(bundle);
-        timeIntent.setAction(FloatServiceMethod.TEXT_UPDATE_ACTION);
         sendBroadcast(timeIntent);
 	}
 
@@ -260,46 +263,9 @@ public class FloatTextUpdateService extends Service
 
 	private void SetListKeys ()
 	{
-		ArrayList<String> KeyList = new ArrayList<String>();
-		ArrayList<Boolean> InfoList = new ArrayList<Boolean>();
-		KeyList.add("SystemTime");
-		InfoList.add(false);
-		KeyList.add("SystemTime_24");
-		InfoList.add(false);
-		KeyList.add("Clock");
-		InfoList.add(false);
-		KeyList.add("Clock_24");
-		InfoList.add(false);
-		KeyList.add("Date");
-		InfoList.add(false);
-		KeyList.add("CPURate");
-		InfoList.add(false);
-		KeyList.add("NetSpeed");
-		InfoList.add(false);
-		KeyList.add("MemRate");
-		InfoList.add(false);
-		KeyList.add("LocalIP");
-		InfoList.add(false);
-		KeyList.add("Battery");
-		InfoList.add(false);
-		KeyList.add("Sensor_Light");
-		InfoList.add(false);
-		KeyList.add("Sensor_Gravity");
-		InfoList.add(false);
-		KeyList.add("Sensor_Pressure");
-		InfoList.add(false);
-		KeyList.add("Sensor_CPUTemperature");
-		InfoList.add(false);
-		KeyList.add("Sensor_Proximity");
-		InfoList.add(false);
-		KeyList.add("Sensor_Step");
-		InfoList.add(false);
-		KeyList.add("ClipBoard");
-		InfoList.add(false);
-		KeyList.add("(DateCount_)(.*?)");
-		InfoList.add(true);
-		LIST = KeyList.toArray(new String[KeyList.size()]);
-		INFO = FloatServiceMethod.Btob(InfoList.toArray(new Boolean[InfoList.size()]));
+		SharedPreferences sp = FloatServiceMethod.setUpdateList(this);
+		LIST = FloatServiceMethod.StringtoStringArray(sp.getString("LIST", "[]"));
+		INFO = FloatServiceMethod.StringtoBooleanArray(sp.getString("INFO", "[]"));
 	}
 
     @Override
@@ -344,7 +310,6 @@ public class FloatTextUpdateService extends Service
                     {
                         if (hasWord(str, "SystemTime") || hasWord(str, "Date") || hasWord(str, "Clock"))
                         {
-							Log.d("FT", "Found Time Text");
                             time_dynamicword = true;
                             timedynamicset = true;
 							continue;
@@ -358,7 +323,6 @@ public class FloatTextUpdateService extends Service
                     {
                         if (hasWord(str, "Sensor_"))
                         {
-							Log.d("FT", "Found Sensor Text");
                             sensor_use_dynamic_word = true;
                             sensordynamicset = true;
 							continue;
@@ -372,7 +336,6 @@ public class FloatTextUpdateService extends Service
                     {
                         if (hasWord(str, "CPURate") || hasWord(str, "MemRate"))
                         {
-							Log.d("FT", "Found High CPU Text");
                             high_cpu_use_dynamicword = true;
                             highcpudynamicset = true;
 							continue;

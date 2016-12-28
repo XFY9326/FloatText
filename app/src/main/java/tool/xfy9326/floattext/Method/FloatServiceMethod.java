@@ -18,7 +18,110 @@ public class FloatServiceMethod
 {
     public static String TEXT_UPDATE_ACTION = "tool.xfy9326.floattext.Service.FloatTextUpdateService.action.TEXT_UPDATE_ACTION";
     public static String TEXT_STATE_UPDATE_ACTION = "tool.xfy9326.floattext.Service.FloatTextUpdateService.action.TEXT_STATE_UPDATE_ACTION";
+	public static int DYNAMIC_LIST_VERSION = 1;
 
+	public static SharedPreferences setUpdateList(Context ctx)
+	{
+		SharedPreferences list = ctx.getSharedPreferences("DynamicList", ctx.MODE_PRIVATE);
+		SharedPreferences.Editor list_editor = list.edit();
+		int version = list.getInt("Version", 0);
+		if (version < DYNAMIC_LIST_VERSION)
+		{
+			ArrayList<String> KeyList = new ArrayList<String>();
+			ArrayList<Boolean> InfoList = new ArrayList<Boolean>();
+			KeyList.add("SystemTime");
+			InfoList.add(false);
+			KeyList.add("SystemTime_24");
+			InfoList.add(false);
+			KeyList.add("Clock");
+			InfoList.add(false);
+			KeyList.add("Clock_24");
+			InfoList.add(false);
+			KeyList.add("Date");
+			InfoList.add(false);
+			KeyList.add("CPURate");
+			InfoList.add(false);
+			KeyList.add("NetSpeed");
+			InfoList.add(false);
+			KeyList.add("MemRate");
+			InfoList.add(false);
+			KeyList.add("LocalIP");
+			InfoList.add(false);
+			KeyList.add("Battery");
+			InfoList.add(false);
+			KeyList.add("Sensor_Light");
+			InfoList.add(false);
+			KeyList.add("Sensor_Gravity");
+			InfoList.add(false);
+			KeyList.add("Sensor_Pressure");
+			InfoList.add(false);
+			KeyList.add("Sensor_CPUTemperature");
+			InfoList.add(false);
+			KeyList.add("Sensor_Proximity");
+			InfoList.add(false);
+			KeyList.add("Sensor_Step");
+			InfoList.add(false);
+			KeyList.add("ClipBoard");
+			InfoList.add(false);
+			KeyList.add("(DateCount_)(.*?)");
+			InfoList.add(true);
+			list_editor.putInt("Version", DYNAMIC_LIST_VERSION);
+			list_editor.putString("LIST", KeyList.toString());
+			list_editor.putString("INFO", InfoList.toString());
+			list_editor.commit();
+		}
+		return list;
+	}
+	
+	public static String[] StringtoStringArray (String str)
+	{
+		ArrayList<String> arr = new ArrayList<String>();
+        if (str.contains("[") && str.length() >= 3)
+        {
+            str = str.substring(1, str.length() - 1);
+            if (str.contains(","))
+            {
+                String[] temp = str.split(",");
+                for (int i = 0;i < temp.length;i++)
+                {
+                    if (i != 0)
+                    {
+                        temp[i] = temp[i].substring(1, temp[i].length());
+                    }
+                    arr.add(temp[i].toString());
+                }
+            }
+            else
+            {
+                arr.add(str.toString());
+            }
+        }
+        return arr.toArray(new String[arr.size()]);
+	}
+	
+	public static boolean[] StringtoBooleanArray (String str)
+	{
+		ArrayList<Boolean> arr = new ArrayList<Boolean>();
+        if (str.contains("[") && str.length() >= 3)
+        {
+            str = str.substring(1, str.length() - 1);
+            if (str.contains(","))
+            {
+                String[] temp = str.split(",");
+                for (int i = 0;i < temp.length;i++)
+                {
+                    temp[i] = temp[i].replaceAll("\\s+", "");
+                    arr.add(Boolean.parseBoolean(temp[i]));
+                }
+            }
+            else
+            {
+                arr.add(Boolean.parseBoolean(str));
+            }
+        }
+        return Btob(arr.toArray(new Boolean[arr.size()]));
+	}
+	
     public static boolean isHome (Context ctx, List<String> homes)
     {
         ActivityManager mActivityManager = (ActivityManager)ctx.getSystemService(Context.ACTIVITY_SERVICE);

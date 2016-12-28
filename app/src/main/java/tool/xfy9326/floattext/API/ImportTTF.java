@@ -52,7 +52,7 @@ public class ImportTTF extends Activity
                         File ttf_c = new File(Environment.getExternalStorageDirectory().toString() + "/FloatText/TTFs/"  + ttf.getName());
                         if (!ttf_c.exists())
                         {
-                            if (CopyFile(ttf, ttf_c))
+                            if (IOMethod.CopyFile(ttf, ttf_c))
                             {
                                 Toast.makeText(ImportTTF.this, R.string.ttf_import_success, Toast.LENGTH_SHORT).show();
 
@@ -75,29 +75,5 @@ public class ImportTTF extends Activity
                 }
             });
     }
-
-    private boolean CopyFile (File fromFile, File toFile)
-    {
-        try
-        {
-            InputStream fosfrom = new FileInputStream(fromFile);
-            OutputStream fosto = new FileOutputStream(toFile);
-            byte bt[] = new byte[1024];
-            int c;
-            while ((c = fosfrom.read(bt)) > 0)
-            {
-                fosto.write(bt, 0, c);
-            }
-            fosfrom.close();
-            fosto.close();
-            return true;
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
 
 }

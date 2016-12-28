@@ -56,7 +56,7 @@ public class FloatTextSettingMethod
 
     public static String typeface_fix (Context ctx)
     {
-        SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_WORLD_READABLE);
+        SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
         String filename = setdata.getString("DefaultTTFName", "Default");
         if (filename.equalsIgnoreCase("Default"))
         {
@@ -120,6 +120,7 @@ public class FloatTextSettingMethod
 			wmParams.width = LayoutParams.WRAP_CONTENT;
 			wmParams.height = LayoutParams.WRAP_CONTENT;
 		}
+		wmParams.windowAnimations = R.style.floatwin_anim;
         layout.setLayout_default_flags(wmParams.flags);
         layout.setTop(true);
         layout.setAddPosition(px, py);

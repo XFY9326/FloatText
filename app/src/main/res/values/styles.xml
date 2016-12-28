@@ -11,4 +11,8 @@
         <item name="android:textSize">20sp</item>  
         <item name="android:textColor">@color/white</item>    
     </style>  
+	<style name="floatwin_anim">
+        <item name="@android:windowEnterAnimation">@anim/floatwin_anim_in</item>
+        <item name="@android:windowExitAnimation">@anim/floatwin_anim_out</item>
+    </style>
 </resources>

@@ -108,6 +108,10 @@ public class FloatTextSetting extends PreferenceActivity
     private void editkeyget (int i)
     {
         App utils = ((App)getApplicationContext());
+		if(utils.getFloatView().size() < i + 1)
+		{
+			FloatManageMethod.restartApplication(this);
+		}
         wmParams = utils.getFloatLayout().get(i);
         floatview = utils.getFloatView().get(i);
         linearlayout = utils.getFloatlinearlayout().get(i);

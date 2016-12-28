@@ -8,6 +8,7 @@ import android.view.*;
 import android.view.WindowManager.*;
 import android.webkit.*;
 import android.widget.*;
+import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.View.*;
 
 public class FloatWebSettingMethod
@@ -55,6 +56,7 @@ public class FloatWebSettingMethod
         wmParams.format = PixelFormat.TRANSLUCENT;
         wmParams.width = LayoutParams.WRAP_CONTENT;
         wmParams.height = LayoutParams.WRAP_CONTENT;
+		wmParams.windowAnimations = R.style.floatwin_anim;
         TableRow.LayoutParams params = new TableRow.LayoutParams();
         params.width = width;
         params.height = height;

@@ -20,6 +20,14 @@ import tool.xfy9326.floattext.View.*;
 
 public class FloatManageMethod
 {
+	public static void restartApplication (Context ctx)
+    {
+        Intent intent = ctx.getPackageManager().getLaunchIntentForPackage(ctx.getPackageName());
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        ctx.startActivity(intent);
+        System.exit(0);
+    }
+	
     public static AlertDialog setLoadingDialog (Context ctx)
     {
         LayoutInflater inflater = LayoutInflater.from(ctx);  
@@ -166,7 +174,7 @@ public class FloatManageMethod
 
     public static void first_ask_for_premission (final Activity ctx)
     {
-        SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_WORLD_READABLE);
+        SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
         SharedPreferences.Editor setedit = setdata.edit();
         if (!setdata.getBoolean("FirstUse_AskForPremission", false))
         {
@@ -337,7 +345,7 @@ public class FloatManageMethod
 
     public static void floattext_typeface_check (Context ctx)
     {
-        SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_WORLD_READABLE);
+        SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
         String filename = setdata.getString("DefaultTTFName", "Default");
         if (filename.equalsIgnoreCase("Default"))
         {
@@ -360,7 +368,7 @@ public class FloatManageMethod
 
     public static void LanguageInit (Activity ctx)
     {
-        SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_WORLD_READABLE);
+        SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
         int lan = setdata.getInt("Language", 0);
         ((App)ctx.getApplicationContext()).setLanguage(lan);
         LanguageSet(ctx, lan);

@@ -15,7 +15,7 @@ public class FloatData
     {
         SafeGuard.isSignatureAvailable(ctx);
         SafeGuard.isPackageNameAvailable(ctx);
-        SharedPreferences spdata = ctx.getSharedPreferences("FloatShowList", Activity.MODE_WORLD_READABLE);
+        SharedPreferences spdata = ctx.getSharedPreferences("FloatShowList", Activity.MODE_PRIVATE);
         SharedPreferences.Editor spedit = spdata.edit();
         App utils = ((App)ctx.getApplicationContext());
         spedit.putInt("Version", FloatDataVersion);
@@ -45,7 +45,7 @@ public class FloatData
     public void getSaveArrayData (Context ctx)
     {
         App utils = ((App)ctx.getApplicationContext());
-        SharedPreferences sp = ctx.getSharedPreferences("FloatShowList", Activity.MODE_WORLD_READABLE);
+        SharedPreferences sp = ctx.getSharedPreferences("FloatShowList", Activity.MODE_PRIVATE);
         int version = sp.getInt("Version", 0);
         String text = sp.getString("TextArray", "[]");
         ArrayList<String> textarr = new ArrayList<String>();
@@ -84,7 +84,7 @@ public class FloatData
         utils.replaceDatas(textarr, color, size, thick, show, position, lock, top, autotop, move, speed, shadow, shadowx, shadowy, shadowradius, backgroundcolor, textshadowcolor, floatsize, floatlong, floatwide);
     }
 
-    private ArrayList<String> TextArr_decode (ArrayList<String> str)
+    private static ArrayList<String> TextArr_decode (ArrayList<String> str)
     {
         ArrayList<String> output = new ArrayList<String>();
         output.addAll(str);
@@ -99,7 +99,7 @@ public class FloatData
         return output;
     }
 
-    private ArrayList<String> TextArr_encode (ArrayList<String> str)
+    private static ArrayList<String> TextArr_encode (ArrayList<String> str)
     {
         ArrayList<String> output = new ArrayList<String>();
         output.addAll(str);
@@ -192,13 +192,13 @@ public class FloatData
         return str;
     }
 
-    private ArrayList<String> StringToStringArrayList (String str)
+    private final static ArrayList<String> StringToStringArrayList (String str)
     {
         ArrayList<String> arr = new ArrayList<String>();
-        if (str.indexOf("[") >= 0 && str.length() >= 3)
+        if (str.contains("[") && str.length() >= 3)
         {
             str = str.substring(1, str.length() - 1);
-            if (str.indexOf(",") >= 0)
+            if (str.contains(","))
             {
                 String[] temp = str.split(",");
                 for (int i = 0;i < temp.length;i++)
@@ -218,13 +218,13 @@ public class FloatData
         return arr;
     }
 
-    private ArrayList<Float> StringToFloatArrayList (String str)
+    private final static ArrayList<Float> StringToFloatArrayList (String str)
     {
         ArrayList<Float> arr = new ArrayList<Float>();
-        if (str.indexOf("[") >= 0 && str.length() >= 3)
+        if (str.contains("[") && str.length() >= 3)
         {
             str = str.substring(1, str.length() - 1);
-            if (str.indexOf(",") >= 0)
+            if (str.contains(","))
             {
                 String[] temp = str.split(",");
                 for (int i = 0;i < temp.length;i++)
@@ -241,13 +241,13 @@ public class FloatData
         return arr;
     }
 
-    private ArrayList<Integer> StringToIntegerArrayList (String str)
+    private final static ArrayList<Integer> StringToIntegerArrayList (String str)
     {
         ArrayList<Integer> arr = new ArrayList<Integer>();
-        if (str.indexOf("[") >= 0 && str.length() >= 3)
+        if (str.contains("[") && str.length() >= 3)
         {
             str = str.substring(1, str.length() - 1);
-            if (str.indexOf(",") >= 0)
+            if (str.contains(","))
             {
                 String[] temp = str.split(",");
                 for (int i = 0;i < temp.length;i++)
@@ -264,13 +264,13 @@ public class FloatData
         return arr;
     }
 
-    private ArrayList<Boolean> StringToBooleanArrayList (String str)
+    private final static ArrayList<Boolean> StringToBooleanArrayList (String str)
     {
         ArrayList<Boolean> arr = new ArrayList<Boolean>();
-        if (str.indexOf("[") >= 0 && str.length() >= 3)
+        if (str.contains("[") && str.length() >= 3)
         {
             str = str.substring(1, str.length() - 1);
-            if (str.indexOf(",") >= 0)
+            if (str.contains(","))
             {
                 String[] temp = str.split(",");
                 for (int i = 0;i < temp.length;i++)

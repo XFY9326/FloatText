@@ -46,7 +46,7 @@ public class DynamicWordUpdateMethod
                 String str = floattext.get(i);
                 for (int a = 0;a < list.length;a++)
 				{
-					str = updatetext(str, list[a], data[a], info[a]);
+					str = updatetext(str, list[a].toString(), data[a].toString(), info[a]);
 				}
                 if (floattext.get(i) != str)
                 {
@@ -79,10 +79,7 @@ public class DynamicWordUpdateMethod
             while (mat.find())
             {
                 String get = mat.group(0).toString();
-                if (str.length() >= 11)
-                {
-                    str = str.replace(get, FloatServiceMethod.datecount(context, (get.substring(11, get.length() - 1))));
-                }
+				str = str.replace(get, FloatServiceMethod.datecount(context, (get.substring(11, get.length() - 1))));
             }
         }
         else

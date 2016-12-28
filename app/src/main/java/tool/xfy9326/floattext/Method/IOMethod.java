@@ -5,6 +5,29 @@ import java.util.*;
 
 public class IOMethod
 {
+	public static boolean CopyFile (File fromFile, File toFile)
+    {
+        try
+        {
+            InputStream fosfrom = new FileInputStream(fromFile);
+            OutputStream fosto = new FileOutputStream(toFile);
+            byte bt[] = new byte[1024];
+            int c;
+            while ((c = fosfrom.read(bt)) > 0)
+            {
+                fosto.write(bt, 0, c);
+            }
+            fosfrom.close();
+            fosto.close();
+            return true;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+	
     public static String[] readfile (File file)
     {
         ArrayList<String> output = new ArrayList<String>();

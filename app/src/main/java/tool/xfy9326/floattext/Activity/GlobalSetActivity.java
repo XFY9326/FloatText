@@ -39,7 +39,7 @@ public class GlobalSetActivity extends PreferenceActivity
                 }
             });
         Preference typeface = findPreference("TextTypeface");
-        SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_WORLD_READABLE);
+        SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
         default_typeface = setdata.getString("DefaultTTFName", "Default");
         if (default_typeface.equalsIgnoreCase("Default"))
         {
@@ -89,7 +89,7 @@ public class GlobalSetActivity extends PreferenceActivity
                         .setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
                             public void onClick (DialogInterface p1, int p2)
                             {
-                                SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_WORLD_READABLE);
+                                SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
                                 if (typeface_choice == 0)
                                 {
                                     setdata.edit().putString("DefaultTTFName", "Default").commit();
@@ -102,7 +102,7 @@ public class GlobalSetActivity extends PreferenceActivity
                                     pre.setSummary(getString(R.string.xml_global_text_typeface_summary) + ttfname[typeface_choice]);
                                     default_typeface = ttfname[typeface_choice];
                                 }
-                                restartApplication(GlobalSetActivity.this);
+                                FloatManageMethod.restartApplication(GlobalSetActivity.this);
                             }
                         })
                         .setNegativeButton(R.string.cancel, null);
@@ -129,17 +129,17 @@ public class GlobalSetActivity extends PreferenceActivity
                             public void onClick (DialogInterface p1, int p2)
                             {
                                 ((App)getApplicationContext()).setLanguage(language_choice);
-                                SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_WORLD_READABLE);
+                                SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
                                 setdata.edit().putInt("Language", language_choice).commit();
                                 FloatManageMethod.LanguageSet(GlobalSetActivity.this, language_choice);
                                 pre.setSummary(getString(R.string.xml_global_language_sum) + lan_list[language_choice]);
-                                restartApplication(GlobalSetActivity.this);
+                                FloatManageMethod.restartApplication(GlobalSetActivity.this);
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
                             public void onClick (DialogInterface d, int i)
                             {
-                                SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_WORLD_READABLE);
+                                SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
                                 language_choice = setdata.getInt("Language", 0);
                             }
                         });
@@ -226,14 +226,6 @@ public class GlobalSetActivity extends PreferenceActivity
                     return true;
                 }
             });
-    }
-
-    private void restartApplication (Context ctx)
-    {
-        Intent intent = ctx.getPackageManager().getLaunchIntentForPackage(ctx.getPackageName());
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        ctx.startActivity(intent);
-        System.exit(0);
     }
 
     private String getExtraName (String filename)

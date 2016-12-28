@@ -52,7 +52,22 @@
         />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/xml_set_effectset">
+		<CheckBoxPreference 
+            android:key="TextMove" 
+            android:title="@string/xml_set_textmove"
+            android:dependency="FloatShow"
+            android:summaryOn="@string/xml_set_textmove_on" 
+            android:summaryOff="@string/xml_set_textmove_off" 
+            android:defaultValue="false" 
+        />
         <Preference 
+            android:key="TextSpeed"
+            android:title="@string/xml_set_textmove_speed" 
+            android:summary="@string/xml_set_textmove_speed_sum"
+            android:dependency="TextMove"
+            android:enabled="true"
+        />
+		<Preference 
             android:key="TextShadow"
             android:title="@string/xml_set_text_shadow" 
             android:summary="@string/xml_set_text_shadow_sum"
@@ -70,51 +85,8 @@
             android:summary="@string/xml_set_text_shadowend_sum"
             android:dependency="FloatShow"
         />
-        <CheckBoxPreference 
-            android:key="TextMove" 
-            android:title="@string/xml_set_textmove"
-            android:dependency="FloatShow"
-            android:summaryOn="@string/xml_set_textmove_on" 
-            android:summaryOff="@string/xml_set_textmove_off" 
-            android:defaultValue="false" 
-        />
-        <Preference 
-            android:key="TextSpeed"
-            android:title="@string/xml_set_textmove_speed" 
-            android:summary="@string/xml_set_textmove_speed_sum"
-            android:dependency="TextMove"
-            android:enabled="true"
-        />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/xml_set_win"> 
-        <net.margaritov.preference.colorpicker.ColorPickerPreference
-            android:key="BackgroundColor"
-            android:title="@string/xml_set_win_color"
-            android:summary="@string/xml_set_win_color_sum"
-            android:dependency="FloatShow"
-            android:defaultValue="0x00ffffff" />
-        <Preference 
-            android:key="BackgroundColorEnd" 
-            android:title="@string/xml_set_win_colorend" 
-            android:summary="@string/xml_set_win_colorend_sum"
-            android:dependency="FloatShow"
-        />
-        <CheckBoxPreference 
-            android:key="TextTop" 
-            android:title="@string/xml_set_top" 
-            android:summaryOn="@string/xml_set_top_on" 
-            android:summaryOff="@string/xml_set_top_off"
-            android:dependency="FloatShow"
-            android:defaultValue="false" 
-        /> 
-        <CheckBoxPreference 
-            android:key="TextAutoTop" 
-            android:title="@string/xml_set_autotop"
-            android:summaryOn="@string/xml_set_autotop_on" 
-            android:summaryOff="@string/xml_set_autotop_off" 
-            android:dependency="TextTop"
-            android:defaultValue="false" 
-        />
         <Preference 
             android:key="FloatMove"
             android:title="@string/xml_set_move"
@@ -140,6 +112,34 @@
             android:title="@string/xml_set_win_long"
             android:summary="@string/xml_set_win_long_sum"
             android:dependency="FloatSize"
+        />
+		<CheckBoxPreference 
+            android:key="TextTop" 
+            android:title="@string/xml_set_top" 
+            android:summaryOn="@string/xml_set_top_on" 
+            android:summaryOff="@string/xml_set_top_off"
+            android:dependency="FloatShow"
+            android:defaultValue="false" 
+        /> 
+        <CheckBoxPreference 
+            android:key="TextAutoTop" 
+            android:title="@string/xml_set_autotop"
+            android:summaryOn="@string/xml_set_autotop_on" 
+            android:summaryOff="@string/xml_set_autotop_off" 
+            android:dependency="TextTop"
+            android:defaultValue="false" 
+        />
+		<net.margaritov.preference.colorpicker.ColorPickerPreference
+            android:key="BackgroundColor"
+            android:title="@string/xml_set_win_color"
+            android:summary="@string/xml_set_win_color_sum"
+            android:dependency="FloatShow"
+            android:defaultValue="0x00ffffff" />
+        <Preference 
+            android:key="BackgroundColorEnd" 
+            android:title="@string/xml_set_win_colorend" 
+            android:summary="@string/xml_set_win_colorend_sum"
+            android:dependency="FloatShow"
         />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/xml_set_dynamicstr"> 
