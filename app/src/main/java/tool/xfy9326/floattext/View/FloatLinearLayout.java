@@ -50,8 +50,8 @@ public class FloatLinearLayout extends LinearLayout
                             setPositionLocked(true);
                             lock.set(FLOAT_ID, true);
                             position.set(FLOAT_ID, getPosition());
-                            FloatData dat = new FloatData();
-                            dat.savedata(ctx);
+                            FloatData dat = new FloatData(ctx);
+                            dat.savedata();
                             ((App)ctx.getApplicationContext()).getListviewadapter().notifyDataSetChanged();
                             Toast.makeText(ctx, R.string.text_lock, Toast.LENGTH_SHORT).show();
                         }

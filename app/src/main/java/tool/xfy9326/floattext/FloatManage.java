@@ -221,8 +221,8 @@ public class FloatManage extends Activity
             {
                 lac.start();
             }
-            FloatData dat = new FloatData();
-            dat.savedata(this);
+            FloatData dat = new FloatData(this);
+            dat.savedata();
         }
         else if (requestCode == RESHOW_PERMISSION_RESULT_CODE)
         {

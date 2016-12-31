@@ -128,7 +128,6 @@ public class GlobalSetActivity extends PreferenceActivity
                         .setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
                             public void onClick (DialogInterface p1, int p2)
                             {
-                                ((App)getApplicationContext()).setLanguage(language_choice);
                                 SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
                                 setdata.edit().putInt("Language", language_choice).commit();
                                 FloatManageMethod.LanguageSet(GlobalSetActivity.this, language_choice);

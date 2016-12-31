@@ -8,18 +8,30 @@ import tool.xfy9326.floattext.*;
 
 public class FloatData
 {
+	private Context ctx;
     private int DataNum = 0;
-    public static int FloatDataVersion = 1;
+    public static int FloatDataVersion = 2;
+	private SharedPreferences spdatat;
+	private SharedPreferences.Editor speditt;
+	private SharedPreferences spdata;
+	private SharedPreferences.Editor spedit;
 
-    public void savedata (Context ctx)
+	public FloatData (Context ctx)
+	{
+		this.ctx = ctx;
+		spdatat = ctx.getSharedPreferences("FloatTextList", Activity.MODE_PRIVATE);
+        speditt = spdatat.edit();
+        spdata = ctx.getSharedPreferences("FloatShowList", Activity.MODE_PRIVATE);
+        spedit = spdata.edit();
+	}
+	
+    public void savedata ()
     {
         SafeGuard.isSignatureAvailable(ctx);
         SafeGuard.isPackageNameAvailable(ctx);
-        SharedPreferences spdata = ctx.getSharedPreferences("FloatShowList", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor spedit = spdata.edit();
         App utils = ((App)ctx.getApplicationContext());
         spedit.putInt("Version", FloatDataVersion);
-        spedit.putString("TextArray", TextArr_encode(utils.getTextData()).toString());
+        speditt.putString("TextArray", TextArr_encode(utils.getTextData()).toString());
         spedit.putString("ColorArray", utils.getColorData().toString());
         spedit.putString("ThickArray", utils.getThickData().toString());
         spedit.putString("SizeArray", utils.getSizeData().toString());
@@ -40,49 +52,66 @@ public class FloatData
 		spedit.putString("FloatLongArray", utils.getFloatLong().toString());
 		spedit.putString("FloatWideArray", utils.getFloatWide().toString());
         spedit.apply();
+		speditt.apply();
     }
 
-    public void getSaveArrayData (Context ctx)
+    public void getSaveArrayData ()
     {
         App utils = ((App)ctx.getApplicationContext());
-        SharedPreferences sp = ctx.getSharedPreferences("FloatShowList", Activity.MODE_PRIVATE);
-        int version = sp.getInt("Version", 0);
-        String text = sp.getString("TextArray", "[]");
+        int version = spdata.getInt("Version", 0);
+        String text = spdatat.getString("TextArray", "[]");
         ArrayList<String> textarr = new ArrayList<String>();
         if (version < 1)
         {
-            SharedPreferences.Editor spedit = sp.edit();
             textarr.addAll(StringToStringArrayList(text));
-            spedit.putInt("Version", 1);
-            spedit.putString("TextArray", TextArr_encode(textarr).toString());
-            spedit.commit();
+			speditt.putString("TextArray", TextArr_encode(textarr).toString());
+			speditt.commit();
+            updateVersion(1);
         }
-        else
-        {
-            textarr.addAll(TextArr_decode(StringToStringArrayList(text)));
-        }
+		textarr.addAll(TextArr_decode(StringToStringArrayList(text)));
+		if (version < 2)
+		{
+			String text_v = spdata.getString("TextArray", "[]");
+			textarr.clear();
+			if (version < 1)
+			{
+				textarr.addAll(StringToStringArrayList(text_v));
+			}
+			textarr.addAll(TextArr_decode(StringToStringArrayList(text_v)));
+			spedit.remove("TextArray");
+			speditt.putString("TextArray", TextArr_encode(textarr).toString());
+			spedit.commit();
+			speditt.commit();
+			updateVersion(2);
+		}
         DataNum = textarr.size();
-        ArrayList<Float> size = NewFloatKey(sp.getString("SizeArray", "[]"), "20.0");
-        ArrayList<Integer> color = NewIntegerKey(sp.getString("ColorArray", "[]"), "-61441");
-        ArrayList<Boolean> thick = NewBooleanKey(sp.getString("ThickArray", "[]"), "false");
-        ArrayList<Boolean> show = NewBooleanKey(sp.getString("ShowArray", "[]"), "true");
-        ArrayList<Boolean> lock = NewBooleanKey(sp.getString("LockArray", "[]"), "false");
-        ArrayList<String> position = NewStringKey(sp.getString("PositionArray", "[]"), "50_50");
-        ArrayList<Boolean> top = NewBooleanKey(sp.getString("TopArray", "[]"), "false");
-        ArrayList<Boolean> autotop = NewBooleanKey(sp.getString("AutoTopArray", "[]"), "true");
-        ArrayList<Boolean> move = NewBooleanKey(sp.getString("MoveArray", "[]"), "false");
-        ArrayList<Integer> speed = NewIntegerKey(sp.getString("SpeedArray", "[]"), "5");
-        ArrayList<Boolean> shadow = NewBooleanKey(sp.getString("ShadowArray", "[]"), "false");
-        ArrayList<Float> shadowx = NewFloatKey(sp.getString("ShadowXArray", "[]"), "10.0");
-        ArrayList<Float> shadowy = NewFloatKey(sp.getString("ShadowYArray", "[]"), "10.0");
-        ArrayList<Float> shadowradius = NewFloatKey(sp.getString("ShadowRadiusArray", "[]"), "5.0");
-        ArrayList<Integer> backgroundcolor = NewIntegerKey(sp.getString("BackgroundColorArray", "[]"), "16777215");
-        ArrayList<Integer> textshadowcolor = NewIntegerKey(sp.getString("TextShadowColorArray", "[]"), "1660944384");
-		ArrayList<Boolean> floatsize = NewBooleanKey(sp.getString("FloatSizeArray", "[]"), "false");
-		ArrayList<Float> floatlong = NewFloatKey(sp.getString("FloatLongArray", "[]"), "100");
-		ArrayList<Float> floatwide = NewFloatKey(sp.getString("FloatWideArray", "[]"), "100");
+        ArrayList<Float> size = NewFloatKey(spdata.getString("SizeArray", "[]"), "20.0");
+        ArrayList<Integer> color = NewIntegerKey(spdata.getString("ColorArray", "[]"), "-61441");
+        ArrayList<Boolean> thick = NewBooleanKey(spdata.getString("ThickArray", "[]"), "false");
+        ArrayList<Boolean> show = NewBooleanKey(spdata.getString("ShowArray", "[]"), "true");
+        ArrayList<Boolean> lock = NewBooleanKey(spdata.getString("LockArray", "[]"), "false");
+        ArrayList<String> position = NewStringKey(spdata.getString("PositionArray", "[]"), "50_50");
+        ArrayList<Boolean> top = NewBooleanKey(spdata.getString("TopArray", "[]"), "false");
+        ArrayList<Boolean> autotop = NewBooleanKey(spdata.getString("AutoTopArray", "[]"), "true");
+        ArrayList<Boolean> move = NewBooleanKey(spdata.getString("MoveArray", "[]"), "false");
+        ArrayList<Integer> speed = NewIntegerKey(spdata.getString("SpeedArray", "[]"), "5");
+        ArrayList<Boolean> shadow = NewBooleanKey(spdata.getString("ShadowArray", "[]"), "false");
+        ArrayList<Float> shadowx = NewFloatKey(spdata.getString("ShadowXArray", "[]"), "10.0");
+        ArrayList<Float> shadowy = NewFloatKey(spdata.getString("ShadowYArray", "[]"), "10.0");
+        ArrayList<Float> shadowradius = NewFloatKey(spdata.getString("ShadowRadiusArray", "[]"), "5.0");
+        ArrayList<Integer> backgroundcolor = NewIntegerKey(spdata.getString("BackgroundColorArray", "[]"), "16777215");
+        ArrayList<Integer> textshadowcolor = NewIntegerKey(spdata.getString("TextShadowColorArray", "[]"), "1660944384");
+		ArrayList<Boolean> floatsize = NewBooleanKey(spdata.getString("FloatSizeArray", "[]"), "false");
+		ArrayList<Float> floatlong = NewFloatKey(spdata.getString("FloatLongArray", "[]"), "100");
+		ArrayList<Float> floatwide = NewFloatKey(spdata.getString("FloatWideArray", "[]"), "100");
         utils.replaceDatas(textarr, color, size, thick, show, position, lock, top, autotop, move, speed, shadow, shadowx, shadowy, shadowradius, backgroundcolor, textshadowcolor, floatsize, floatlong, floatwide);
     }
+	
+	private void updateVersion (int i)
+	{
+		spedit.putInt("Version", i);
+		spedit.commit();
+	}
 
     private static ArrayList<String> TextArr_decode (ArrayList<String> str)
     {

@@ -4,7 +4,6 @@ import android.app.*;
 import android.content.*;
 import android.hardware.*;
 import android.os.*;
-import android.util.*;
 import java.text.*;
 import java.util.*;
 import java.util.regex.*;
@@ -71,7 +70,6 @@ public class FloatTextUpdateService extends Service
     public void onCreate ()
     {
         super.onCreate();
-		Log.d("FT", "Update Service Start");
         init();
         timerset();
     }
@@ -103,8 +101,8 @@ public class FloatTextUpdateService extends Service
     private void init ()
     {
         timer_a = new Timer();
-        sdf12 = new SimpleDateFormat("yyyy-MM-dd " + "hh:mm:ss");
-        sdf24 = new SimpleDateFormat("yyyy-MM-dd " + "HH:mm:ss");
+        sdf12 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        sdf24 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         sdf_clock_12 = new SimpleDateFormat("hh:mm:ss");
         sdf_clock_24 = new SimpleDateFormat("HH:mm:ss");
         sdf_date = new SimpleDateFormat("yyyy-MM-dd");
@@ -135,7 +133,6 @@ public class FloatTextUpdateService extends Service
 
     private void sendBroadcast ()
     {
-		Log.d("FT", "Update Sending");
 		bundle = new Bundle();
         bundle.putStringArray("LIST", LIST);
 		bundle.putBooleanArray("INFO", INFO);
@@ -178,12 +175,10 @@ public class FloatTextUpdateService extends Service
                 @Override
                 public void run ()
                 {
-					Log.d("FT", "Update Running");
 					boolean FloatWinMode = hasFloatWin(FloatTextUpdateService.this);
 					boolean FloatScreenMode = FloatServiceMethod.isScreenOn(FloatTextUpdateService.this);
                     if (FloatWinMode && FloatScreenMode)
                     {
-						Log.d("FT", "Update Text Found");
 						if (sensor_use_dynamic_word && !register_sensor)
                         {
                             register_sensor = true;
@@ -240,7 +235,6 @@ public class FloatTextUpdateService extends Service
                         timer_run = false;
                         if (timer != null && timer_f != null && timer_s != null)
                         {
-							Log.d("FT", "Cancel All Update");
                             timer.cancel();
                             timer_f.cancel();
                             timer_s.cancel();

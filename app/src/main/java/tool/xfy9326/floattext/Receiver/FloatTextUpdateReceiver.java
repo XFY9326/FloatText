@@ -3,7 +3,6 @@ package tool.xfy9326.floattext.Receiver;
 import android.content.*;
 import android.os.*;
 import android.preference.*;
-import android.util.*;
 import java.util.*;
 import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Utils.*;
@@ -20,7 +19,6 @@ public class FloatTextUpdateReceiver extends BroadcastReceiver
         String action = p2.getAction();
         if (action == TextAction)
         {
-			Log.d("FT", "Receive Update Package");
             DynamicWordUpdateMethod updater = new DynamicWordUpdateMethod(p1);
             updater.UpdateText(p2);
         }

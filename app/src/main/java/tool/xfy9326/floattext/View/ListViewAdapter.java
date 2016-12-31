@@ -68,9 +68,9 @@ public class ListViewAdapter extends BaseAdapter
         final TextView textView = (TextView) view.findViewById(R.id.textview_titleshow_floatmanage);
         App utils = ((App)context.getApplicationContext());
         ArrayList<Boolean> Show = utils.getShowFloat();
-		if(Show.size() != textshow.size())
+		if (Show.size() != textshow.size())
 		{
-			restoredata();
+			FloatManageMethod.restartApplication(context);
 		}
         String listtext = textshow.get(p1);
         if (!Show.get(index))
@@ -126,7 +126,10 @@ public class ListViewAdapter extends BaseAdapter
                             .setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
                                 public void onClick (DialogInterface p1, int p2)
                                 {
-                                    delwin(index);
+                                    if (delwin(index))
+									{
+										Toast.makeText(context, R.string.delete_text_ok, Toast.LENGTH_SHORT).show();
+									}
                                 }
                             })
                             .setNegativeButton(R.string.cancel, null);
@@ -170,7 +173,7 @@ public class ListViewAdapter extends BaseAdapter
         return textshow.get(p1);
     }
 
-    private void delwin (int index)
+    private boolean delwin (int index)
     {
         if (!FloatWinDelete(index))
         {
@@ -180,10 +183,11 @@ public class ListViewAdapter extends BaseAdapter
                 Toast.makeText(context, R.string.float_list_del_err, Toast.LENGTH_SHORT).show();
             }
         }
-        else
-        {
-            Toast.makeText(context, R.string.delete_text_ok, Toast.LENGTH_SHORT).show();
-        }
+		else
+		{
+			return true;
+		}
+		return false;
     }
 
     private void FloatWinLock (Context context, int index, Button lock_button)
@@ -207,8 +211,8 @@ public class ListViewAdapter extends BaseAdapter
             lock_button.setBackgroundResource(R.drawable.ic_lock);
             Toast.makeText(context, R.string.text_lock, Toast.LENGTH_SHORT).show();
         }
-        FloatData dat = new FloatData();
-        dat.savedata(context);
+        FloatData dat = new FloatData(context);
+        dat.savedata();
     }
 
     private boolean FloatWinDelete (int index)
@@ -235,8 +239,8 @@ public class ListViewAdapter extends BaseAdapter
             utils.setFloatView(floatdata);
             utils.setFloatlinearlayout(linearlayout);
             utils.removeDatas(index);
-            FloatData dat = new FloatData();
-            dat.savedata(context);
+            FloatData dat = new FloatData(context);
+            dat.savedata();
             textshow.remove(index);
             notifyDataSetChanged();
             return true;
@@ -245,8 +249,8 @@ public class ListViewAdapter extends BaseAdapter
 
     private void restoredata ()
     {
-        FloatData dat = new FloatData();
-        dat.getSaveArrayData(context);
+        FloatData dat = new FloatData(context);
+        dat.getSaveArrayData();
 		textshow.clear();
 		textshow.addAll(((App)context.getApplicationContext()).getFloatText());
         notifyDataSetChanged();

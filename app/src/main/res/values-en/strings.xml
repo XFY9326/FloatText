@@ -83,9 +83,11 @@
     <string name="xml_about_support">Thanks for the code support.</string>
     <string name="xml_about_indexurl">Official Website</string>
     <string name="xml_about_thanklist">Thank List</string>
-    <string name="xml_about_thanklist_sum">We thank for all the people contributing to the appliance list here</string>
+    <string name="xml_about_thanklist_sum">We thank for all the people contributing to the appliance and make a list here</string>
     <string name="xml_about_feedback">Communication Feedback</string>
     <string name="xml_about_author">About Author</string>
+	<string name="xml_about_donate">Donate(Alipay)</string>
+	<string name="xml_about_donate_sum">If you think this application is great, donate me！\nIf you can not open the link, you can change the Browser</string>
     <string name="xml_about_version">Version</string>
     <string name="xml_set_tip">Tips</string>
     <string name="xml_set_defaulttip">Please lock the appliance in the background</string>
@@ -98,7 +100,7 @@
     <string name="xml_set_textsize">Text Size</string>
     <string name="xml_set_textsize_sum">Set The Text Size</string>
     <string name="xml_set_thick">Text Thick Set</string>
-    <string name="xml_set_color">Color Set</string>
+    <string name="xml_set_color">Text Color Set</string>
     <string name="xml_set_color_sum">Display the color in different colors</string>
     <string name="xml_set_colorend">Text color transparency</string>
     <string name="xml_set_colorend_sum">Adjust text color transparency</string>

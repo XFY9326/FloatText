@@ -108,7 +108,7 @@ public class FloatTextSetting extends PreferenceActivity
     private void editkeyget (int i)
     {
         App utils = ((App)getApplicationContext());
-		if(utils.getFloatView().size() < i + 1)
+		if (utils.getFloatView().size() < i + 1)
 		{
 			FloatManageMethod.restartApplication(this);
 		}
@@ -1002,18 +1002,21 @@ public class FloatTextSetting extends PreferenceActivity
         switch (item.getItemId())
         {
             case R.id.save_win:
-                Position = linearlayout.getPosition();
-                if (EditMode)
-                {
-                    setall(EditID);
-                }
-                else
-                {
-                    saveall(this, floatview, linearlayout, spdata.getString("TextShow", getString(R.string.default_text)), wmParams, true, FloatShow, Position, TextTop, AutoTop, TextMove, TextSpeed);
-                }
-                FloatWinSaved = true;
-                this.finish();
-                Toast.makeText(this, R.string.save_text_ok, Toast.LENGTH_SHORT).show();
+				if (!FloatWinSaved)
+				{
+					Position = linearlayout.getPosition();
+					if (EditMode)
+					{
+						setall(EditID);
+					}
+					else
+					{
+						saveall(this, floatview, linearlayout, spdata.getString("TextShow", getString(R.string.default_text)), wmParams, true, FloatShow, Position, TextTop, AutoTop, TextMove, TextSpeed);
+					}
+					FloatWinSaved = true;
+					this.finish();
+					Toast.makeText(this, R.string.save_text_ok, Toast.LENGTH_SHORT).show();
+				}
                 break;
             case R.id.delete_win:
                 if (!EditMode)

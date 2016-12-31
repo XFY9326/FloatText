@@ -60,10 +60,10 @@ public class FloatManageMethod
                 data.add(fixline.get(a).toString());
             }
             closeAllWin(ctx);
-            FloatData dat = new FloatData();
-            dat.savedata(ctx);
-            dat.getSaveArrayData(ctx);
-            dat.savedata(ctx);
+            FloatData dat = new FloatData(ctx);
+            dat.savedata();
+            dat.getSaveArrayData();
+            dat.savedata();
             return true;
         }
         else
@@ -253,8 +253,8 @@ public class FloatManageMethod
         Thread thread = new Thread() {
             public void run ()
             {
-                FloatData dat = new FloatData();
-                dat.getSaveArrayData(ctx);
+                FloatData dat = new FloatData(ctx);
+                dat.getSaveArrayData();
                 utils.setMovingMethod(spdata.getBoolean("TextMovingMethod", false));
                 utils.setStayAliveService(spdata.getBoolean("StayAliveService", false));
                 utils.setDynamicNumService(spdata.getBoolean("DynamicNumService", false));
@@ -370,7 +370,6 @@ public class FloatManageMethod
     {
         SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
         int lan = setdata.getInt("Language", 0);
-        ((App)ctx.getApplicationContext()).setLanguage(lan);
         LanguageSet(ctx, lan);
     }
 

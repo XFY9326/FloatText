@@ -44,6 +44,13 @@
             android:action="android.intent.action.VIEW"
             android:data="https://jq.qq.com/?_wv=1027&amp;k=42PEzhi" />
     </PreferenceScreen>
+	<PreferenceScreen
+        android:title="@string/xml_about_donate"
+        android:summary="@string/xml_about_donate_sum">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://qr.alipay.com/fkx07371h1rea3tqu8ekefd" />
+    </PreferenceScreen>
     <Preference
         android:title="@string/xml_about_author"
         android:summary="Made By XFY9326\nEmail:1069665464@qq.com" 

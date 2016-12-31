@@ -42,7 +42,6 @@ public class App extends Application
     public boolean DevelopMode = false;
     public boolean HtmlMode = false;
     public boolean ListTextHide = false;
-    public int language = 0;
     public boolean GetSave = false;
 
     @Override
@@ -128,16 +127,6 @@ public class App extends Application
     public WindowManager getFloatwinmanager ()
     {
         return floatwinmanager;
-    }
-
-    public void setLanguage (int i)
-    {
-        language = i;
-    }
-
-    public int getLanguage ()
-    {
-        return language;
     }
 
     public void setListTextHide (boolean listTextHide)

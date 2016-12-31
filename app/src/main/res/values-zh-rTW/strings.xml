@@ -86,6 +86,8 @@
     <string name="xml_about_thanklist_sum">在此列出名單感謝所有對本應用程式有所幫助的人</string>
     <string name="xml_about_feedback">交流回饋</string>
     <string name="xml_about_author">關於作者</string>
+	<string name="xml_about_donate">捐贈(支付寶)</string>
+	<string name="xml_about_donate_sum">如果你覺得這個應用程式不錯，就去捐贈一下吧！\n若打不開鏈接，可換瀏覽器嘗試</string>
     <string name="xml_about_version">版本</string>
     <string name="xml_set_tip">小提示</string>
     <string name="xml_set_defaulttip">請將本應用程式在背景鎖定防止被清除！</string>
@@ -98,7 +100,7 @@
     <string name="xml_set_textsize">文字大小</string>
     <string name="xml_set_textsize_sum">調整目前顯示的文字大小</string>
     <string name="xml_set_thick">粗體</string>
-    <string name="xml_set_color">顏色設定</string>
+    <string name="xml_set_color">文字顏色設定</string>
     <string name="xml_set_color_sum">讓文字顯示不同的顏色</string>
     <string name="xml_set_colorend">文字顏色透明度</string>
     <string name="xml_set_colorend_sum">調整文字顏色的透明度</string>
