@@ -41,6 +41,9 @@
         <item>傳感器_距離</item>
         <item>傳感器_計步器</item>
         <item>剪切板</item>
+		<item>當前運行的Activity(*)</item>
+		<item>最新的通知消息(*)\n[4.3以上系統需開啟通知監聽服務]</item>
+		<item>最新的Toast(*)</item>
     </string-array>
     <string-array name="floatmanage_choose">
         <item>文字懸浮視窗</item>

@@ -11,6 +11,7 @@ import java.net.*;
 import java.text.*;
 import java.util.*;
 import tool.xfy9326.floattext.*;
+
 import java.lang.Process;
 import java.text.ParseException;
 
@@ -18,14 +19,15 @@ public class FloatServiceMethod
 {
     public static String TEXT_UPDATE_ACTION = "tool.xfy9326.floattext.Service.FloatTextUpdateService.action.TEXT_UPDATE_ACTION";
     public static String TEXT_STATE_UPDATE_ACTION = "tool.xfy9326.floattext.Service.FloatTextUpdateService.action.TEXT_STATE_UPDATE_ACTION";
-	public static int DYNAMIC_LIST_VERSION = 1;
+	public static String TEXT_ADVANCE_UPDATE_ACTION = "tool.xfy9326.floattext.Service.FloatAdvanceTextUpdateService.action.TEXT_ADVANCE_UPDATE_ACTION";
+	public static int DYNAMIC_LIST_VERSION = 4;
 
-	public static SharedPreferences setUpdateList(Context ctx)
+	public static SharedPreferences setUpdateList (Context ctx)
 	{
 		SharedPreferences list = ctx.getSharedPreferences("DynamicList", ctx.MODE_PRIVATE);
 		SharedPreferences.Editor list_editor = list.edit();
 		int version = list.getInt("Version", 0);
-		if (version < DYNAMIC_LIST_VERSION)
+		if (version != DYNAMIC_LIST_VERSION)
 		{
 			ArrayList<String> KeyList = new ArrayList<String>();
 			ArrayList<Boolean> InfoList = new ArrayList<Boolean>();
@@ -63,6 +65,12 @@ public class FloatServiceMethod
 			InfoList.add(false);
 			KeyList.add("ClipBoard");
 			InfoList.add(false);
+			KeyList.add("CurrentActivity");
+			InfoList.add(false);
+			KeyList.add("Notifications");
+			InfoList.add(false);
+			KeyList.add("Toasts");
+			InfoList.add(false);
 			KeyList.add("(DateCount_)(.*?)");
 			InfoList.add(true);
 			list_editor.putInt("Version", DYNAMIC_LIST_VERSION);
@@ -72,7 +80,7 @@ public class FloatServiceMethod
 		}
 		return list;
 	}
-	
+
 	public static String[] StringtoStringArray (String str)
 	{
 		ArrayList<String> arr = new ArrayList<String>();
@@ -98,7 +106,7 @@ public class FloatServiceMethod
         }
         return arr.toArray(new String[arr.size()]);
 	}
-	
+
 	public static boolean[] StringtoBooleanArray (String str)
 	{
 		ArrayList<Boolean> arr = new ArrayList<Boolean>();
@@ -121,7 +129,7 @@ public class FloatServiceMethod
         }
         return Btob(arr.toArray(new Boolean[arr.size()]));
 	}
-	
+
     public static boolean isHome (Context ctx, List<String> homes)
     {
         ActivityManager mActivityManager = (ActivityManager)ctx.getSystemService(Context.ACTIVITY_SERVICE);
@@ -136,7 +144,7 @@ public class FloatServiceMethod
             return homes.contains(Top);
         }
     }
-	
+
 	public static boolean[] Btob (Boolean[] B)
 	{
 		boolean[] b = new boolean[B.length];
@@ -146,7 +154,7 @@ public class FloatServiceMethod
 		}
 		return b;
 	}
-	
+
     public static List<String> getHomes (Context ctx)
     {
         List<String> names = new ArrayList<String>();
@@ -161,6 +169,15 @@ public class FloatServiceMethod
         }
         return names;
     }
+
+	public static String fixnull (String str, String def)
+	{
+		if (str == null)
+		{
+			str = def;
+		}
+		return str;
+	}
 
     public static long getTotalRxBytes (Context ctx)
     {

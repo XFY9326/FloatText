@@ -6,6 +6,7 @@ import android.preference.*;
 import android.provider.*;
 import android.view.*;
 import android.view.View.*;
+import android.view.WindowManager.*;
 import android.widget.*;
 import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Method.*;
@@ -184,6 +185,8 @@ public class FloatWebSetting extends PreferenceActivity
                 }
             });
         layout.addView(toolbar_hide);
+		wmParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE;
+		updateview();
     }
 
     private void backbigwin (View v, FloatLinearLayout layout)
@@ -191,6 +194,8 @@ public class FloatWebSetting extends PreferenceActivity
         layout.removeView(v);
         layout.addView(toolbar);
         layout.addView(webview);
+		wmParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
+		updateview();
     }
 
     private void updateview ()
@@ -202,6 +207,7 @@ public class FloatWebSetting extends PreferenceActivity
         params.height = webheight;
         webview.setLayoutParams(params);
         webview.loadUrl(WebUrl);
+		wm.updateViewLayout(linearlayout, wmParams);
     }
 
     private void stopshow (Context ctx)

@@ -116,7 +116,7 @@ public class FileList extends Activity
         File file = new File(str);
         Path = file.getAbsolutePath().toString();
         StartPath = Path;
-        if (file.exists() && file.isDirectory())
+        if (file != null && file.exists() && file.isDirectory() && file.listFiles() != null)
         {
             File_GetList(file);
         }

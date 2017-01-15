@@ -67,6 +67,18 @@
             android:summaryOff="@string/xml_global_service_dynamicnum_off"
             android:defaultValue="false"
         />
+		<Preference
+			android:key="AdvanceTextService"
+            android:title="@string/advancetext_service_label"
+			android:summary="@string/xml_global_service_advancetext_sum"
+			android:dependency="DynamicNumService"
+        />
+		<Preference
+			android:key="NotificationListenerService"
+            android:title="@string/floatnotification_service_label"
+			android:summary="@string/xml_global_service_notificationtext_sum"
+			android:dependency="DynamicNumService"
+        />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/xml_global_advanced"> 
         <CheckBoxPreference 

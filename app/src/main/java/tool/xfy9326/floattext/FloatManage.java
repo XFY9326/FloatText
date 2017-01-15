@@ -16,6 +16,7 @@ import tool.xfy9326.floattext.Activity.*;
 import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
+
 import tool.xfy9326.floattext.R;
 
 public class FloatManage extends Activity
@@ -32,47 +33,17 @@ public class FloatManage extends Activity
     private ArrayList<String> FloatDataName;
     private LayoutAnimationController lac;
     private AlertDialog ag_loading;
-    private Handler mHandler = new Handler() {
-        public void handleMessage (Message msg)
-        {
-            switch (msg.what)
-            {
-                case 0:
-                    boolean close_ag = false;
-                    App utils = ((App)getApplicationContext());
-                    Thread r = FloatManageMethod.PrepareSave(FloatManage.this, mHandler);
-                    if (r != null)
-                    {
-                        if (utils.FloatWinReshow)
-                        {
-                            r.start();
-                            close_ag = true;
-                            utils.setFloatReshow(false);
-                        }
-                    }
-                    FloatManageMethod.floattext_typeface_check(FloatManage.this);
-                    FloatManageMethod.startservice(FloatManage.this);
-                    FloatManageMethod.first_ask_for_premission(FloatManage.this);
-                    ListViewSet();
-                    if (!close_ag)
-                    {
-                        closeag();
-                    }
-                    System.gc();
-                    break;
-                case 1:
-                    closeag();
-                    break;
-            }
-        }};
+    private Handler mHandler;
 
     @Override
     protected void onCreate (Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+		FloatManageMethod.RootTask(this);
         FloatManageMethod.LanguageInit(this);
         setContentView(R.layout.activity_float_manage);
         ag_loading = FloatManageMethod.setLoadingDialog(this);
+		setHandle();
         SetAll(this);
     }
 
@@ -98,6 +69,7 @@ public class FloatManage extends Activity
         else
         {
             ListViewSet();
+			FloatManageMethod.startservice(FloatManage.this);
         }
         Intent intent = getIntent();
         int importresult = intent.getIntExtra("ImportText", 0);
@@ -127,7 +99,7 @@ public class FloatManage extends Activity
         listview.setLayoutAnimation(lac);
         ((App)getApplicationContext()).setListviewadapter(listadapter);
     }
-    
+
     private void closeag ()
     {
         FloatManage.this.runOnUiThread(new Runnable(){
@@ -167,9 +139,45 @@ public class FloatManage extends Activity
             e.printStackTrace();
         }
         startActivity(intent);
-        finish();
-        System.exit(0);
+        finishAndRemoveTask();
+		System.exit(0);
     }
+
+	private void setHandle ()
+	{
+		mHandler = new Handler() {
+			public void handleMessage (Message msg)
+			{
+				switch (msg.what)
+				{
+					case 0:
+						boolean close_ag = false;
+						App utils = ((App)getApplicationContext());
+						Thread r = FloatManageMethod.PrepareSave(FloatManage.this, mHandler);
+						if (r != null)
+						{
+							if (utils.FloatWinReshow)
+							{
+								r.start();
+								close_ag = true;
+								utils.setFloatReshow(false);
+							}
+						}
+						FloatManageMethod.floattext_typeface_check(FloatManage.this);
+						FloatManageMethod.startservice(FloatManage.this);
+						FloatManageMethod.first_ask_for_premission(FloatManage.this);
+						ListViewSet();
+						if (!close_ag)
+						{
+							closeag();
+						}
+						break;
+					case 1:
+						closeag();
+						break;
+				}
+			}};
+	}
 
     @Override 
     public boolean onCreateOptionsMenu (Menu menu)
@@ -246,6 +254,10 @@ public class FloatManage extends Activity
                 importtxt(data);
             }
         }
+		if (listadapter == null)
+		{
+			listadapter = ((App)getApplicationContext()).getListviewadapter();
+		}
         listadapter.notifyDataSetChanged();
         super.onActivityResult(requestCode, resultCode, data);
     }

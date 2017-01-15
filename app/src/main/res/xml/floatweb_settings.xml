@@ -7,6 +7,10 @@
             android:title="@string/xml_web_defaulttip"
             android:summary="@string/xml_web_defaulttip_sum"
         /> 
+		<Preference
+            android:title="@string/xml_web_usetip"
+			android:summary="@string/xml_web_usetip_sum"
+        /> 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/xml_web_webset"> 
         <EditTextPreference 

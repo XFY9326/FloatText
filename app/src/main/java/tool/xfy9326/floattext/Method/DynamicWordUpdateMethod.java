@@ -17,7 +17,6 @@ public class DynamicWordUpdateMethod
     private ArrayList<FloatLinearLayout> linearlayout = new ArrayList<FloatLinearLayout>();
     private ArrayList<Boolean> ShowFloat = new ArrayList<Boolean>();
     private WindowManager wm;
-    private boolean htmlmode = true;
 
     public DynamicWordUpdateMethod (Context ctx)
     {
@@ -30,9 +29,7 @@ public class DynamicWordUpdateMethod
 		String[] list = bundle.getStringArray("LIST");
 		String[] data = bundle.getStringArray("DATA");
 		boolean[] info = bundle.getBooleanArray("INFO");
-
         App utils = ((App)context.getApplicationContext());
-        htmlmode = utils.HtmlMode;
         wm = utils.getFloatwinmanager();
         floatview = utils.getFloatView();
         floattext = utils.getFloatText();

@@ -33,6 +33,7 @@ public class FloatWindowStayAliveService extends Service
         init();
         timerset();
         create_notification();
+		FloatManageMethod.setWinManager(this);
     }
 
     private void init ()

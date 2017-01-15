@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tool.xfy9326.floattext" >
-    
+
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.GET_TASKS" />
-        
+
     <application
         android:name=".Utils.App"
         android:icon="@mipmap/ic_launcher"
@@ -65,6 +66,26 @@
             android:name=".Service.FloatTextUpdateService"
             android:persistent="true">
         </service>
+		<service
+			android:name=".Service.FloatNotificationListenerService"  
+			android:label="@string/floatnotification_service_label"  
+			android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">  
+			<intent-filter>  
+				<action android:name="android.service.notification.NotificationListenerService" />  
+			</intent-filter>  
+		</service>  
+		<service
+			android:name=".Service.FloatAdvanceTextUpdateService"
+			android:label="@string/advancetext_service_label"
+			android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+			<intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+			<meta-data
+                android:name="android.accessibilityservice"
+				android:resource="@xml/advancetext_service_config" >
+			</meta-data>
+		</service>
         <receiver 
             android:name=".Receiver.FloatTextUpdateReceiver">
             <intent-filter>
@@ -75,5 +96,5 @@
             </intent-filter>
         </receiver>
     </application>
-	
+
 </manifest>

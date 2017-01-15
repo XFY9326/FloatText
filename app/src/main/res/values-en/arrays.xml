@@ -41,6 +41,9 @@
         <item>Distance Sensor</item>
         <item>Walk Step Sensor</item>
         <item>ClipBoard</item>
+		<item>Current Activity(*)</item>
+		<item>The latest notification(*)\n[Android 4.3 and above must open Notification Listener Service]</item>
+		<item>The latest toast(*)</item>
     </string-array>
     <string-array name="floatmanage_choose">
         <item>Text Floating Window</item>

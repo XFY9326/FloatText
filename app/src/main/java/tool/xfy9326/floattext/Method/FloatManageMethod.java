@@ -13,6 +13,7 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 import tool.xfy9326.floattext.*;
+import tool.xfy9326.floattext.Activity.*;
 import tool.xfy9326.floattext.Service.*;
 import tool.xfy9326.floattext.Setting.*;
 import tool.xfy9326.floattext.Utils.*;
@@ -20,6 +21,14 @@ import tool.xfy9326.floattext.View.*;
 
 public class FloatManageMethod
 {
+	public static void RootTask (Activity act)
+	{
+		if (!act.isTaskRoot())
+		{
+            act.finish();
+        }
+	}
+
 	public static void restartApplication (Context ctx)
     {
         Intent intent = ctx.getPackageManager().getLaunchIntentForPackage(ctx.getPackageName());
@@ -27,7 +36,7 @@ public class FloatManageMethod
         ctx.startActivity(intent);
         System.exit(0);
     }
-	
+
     public static AlertDialog setLoadingDialog (Context ctx)
     {
         LayoutInflater inflater = LayoutInflater.from(ctx);  
@@ -139,10 +148,14 @@ public class FloatManageMethod
             .setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
                 public void onClick (DialogInterface p1, int p2)
                 {
-                    FloatManageMethod.stopservice(ctx);
+					FloatManageMethod.stopservice(ctx);
+					App utils = (App)ctx.getApplicationContext();
+					utils.setGetSave(false);
+					utils.setFloatReshow(true);
                     FloatManageMethod.closeAllWin(ctx);
-                    ctx.finish();
-                    System.exit(0);
+					ctx.finishAndRemoveTask();
+					System.gc();
+					System.exit(0);
                 }
             })
             .setNegativeButton(R.string.cancel, null)
@@ -159,7 +172,7 @@ public class FloatManageMethod
                     }
                     else
                     {
-                        ctx.finish();
+						ctx.moveTaskToBack(true);
                     }
                 }
             });
@@ -406,6 +419,19 @@ public class FloatManageMethod
         {
             Intent service = new Intent(ctx, FloatWindowStayAliveService.class);
             ctx.startService(service);
+			if (GlobalSetActivity.isAccessibilitySettingsOn(ctx))
+			{
+				Intent asservice = new Intent(ctx, FloatAdvanceTextUpdateService.class);
+				ctx.startService(asservice);
+			}
+			if (Build.VERSION.SDK_INT > 18)
+			{
+				if (GlobalSetActivity.isNotificationListenerEnabled(ctx))
+				{
+					Intent notifyservice = new Intent(ctx, FloatNotificationListenerService.class);
+					ctx.startService(notifyservice);
+				}
+			}
         }
     }
 
@@ -415,6 +441,10 @@ public class FloatManageMethod
         ctx.stopService(service);
         Intent floatservice = new Intent(ctx, FloatTextUpdateService.class);
         ctx.stopService(floatservice);
+		Intent asservice = new Intent(ctx, FloatAdvanceTextUpdateService.class);
+		ctx.stopService(asservice);
+		Intent notifyservice = new Intent(ctx, FloatNotificationListenerService.class);
+		ctx.stopService(notifyservice);
     }
 
     public static void addFloatWindow (final Activity ctx, final ArrayList<String> FloatDataName)

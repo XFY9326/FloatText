@@ -4,6 +4,8 @@ import android.app.*;
 import android.content.*;
 import android.os.*;
 import android.preference.*;
+import android.provider.*;
+import android.text.*;
 import android.widget.*;
 import java.io.*;
 import java.util.*;
@@ -18,6 +20,8 @@ public class GlobalSetActivity extends PreferenceActivity
     private String default_typeface;
     private int typeface_choice;
     private int language_choice;
+	private static int ADVANCE_TEXT_SET = 1;
+	private static int ADVANCE_TEXT_NOTIFICATION_SET = 2;
 
     @Override
     protected void onCreate (Bundle savedInstanceState)
@@ -158,6 +162,7 @@ public class GlobalSetActivity extends PreferenceActivity
                     }
                     else
                     {
+						FloatManageMethod.setWinManager(GlobalSetActivity.this);
                         stopService(service);
                     }
                     return true;
@@ -169,17 +174,51 @@ public class GlobalSetActivity extends PreferenceActivity
                 {
                     ((App)getApplicationContext()).setDynamicNumService((boolean)p2);
                     Intent service = new Intent(GlobalSetActivity.this, FloatTextUpdateService.class);
+					Intent asservice = new Intent(GlobalSetActivity.this, FloatAdvanceTextUpdateService.class);
+					Intent notifyservice = new Intent(GlobalSetActivity.this, FloatNotificationListenerService.class);
                     if ((boolean)p2)
                     {
                         startService(service);
+						startService(asservice);
+						startService(notifyservice);
                     }
                     else
                     {
                         stopService(service);
+						stopService(asservice);
+						stopService(notifyservice);
                     }
                     return true;
                 }
             });
+		Preference adts = findPreference("AdvanceTextService");
+		setADTsum(adts);
+		adts.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+			{
+				public boolean onPreferenceClick (Preference p)
+				{
+					Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+					startActivityForResult(intent, ADVANCE_TEXT_SET);
+					return true;
+				}
+			});
+		Preference nous = findPreference("NotificationListenerService");
+		if (Build.VERSION.SDK_INT < 18)
+		{
+			nous.setEnabled(false);
+		}
+		else
+		{
+			setNOSsum(nous);
+			nous.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
+					public boolean onPreferenceClick (Preference p)
+					{
+						Intent intent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
+						startActivityForResult(intent, ADVANCE_TEXT_NOTIFICATION_SET);
+						return true;
+					}
+				});
+		}
         CheckBoxPreference develop = (CheckBoxPreference) findPreference("DevelopMode");
         develop.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange (Preference p1, Object p2)
@@ -227,6 +266,50 @@ public class GlobalSetActivity extends PreferenceActivity
             });
     }
 
+	public static boolean isAccessibilitySettingsOn (Context context)
+	{
+        int accessibilityEnabled = 0;
+        try
+		{
+            accessibilityEnabled = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED);
+        }
+		catch (Settings.SettingNotFoundException e)
+		{
+			e.printStackTrace();
+        }
+        if (accessibilityEnabled == 1)
+		{
+            String services = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+            if (services != null)
+			{
+                return services.toLowerCase().contains(context.getPackageName().toLowerCase());
+            }
+        }
+        return false;
+    }
+
+	public static boolean isNotificationListenerEnabled (Context ctx)
+	{  
+		String pkgName = ctx.getPackageName();  
+		final String flat = Settings.Secure.getString(ctx.getContentResolver(), "enabled_notification_listeners");  
+		if (!TextUtils.isEmpty(flat))
+		{  
+			final String[] names = flat.split(":");  
+			for (int i = 0; i < names.length; i++)
+			{  
+				final ComponentName cn = ComponentName.unflattenFromString(names[i]);  
+				if (cn != null)
+				{  
+					if (TextUtils.equals(pkgName, cn.getPackageName()))
+					{  
+						return true;  
+					}  
+				}  
+			}  
+		}  
+		return false;  
+	}  
+
     private String getExtraName (String filename)
     { 
         if ((filename != null) && (filename.length() > 0))
@@ -239,4 +322,45 @@ public class GlobalSetActivity extends PreferenceActivity
         } 
         return "No_Name"; 
     }
+
+	private void setADTsum (Preference p)
+	{
+		if (isAccessibilitySettingsOn(this))
+		{
+			p.setSummary(getString(R.string.status) + getString(R.string.on) + "\n" + getString(R.string.xml_global_service_advancetext_sum));
+		}
+		else
+		{
+			FloatManageMethod.setWinManager(this);
+			p.setSummary(getString(R.string.status) + getString(R.string.off) + "\n" + getString(R.string.xml_global_service_advancetext_sum));
+		}
+	}
+
+	private void setNOSsum (Preference p)
+	{
+		if (isNotificationListenerEnabled(this))
+		{
+			p.setSummary(getString(R.string.status) + getString(R.string.on) + "\n" + getString(R.string.xml_global_service_notificationtext_sum));
+		}
+		else
+		{
+			p.setSummary(getString(R.string.status) + getString(R.string.off) + "\n" + getString(R.string.xml_global_service_notificationtext_sum));
+		}
+	}
+
+	@Override
+	protected void onActivityResult (int requestCode, int resultCode, Intent data)
+	{
+		if (requestCode == ADVANCE_TEXT_SET)
+		{
+			Preference adts = findPreference("AdvanceTextService");
+			setADTsum(adts);
+		}
+		else if (requestCode == ADVANCE_TEXT_NOTIFICATION_SET)
+		{
+			Preference nous = findPreference("NotificationListenerService");
+			setNOSsum(nous);
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 }

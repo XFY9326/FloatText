@@ -13,6 +13,9 @@
     <string name="hour">Hour</string>
     <string name="minute">Min</string>
     <string name="second">Sec</string>
+	<string name="on">On</string>
+	<string name="off">Off</string>
+	<string name="status">Current Status:</string>
     <string name="copy_ok">Copy Complete</string>
     <string name="premission_ask_failed">Permission you asked failed,please try again.</string>
     <string name="ask_for_premission">Permission asking</string>
@@ -58,7 +61,7 @@
     <string name="float_move_title">Float position change</string>
     <string name="choose_float_type">Add float type</string>
     <string name="dynamic_list_title">Available dynamic variables (Click to copy)</string>
-    <string name="dynamic_num_tip">Attwntion：Add float and save to apply dynamic variables！\nIn HTMLMode can use # instead of &lt; and &gt;</string>
+    <string name="dynamic_num_tip">Attention：\n1.Add float and save to apply dynamic variables！\n2.In HTMLMode can use # instead of &lt; and &gt;\n3.Symbol (*) means that you must open the Accessibility Service in Global Settings to use it.</string>
     <string name="dynamic_date_err">Date counting down setting error</string>
     <string name="dynamic_date_reach">Finished Counting</string>
     <string name="text_default_typeface">Default font</string>
@@ -75,6 +78,9 @@
     <string name="text_export_error">No text can be exported！</string>
     <string name="text_import_notice">Select Text File，Import Text According To The Line</string>
     <string name="loading">Loading...</string>
+	<string name="advancetext_service_label">FloatText advanced service</string>
+	<string name="advancetext_service_description">FloatText advanced dynamic variable service\nOpens this service, allowing the use of advanced dynamic variables.\nThis service will listen to the user interface operation, but will not upload any data, please do not worry.</string>
+	<string name="floatnotification_service_label">FloatText Notification Listener Service</string>
     <!-- Color Picker -->
     <string name="dialog_color_picker">Color Picker</string>
     <string name="press_color_to_apply">Choose color to apply changes</string>
@@ -145,6 +151,8 @@
     <string name="xml_set_dynamiclist_sum">Saw Dynamic Word List\n(Open this Service in Global Setting first)</string>
     <string name="xml_web_defaulttip">Reload if Web Float Window failed to connect.</string>
     <string name="xml_web_defaulttip_sum">This function is only for test and will not update</string>
+	<string name="xml_web_usetip">Note</string>
+	<string name="xml_web_usetip_sum">Web window must be minimized before use the originalreturn button and edit function!</string>
     <string name="xml_web_webset">Web Settings</string>
     <string name="xml_web_url">URL Address</string>
     <string name="xml_web_url_sum">Change the showing address\n(Local file example file:///sdcrad/index.html)</string>
@@ -180,9 +188,11 @@
     <string name="xml_global_service_stayalive">Float Window Guard Service</string>
     <string name="xml_global_service_stayalive_on">Open(May use more CPU)</string>
     <string name="xml_global_service_stayalive_off">Close(This application is more likely being closed)</string>
-    <string name="xml_global_service_dynamicnum">dynamic Word Service</string>
+    <string name="xml_global_service_dynamicnum">Dynamic Word Service</string>
     <string name="xml_global_service_dynamicnum_on">Open(May use more CPU)</string>
     <string name="xml_global_service_dynamicnum_off">Close(dynamic Word is unabled)</string>
+	<string name="xml_global_service_advancetext_sum">If advance dynamic word do not work, try to restart accessibility service.\nAttention:Sometimes System may close this service automatically.</string>
+	<string name="xml_global_service_notificationtext_sum">You must open this service on at least android 4.3 device to use the notification dynamic words.</string>
     <string name="xml_global_advanced">Advanced Functions</string>
     <string name="xml_global_htmlmode">Support HTML code</string>
     <string name="xml_global_htmlmode_on">Use #[HTML] as the head of the text to use HTML code</string>

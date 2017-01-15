@@ -13,6 +13,9 @@
     <string name="hour">小時</string>
     <string name="minute">分</string>
     <string name="second">秒</string>
+	<string name="on">開啟</string>
+	<string name="off">關閉</string>
+	<string name="status">當前狀態:</string>
     <string name="copy_ok">複製成功！</string>
     <string name="premission_ask_failed">權限申請失敗，請重新啟動應用程式後再試！</string>
     <string name="ask_for_premission">請求權限通知</string>
@@ -58,7 +61,7 @@
     <string name="float_move_title">懸浮視窗位置微調</string>
     <string name="choose_float_type">建立懸浮視窗的類型</string>
     <string name="dynamic_list_title">可用的動態變量列表(點擊複製)</string>
-    <string name="dynamic_num_tip">備註：建立懸浮視窗後必須儲存一次才可以套用動態變量！\nHTML模式時可套用#代替&lt;與&gt;符號</string>
+    <string name="dynamic_num_tip">備註：\n1.建立懸浮視窗後必須儲存一次才可以套用動態變量！\n2.HTML模式時可套用#代替&lt;與&gt;符號\n3.(*)符號說明必須在整體設定中開啟輔助服務才能使用該變量</string>
     <string name="dynamic_date_err">日期倒數計時格式設定錯誤！</string>
     <string name="dynamic_date_reach">計時結束</string>
     <string name="text_default_typeface">預設字體</string>
@@ -75,6 +78,9 @@
     <string name="text_export_error">沒有文字可以匯出！</string>
     <string name="text_import_notice">選擇文字檔案，按行匯入文字</string>
     <string name="loading">正在加載中...</string>
+	<string name="advancetext_service_label">FloatText高級服務</string>
+	<string name="advancetext_service_description">FloatText高級動態變量服務\n開啟本服務，允許使用高級的動態變量。\n本服務會監聽使用者介面操作，但絕不會上傳任何數據，請放心使用。</string>
+	<string name="floatnotification_service_label">FloatText通知監聽服務</string>
     <!-- Color Picker -->
     <string name="dialog_color_picker">顏色選擇器</string>
     <string name="press_color_to_apply">選擇顏色以套用變更</string>
@@ -145,6 +151,8 @@
     <string name="xml_set_dynamiclist_sum">檢視可用的動態變量\n(整體設定中開啟服務後才能使用)</string>
     <string name="xml_web_defaulttip">Web懸浮視窗 連線網路失敗時，多重新整理就好了</string>
     <string name="xml_web_defaulttip_sum">本功能無特殊要求不再更新修復，僅供測試</string>
+	<string name="xml_web_usetip">使用注意事項</string>
+	<string name="xml_web_usetip_sum">Web懸浮窗最小化後才能正常使用返回鍵和編輯功能！</string>
     <string name="xml_web_webset">Web設定</string>
     <string name="xml_web_url">網址</string>
     <string name="xml_web_url_sum">更改目前顯示的網頁\n(本地網頁網址範例：file:///sdcrad/index.html)</string>
@@ -183,6 +191,8 @@
     <string name="xml_global_service_dynamicnum">動態變量服務</string>
     <string name="xml_global_service_dynamicnum_on">開啟(背景服務可能增加耗電並導致當機)</string>
     <string name="xml_global_service_dynamicnum_off">關閉(動態變量將不可用)</string>
+	<string name="xml_global_service_advancetext_sum">高級動態變量失效時請重啟輔助服務\n注：部分系統有時會自動關閉輔助服務</string>
+	<string name="xml_global_service_notificationtext_sum">在安卓4.3的設備上必須開啟本服務才能使用通知變量</string>
     <string name="xml_global_advanced">進階功能</string>
     <string name="xml_global_htmlmode">文字支援 HTML代碼</string>
     <string name="xml_global_htmlmode_on">輸入的文字使用#[HTML] 開頭可以用 HTML代碼</string>

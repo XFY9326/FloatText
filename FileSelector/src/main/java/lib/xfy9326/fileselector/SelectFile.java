@@ -18,7 +18,7 @@ public class SelectFile
     {
         this.resultcode = resultcode;
         this.type = choosetype;
-        this.DefaultPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+        this.DefaultPath = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
     }
 
     public SelectFile (int resultcode, int choosetype, String path)

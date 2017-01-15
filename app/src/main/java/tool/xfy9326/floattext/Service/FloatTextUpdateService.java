@@ -7,6 +7,7 @@ import android.os.*;
 import java.text.*;
 import java.util.*;
 import java.util.regex.*;
+import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Utils.*;
 
@@ -23,42 +24,46 @@ public class FloatTextUpdateService extends Service
     private SimpleDateFormat sdf_clock_12 = null;
     private SimpleDateFormat sdf_clock_24 = null;
     private SimpleDateFormat sdf_date = null;
-	private String time0 = "0";
-	private String time1 = "0";
-	private String time2 = "0";
-	private String time3 = "0";
-	private String time4 = "0";
+	private String time0;
+	private String time1;
+	private String time2;
+	private String time3;
+	private String time4;
     private Intent timeIntent = null;
     private boolean timer_run = false;
     private boolean high_cpu_use_dynamicword = false;
 	private boolean time_dynamicword = false;
 	private Bundle bundle = null;
-    private String cpurate = "0%";
-    private String meminfo = "0%";
+    private String cpurate;
+    private String meminfo;
     private float lastTotalRxBytes = 0;
     private float lastTotalTxBytes = 0;
     private long lastTimeStamp = 0;
-    private String localip = "0.0.0.0";
+    private String localip;
     private BatteryReceiver breceiver = new BatteryReceiver();
+	private AdvanceTextReceiver atr = new AdvanceTextReceiver();
     private IntentFilter battery_filter = null;
-    private String battery_percent = "0%";
+    private String battery_percent;
     private boolean sensor_use_dynamic_word = false;
     private SensorReceiver sreceiver = new SensorReceiver();
     private SensorManager msensor = null;
     private Sensor sensor_tem = null;
-    private String cputemperature = "0℃";
+    private String cputemperature;
     private Sensor sensor_light = null;
-    private String sensorlight = "0lux";
+    private String sensorlight;
     private Sensor sensor_gravity = null;
-    private String sensorgravity = "X:0m/s² Y:0m/s² Z:0m/s²";
+    private String sensorgravity;
     private Sensor sensor_pressure = null;
-    private String sensorpressure = "0Pa";
+    private String sensorpressure;
     private Sensor sensor_proximity = null;
-    private String sensorproximity = "0cm";
+    private String sensorproximity;
     private Sensor sensor_step = null;
     private int sensorstep = 0;
     private ClipboardManager clip = null;
     private boolean register_sensor = false;
+	private String currentactivity;
+	private String notifymes;
+	private String toasts;
 
     @Override
     public IBinder onBind (Intent p1)
@@ -76,7 +81,7 @@ public class FloatTextUpdateService extends Service
 
 	private String[] SetPostKey ()
 	{
-		String[] PostList = new String[18];
+		String[] PostList = new String[21];
 		PostList[0] = time0;
 		PostList[1] = time1;
 		PostList[2] = time2;
@@ -94,12 +99,40 @@ public class FloatTextUpdateService extends Service
 		PostList[14] = sensorproximity;
 		PostList[15] = sensorstep + "";
 		PostList[16] = clip.getText().toString();
-		PostList[17] = "None";
+		PostList[17] = currentactivity;
+		PostList[18] = notifymes;
+		PostList[19] = toasts;
+		PostList[20] = "None";
 		return PostList;
+	}
+
+	private void setDefaultKey ()
+	{
+		String str = getString(R.string.loading);
+		time0 = 
+			time1 = 
+			time2 = 
+			time3 = 
+			time4 = 
+			cpurate = 
+			meminfo = 
+			localip = 
+			battery_percent = 
+			cputemperature = 
+			sensorlight = 
+			sensorgravity = 
+			sensorpressure = 
+			sensorproximity = 
+			currentactivity =
+			notifymes = 
+			toasts = str;
 	}
 
     private void init ()
     {
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(FloatServiceMethod.TEXT_ADVANCE_UPDATE_ACTION);
+		registerReceiver(atr, filter);
         timer_a = new Timer();
         sdf12 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         sdf24 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -128,6 +161,7 @@ public class FloatTextUpdateService extends Service
 		{
 			clip.setText("");
 		}
+		setDefaultKey();
 		SetListKeys();
     }
 
@@ -271,6 +305,7 @@ public class FloatTextUpdateService extends Service
             timer.cancel();
             timer_f.cancel();
             timer_s.cancel();
+			unregisterReceiver(atr);
             unregisterReceiver(breceiver);
             if (sensor_use_dynamic_word && register_sensor)
             {
@@ -349,6 +384,17 @@ public class FloatTextUpdateService extends Service
     {
         return all.contains(part);
     }
+
+	private class AdvanceTextReceiver extends BroadcastReceiver
+	{
+		@Override
+		public void onReceive (Context p1, Intent p2)
+		{
+			currentactivity = FloatServiceMethod.fixnull(p2.getStringExtra("CurrentActivity"), currentactivity);
+			toasts = FloatServiceMethod.fixnull(p2.getStringExtra("Toasts"), toasts);
+			notifymes = FloatServiceMethod.fixnull(p2.getStringExtra("NotifyMes"), notifymes);
+		}
+	}
 
     private class BatteryReceiver extends BroadcastReceiver
     {
