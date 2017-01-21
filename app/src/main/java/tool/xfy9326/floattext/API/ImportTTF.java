@@ -1,9 +1,10 @@
 package tool.xfy9326.floattext.API;
 
-import android.app.*;
 import android.content.*;
 import android.net.*;
 import android.os.*;
+import android.support.v7.app.*;
+import android.support.v7.widget.*;
 import android.view.*;
 import android.view.View.*;
 import android.widget.*;
@@ -11,7 +12,9 @@ import java.io.*;
 import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Method.*;
 
-public class ImportTTF extends Activity
+import android.support.v7.widget.Toolbar;
+
+public class ImportTTF extends AppCompatActivity
 {
     private String FilePath = null;
 
@@ -20,6 +23,8 @@ public class ImportTTF extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_api_importttf);
+		Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(tb);
         FloatManageMethod.preparefolder();
         FilePath = getIntentData();
         setView();
@@ -70,7 +75,7 @@ public class ImportTTF extends Activity
                     }
                     else
                     {
-                        Toast.makeText(ImportTTF.this, R.string.ttf_import_failed,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ImportTTF.this, R.string.ttf_import_failed, Toast.LENGTH_SHORT).show();
                     }
                 }
             });

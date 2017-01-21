@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:gravity="center"
+	android:layout_gravity="center"
+	android:paddingTop="?attr/actionBarSize">
+
+	<tool.xfy9326.floattext.View.AdvanceRecyclerView
+		android:layout_height="match_parent"
+		android:layout_width="match_parent"
+		android:id="@+id/listview_floatmanage"
+		android:divider="#00ffffff"
+		android:layout_marginTop="5dp"/>
+
+	<TextView
+		android:id="@+id/textview_floatmanage_empty"
+		android:layout_height="wrap_content"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:layout_width="wrap_content"
+		android:text="@string/add_text"/>
+
+</LinearLayout>
+

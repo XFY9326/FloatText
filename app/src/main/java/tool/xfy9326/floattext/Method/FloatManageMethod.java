@@ -14,13 +14,21 @@ import java.text.*;
 import java.util.*;
 import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Activity.*;
+import tool.xfy9326.floattext.FileSelector.*;
 import tool.xfy9326.floattext.Service.*;
 import tool.xfy9326.floattext.Setting.*;
 import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
+import android.support.design.widget.*;
+import android.view.View.*;
+import android.graphics.*;
 
 public class FloatManageMethod
 {
+	public static boolean waitdoubleclick = false;
+	public static Handler waithandle;
+	public static Runnable waitrun;
+
 	public static void RootTask (Activity act)
 	{
 		if (!act.isTaskRoot())
@@ -98,9 +106,16 @@ public class FloatManageMethod
         }
         else
         {
-            Toast.makeText(ctx, R.string.text_export_error, Toast.LENGTH_SHORT).show();
+            FloatManage.snackshow((Activity)ctx, ctx.getString(R.string.text_export_error));
         }
     }
+
+	public static void selectFile (Activity ctx)
+	{
+		Toast.makeText(ctx, R.string.text_import_notice, Toast.LENGTH_LONG).show();
+		SelectFile sf = new SelectFile(FloatManage.FLOAT_TEXT_IMPORT_CODE, SelectFile.TYPE_ChooseFile);
+		sf.start(ctx);
+	}
 
     public static void closeAllWin (Context ctx)
     {
@@ -116,67 +131,126 @@ public class FloatManageMethod
         }
     }
 
+	public static void notifypermission (final Activity ctx)
+	{
+		if (Build.VERSION.SDK_INT >= 23)
+		{
+			if (!Settings.canDrawOverlays(ctx))
+			{
+				ctx.runOnUiThread(new Runnable(){
+						public void run ()
+						{
+							CoordinatorLayout cl = (CoordinatorLayout) ctx.findViewById(R.id.FloatManage_MainLayout);
+							Snackbar.make(cl, R.string.no_premission, Snackbar.LENGTH_SHORT).setAction(R.string.get_premission, new OnClickListener(){
+								public void onClick(View v)
+								{
+									Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+									intent.setData(Uri.parse("package:" + ctx.getPackageName()));
+									ctx.startActivity(intent);
+								}
+							}).setActionTextColor(Color.RED).show();
+							
+						}
+					});
+			}
+		}
+	}
+
+
     public static Thread PrepareSave (Activity ctx, Handler han)
     {
-        if (((App)ctx.getApplicationContext()).getTextData().size() > 0)
-        {
-            if (Build.VERSION.SDK_INT >= 23)
-            {
-                if (!Settings.canDrawOverlays(ctx))
-                {
-                    FloatManageMethod.askforpermission(ctx, FloatManage.RESHOW_PERMISSION_RESULT_CODE);
-                }
-                else
-                {
-                    FloatManageMethod.delayaskforpermission(ctx, FloatManage.RESHOW_PERMISSION_RESULT_CODE);
+		if (Build.VERSION.SDK_INT >= 23)
+		{
+			if (!Settings.canDrawOverlays(ctx))
+			{
+				FloatManageMethod.askforpermission(ctx, FloatManage.RESHOW_PERMISSION_RESULT_CODE);
+			}
+			else
+			{
+				FloatManageMethod.delayaskforpermission(ctx);
+				if (((App)ctx.getApplicationContext()).getTextData().size() > 0)
+				{
                     return FloatManageMethod.Reshow(ctx, han);
-                }
-            }
-            else
-            {
+				}
+			}
+		}
+		else
+		{
+			if (((App)ctx.getApplicationContext()).getTextData().size() > 0)
+			{
                 return FloatManageMethod.Reshow(ctx, han);
             }
         }
         return null;
     }
 
+	public static void ShutSown (Activity ctx)
+	{
+		FloatManageMethod.stopservice(ctx);
+		App utils = (App)ctx.getApplicationContext();
+		utils.setGetSave(false);
+		utils.setFloatReshow(true);
+		FloatManageMethod.closeAllWin(ctx);
+		ctx.finishAndRemoveTask();
+		System.gc();
+		System.exit(0);
+	}
+
+	public static void RunInBack (Activity ctx)
+	{
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
+		if (sp.getBoolean("WinOnlyShowInHome", false))
+		{
+			Intent intent = new Intent(Intent.ACTION_MAIN);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.addCategory(Intent.CATEGORY_HOME);
+			ctx.startActivity(intent);
+		}
+		else
+		{
+			ctx.moveTaskToBack(true);
+		}
+	}
+
     public static void CloseApp (final Activity ctx)
     {
-        AlertDialog.Builder exit = new AlertDialog.Builder(ctx)
-            .setTitle(R.string.exit_title)
-            .setMessage(R.string.exit_msg)
-            .setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
-                public void onClick (DialogInterface p1, int p2)
-                {
-					FloatManageMethod.stopservice(ctx);
-					App utils = (App)ctx.getApplicationContext();
-					utils.setGetSave(false);
-					utils.setFloatReshow(true);
-                    FloatManageMethod.closeAllWin(ctx);
-					ctx.finishAndRemoveTask();
-					System.gc();
-					System.exit(0);
-                }
-            })
-            .setNegativeButton(R.string.cancel, null)
-            .setNeutralButton(R.string.back_to_launcher, new DialogInterface.OnClickListener(){
-                public void onClick (DialogInterface p1, int p2)
-                {
-                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
-                    if (sp.getBoolean("WinOnlyShowInHome", false))
-                    {
-                        Intent intent = new Intent(Intent.ACTION_MAIN);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.addCategory(Intent.CATEGORY_HOME);
-                        ctx.startActivity(intent);
-                    }
-                    else
-                    {
-						ctx.moveTaskToBack(true);
-                    }
-                }
-            });
-        exit.show();
+		if (waitdoubleclick)
+		{
+			ShutSown(ctx);
+		}
+		else
+		{
+			CoordinatorLayout cl = (CoordinatorLayout) ctx.findViewById(R.id.FloatManage_MainLayout);
+			Snackbar.make(cl, R.string.exit_title, Snackbar.LENGTH_LONG).setAction(R.string.back_to_launcher, new OnClickListener(){
+					public void onClick (View v)
+					{
+						RunInBack(ctx);
+					}
+				}).setCallback(new Snackbar.Callback(){
+					@Override
+					public void onDismissed (Snackbar bar, int i)
+					{
+						waitdoubleclick = false;
+						if (waithandle != null && waitrun != null)
+						{
+							waithandle.removeCallbacks(waitrun);
+						}
+						super.onDismissed(bar , i);
+					}
+				}).
+				setActionTextColor(Color.RED).show();
+			waitdoubleclick = true;
+			waithandle = new Handler();
+			waitrun = new Runnable(){   
+				public void run ()
+				{
+					waitdoubleclick = false;
+					waithandle = null;
+					waitrun = null;
+				}
+			};
+			waithandle.postDelayed(waitrun, 2200);
+		}
     }
 
     public static void setWinManager (Context ctx)
@@ -218,18 +292,12 @@ public class FloatManageMethod
         }
     }
 
-    public static void delayaskforpermission (final Activity act, final int code)
+    public static void delayaskforpermission (final Activity act)
     {
         new Handler().postDelayed(new Runnable(){  
                 public void run ()
                 {
-                    if (Build.VERSION.SDK_INT >= 23)
-                    {
-                        if (!Settings.canDrawOverlays(act))
-                        {
-                            askforpermission(act, code);
-                        }
-                    }
+                    FloatManageMethod.notifypermission(act);
                 }  
             }, 2000); 
     }
@@ -376,7 +444,7 @@ public class FloatManageMethod
             }
         }
         setdata.edit().putString("DefaultTTFName", "Default").commit();
-        Toast.makeText(ctx, R.string.text_typeface_err, Toast.LENGTH_SHORT).show();
+        FloatManage.snackshow((Activity)ctx, ctx.getString(R.string.text_typeface_err));
     }
 
     public static void LanguageInit (Activity ctx)

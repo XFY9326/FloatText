@@ -6,6 +6,6 @@
         android:id="@+id/save_win"
         android:icon="@drawable/ic_floppy"
         android:orderInCategory="100"
-        android:showAsAction="always"/>
+        app:showAsAction="always"/>
 
 </menu>

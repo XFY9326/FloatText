@@ -32,6 +32,7 @@
         <item>The date of the countdown(custom date)</item>
         <item>The date of the countdown(custom date)</item>
         <item>The date of the countdown(custom date)</item>
+		<item>Week</item>
         <item>Local IP Address</item>
         <item>Battery Percent</item>
         <item>Light Sensor</item>
@@ -47,7 +48,7 @@
     </string-array>
     <string-array name="floatmanage_choose">
         <item>Text Floating Window</item>
-        <item>Web Floating Window(UNSTABLE)</item>
+        <item>Web Floating Window</item>
     </string-array>
     <string-array name="language_list">
         <item>Default</item>

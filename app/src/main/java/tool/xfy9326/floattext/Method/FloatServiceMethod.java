@@ -20,7 +20,7 @@ public class FloatServiceMethod
     public static String TEXT_UPDATE_ACTION = "tool.xfy9326.floattext.Service.FloatTextUpdateService.action.TEXT_UPDATE_ACTION";
     public static String TEXT_STATE_UPDATE_ACTION = "tool.xfy9326.floattext.Service.FloatTextUpdateService.action.TEXT_STATE_UPDATE_ACTION";
 	public static String TEXT_ADVANCE_UPDATE_ACTION = "tool.xfy9326.floattext.Service.FloatAdvanceTextUpdateService.action.TEXT_ADVANCE_UPDATE_ACTION";
-	public static int DYNAMIC_LIST_VERSION = 4;
+	public static int DYNAMIC_LIST_VERSION = 5;
 
 	public static SharedPreferences setUpdateList (Context ctx)
 	{
@@ -70,6 +70,8 @@ public class FloatServiceMethod
 			KeyList.add("Notifications");
 			InfoList.add(false);
 			KeyList.add("Toasts");
+			InfoList.add(false);
+			KeyList.add("Week");
 			InfoList.add(false);
 			KeyList.add("(DateCount_)(.*?)");
 			InfoList.add(true);

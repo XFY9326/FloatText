@@ -24,6 +24,7 @@ public class FloatTextUpdateService extends Service
     private SimpleDateFormat sdf_clock_12 = null;
     private SimpleDateFormat sdf_clock_24 = null;
     private SimpleDateFormat sdf_date = null;
+	private SimpleDateFormat sdf_week = null;
 	private String time0;
 	private String time1;
 	private String time2;
@@ -64,6 +65,7 @@ public class FloatTextUpdateService extends Service
 	private String currentactivity;
 	private String notifymes;
 	private String toasts;
+	private String week;
 
     @Override
     public IBinder onBind (Intent p1)
@@ -81,7 +83,7 @@ public class FloatTextUpdateService extends Service
 
 	private String[] SetPostKey ()
 	{
-		String[] PostList = new String[21];
+		String[] PostList = new String[22];
 		PostList[0] = time0;
 		PostList[1] = time1;
 		PostList[2] = time2;
@@ -102,7 +104,8 @@ public class FloatTextUpdateService extends Service
 		PostList[17] = currentactivity;
 		PostList[18] = notifymes;
 		PostList[19] = toasts;
-		PostList[20] = "None";
+		PostList[20] = week;
+		PostList[21] = "None";
 		return PostList;
 	}
 
@@ -125,7 +128,8 @@ public class FloatTextUpdateService extends Service
 			sensorproximity = 
 			currentactivity =
 			notifymes = 
-			toasts = str;
+			toasts =
+			week = str;
 	}
 
     private void init ()
@@ -139,6 +143,7 @@ public class FloatTextUpdateService extends Service
         sdf_clock_12 = new SimpleDateFormat("hh:mm:ss");
         sdf_clock_24 = new SimpleDateFormat("HH:mm:ss");
         sdf_date = new SimpleDateFormat("yyyy-MM-dd");
+		sdf_week = new SimpleDateFormat("E");
         timeIntent = new Intent();
 		timeIntent.setAction(FloatServiceMethod.TEXT_UPDATE_ACTION);
 		if (Build.VERSION.SDK_INT >= 12)
@@ -182,6 +187,7 @@ public class FloatTextUpdateService extends Service
 		time2 = sdf_clock_12.format(new Date());
 		time3 = sdf_clock_24.format(new Date());
 		time4 = sdf_date.format(new Date());
+		week = sdf_week.format(new Date());
 	}
 
     private String getNetSpeed ()
@@ -337,7 +343,7 @@ public class FloatTextUpdateService extends Service
 					dynamicnum = true;
 					if (!timedynamicset)
                     {
-                        if (hasWord(str, "SystemTime") || hasWord(str, "Date") || hasWord(str, "Clock"))
+                        if (hasWord(str, "SystemTime") || hasWord(str, "Date") || hasWord(str, "Clock") || hasWord(str, "Week"))
                         {
                             time_dynamicword = true;
                             timedynamicset = true;

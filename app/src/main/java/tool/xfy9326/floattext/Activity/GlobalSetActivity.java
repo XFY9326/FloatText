@@ -1,11 +1,15 @@
 package tool.xfy9326.floattext.Activity;
 
+import android.*;
 import android.app.*;
 import android.content.*;
+import android.content.pm.*;
 import android.os.*;
 import android.preference.*;
 import android.provider.*;
+import android.support.v7.app.*;
 import android.text.*;
+import android.view.*;
 import android.widget.*;
 import java.io.*;
 import java.util.*;
@@ -15,21 +19,36 @@ import tool.xfy9326.floattext.Service.*;
 import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
-public class GlobalSetActivity extends PreferenceActivity
+import android.app.AlertDialog;
+import android.support.v7.app.ActionBar;
+import tool.xfy9326.floattext.R;
+
+public class GlobalSetActivity extends AppCompatPreferenceActivity
 {
     private String default_typeface;
     private int typeface_choice;
     private int language_choice;
 	private static int ADVANCE_TEXT_SET = 1;
 	private static int ADVANCE_TEXT_NOTIFICATION_SET = 2;
+	private static int FLOAT_TEXT_GET_TYPEFACE_PERMISSION = 3;
 
     @Override
     protected void onCreate (Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.global_settings);
+		sethome();
         setDataToApp();
     }
+
+	private void sethome ()
+	{
+		ActionBar actionBar = getSupportActionBar();
+		if (actionBar != null)
+		{
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+	}
 
     private void setDataToApp ()
     {
@@ -51,66 +70,23 @@ public class GlobalSetActivity extends PreferenceActivity
         }
         typeface.setSummary(getString(R.string.xml_global_text_typeface_summary) + default_typeface);
         typeface.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick (final Preference pre)
+                public boolean onPreferenceClick (Preference pre)
                 {
-                    File path = new File(Environment.getExternalStorageDirectory().toString() + "/FloatText/TTFs");
-                    if (!path.exists())
-                    {
-                        path.mkdirs();
-                    }
-                    File[] files = path.listFiles();
-                    int defaultchoice = 0;
-                    ArrayList<String> ttfs = new ArrayList<String>();
-                    for (int i = 0; i < files.length;i++)
-                    {
-                        String str = files[i].getName().toString();
-                        String extra = getExtraName(str);
-                        if (extra.equalsIgnoreCase("ttf"))
-                        {
-                            String realname = str.substring(0, str.length() - 4);
-                            ttfs.add(realname);
-                            if (realname.equalsIgnoreCase(default_typeface))
-                            {
-                                defaultchoice = i + 1;
-                            }
-                        }
-                    }
-                    typeface_choice = defaultchoice;
-                    ttfs.add(0, getString(R.string.text_default_typeface));
-                    final String[] ttfname = new String[ttfs.size()];
-                    for (int i = 0; i < ttfs.size(); i++)
-                    {
-                        ttfname[i] = ttfs.get(i);
-                    }
-                    AlertDialog.Builder pathselect = new AlertDialog.Builder(GlobalSetActivity.this)
-                        .setTitle(R.string.text_choose_typeface)
-                        .setSingleChoiceItems(ttfname, defaultchoice, new DialogInterface.OnClickListener(){
-                            public void onClick (DialogInterface p1, int p2)
-                            {
-                                typeface_choice = p2;
-                            }
-                        })
-                        .setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
-                            public void onClick (DialogInterface p1, int p2)
-                            {
-                                SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
-                                if (typeface_choice == 0)
-                                {
-                                    setdata.edit().putString("DefaultTTFName", "Default").commit();
-                                    pre.setSummary(getString(R.string.xml_global_text_typeface_summary) + getString(R.string.text_default_typeface));
-                                    default_typeface = "Default";
-                                }
-                                else
-                                {
-                                    setdata.edit().putString("DefaultTTFName", ttfname[typeface_choice]).commit();
-                                    pre.setSummary(getString(R.string.xml_global_text_typeface_summary) + ttfname[typeface_choice]);
-                                    default_typeface = ttfname[typeface_choice];
-                                }
-                                FloatManageMethod.restartApplication(GlobalSetActivity.this);
-                            }
-                        })
-                        .setNegativeButton(R.string.cancel, null);
-                    pathselect.show();
+					if (Build.VERSION.SDK_INT > 22)
+					{
+						if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+						{
+							requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, FLOAT_TEXT_GET_TYPEFACE_PERMISSION);
+						}
+						else
+						{
+							getTypeFace(pre);
+						}
+					}
+					else
+					{
+						getTypeFace(pre);
+					}
                     return true;
                 }
             });
@@ -266,6 +242,68 @@ public class GlobalSetActivity extends PreferenceActivity
             });
     }
 
+	private void getTypeFace (final Preference pre)
+	{
+		File path = new File(Environment.getExternalStorageDirectory().toString() + "/FloatText/TTFs");
+		if (!path.exists())
+		{
+			path.mkdirs();
+		}
+		File[] files = path.listFiles();
+		int defaultchoice = 0;
+		ArrayList<String> ttfs = new ArrayList<String>();
+		for (int i = 0; i < files.length;i++)
+		{
+			String str = files[i].getName().toString();
+			String extra = getExtraName(str);
+			if (extra.equalsIgnoreCase("ttf"))
+			{
+				String realname = str.substring(0, str.length() - 4);
+				ttfs.add(realname);
+				if (realname.equalsIgnoreCase(default_typeface))
+				{
+					defaultchoice = i + 1;
+				}
+			}
+		}
+		typeface_choice = defaultchoice;
+		ttfs.add(0, getString(R.string.text_default_typeface));
+		final String[] ttfname = new String[ttfs.size()];
+		for (int i = 0; i < ttfs.size(); i++)
+		{
+			ttfname[i] = ttfs.get(i);
+		}
+		AlertDialog.Builder pathselect = new AlertDialog.Builder(GlobalSetActivity.this)
+			.setTitle(R.string.text_choose_typeface)
+			.setSingleChoiceItems(ttfname, defaultchoice, new DialogInterface.OnClickListener(){
+				public void onClick (DialogInterface p1, int p2)
+				{
+					typeface_choice = p2;
+				}
+			})
+			.setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
+				public void onClick (DialogInterface p1, int p2)
+				{
+					SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
+					if (typeface_choice == 0)
+					{
+						setdata.edit().putString("DefaultTTFName", "Default").commit();
+						pre.setSummary(getString(R.string.xml_global_text_typeface_summary) + getString(R.string.text_default_typeface));
+						default_typeface = "Default";
+					}
+					else
+					{
+						setdata.edit().putString("DefaultTTFName", ttfname[typeface_choice]).commit();
+						pre.setSummary(getString(R.string.xml_global_text_typeface_summary) + ttfname[typeface_choice]);
+						default_typeface = ttfname[typeface_choice];
+					}
+					FloatManageMethod.restartApplication(GlobalSetActivity.this);
+				}
+			})
+			.setNegativeButton(R.string.cancel, null);
+		pathselect.show();
+	}
+
 	public static boolean isAccessibilitySettingsOn (Context context)
 	{
         int accessibilityEnabled = 0;
@@ -349,8 +387,25 @@ public class GlobalSetActivity extends PreferenceActivity
 	}
 
 	@Override
+	public boolean onOptionsItemSelected (MenuItem item)
+	{
+		if (item.getItemId() == android.R.id.home)
+		{
+			finish();
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
 	protected void onActivityResult (int requestCode, int resultCode, Intent data)
 	{
+		if (requestCode == FLOAT_TEXT_GET_TYPEFACE_PERMISSION)
+		{
+			if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+			{
+				getTypeFace(findPreference("TextTypeface"));
+			}
+		}
 		if (requestCode == ADVANCE_TEXT_SET)
 		{
 			Preference adts = findPreference("AdvanceTextService");

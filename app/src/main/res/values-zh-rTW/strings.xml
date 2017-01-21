@@ -21,11 +21,12 @@
     <string name="ask_for_premission">請求權限通知</string>
     <string name="ask_for_premission_alert">本應用程式需要授權懸浮視窗的權限才能執行！\n\n由於 Android 碎片化嚴重，所以請深度訂製的手機手動在系統裡打開本應用程式的懸浮視窗權限！\n\n不授予權限可能會導致不能預期的錯誤！</string>
     <string name="ask_for_premisdion_msg">本應用程式需要懸浮視窗的權限才可以執行！\n\n點擊確認授予權限</string>
+	<string name="no_premission">未授予懸浮視窗權限!</string>
+	<string name="get_premission">授予權限</string>
     <string name="ask_for_delete">刪除懸浮視窗提示</string>
     <string name="ask_for_delete_alert">是否要刪除該懸浮視窗？</string>
     <string name="reshow_msg">\n\n偵測到已經存在的懸浮視窗資料，需要還原顯示！\n\n不授予權限將退出應用程式</string>
-    <string name="exit_title">是否要退出FloatText？</string>
-    <string name="exit_msg">退出應用應用後所有的文字懸浮視窗將會消失\n懸浮視窗在下次啟動時將會重新顯示</string>
+    <string name="exit_title">再按一次退出</string>
     <string name="back_to_launcher">僅返回桌面</string>
     <string name="default_text">懸浮視窗文字</string>
     <string name="restart_to_apply">重新啟動應用程式以套用變更！</string>
@@ -150,7 +151,7 @@
     <string name="xml_set_dynamiclist">動態變量列表</string>
     <string name="xml_set_dynamiclist_sum">檢視可用的動態變量\n(整體設定中開啟服務後才能使用)</string>
     <string name="xml_web_defaulttip">Web懸浮視窗 連線網路失敗時，多重新整理就好了</string>
-    <string name="xml_web_defaulttip_sum">本功能無特殊要求不再更新修復，僅供測試</string>
+    <string name="xml_web_defaulttip_sum">本功能僅供測試</string>
 	<string name="xml_web_usetip">使用注意事項</string>
 	<string name="xml_web_usetip_sum">Web懸浮窗最小化後才能正常使用返回鍵和編輯功能！</string>
     <string name="xml_web_webset">Web設定</string>
@@ -204,4 +205,33 @@
     <string name="xml_global_language_sum">目前語言：</string>
     <!--List-->
     <string name="thanklist">在此感謝所有對本應用程式付出過努力的人！\n(以下排名不分先後)\n\n小明ming (圖示製作)\n孟武．尼德霍格．龍 (反饋群組建，繁體中文(臺灣) 翻譯)\nyzq, jm, sb (英文翻譯)\n酷安市場的諸位 (提供建議並反饋錯誤)</string>
+
+    <string name="fileselect_activity_title">文件選擇器</string>
+    <string name="fileselect_defaultpath_error">默認路徑設定錯誤！</string>
+    <string name="fileselect_file_nofound">找不到文件！</string>
+    <string name="fileselect_file_nopremission">無權限打開該文件！</string>
+    <string name="fileselect_folder_select">選定文件夾</string>
+    <string name="fileselect_folder_enter">進入文件夾</string>
+    <string name="fileselect_save">保存</string>
+    <string name="fileselect_cancel">取消</string>
+    <string name="fileselect_file_rename_error">該文件名不合法！</string>
+    <string name="fileselect_file_rename_found">該文件名已存在！</string>
+    <string name="fileselect_file_rename_ok">重命名成功</string>
+    <string name="fileselect_folder_new">新建文件夾</string>
+    <string name="fileselect_folder_new_ok">新建文件夾成功</string>
+    <string name="fileselect_select">選定</string>
+    <string name="fileselect_delete">刪除</string>
+    <string name="fileselect_rename">重命名</string>
+
+    <string name="crashreport_lib_name">錯誤反饋</string>
+    <string name="crashreport_toast_info">很抱歉,程序出現異常,正在收集日誌...</string>
+    <string name="crashreport_mail_main">運行時出現錯誤</string>
+    <string name="crashreport_mail_title">錯誤反饋報告</string>
+    <string name="crashreport_mail_reason">導致錯誤的操作</string>
+    <string name="crashreport_mail_report">錯誤日誌</string>
+    <string name="crashreport_ask_for_report">很抱歉，應用程序已經停止運行\n為了能夠更好的體驗本應用，請填寫導致錯誤的原因\n發送錯誤報告給我們,我們將會儘快修複</string>
+    <string name="crashreport_err_report">錯誤報告:</string>
+    <string name="crashreport_send_report">發送錯誤報告</string>
+    <string name="crashreport_nosend_report">不了</string>
+    <string name="crashreport_no_mail_app">你沒有安裝可以發送郵件的應用，請用截圖直接和作者反饋錯誤！\n郵箱:</string>
 </resources>

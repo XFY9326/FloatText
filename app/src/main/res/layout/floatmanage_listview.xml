@@ -1,69 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_height="match_parent"
+	android:layout_height="wrap_content"
 	android:layout_width="match_parent">
 
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:orientation="horizontal"
-        android:clickable="true"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:foreground="?android:attr/selectableItemBackground"
-        card_view:cardBackgroundColor="@color/colorListView"
-        card_view:cardCornerRadius="5dp"
-        card_view:cardElevation="3dp"
-        card_view:cardPreventCornerOverlap="true">
+	<android.support.v7.widget.CardView
+		xmlns:card_view="http://schemas.android.com/apk/res-auto"
+		android:orientation="horizontal"
+		android:clickable="true"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="5dp"
+		android:foreground="?android:attr/selectableItemBackground"
+		card_view:cardBackgroundColor="@color/colorListView"
+		card_view:cardCornerRadius="5dp"
+		card_view:cardElevation="3dp"
+		card_view:cardPreventCornerOverlap="true">
 
-        <RelativeLayout
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:padding="8dp"
-            android:gravity="center">
+		<RelativeLayout
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:orientation="horizontal"
+			android:padding="8dp"
+			android:gravity="center">
 
-            <TextView
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layout_width="wrap_content"
-                android:textSize="20sp"
-                android:id="@+id/textview_titleshow_floatmanage"
-                android:layout_marginRight="105dp"
-                android:layout_centerInParent="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"/>
+			<TextView
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:layout_width="wrap_content"
+				android:textSize="20sp"
+				android:id="@+id/textview_titleshow_floatmanage"
+				android:layout_marginRight="105dp"
+				android:layout_centerInParent="true"
+				android:layout_alignParentLeft="true"
+				android:layout_alignParentRight="true"/>
 
-            <Button
-                android:layout_height="30dp"
-                android:layout_width="30dp"
-                android:background="@drawable/ic_pencil"
-                android:id="@+id/button_edit_floatmanage"
-                android:layout_marginRight="35dp"
-                android:layout_centerInParent="true"
-                android:layout_alignParentRight="true"/>
+			<Button
+				android:layout_height="30dp"
+				android:layout_width="30dp"
+				android:background="@drawable/ic_pencil"
+				android:id="@+id/button_edit_floatmanage"
+				android:layout_marginRight="35dp"
+				android:layout_centerInParent="true"
+				android:layout_alignParentRight="true"/>
 
-            <Button
-                android:layout_height="30dp"
-                android:layout_width="30dp"
-                android:background="@drawable/ic_delete"
-                android:id="@+id/button_delete_floatmanage"
-                android:layout_centerInParent="true"
-                android:layout_alignParentRight="true"/>
+			<Button
+				android:layout_height="30dp"
+				android:layout_width="30dp"
+				android:background="@drawable/ic_delete"
+				android:id="@+id/button_delete_floatmanage"
+				android:layout_centerInParent="true"
+				android:layout_alignParentRight="true"/>
 
-            <Button
-                android:layout_height="30dp"
-                android:layout_width="30dp"
-                android:background="@drawable/ic_lock_unlocked"
-                android:id="@+id/button_lock_floatmanage"
-                android:layout_marginRight="70dp"
-                android:layout_centerInParent="true"
-                android:layout_alignParentRight="true"/>
+			<Button
+				android:layout_height="30dp"
+				android:layout_width="30dp"
+				android:background="@drawable/ic_lock_unlocked"
+				android:id="@+id/button_lock_floatmanage"
+				android:layout_marginRight="70dp"
+				android:layout_centerInParent="true"
+				android:layout_alignParentRight="true"/>
 
-        </RelativeLayout>
-        
-    </android.support.v7.widget.CardView>
-    
+		</RelativeLayout>
+
+	</android.support.v7.widget.CardView>
+
 </RelativeLayout>
 

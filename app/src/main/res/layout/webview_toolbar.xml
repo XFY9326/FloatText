@@ -1,53 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_height="wrap_content"
 	android:layout_width="match_parent"
-	android:background="#731BBB"
-	android:layout_gravity="center|center_horizontal">
+	android:orientation="vertical">
 
-	<Button
-		android:layout_height="25dp"
-		android:layout_width="25dp"
-		android:background="@drawable/ic_chevron_double_right"
-		android:layout_centerInParent="true"
-		android:layout_alignParentLeft="true"
-		android:id="@+id/webview_hide"/>
+	<RelativeLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:background="#731BBB">
 
-	<Button
-		android:layout_height="25dp"
-		android:layout_width="25dp"
-		android:layout_centerInParent="true"
-		android:background="@drawable/ic_skip_previous"
-		android:id="@+id/webview_previous"
-		android:layout_marginRight="105dp"
-		android:layout_alignParentRight="true"/>
+		<Button
+			android:layout_height="25dp"
+			android:layout_width="25dp"
+			android:background="@drawable/ic_chevron_double_right"
+			android:layout_centerInParent="true"
+			android:layout_alignParentLeft="true"
+			android:id="@+id/webview_hide"/>
 
-	<Button
-		android:layout_height="25dp"
-		android:layout_width="25dp"
-		android:background="@drawable/ic_skip_next"
-		android:layout_centerInParent="true"
-		android:layout_alignParentRight="true"
-		android:layout_marginRight="70dp"
-		android:id="@+id/webview_next"/>
+		<Button
+			android:layout_height="25dp"
+			android:layout_width="25dp"
+			android:layout_centerInParent="true"
+			android:background="@drawable/ic_skip_previous"
+			android:id="@+id/webview_previous"
+			android:layout_marginRight="105dp"
+			android:layout_alignParentRight="true"/>
 
-	<Button
-		android:layout_height="25dp"
-		android:layout_width="25dp"
-		android:background="@drawable/ic_cancel"
-		android:layout_alignParentRight="true"
-		android:layout_centerInParent="true"
-		android:id="@+id/webview_close"/>
+		<Button
+			android:layout_height="25dp"
+			android:layout_width="25dp"
+			android:background="@drawable/ic_skip_next"
+			android:layout_centerInParent="true"
+			android:layout_alignParentRight="true"
+			android:layout_marginRight="70dp"
+			android:id="@+id/webview_next"/>
 
-	<Button
-		android:layout_height="25dp"
-		android:layout_width="25dp"
-		android:background="@drawable/ic_refresh"
-		android:layout_centerInParent="true"
-		android:layout_alignParentRight="true"
-		android:layout_marginRight="35dp"
-		android:id="@+id/webview_reload"/>
+		<Button
+			android:layout_height="25dp"
+			android:layout_width="25dp"
+			android:background="@drawable/ic_cancel"
+			android:layout_alignParentRight="true"
+			android:layout_centerInParent="true"
+			android:id="@+id/webview_close"/>
 
-</RelativeLayout>
+		<Button
+			android:layout_height="25dp"
+			android:layout_width="25dp"
+			android:background="@drawable/ic_refresh"
+			android:layout_centerInParent="true"
+			android:layout_alignParentRight="true"
+			android:layout_marginRight="35dp"
+			android:id="@+id/webview_reload"/>
+
+	</RelativeLayout>
+
+	<RelativeLayout
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content">
+
+		<EditText
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:ems="18"
+			android:id="@+id/webviewtoolbar_url"
+			android:padding="8dp"
+			android:textSize="13sp"
+			android:background="#EDF3FA"
+			android:imeOptions="actionDone"
+			android:singleLine="true"
+			android:layout_alignParentRight="true"
+			android:layout_alignParentLeft="true"/>
+
+		<ProgressBar
+			android:layout_height="20dp"
+			android:layout_width="20dp"
+			android:layout_alignParentRight="false"
+			android:id="@+id/webviewtoolbar_loading"
+			android:layout_alignParentLeft="true"
+			android:layout_centerInParent="true"/>
+
+		<Button
+			android:layout_height="25dp"
+			android:layout_width="25dp"
+			android:layout_alignParentRight="true"
+			android:layout_centerInParent="true"
+			android:background="@drawable/ic_keyboard_return"
+			android:id="@+id/webviewtoolbar_enter"/>
+
+	</RelativeLayout>
+
+</LinearLayout>
 

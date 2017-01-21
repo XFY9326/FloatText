@@ -48,7 +48,7 @@ public class DynamicWordUpdateMethod
                 if (floattext.get(i) != str)
                 {
                     floatview.get(i).setText(str);
-                    wm.updateViewLayout(linearlayout.get(i), floatlayout.get(i));
+					wm.updateViewLayout(linearlayout.get(i), floatlayout.get(i));
                 }
             }
         }

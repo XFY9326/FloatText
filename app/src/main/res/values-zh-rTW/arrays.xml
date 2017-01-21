@@ -32,6 +32,7 @@
         <item>日期倒數計時(自訂日期)</item>
         <item>日期倒數計時(自訂日期)</item>
         <item>日期倒數計時(自訂日期)</item>
+		<item>星期</item>
         <item>區域網路的 IP地址</item>
         <item>電量</item>
         <item>傳感器_光線強度</item>
@@ -47,7 +48,7 @@
     </string-array>
     <string-array name="floatmanage_choose">
         <item>文字懸浮視窗</item>
-        <item>Web懸浮視窗(不穩定)</item>
+        <item>Web懸浮視窗</item>
     </string-array>
     <string-array name="language_list">
         <item>預設語言</item>

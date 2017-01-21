@@ -6,6 +6,7 @@ import android.graphics.*;
 import android.os.*;
 import android.preference.*;
 import android.provider.*;
+import android.support.v7.app.*;
 import android.view.*;
 import android.view.WindowManager.*;
 import android.widget.*;
@@ -13,11 +14,15 @@ import android.widget.SeekBar.*;
 import java.util.*;
 import net.margaritov.preference.colorpicker.*;
 import tool.xfy9326.floattext.*;
+import tool.xfy9326.floattext.Activity.*;
 import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
-public class FloatTextSetting extends PreferenceActivity
+import android.app.AlertDialog;
+import android.support.v7.app.ActionBar;
+
+public class FloatTextSetting extends AppCompatPreferenceActivity
 {
     private static final int REQUEST_CODE = 1;
     private boolean EditMode;
@@ -65,7 +70,8 @@ public class FloatTextSetting extends PreferenceActivity
         wmcheck();
         setkeys();
         addPreferencesFromResource(R.xml.floattext_settings);
-        buttonset();
+        sethome();
+		buttonset();
         if (!EditMode)
         {
             prepareshow();
@@ -75,7 +81,16 @@ public class FloatTextSetting extends PreferenceActivity
             setTitle(R.string.float_edit_title);
         }
     }
-
+	
+	private void sethome ()
+	{
+		ActionBar actionBar = getSupportActionBar();
+		if(actionBar != null)
+		{
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+	}
+	
     private void wmcheck ()
     {
         if (wm == null)
@@ -960,6 +975,15 @@ public class FloatTextSetting extends PreferenceActivity
         utils.setDatas(i, floatview, linearlayout, wmParams, TextShow, TextColor, TextSize, TextThick, FloatShow, Position, LockPosition, TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide);
     }
 
+	private void setbackresult (int i)
+	{
+		Intent intent = new Intent();
+		intent.putExtra("RESULT", i);
+		intent.putExtra("POSITION", EditID);
+		intent.putExtra("EDITMODE", EditMode);
+		setResult(FloatManage.FLOATTEXT_RESULT_CODE, intent);
+	}
+
     @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent data)
     {
@@ -974,7 +998,7 @@ public class FloatTextSetting extends PreferenceActivity
                 }
                 else
                 {
-                    Toast.makeText(this, R.string.premission_ask_failed, Toast.LENGTH_SHORT).show();
+                    setbackresult(3);
                     this.finish();
                 }
             }
@@ -1001,6 +1025,9 @@ public class FloatTextSetting extends PreferenceActivity
     {
         switch (item.getItemId())
         {
+			case android.R.id.home:
+				onKeyDown(KeyEvent.KEYCODE_BACK, null);
+				break;
             case R.id.save_win:
 				if (!FloatWinSaved)
 				{
@@ -1014,15 +1041,15 @@ public class FloatTextSetting extends PreferenceActivity
 						saveall(this, floatview, linearlayout, spdata.getString("TextShow", getString(R.string.default_text)), wmParams, true, FloatShow, Position, TextTop, AutoTop, TextMove, TextSpeed);
 					}
 					FloatWinSaved = true;
+					setbackresult(1);
 					this.finish();
-					Toast.makeText(this, R.string.save_text_ok, Toast.LENGTH_SHORT).show();
 				}
                 break;
             case R.id.delete_win:
                 if (!EditMode)
                 {
                     stopshow();
-                    Toast.makeText(this, R.string.delete_text_ok, Toast.LENGTH_SHORT).show();
+                    setbackresult(2);
                 }
                 this.finish();
                 break;

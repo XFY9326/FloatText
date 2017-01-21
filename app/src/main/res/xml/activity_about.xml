@@ -1,22 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen 
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceScreen  
+    <Preference
         android:title="@string/xml_about_thirdcode"  
-        android:summary="@string/xml_about_support">
-        <Preference
-            android:title="ColorPickerPreference"
-            android:summary="https://github.com/attenzione/android-ColorPickerPreference" 
-        />
-        <Preference
-            android:title="Android-Material-Icons"
-            android:summary="https://github.com/MajeurAndroid/Android-Material-Icons" 
-        />
-        <Preference
-            android:title="@string/others"
-            android:summary="CSDN，cnBlogs" 
-        />
-    </PreferenceScreen> 
+        android:summary="@string/xml_about_support"
+		android:key="ThirdCode">
+    </Preference> 
     <Preference
         android:title="@string/xml_about_thanklist"
         android:summary="@string/xml_about_thanklist_sum"

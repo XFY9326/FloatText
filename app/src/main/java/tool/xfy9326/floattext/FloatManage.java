@@ -1,39 +1,46 @@
 package tool.xfy9326.floattext;
 
+import android.*;
 import android.app.*;
 import android.content.*;
+import android.content.pm.*;
 import android.content.res.*;
 import android.os.*;
 import android.preference.*;
 import android.provider.*;
+import android.support.design.widget.*;
+import android.support.v4.view.*;
+import android.support.v4.widget.*;
+import android.support.v7.app.*;
+import android.support.v7.widget.*;
 import android.view.*;
-import android.view.animation.*;
-import android.widget.*;
+import android.view.View.*;
 import java.util.*;
-import lib.xfy9326.fileselector.*;
 import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Activity.*;
 import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
+import android.app.AlertDialog;
 import tool.xfy9326.floattext.R;
 
-public class FloatManage extends Activity
+public class FloatManage extends AppCompatActivity
 {
     public static int FLOATTEXT_RESULT_CODE = 0;
     public static int RESHOW_PERMISSION_RESULT_CODE = 2;
     public static int FLOATSET_RESULT_CODE = 3;
     public static int FLOAT_TEXT_IMPORT_CODE = 5;
-    private ListView listview = null;
+	public static int FLOAT_TEXT_IMPORT_PERMISSION = 7;
+	public static int FLOAT_TEXT_EXPORT_PERMISSION = 8;
+    private AdvanceRecyclerView listview = null;
     private ListViewAdapter listadapter = null;
     private SharedPreferences spdata;
     private SharedPreferences.Editor spedit;
-    private ArrayList<FloatTextView> FloatViewData;
     private ArrayList<String> FloatDataName;
-    private LayoutAnimationController lac;
     private AlertDialog ag_loading;
     private Handler mHandler;
+	private static int Snackbarusetime = 0;
 
     @Override
     protected void onCreate (Bundle savedInstanceState)
@@ -42,10 +49,113 @@ public class FloatManage extends Activity
 		FloatManageMethod.RootTask(this);
         FloatManageMethod.LanguageInit(this);
         setContentView(R.layout.activity_float_manage);
+		contentset();
         ag_loading = FloatManageMethod.setLoadingDialog(this);
 		setHandle();
         SetAll(this);
     }
+
+	private void ListViewSet ()
+    {
+        App utils = ((App)getApplicationContext());
+        FloatDataName = utils.getFloatText();
+        listview = (AdvanceRecyclerView) findViewById(R.id.listview_floatmanage);
+		listview.setHasFixedSize(true);
+		LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+		mLayoutManager.setOrientation(OrientationHelper.VERTICAL);
+		listview.setLayoutManager(mLayoutManager);
+        listview.setEmptyView(findViewById(R.id.textview_floatmanage_empty));
+        listadapter = new ListViewAdapter(this, FloatDataName);
+        listview.setAdapter(listadapter);
+        ((App)getApplicationContext()).setListviewadapter(listadapter);
+    }
+
+	private void contentset ()
+	{
+		Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(tb);
+		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatbutton);
+		fab.setOnClickListener(new OnClickListener(){
+				public void onClick (View v)
+				{
+					FloatManageMethod.addFloatWindow(FloatManage.this, FloatDataName);
+				}
+			});
+		final DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
+		NavigationView navigationView = (NavigationView) findViewById(R.id.main_navigation_view);
+		getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, tb, R.string.on, R.string.off);
+		mDrawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
+		if (navigationView != null)
+		{
+			navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+					@Override
+					public boolean onNavigationItemSelected (MenuItem item) 
+					{
+						mDrawerLayout.closeDrawers();
+						switch (item.getItemId())
+						{
+							case R.id.menu_import:
+								if (Build.VERSION.SDK_INT > 22)
+								{
+									if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+									{
+										requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, FLOAT_TEXT_IMPORT_PERMISSION);
+									}
+									else
+									{
+										FloatManageMethod.selectFile(FloatManage.this);
+									}
+								}
+								else
+								{
+									FloatManageMethod.selectFile(FloatManage.this);
+								}
+								break;
+							case R.id.menu_export:
+								if (Build.VERSION.SDK_INT > 22)
+								{
+									if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+									{
+										requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, FLOAT_TEXT_EXPORT_PERMISSION);
+									}
+									else
+									{
+										FloatManageMethod.exporttxt(FloatManage.this);
+									}
+								}
+								else
+								{
+									FloatManageMethod.exporttxt(FloatManage.this);
+								}
+								break;
+							case R.id.menu_about:
+								Intent aboutintent = new Intent(FloatManage.this, AboutActivity.class);
+								startActivity(aboutintent);
+								break;
+							case R.id.menu_set:
+								Intent setintent = new Intent(FloatManage.this, GlobalSetActivity.class);
+								startActivityForResult(setintent, FLOATSET_RESULT_CODE);
+								break;
+							case R.id.menu_back:
+								DrawerLayout drawer = (DrawerLayout) findViewById(R.id.main_drawer_layout);
+								if (drawer.isDrawerOpen(GravityCompat.START))
+								{
+									drawer.closeDrawer(GravityCompat.START);
+								}
+								FloatManageMethod.RunInBack(FloatManage.this);
+								break;
+							case R.id.menu_exit:
+								FloatManageMethod.ShutSown(FloatManage.this);
+								break;
+						}
+						return false;
+					}
+				});
+		}
+	}
 
     private void SetAll (final Activity ctx)
     {
@@ -75,29 +185,12 @@ public class FloatManage extends Activity
         int importresult = intent.getIntExtra("ImportText", 0);
         if (importresult == 1)
         {
-            Toast.makeText(ctx, R.string.text_import_success, Toast.LENGTH_SHORT).show();
+            snackshow(ctx, getString(R.string.text_import_success));
         }
         else if (importresult == 2)
         {
-            Toast.makeText(ctx, R.string.text_import_error, Toast.LENGTH_SHORT).show();
+            snackshow(ctx, getString(R.string.text_import_error));
         }
-    }
-
-    private void ListViewSet ()
-    {
-        App utils = ((App)getApplicationContext());
-        FloatDataName = utils.getFloatText();
-        FloatViewData = utils.getFloatView();
-        listview = (ListView) findViewById(R.id.listview_floatmanage);
-        listview.setEmptyView(findViewById(R.id.textview_floatmanage_empty));
-        listadapter = new ListViewAdapter(this, FloatDataName);
-        listview.setAdapter(listadapter);
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.listview_anim_layout);
-        lac = new LayoutAnimationController(animation);
-        lac.setDelay(0.3f);
-        lac.setOrder(LayoutAnimationController.ORDER_NORMAL);
-        listview.setLayoutAnimation(lac);
-        ((App)getApplicationContext()).setListviewadapter(listadapter);
     }
 
     private void closeag ()
@@ -179,56 +272,85 @@ public class FloatManage extends Activity
 			}};
 	}
 
-    @Override 
-    public boolean onCreateOptionsMenu (Menu menu)
-    {  
-        MenuInflater inflater = getMenuInflater();  
-        inflater.inflate(R.menu.opinion_menu, menu);
-        inflater.inflate(R.menu.floatmanage_action_bar, menu);
-        return super.onCreateOptionsMenu(menu);  
-    }
-
-    @Override
-    public boolean onOptionsItemSelected (MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-            case R.id.menu_import:
-                Toast.makeText(this, R.string.text_import_notice, Toast.LENGTH_LONG).show();
-                SelectFile sf = new SelectFile(FLOAT_TEXT_IMPORT_CODE, SelectFile.TYPE_ChooseFile);
-                sf.start(this);
-                break;
-            case R.id.menu_export:
-                FloatManageMethod.exporttxt(this);
-                break;
-            case R.id.menu_about:
-                Intent aboutintent = new Intent(this, AboutActivity.class);
-                startActivity(aboutintent);
-                break;
-            case R.id.menu_set:
-                Intent setintent = new Intent(this, GlobalSetActivity.class);
-                startActivityForResult(setintent, FLOATSET_RESULT_CODE);
-                break;
-            case R.id.add_win:
-                FloatManageMethod.addFloatWindow(this, FloatDataName);
-                break;
-            case R.id.menu_exit:
-                onKeyDown(KeyEvent.KEYCODE_BACK, null);
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+	public static void snackshow (Activity ctx, String str)
+	{
+		CoordinatorLayout cl = (CoordinatorLayout) ctx.findViewById(R.id.FloatManage_MainLayout);
+		Snackbar sb = new Snackbar();
+		sb.make(cl, str, Snackbar.LENGTH_SHORT).show();
+		Snackbarusetime++;
+		if (Snackbarusetime >= 5)
+		{
+			Snackbarusetime = 0;
+			System.gc();
+		}
+	}
 
     @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent data)
     {
+		if (listadapter == null)
+		{
+			listadapter = ((App)getApplicationContext()).getListviewadapter();
+		}
+		if (requestCode == FLOAT_TEXT_IMPORT_PERMISSION)
+		{
+			if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+			{
+				FloatManageMethod.selectFile(this);
+			}
+		}
+		if (requestCode == FLOAT_TEXT_EXPORT_PERMISSION)
+		{
+			if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+			{
+				FloatManageMethod.exporttxt(this);
+			}
+		}
         if (requestCode == FLOATTEXT_RESULT_CODE)
         {
-            ListViewSet();
-            if (FloatDataName.size() > 0)
-            {
-                lac.start();
-            }
+			if (data != null)
+			{
+				int s = data.getIntExtra("RESULT", 0);
+				int p = data.getIntExtra("POSITION", 0);
+				boolean e = data.getBooleanExtra("EDITMODE", false);
+				switch (s)
+				{
+					case 1:
+						new Handler().postDelayed(new Runnable(){   
+								public void run ()
+								{   
+									snackshow(FloatManage.this, getString(R.string.save_text_ok));
+								}   
+							}, 300);   
+						break;
+					case 2:
+						new Handler().postDelayed(new Runnable(){   
+								public void run ()
+								{   
+									snackshow(FloatManage.this, getString(R.string.delete_text_ok));
+								}   
+							}, 300);   
+						break;
+					case 3:
+						new Handler().postDelayed(new Runnable(){   
+								public void run ()
+								{   
+									snackshow(FloatManage.this, getString(R.string.premission_ask_failed));
+								}   
+							}, 300);   
+						break;
+				}
+				FloatDataName = ((App)getApplicationContext()).getFloatText();
+				if (e)
+				{
+					listadapter.notifyItemChanged(p);
+				}
+				else
+				{
+					listadapter.notifyItemInserted(p);
+					listadapter.notifyItemRangeChanged(p, listadapter.getItemCount());
+				}
+			}
             FloatData dat = new FloatData(this);
             dat.savedata();
         }
@@ -243,22 +365,19 @@ public class FloatManage extends Activity
                 }
                 else
                 {
-                    Toast.makeText(this, R.string.premission_ask_failed, Toast.LENGTH_SHORT).show();
+                    snackshow(this, getString(R.string.premission_ask_failed));
                 }
             }
+			listadapter.notifyDataSetChanged();
         }
         if (requestCode == FLOAT_TEXT_IMPORT_CODE)
         {
             if (data != null)
             {
                 importtxt(data);
+				listadapter.notifyDataSetChanged();
             }
         }
-		if (listadapter == null)
-		{
-			listadapter = ((App)getApplicationContext()).getListviewadapter();
-		}
-        listadapter.notifyDataSetChanged();
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -267,8 +386,28 @@ public class FloatManage extends Activity
     {
         if (keyCode == KeyEvent.KEYCODE_BACK)
         {
-            FloatManageMethod.CloseApp(this);
+			DrawerLayout drawer = (DrawerLayout) findViewById(R.id.main_drawer_layout);
+			if (drawer.isDrawerOpen(GravityCompat.START))
+			{
+				drawer.closeDrawer(GravityCompat.START);
+			}
+			else
+			{
+				FloatManageMethod.CloseApp(this);
+			}
         }
+		if (keyCode == KeyEvent.KEYCODE_MENU)
+		{
+			DrawerLayout drawer = (DrawerLayout) findViewById(R.id.main_drawer_layout);
+			if (drawer.isDrawerOpen(GravityCompat.START))
+			{
+				drawer.closeDrawer(GravityCompat.START);
+			}
+			else
+			{
+				drawer.openDrawer(GravityCompat.START);
+			}
+		}
         return false;
     }
 

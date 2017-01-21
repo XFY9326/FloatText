@@ -21,11 +21,12 @@
     <string name="ask_for_premission">请求权限通知</string>
     <string name="ask_for_premission_alert">本应用需要悬浮窗权限才能运行！\n\n由于安卓碎片化严重，所以请深度定制的手机手动在系统里打开本应用的悬浮窗权限!\n\n不授予权限可能会导致不可预知的错误！</string>
     <string name="ask_for_premisdion_msg">本应用需要悬浮窗权限才可以运行！\n\n点击确认授予权限</string>
+	<string name="no_premission">未授予悬浮窗权限!</string>
+	<string name="get_premission">授予权限</string>
     <string name="ask_for_delete">删除悬浮窗提示</string>
     <string name="ask_for_delete_alert">是否要删除该悬浮窗？</string>
     <string name="reshow_msg">\n\n检测到存在保存的悬浮窗数据，需要恢复显示！\n\n不授予权限将退出应用</string>
-    <string name="exit_title">是否要退出FloatText？</string>
-    <string name="exit_msg">退出应用后所有的文字悬浮窗将会消失\n悬浮窗在下次启动时将会重新显示</string>
+    <string name="exit_title">再按一次退出</string>
     <string name="back_to_launcher">仅返回桌面</string>
     <string name="default_text">悬浮窗文字</string>
     <string name="restart_to_apply">重启应用以应用更改！</string>
@@ -150,7 +151,7 @@
     <string name="xml_set_dynamiclist">动态变量列表</string>
     <string name="xml_set_dynamiclist_sum">查看可用的动态变量\n(全局设置中开启动态变量服务后可用)</string>
     <string name="xml_web_defaulttip">Web悬浮窗联网失败时，多刷新就好了</string>
-    <string name="xml_web_defaulttip_sum">本功能无特殊要求不再更新修复，仅供测试</string>
+    <string name="xml_web_defaulttip_sum">本功能仅供测试</string>
 	<string name="xml_web_usetip">使用注意事项</string>
 	<string name="xml_web_usetip_sum">Web悬浮窗最小化后才能正常使用返回键和编辑功能！</string>
     <string name="xml_web_webset">Web设置</string>
@@ -204,4 +205,35 @@
     <string name="xml_global_language_sum">当前语言:</string>
     <!--List-->
     <string name="thanklist">在此感谢所有对本应用付出过努力的人！\n(以下排名不分先后)\n\n小明ming (图标制作)\n孟武．尼德霍格．龍 (反馈群组建，繁体中文翻译)\nyzq, jm, sb (英文翻译)\n酷安市场的诸位 (提供建议并反馈错误)</string>
+
+    <string name="fileselect_activity_title">文件选择器</string>
+    <string name="fileselect_defaultpath_error">默认路径设置错误！</string>
+    <string name="fileselect_file_nofound">未找到该文件！</string>
+    <string name="fileselect_file_nopremission">无权限打开该文件！</string>
+    <string name="fileselect_folder_select">选中文件夹</string>
+    <string name="fileselect_folder_enter">进入文件夹</string>
+    <string name="fileselect_save">保存</string>
+    <string name="fileselect_cancel">取消</string>
+    <string name="fileselect_file_rename_error">该文件名不合法！</string>
+    <string name="fileselect_file_rename_found">该文件名已存在！</string>
+    <string name="fileselect_file_rename_ok">重命名成功</string>
+    <string name="fileselect_folder_new">新建文件夹</string>
+    <string name="fileselect_folder_new_ok">新建文件夹成功</string>
+    <string name="fileselect_select">选定</string>
+    <string name="fileselect_delete">删除</string>
+    <string name="fileselect_rename">重命名</string>
+
+    <string name="crashreport_lib_name">错误反馈</string>
+    <string name="crashreport_toast_info">很抱歉,程序出现异常,正在收集日志...</string>
+    <string name="crashreport_mail_main">运行时出现错误</string>
+    <string name="crashreport_mail_title">错误反馈报告</string>
+    <string name="crashreport_mail_reason">导致错误的操作</string>
+    <string name="crashreport_mail_report">错误日志</string>
+    <string name="crashreport_ask_for_report">很抱歉，应用程序已经停止运行\n为了能够更好的体验本应用，请填写导致错误的原因\n发送错误报告给我们,我们将会尽快修复</string>
+    <string name="crashreport_err_report">错误报告:</string>
+    <string name="crashreport_send_report">发送错误报告</string>
+    <string name="crashreport_nosend_report">不了</string>
+    <string name="crashreport_no_mail_app">你没有安装可以发送邮件的应用，请用截图直接和作者反馈错误！\n邮箱:</string>
+	
+	<string name="thirdcode_use">1.ColorPickerPreference\n2.Android-Material-Icons</string>
 </resources>

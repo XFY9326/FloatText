@@ -13,10 +13,20 @@ import tool.xfy9326.floattext.View.*;
 
 public class FloatWebSettingMethod
 {
-    public static FloatWebView CreateFloatWebView (Context ctx, String url)
+	
+	public static String urlfix (String str)
+	{
+		if (!str.contains("://"))
+		{
+			str = "http://" + str;
+		}
+		return str;
+	}
+	
+    public static WebView CreateFloatWebView (Context ctx, String url, final EditText et, final ProgressBar loading)
     {
         String cachePath = Environment.getExternalStorageDirectory().getAbsolutePath().toString() + "/FloatText/WebCache/";
-        FloatWebView webview = new FloatWebView(ctx);
+        WebView webview = new WebView(ctx);
         webview.setVerticalScrollbarOverlay(true);
         webview.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         WebSettings webSettings = webview.getSettings();
@@ -35,17 +45,31 @@ public class FloatWebSettingMethod
         webSettings.setAppCacheMaxSize(5 * 1024 * 1024);
 		webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
         webview.setWebViewClient(new WebViewClient(){
-                public boolean shouldOverrideUrlLoading (FloatWebView view, String url)
+                public boolean shouldOverrideUrlLoading (WebView view, String wurl)
                 {
-                    view.loadUrl(url);
+                    view.loadUrl(wurl);
+					et.setText(wurl);
                     return true;
                 }
+				
+				public void onPageStarted (WebView view, String purl, Bitmap ic)
+				{
+					et.setText(purl);
+					loading.setVisibility(View.VISIBLE);
+					super.onPageStarted(view, purl, ic);
+				}
+				
+				public void onPageFinished(WebView view, String furl)
+				{
+					loading.setVisibility(View.GONE);
+					super.onPageFinished(view, furl);
+				}
             });
         webview.loadUrl(url);
         return webview;
     }
 
-    public static WindowManager.LayoutParams CreateFloatLayout (final Context ctx, WindowManager wm, FloatWebView fwv, View tview, FloatLinearLayout layout, float px, float py, boolean show, int width, int height)
+    public static WindowManager.LayoutParams CreateFloatLayout (final Context ctx, WindowManager wm, WebView fwv, View tview, FloatLinearLayout layout, float px, float py, boolean show, int width, int height)
     {
         WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams();
         wmParams.type = LayoutParams.TYPE_SYSTEM_ALERT;

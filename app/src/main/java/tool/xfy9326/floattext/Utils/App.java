@@ -3,8 +3,8 @@ package tool.xfy9326.floattext.Utils;
 import android.app.*;
 import android.view.*;
 import java.util.*;
-import lib.xfy9326.crashreport.*;
 import tool.xfy9326.floattext.*;
+import tool.xfy9326.floattext.CrashReport.*;
 import tool.xfy9326.floattext.View.*;
 
 public class App extends Application
@@ -381,7 +381,6 @@ public class App extends Application
         ColorShow.remove(i);
         SizeShow.remove(i);
         ThickShow.remove(i);
-        ShowFloat.remove(i);
         Position.remove(i);
         LockPosition.remove(i);
         TextTop.remove(i);
@@ -397,6 +396,7 @@ public class App extends Application
 		FloatSize.remove(i);
 		FloatLong.remove(i);
 		FloatWide.remove(i);
+		ShowFloat.remove(i);
     }
 
 }

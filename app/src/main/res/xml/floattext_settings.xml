@@ -142,7 +142,7 @@
             android:dependency="FloatShow"
         />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/xml_set_dynamicstr"> 
+	<PreferenceCategory android:title="@string/xml_set_dynamicstr"> 
         <Preference 
             android:key="DynamicList"
             android:title="@string/xml_set_dynamiclist"

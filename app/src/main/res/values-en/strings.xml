@@ -21,11 +21,12 @@
     <string name="ask_for_premission">Permission asking</string>
     <string name="ask_for_premission_alert">The appliance asks for alert permission.\n\nBecause of the grave of Android clastic,please turn on the alert permission by yourself in your deeply self-designed system.\n\nNot conferring permission may cause unpredictable errors.</string>
     <string name="ask_for_premisdion_msg">The appliance asks for alert permission.\n\nClick to confer the permission.</string>
+	<string name="no_premission">No Alert Permission!</string>
+	<string name="get_premission">Give Permission</string>
     <string name="ask_for_delete">Delete the informing alert </string>
     <string name="ask_for_delete_alert">Delete the alert or not?</string>
     <string name="reshow_msg">\n\nWe found alert data in saving process,asking for recovering display.\n\nNot conferring permission would cause you quit the appliance.</string>
-    <string name="exit_title">Quit FloatText？</string>
-    <string name="exit_msg">All the text alert will be disappear after quit the appliance.\nThe alert will display next time you use the appliance.</string>
+    <string name="exit_title">Press again to quit</string>
     <string name="back_to_launcher">Return to desktop only</string>
     <string name="default_text">Alert Information</string>
     <string name="restart_to_apply">Restart the appliance to apply your changes</string>
@@ -150,7 +151,7 @@
     <string name="xml_set_dynamiclist">Dynamic Words List</string>
     <string name="xml_set_dynamiclist_sum">Saw Dynamic Word List\n(Open this Service in Global Setting first)</string>
     <string name="xml_web_defaulttip">Reload if Web Float Window failed to connect.</string>
-    <string name="xml_web_defaulttip_sum">This function is only for test and will not update</string>
+    <string name="xml_web_defaulttip_sum">This function is only for test</string>
 	<string name="xml_web_usetip">Note</string>
 	<string name="xml_web_usetip_sum">Web window must be minimized before use the originalreturn button and edit function!</string>
     <string name="xml_web_webset">Web Settings</string>
@@ -202,4 +203,33 @@
     <string name="xml_global_devlopmode_off">Will not show unstable functions</string>
     <string name="xml_global_language">Language Setting</string>
     <string name="xml_global_language_sum">Current Language:</string>
+
+    <string name="fileselect_activity_title">File Selector</string>
+    <string name="fileselect_defaultpath_error">Default File Path Error！</string>
+    <string name="fileselect_file_nofound">File No Found！</string>
+    <string name="fileselect_file_nopremission">No Permission！</string>
+    <string name="fileselect_folder_select">Select Folder</string>
+    <string name="fileselect_folder_enter">Enter Folder</string>
+    <string name="fileselect_save">Save</string>
+    <string name="fileselect_cancel">Cancel</string>
+    <string name="fileselect_file_rename_error">File name is not legal！</string>
+    <string name="fileselect_file_rename_found">Existed File Name！</string>
+    <string name="fileselect_file_rename_ok">Rename Success</string>
+    <string name="fileselect_folder_new">Add new Folder</string>
+    <string name="fileselect_folder_new_ok">Add new Folder Success</string>
+    <string name="fileselect_select">Select</string>
+    <string name="fileselect_delete">Delete</string>
+    <string name="fileselect_rename">Rename</string>
+
+    <string name="crashreport_lib_name">Error feedback</string>
+    <string name="crashreport_toast_info">Sorry, the program is abnormal, collecting logs now...</string>
+    <string name="crashreport_mail_main">Run time error</string>
+    <string name="crashreport_mail_title">Error feedback report</string>
+    <string name="crashreport_mail_reason">Lead to incorrect operation</string>
+    <string name="crashreport_mail_report">Error log</string>
+    <string name="crashreport_ask_for_report">"Sorry, the application has stopped running.\nIn order to better experience the application, please fill in the cause of the error\nSend an error report to us and we will fix it as soon as possible."</string>
+    <string name="crashreport_err_report">Error reporting:</string>
+    <string name="crashreport_send_report">Send error report</string>
+    <string name="crashreport_nosend_report">No.</string>
+    <string name="crashreport_no_mail_app">You have not installed the mail application, please directly contact the author to feedback error!\nMailbox:</string>
 </resources>
