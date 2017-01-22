@@ -131,6 +131,9 @@ public class FloatManage extends AppCompatActivity
 									FloatManageMethod.exporttxt(FloatManage.this);
 								}
 								break;
+							case R.id.menu_wordlist:
+								FloatTextSettingMethod.showDlist(FloatManage.this);
+								break;
 							case R.id.menu_about:
 								Intent aboutintent = new Intent(FloatManage.this, AboutActivity.class);
 								startActivity(aboutintent);

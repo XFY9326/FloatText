@@ -23,7 +23,7 @@ public class FloatWebSettingMethod
 		return str;
 	}
 	
-    public static WebView CreateFloatWebView (Context ctx, String url, final EditText et, final ProgressBar loading)
+    public static WebView CreateFloatWebView (Context ctx, String url)
     {
         String cachePath = Environment.getExternalStorageDirectory().getAbsolutePath().toString() + "/FloatText/WebCache/";
         WebView webview = new WebView(ctx);
@@ -44,27 +44,6 @@ public class FloatWebSettingMethod
         webSettings.setAppCacheEnabled(true);
         webSettings.setAppCacheMaxSize(5 * 1024 * 1024);
 		webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
-        webview.setWebViewClient(new WebViewClient(){
-                public boolean shouldOverrideUrlLoading (WebView view, String wurl)
-                {
-                    view.loadUrl(wurl);
-					et.setText(wurl);
-                    return true;
-                }
-				
-				public void onPageStarted (WebView view, String purl, Bitmap ic)
-				{
-					et.setText(purl);
-					loading.setVisibility(View.VISIBLE);
-					super.onPageStarted(view, purl, ic);
-				}
-				
-				public void onPageFinished(WebView view, String furl)
-				{
-					loading.setVisibility(View.GONE);
-					super.onPageFinished(view, furl);
-				}
-            });
         webview.loadUrl(url);
         return webview;
     }

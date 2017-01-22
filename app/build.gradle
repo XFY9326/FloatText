@@ -9,7 +9,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 24
         versionCode 43
-        versionName "2.8"
+        versionName "2.8.1"
     }
     buildTypes {
         release {
@@ -22,8 +22,8 @@ android {
 }
 
 dependencies {
-	compile 'com.android.support:appcompat-v7:+'
 	compile 'com.android.support:design:+'
-    compile 'com.android.support:cardview-v7:+'
+	compile 'com.android.support:cardview-v7:+'
+	compile 'com.android.support:appcompat-v7:+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

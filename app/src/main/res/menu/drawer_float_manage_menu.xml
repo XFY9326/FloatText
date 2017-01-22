@@ -12,6 +12,10 @@
 	</group>
 	<group android:id="@+id/drawer_g2">
 		<item
+			android:id="@+id/menu_wordlist"
+			android:icon="@drawable/ic_document"
+			android:title="@string/xml_set_dynamiclist"/>
+		<item
 			android:id="@+id/menu_set"
 			android:icon="@drawable/ic_cog"
 			android:title="@string/settings"/>

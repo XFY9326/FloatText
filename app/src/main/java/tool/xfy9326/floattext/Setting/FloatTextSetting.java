@@ -674,35 +674,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         dynamiclist.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick (Preference p)
                 {
-                    final String[] dynamiclist = getResources().getStringArray(R.array.floatsetting_dynamic_list);
-                    String[] dynamicname = getResources().getStringArray(R.array.floatsetting_dynamic_name);
-                    String[] result = new String[dynamiclist.length + 1];
-                    for (int i = 0;i < dynamiclist.length;i++)
-                    {
-                        result[i] = "<" + dynamiclist[i] + ">" + "\n" + dynamicname[i];
-                    }
-                    result[dynamiclist.length] = getString(R.string.dynamic_num_tip);
-                    AlertDialog.Builder list = new AlertDialog.Builder(FloatTextSetting.this)
-                        .setTitle(R.string.dynamic_list_title)
-                        .setItems(result, new DialogInterface.OnClickListener(){
-                            public void onClick (DialogInterface d, int i)
-                            {
-                                if (i != dynamiclist.length)
-                                {
-                                    ClipboardManager clip = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-                                    if (((App)getApplicationContext()).HtmlMode)
-                                    {
-                                        clip.setText("#" + dynamiclist[i] + "#");
-                                    }
-                                    else
-                                    {
-                                        clip.setText("<" + dynamiclist[i] + ">");
-                                    }
-                                    Toast.makeText(FloatTextSetting.this, R.string.copy_ok, Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    list.show();
+                    FloatTextSettingMethod.showDlist(FloatTextSetting.this);
                     return true;
                 }
             });

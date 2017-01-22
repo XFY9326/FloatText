@@ -19,6 +19,7 @@ import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
 import android.view.View.OnClickListener;
+import android.graphics.*;
 
 public class FloatWebSetting extends AppCompatPreferenceActivity
 {
@@ -147,11 +148,32 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
 		urltext.clearFocus();
 		urlloading = (ProgressBar) toolbar.findViewById(R.id.webviewtoolbar_loading);
 		urlloading.setVisibility(View.GONE);
-		webview = FloatWebSettingMethod.CreateFloatWebView(this, WebUrl, urltext, urlloading);
+		webview = FloatWebSettingMethod.CreateFloatWebView(this, WebUrl);
+		webview.setWebViewClient(new WebViewClient(){
+                public boolean shouldOverrideUrlLoading (WebView view, String wurl)
+                {
+					WebUrl = wurl;
+                    view.loadUrl(wurl);
+					urltext.setText(wurl);
+                    return true;
+                }
+
+				public void onPageStarted (WebView view, String purl, Bitmap ic)
+				{
+					urltext.setText(purl);
+					urlloading.setVisibility(View.VISIBLE);
+					super.onPageStarted(view, purl, ic);
+				}
+
+				public void onPageFinished(WebView view, String furl)
+				{
+					urlloading.setVisibility(View.GONE);
+					super.onPageFinished(view, furl);
+				}
+            });
         linearlayout = FloatTextSettingMethod.CreateLayout(this, -1);
         toolbar_set(this, webview, toolbar);
         wmParams = FloatWebSettingMethod.CreateFloatLayout(this, wm, webview, toolbar, linearlayout, 150, 150, true, webwidth, webheight);
-        webview.reload();
     }
 
     private void toolbar_set (Context ctx, final WebView webview, final View view)
