@@ -1,6 +1,7 @@
 package tool.xfy9326.floattext.Setting;
 
 import android.content.*;
+import android.graphics.*;
 import android.os.*;
 import android.preference.*;
 import android.provider.*;
@@ -19,7 +20,6 @@ import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
 import android.view.View.OnClickListener;
-import android.graphics.*;
 
 public class FloatWebSetting extends AppCompatPreferenceActivity
 {

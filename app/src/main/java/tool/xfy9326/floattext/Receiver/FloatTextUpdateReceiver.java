@@ -10,8 +10,8 @@ import tool.xfy9326.floattext.View.*;
 
 public class FloatTextUpdateReceiver extends BroadcastReceiver
 {
-    private String TextAction = FloatServiceMethod.TEXT_UPDATE_ACTION;
-    private String StateAction = FloatServiceMethod.TEXT_STATE_UPDATE_ACTION;
+    private static String TextAction = FloatServiceMethod.TEXT_UPDATE_ACTION;
+    private static String StateAction = FloatServiceMethod.TEXT_STATE_UPDATE_ACTION;
 
     @Override
     public void onReceive (Context p1, Intent p2)

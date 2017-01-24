@@ -13,7 +13,7 @@ import tool.xfy9326.floattext.View.*;
 
 public class FloatWebSettingMethod
 {
-	
+
 	public static String urlfix (String str)
 	{
 		if (!str.contains("://"))
@@ -22,7 +22,7 @@ public class FloatWebSettingMethod
 		}
 		return str;
 	}
-	
+
     public static WebView CreateFloatWebView (Context ctx, String url)
     {
         String cachePath = Environment.getExternalStorageDirectory().getAbsolutePath().toString() + "/FloatText/WebCache/";

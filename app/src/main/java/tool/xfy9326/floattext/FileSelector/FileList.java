@@ -47,11 +47,11 @@ public class FileList extends AppCompatActivity
 		setSupportActionBar(tb);
 		sethome();
     }
-	
+
 	private void sethome ()
 	{
 		ActionBar actionBar = getSupportActionBar();
-		if(actionBar != null)
+		if (actionBar != null)
 		{
             actionBar.setDisplayHomeAsUpEnabled(true);
         }

@@ -189,8 +189,11 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 			nous.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
 					public boolean onPreferenceClick (Preference p)
 					{
-						Intent intent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
-						startActivityForResult(intent, ADVANCE_TEXT_NOTIFICATION_SET);
+						if (Build.VERSION.SDK_INT >= 18)
+						{
+							Intent intent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
+							startActivityForResult(intent, ADVANCE_TEXT_NOTIFICATION_SET);
+						}
 						return true;
 					}
 				});

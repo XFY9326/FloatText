@@ -3,11 +3,14 @@ package tool.xfy9326.floattext.Method;
 import android.app.*;
 import android.content.*;
 import android.content.res.*;
+import android.graphics.*;
 import android.net.*;
 import android.os.*;
 import android.preference.*;
 import android.provider.*;
+import android.support.design.widget.*;
 import android.view.*;
+import android.view.View.*;
 import android.widget.*;
 import java.io.*;
 import java.text.*;
@@ -19,9 +22,6 @@ import tool.xfy9326.floattext.Service.*;
 import tool.xfy9326.floattext.Setting.*;
 import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
-import android.support.design.widget.*;
-import android.view.View.*;
-import android.graphics.*;
 
 public class FloatManageMethod
 {
@@ -142,14 +142,14 @@ public class FloatManageMethod
 						{
 							CoordinatorLayout cl = (CoordinatorLayout) ctx.findViewById(R.id.FloatManage_MainLayout);
 							Snackbar.make(cl, R.string.no_premission, Snackbar.LENGTH_SHORT).setAction(R.string.get_premission, new OnClickListener(){
-								public void onClick(View v)
-								{
-									Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-									intent.setData(Uri.parse("package:" + ctx.getPackageName()));
-									ctx.startActivity(intent);
-								}
-							}).setActionTextColor(Color.RED).show();
-							
+									public void onClick (View v)
+									{
+										Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+										intent.setData(Uri.parse("package:" + ctx.getPackageName()));
+										ctx.startActivity(intent);
+									}
+								}).setActionTextColor(Color.RED).show();
+
 						}
 					});
 			}

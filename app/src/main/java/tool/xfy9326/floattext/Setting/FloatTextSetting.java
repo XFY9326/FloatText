@@ -81,16 +81,16 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             setTitle(R.string.float_edit_title);
         }
     }
-	
+
 	private void sethome ()
 	{
 		ActionBar actionBar = getSupportActionBar();
-		if(actionBar != null)
+		if (actionBar != null)
 		{
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 	}
-	
+
     private void wmcheck ()
     {
         if (wm == null)

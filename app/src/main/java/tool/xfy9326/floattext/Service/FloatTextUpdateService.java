@@ -13,8 +13,8 @@ import tool.xfy9326.floattext.Utils.*;
 
 public class FloatTextUpdateService extends Service
 {
-	private String[] LIST;
-	private boolean[] INFO;
+	private static String[] LIST;
+	private static boolean[] INFO;
     private Timer timer = null;
     private Timer timer_f = null;
     private Timer timer_s = null;
@@ -100,7 +100,7 @@ public class FloatTextUpdateService extends Service
 		PostList[13] = cputemperature;
 		PostList[14] = sensorproximity;
 		PostList[15] = sensorstep + "";
-		PostList[16] = clip.getText().toString();
+		PostList[16] = getClip();
 		PostList[17] = currentactivity;
 		PostList[18] = notifymes;
 		PostList[19] = toasts;
@@ -154,6 +154,7 @@ public class FloatTextUpdateService extends Service
         lastTotalTxBytes = FloatServiceMethod.getTotalTxBytes(this);
         lastTimeStamp = System.currentTimeMillis();
         battery_filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+		clip = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
         msensor = (SensorManager) getSystemService(SENSOR_SERVICE);
         sensor_tem = msensor.getDefaultSensor(Sensor.TYPE_TEMPERATURE);
         sensor_light = msensor.getDefaultSensor(Sensor.TYPE_LIGHT);
@@ -161,13 +162,8 @@ public class FloatTextUpdateService extends Service
         sensor_pressure = msensor.getDefaultSensor(Sensor.TYPE_PRESSURE);
         sensor_proximity = msensor.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         sensor_step = msensor.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-        clip = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-		if (clip.getText() == null)
-		{
-			clip.setText("");
-		}
 		setDefaultKey();
-		SetListKeys();
+		SetListKeys(this);
     }
 
     private void sendBroadcast ()
@@ -178,6 +174,25 @@ public class FloatTextUpdateService extends Service
 		bundle.putStringArray("DATA", SetPostKey());
         timeIntent.putExtras(bundle);
         sendBroadcast(timeIntent);
+		System.gc();
+	}
+
+	private String getClip ()
+	{
+		if (clip != null)
+		{
+			if (clip.hasPrimaryClip())
+			{
+				ClipData cd = clip.getPrimaryClip();
+				CharSequence cq = cd.getItemAt(0).getText();
+				if (cq != null)
+				{
+					return cq.toString();
+				}
+			}
+		}
+		String str = getString(R.string.loading);
+		return  str;
 	}
 
     private void getTime ()
@@ -295,9 +310,9 @@ public class FloatTextUpdateService extends Service
             }, 100, 3500);
     }
 
-	private void SetListKeys ()
+	private static void SetListKeys (Context ctx)
 	{
-		SharedPreferences sp = FloatServiceMethod.setUpdateList(this);
+		SharedPreferences sp = FloatServiceMethod.setUpdateList(ctx);
 		LIST = FloatServiceMethod.StringtoStringArray(sp.getString("LIST", "[]"));
 		INFO = FloatServiceMethod.StringtoBooleanArray(sp.getString("INFO", "[]"));
 	}
@@ -343,7 +358,7 @@ public class FloatTextUpdateService extends Service
 					dynamicnum = true;
 					if (!timedynamicset)
                     {
-                        if (hasWord(str, "SystemTime") || hasWord(str, "Date") || hasWord(str, "Clock") || hasWord(str, "Week"))
+                        if (FloatServiceMethod.hasWord(str, "SystemTime") || FloatServiceMethod.hasWord(str, "Date") || FloatServiceMethod.hasWord(str, "Clock") || FloatServiceMethod.hasWord(str, "Week"))
                         {
                             time_dynamicword = true;
                             timedynamicset = true;
@@ -356,7 +371,7 @@ public class FloatTextUpdateService extends Service
                     }
                     if (!sensordynamicset)
                     {
-                        if (hasWord(str, "Sensor_"))
+                        if (FloatServiceMethod.hasWord(str, "Sensor_"))
                         {
                             sensor_use_dynamic_word = true;
                             sensordynamicset = true;
@@ -369,7 +384,7 @@ public class FloatTextUpdateService extends Service
                     }
 					if (!highcpudynamicset)
                     {
-                        if (hasWord(str, "CPURate") || hasWord(str, "MemRate"))
+                        if (FloatServiceMethod.hasWord(str, "CPURate") || FloatServiceMethod.hasWord(str, "MemRate"))
                         {
                             high_cpu_use_dynamicword = true;
                             highcpudynamicset = true;
@@ -384,11 +399,6 @@ public class FloatTextUpdateService extends Service
             }
         }
         return dynamicnum;
-    }
-
-    private boolean hasWord (String all, String part)
-    {
-        return all.contains(part);
     }
 
 	private class AdvanceTextReceiver extends BroadcastReceiver

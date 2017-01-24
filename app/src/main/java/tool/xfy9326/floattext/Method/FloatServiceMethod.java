@@ -14,7 +14,6 @@ import tool.xfy9326.floattext.*;
 
 import java.lang.Process;
 import java.text.ParseException;
-import android.view.*;
 
 public class FloatServiceMethod
 {
@@ -83,6 +82,11 @@ public class FloatServiceMethod
 		}
 		return list;
 	}
+	
+	public static boolean hasWord (String all, String part)
+    {
+        return all.contains(part);
+    }
 
 	public static String[] StringtoStringArray (String str)
 	{
@@ -156,12 +160,6 @@ public class FloatServiceMethod
 			b[i] = B[i];
 		}
 		return b;
-	}
-	
-	public static boolean getFullScreen (Context ctx, WindowManager wm)
-	{
-		
-		return false;
 	}
 
     public static List<String> getHomes (Context ctx)

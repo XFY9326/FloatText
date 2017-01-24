@@ -21,9 +21,12 @@ public class FloatNotificationListenerService extends NotificationListenerServic
 	{
 		Bundle extras = sbn.getNotification().extras;
 		String title = extras.getString(Notification.EXTRA_TITLE);
-		String text = extras.getCharSequence(Notification.EXTRA_TEXT).toString();
-		notify = title  + ":" + text;
-		sendmes();
+		CharSequence text = extras.getCharSequence(Notification.EXTRA_TEXT);
+		if (text != null)
+		{
+			notify = title  + ":" + text.toString();
+			sendmes();
+		}
 		super.onNotificationPosted(sbn);
 	}
 
