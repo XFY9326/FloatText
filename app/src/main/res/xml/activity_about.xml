@@ -42,7 +42,7 @@
     </PreferenceScreen>
     <Preference
         android:title="@string/xml_about_author"
-        android:summary="Made By XFY9326\nEmail:1069665464@qq.com" 
+        android:summary="Main Author:XFY9326\nCooperator:酷安基友\nEmail:1069665464@qq.com" 
     />
     <Preference
         android:title="@string/xml_about_version"

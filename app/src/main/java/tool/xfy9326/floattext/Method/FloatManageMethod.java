@@ -29,7 +29,7 @@ public class FloatManageMethod
 	public static Handler waithandle;
 	public static Runnable waitrun;
 
-	public static void RootTask (Activity act)
+	public static void RootTask(Activity act)
 	{
 		if (!act.isTaskRoot())
 		{
@@ -37,7 +37,7 @@ public class FloatManageMethod
         }
 	}
 
-	public static void restartApplication (Context ctx)
+	public static void restartApplication(Context ctx)
     {
         Intent intent = ctx.getPackageManager().getLaunchIntentForPackage(ctx.getPackageName());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -45,7 +45,7 @@ public class FloatManageMethod
         System.exit(0);
     }
 
-    public static AlertDialog setLoadingDialog (Context ctx)
+    public static AlertDialog setLoadingDialog(Context ctx)
     {
         LayoutInflater inflater = LayoutInflater.from(ctx);  
         View layout = inflater.inflate(R.layout.dialog_loading, null);
@@ -56,7 +56,7 @@ public class FloatManageMethod
         return ag;
     }
 
-    public static boolean importtxt (Context ctx, String path)
+    public static boolean importtxt(Context ctx, String path)
     {
         File file = new File(path);
         App utils = (App)ctx.getApplicationContext();
@@ -89,7 +89,7 @@ public class FloatManageMethod
         }
     }
 
-    public static void exporttxt (Context ctx)
+    public static void exporttxt(Context ctx)
     {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String path = Environment.getExternalStorageDirectory().toString() + "/FloatText/Export/FloatText>" + sdf.format(new Date()) + ".txt";
@@ -110,14 +110,14 @@ public class FloatManageMethod
         }
     }
 
-	public static void selectFile (Activity ctx)
+	public static void selectFile(Activity ctx)
 	{
 		Toast.makeText(ctx, R.string.text_import_notice, Toast.LENGTH_LONG).show();
 		SelectFile sf = new SelectFile(FloatManage.FLOAT_TEXT_IMPORT_CODE, SelectFile.TYPE_ChooseFile);
 		sf.start(ctx);
 	}
 
-    public static void closeAllWin (Context ctx)
+    public static void closeAllWin(Context ctx)
     {
         WindowManager wm =((App)ctx.getApplicationContext()).getFloatwinmanager();
         ArrayList<FloatLinearLayout> layout =  ((App)ctx.getApplicationContext()).getFloatlinearlayout();
@@ -131,18 +131,18 @@ public class FloatManageMethod
         }
     }
 
-	public static void notifypermission (final Activity ctx)
+	public static void notifypermission(final Activity ctx)
 	{
 		if (Build.VERSION.SDK_INT >= 23)
 		{
 			if (!Settings.canDrawOverlays(ctx))
 			{
 				ctx.runOnUiThread(new Runnable(){
-						public void run ()
+						public void run()
 						{
 							CoordinatorLayout cl = (CoordinatorLayout) ctx.findViewById(R.id.FloatManage_MainLayout);
 							Snackbar.make(cl, R.string.no_premission, Snackbar.LENGTH_SHORT).setAction(R.string.get_premission, new OnClickListener(){
-									public void onClick (View v)
+									public void onClick(View v)
 									{
 										Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
 										intent.setData(Uri.parse("package:" + ctx.getPackageName()));
@@ -157,7 +157,7 @@ public class FloatManageMethod
 	}
 
 
-    public static Thread PrepareSave (Activity ctx, Handler han)
+    public static Thread PrepareSave(Activity ctx, Handler han)
     {
 		if (Build.VERSION.SDK_INT >= 23)
 		{
@@ -184,7 +184,7 @@ public class FloatManageMethod
         return null;
     }
 
-	public static void ShutSown (Activity ctx)
+	public static void ShutSown(Activity ctx)
 	{
 		FloatManageMethod.stopservice(ctx);
 		App utils = (App)ctx.getApplicationContext();
@@ -196,7 +196,7 @@ public class FloatManageMethod
 		System.exit(0);
 	}
 
-	public static void RunInBack (Activity ctx)
+	public static void RunInBack(Activity ctx)
 	{
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
 		if (sp.getBoolean("WinOnlyShowInHome", false))
@@ -212,7 +212,7 @@ public class FloatManageMethod
 		}
 	}
 
-    public static void CloseApp (final Activity ctx)
+    public static void CloseApp(final Activity ctx)
     {
 		if (waitdoubleclick)
 		{
@@ -222,13 +222,13 @@ public class FloatManageMethod
 		{
 			CoordinatorLayout cl = (CoordinatorLayout) ctx.findViewById(R.id.FloatManage_MainLayout);
 			Snackbar.make(cl, R.string.exit_title, Snackbar.LENGTH_LONG).setAction(R.string.back_to_launcher, new OnClickListener(){
-					public void onClick (View v)
+					public void onClick(View v)
 					{
 						RunInBack(ctx);
 					}
 				}).setCallback(new Snackbar.Callback(){
 					@Override
-					public void onDismissed (Snackbar bar, int i)
+					public void onDismissed(Snackbar bar, int i)
 					{
 						waitdoubleclick = false;
 						if (waithandle != null && waitrun != null)
@@ -242,7 +242,7 @@ public class FloatManageMethod
 			waitdoubleclick = true;
 			waithandle = new Handler();
 			waitrun = new Runnable(){   
-				public void run ()
+				public void run()
 				{
 					waitdoubleclick = false;
 					waithandle = null;
@@ -253,13 +253,13 @@ public class FloatManageMethod
 		}
     }
 
-    public static void setWinManager (Context ctx)
+    public static void setWinManager(Context ctx)
     {
         WindowManager wm = (WindowManager)ctx.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
         ((App)ctx.getApplicationContext()).setFloatwinmanager(wm);
     }
 
-    public static void first_ask_for_premission (final Activity ctx)
+    public static void first_ask_for_premission(final Activity ctx)
     {
         SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
         SharedPreferences.Editor setedit = setdata.edit();
@@ -269,7 +269,7 @@ public class FloatManageMethod
                 .setTitle(R.string.ask_for_premission)
                 .setMessage(R.string.ask_for_premission_alert)
                 .setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
-                    public void onClick (DialogInterface d, int i)
+                    public void onClick(DialogInterface d, int i)
                     {
                         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                         intent.setData(Uri.parse("package:" + ctx.getPackageName()));
@@ -282,7 +282,7 @@ public class FloatManageMethod
         }
     }
 
-    public static void preparefolder ()
+    public static void preparefolder()
     {
         String typeface_path = Environment.getExternalStorageDirectory().toString() + "/FloatText/TTFs";
         File typeface = new File(typeface_path);
@@ -292,17 +292,17 @@ public class FloatManageMethod
         }
     }
 
-    public static void delayaskforpermission (final Activity act)
+    public static void delayaskforpermission(final Activity act)
     {
         new Handler().postDelayed(new Runnable(){  
-                public void run ()
+                public void run()
                 {
                     FloatManageMethod.notifypermission(act);
                 }  
             }, 2000); 
     }
 
-    public static void askforpermission (final Activity act, int code)
+    public static void askforpermission(final Activity act, int code)
     {
         final int askcode = code;
         final Activity activity = act;
@@ -311,7 +311,7 @@ public class FloatManageMethod
             .setTitle(R.string.ask_for_premission)
             .setMessage(act.getString(R.string.ask_for_premisdion_msg) + act.getString(R.string.reshow_msg))
             .setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
-                public void onClick (DialogInterface p1, int p2)
+                public void onClick(DialogInterface p1, int p2)
                 {
                     Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
                     intent.setData(Uri.parse("package:" + context.getPackageName()));
@@ -319,7 +319,7 @@ public class FloatManageMethod
                 }
             })
             .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
-                public void onClick (DialogInterface p1, int p2)
+                public void onClick(DialogInterface p1, int p2)
                 {
                     act.finish();
                     System.exit(0);
@@ -329,10 +329,10 @@ public class FloatManageMethod
         dialog.show();
     }
 
-    public static Thread getSaveData (final Activity ctx, final App utils, final SharedPreferences spdata, final Handler han)
+    public static Thread getSaveData(final Activity ctx, final App utils, final SharedPreferences spdata, final Handler han)
     {
         Thread thread = new Thread() {
-            public void run ()
+            public void run()
             {
                 FloatData dat = new FloatData(ctx);
                 dat.getSaveArrayData();
@@ -347,10 +347,10 @@ public class FloatManageMethod
         return thread;
     }
 
-    public static Thread Reshow (final Activity ctx, final Handler han)
+    public static Thread Reshow(final Activity ctx, final Handler han)
     {
         Thread thread = new Thread() {
-			public void run ()
+			public void run()
             {
                 final App utils = ((App)ctx.getApplicationContext());
                 final ArrayList<String> Text = utils.getTextData();
@@ -375,7 +375,7 @@ public class FloatManageMethod
 				final ArrayList<Float> FloatWide = utils.getFloatWide();
                 ctx.runOnUiThread(new Runnable(){
                         @Override
-                        public void run ()
+                        public void run()
                         {
                             if (Text.size() != 0 && Size.size() != 0 && Color.size() != 0 && Thick.size() != 0)
                             {
@@ -424,7 +424,7 @@ public class FloatManageMethod
         return thread;
     }
 
-    public static void floattext_typeface_check (Context ctx)
+    public static void floattext_typeface_check(Context ctx)
     {
         SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
         String filename = setdata.getString("DefaultTTFName", "Default");
@@ -447,14 +447,14 @@ public class FloatManageMethod
         FloatManage.snackshow((Activity)ctx, ctx.getString(R.string.text_typeface_err));
     }
 
-    public static void LanguageInit (Activity ctx)
+    public static void LanguageInit(Activity ctx)
     {
         SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
         int lan = setdata.getInt("Language", 0);
         LanguageSet(ctx, lan);
     }
 
-    public static void LanguageSet (Activity ctx, int i)
+    public static void LanguageSet(Activity ctx, int i)
     {
         Resources resource = ctx.getResources();
         Configuration config = resource.getConfiguration();
@@ -476,7 +476,7 @@ public class FloatManageMethod
         ctx.getBaseContext().getResources().updateConfiguration(config, null);
     }
 
-    public static void startservice (Activity ctx)
+    public static void startservice(Activity ctx)
     {
         if (((App)ctx.getApplicationContext()).getDynamicNumService())
         {
@@ -503,7 +503,7 @@ public class FloatManageMethod
         }
     }
 
-    public static void stopservice (Activity ctx)
+    public static void stopservice(Activity ctx)
     {
         Intent service = new Intent(ctx, FloatWindowStayAliveService.class);
         ctx.stopService(service);
@@ -515,7 +515,7 @@ public class FloatManageMethod
 		ctx.stopService(notifyservice);
     }
 
-    public static void addFloatWindow (final Activity ctx, final ArrayList<String> FloatDataName)
+    public static void addFloatWindow(final Activity ctx, final ArrayList<String> FloatDataName)
     {
         if (((App)ctx.getApplicationContext()).getDevelopMode())
         {
@@ -523,7 +523,7 @@ public class FloatManageMethod
             AlertDialog.Builder choose = new AlertDialog.Builder(ctx)
                 .setTitle(R.string.choose_float_type)
                 .setItems(type, new DialogInterface.OnClickListener(){
-                    public void onClick (DialogInterface dialog, int which)
+                    public void onClick(DialogInterface dialog, int which)
                     {
                         if (which == 0)
                         {

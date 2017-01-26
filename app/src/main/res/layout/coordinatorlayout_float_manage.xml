@@ -16,9 +16,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="20dp"
+        android:layout_margin="22dp"
+		app:fabSize="normal"
 		app:backgroundTint="@color/colorFloatingActionButtonBackGround"
-		app:elevation="10dp"
+		app:elevation="12dp"
 		app:pressedTranslationZ="15dp"
         app:srcCompat="@drawable/ic_plus" />
 

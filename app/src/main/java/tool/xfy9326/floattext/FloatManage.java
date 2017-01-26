@@ -278,8 +278,8 @@ public class FloatManage extends AppCompatActivity
 	public static void snackshow (Activity ctx, String str)
 	{
 		CoordinatorLayout cl = (CoordinatorLayout) ctx.findViewById(R.id.FloatManage_MainLayout);
-		Snackbar sb = new Snackbar();
-		sb.make(cl, str, Snackbar.LENGTH_SHORT).show();
+		Snackbar sb = Snackbar.make(cl, str, Snackbar.LENGTH_SHORT);
+		sb.show();
 		Snackbarusetime++;
 		if (Snackbarusetime >= 5)
 		{
