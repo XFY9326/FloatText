@@ -84,6 +84,7 @@ public class IOMethod
         }
         catch (IOException e)
         {
+			e.printStackTrace();
             return false;
         }
     }

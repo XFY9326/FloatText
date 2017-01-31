@@ -40,7 +40,6 @@ public class FloatManage extends AppCompatActivity
     private ArrayList<String> FloatDataName;
     private AlertDialog ag_loading;
     private Handler mHandler;
-	private static int Snackbarusetime = 0;
 
     @Override
     protected void onCreate (Bundle savedInstanceState)
@@ -57,7 +56,7 @@ public class FloatManage extends AppCompatActivity
 
 	private void ListViewSet ()
     {
-        App utils = ((App)getApplicationContext());
+        App utils = (App)getApplicationContext();
         FloatDataName = utils.getFloatText();
         listview = (AdvanceRecyclerView) findViewById(R.id.listview_floatmanage);
 		listview.setHasFixedSize(true);
@@ -67,7 +66,7 @@ public class FloatManage extends AppCompatActivity
         listview.setEmptyView(findViewById(R.id.textview_floatmanage_empty));
         listadapter = new ListViewAdapter(this, FloatDataName);
         listview.setAdapter(listadapter);
-        ((App)getApplicationContext()).setListviewadapter(listadapter);
+        utils.setListviewadapter(listadapter);
     }
 
 	private void contentset ()
@@ -162,7 +161,9 @@ public class FloatManage extends AppCompatActivity
 
     private void SetAll (final Activity ctx)
     {
-        App utils = ((App)getApplicationContext());
+        App utils = (App)getApplicationContext();
+		SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
+		utils.setFilterApplication(FloatData.StringToStringArrayList(setdata.getString("Filter_Application", "[]")));
         spdata = PreferenceManager.getDefaultSharedPreferences(ctx);
         spedit = spdata.edit();
         if (!utils.GetSave)
@@ -186,6 +187,7 @@ public class FloatManage extends AppCompatActivity
         }
         Intent intent = getIntent();
         int importresult = intent.getIntExtra("ImportText", 0);
+		int recoverresult = intent.getIntExtra("RecoverText", 0);
         if (importresult == 1)
         {
             snackshow(ctx, getString(R.string.text_import_success));
@@ -194,6 +196,10 @@ public class FloatManage extends AppCompatActivity
         {
             snackshow(ctx, getString(R.string.text_import_error));
         }
+		if (recoverresult == 1)
+		{
+			snackshow(ctx, getString(R.string.recover_success));
+		}
     }
 
     private void closeag ()
@@ -280,12 +286,7 @@ public class FloatManage extends AppCompatActivity
 		CoordinatorLayout cl = (CoordinatorLayout) ctx.findViewById(R.id.FloatManage_MainLayout);
 		Snackbar sb = Snackbar.make(cl, str, Snackbar.LENGTH_SHORT);
 		sb.show();
-		Snackbarusetime++;
-		if (Snackbarusetime >= 5)
-		{
-			Snackbarusetime = 0;
-			System.gc();
-		}
+		System.gc();
 	}
 
     @Override

@@ -70,7 +70,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
     public void onBindViewHolder(final ViewHolder view, int p2)
 	{
         final int index = view.getLayoutPosition();
-        App utils = ((App) context.getApplicationContext());
+        final App utils = ((App) context.getApplicationContext());
         ArrayList<Boolean> Show = utils.getShowFloat();
         if (Show.size() != textshow.size())
 		{
@@ -95,6 +95,10 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 		{
             view.textView.setShadowLayer(utils.getTextShadowRadius().get(index), utils.getTextShadowX().get(index), utils.getTextShadowY().get(index), utils.getTextShadowColor().get(index));
         }
+		else
+		{
+			view.textView.setShadowLayer(0, 0, 0, 0);
+		}
         view.textView.getPaint().setFakeBoldText(utils.getThickData().get(index));
         view.textView.setTextColor(utils.getColorData().get(index));
         view.textView.setEllipsize(TextUtils.TruncateAt.END);
@@ -111,8 +115,6 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 					iShowFloat = !showFloat.set(index, !iShowFloat);
 					FloatData dat = new FloatData(context);
 					dat.savedata();
-
-					App utils = ((App) activity.getApplicationContext());
 
 					FloatLinearLayout floatLinearLayout = utils.getFloatlinearlayout().get(index);
 					floatLinearLayout.setShowState(iShowFloat);
@@ -228,9 +230,10 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 
     private void FloatWinLock(Context context, final int index, Button lock_button)
 	{
-        ArrayList<Boolean> lock = ((App) context.getApplicationContext()).getLockPosition();
-        ArrayList<String> position = ((App) context.getApplicationContext()).getPosition();
-        linearlayout = ((App) context.getApplicationContext()).getFloatlinearlayout();
+		App utils = ((App) context.getApplicationContext());
+        ArrayList<Boolean> lock = utils.getLockPosition();
+        ArrayList<String> position = utils.getPosition();
+        linearlayout = utils.getFloatlinearlayout();
         FloatLinearLayout fll = linearlayout.get(index);
         if (fll.getPositionLocked())
 		{
@@ -285,6 +288,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
     /*
 	 进入编辑窗口前需要保存数据
      */
+	
     private void FloatWinEdit(Activity act, int i)
 	{
         Intent intent = new Intent(context, FloatTextSetting.class);

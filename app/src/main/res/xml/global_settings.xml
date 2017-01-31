@@ -37,6 +37,17 @@
             android:defaultValue="false"
             android:dependency="StayAliveService"
         />
+		<CheckBoxPreference 
+            android:key="WinFilterSwitch"
+            android:title="@string/xml_global_win_filter_switch"
+			android:summary="@string/xml_global_win_filter_sum"
+            android:defaultValue="false"
+        />
+		<Preference 
+            android:key="WinFilter"
+            android:title="@string/xml_global_win_filter"
+            android:dependency="WinFilterSwitch"
+        />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/xml_global_text"> 
         <Preference 
@@ -78,6 +89,18 @@
             android:title="@string/floatnotification_service_label"
 			android:summary="@string/xml_global_service_notificationtext_sum"
 			android:dependency="DynamicNumService"
+        />
+    </PreferenceCategory>
+	<PreferenceCategory android:title="@string/xml_global_data_title"> 
+		<Preference
+			android:key="DataBackup"
+            android:title="@string/xml_global_data_backup"
+			android:summary="@string/xml_global_data_backup_sum"
+        />
+		<Preference
+			android:key="DataRecover"
+            android:title="@string/xml_global_data_recover"
+			android:summary="@string/xml_global_data_recover_sum"
         />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/xml_global_advanced"> 

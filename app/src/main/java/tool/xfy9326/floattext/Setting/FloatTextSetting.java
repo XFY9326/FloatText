@@ -61,7 +61,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 	private float FloatWide;
 
     @Override
-    protected void onCreate (Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         spdata = PreferenceManager.getDefaultSharedPreferences(this);
@@ -80,9 +80,11 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         {
             setTitle(R.string.float_edit_title);
         }
+		SafeGuard.isSignatureAvailable(this);
+        SafeGuard.isPackageNameAvailable(this);
     }
 
-	private void sethome ()
+	private void sethome()
 	{
 		ActionBar actionBar = getSupportActionBar();
 		if (actionBar != null)
@@ -91,7 +93,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         }
 	}
 
-    private void wmcheck ()
+    private void wmcheck()
     {
         if (wm == null)
         {
@@ -104,7 +106,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         }
     }
 
-    private void setkeys ()
+    private void setkeys()
     {
         Intent intent = getIntent();
         EditMode = intent.getBooleanExtra("EditMode", false);
@@ -120,7 +122,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         }
     }
 
-    private void editkeyget (int i)
+    private void editkeyget(int i)
     {
         App utils = ((App)getApplicationContext());
 		if (utils.getFloatView().size() < i + 1)
@@ -151,7 +153,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		FloatWide = utils.getFloatWide().get(i);
     }
 
-    private void editkeyset ()
+    private void editkeyset()
     {
         spedit.putString("TextShow", TextShow);
         spedit.putBoolean("TextAutoTop", AutoTop);
@@ -174,7 +176,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         spedit.commit();
     }
 
-    private void defaultkeyget ()
+    private void defaultkeyget()
     {
         TextShow = spdata.getString("TextShow", getString(R.string.default_text));
         AutoTop = spdata.getBoolean("TextAutoTop", false);
@@ -199,7 +201,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		FloatWide = spdata.getFloat("FloatWide", 100);
     }
 
-    private void buttonset ()
+    private void buttonset()
     {
         Preference tips = findPreference("tips");
         String[] tiparr = getResources().getStringArray(R.array.floatsetting_tips);
@@ -208,28 +210,42 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         tips.setSummary(tiparr[tipnum]);
         Preference textshow = findPreference("TextShow");
         textshow.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick (Preference p)
+                public boolean onPreferenceClick(Preference p)
                 {
                     LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
                     View layout = inflater.inflate(R.layout.dialog_text_edit, null);
-                    final AutoCompleteTextView atv = (AutoCompleteTextView) layout.findViewById(R.id.textview_addnewtext);
-                    atv.setText(spdata.getString("TextShow", getString(R.string.default_text)));
-                    if (((App)getApplicationContext()).DynamicNumService)
-                    {
-                        final String[] words = getResources().getStringArray(R.array.floatsetting_dynamic_list);
-                        for (int i = 0;i < words.length;i++)
-                        {
-                            words[i] = "<" + words[i] + ">";
-                        }
-                        ArrayAdapter<String> av = new ArrayAdapter<String>(FloatTextSetting.this, android.R.layout.simple_dropdown_item_1line, words);
-                        atv.setAdapter(av);
-                    }
+                    final EditText atv = (EditText) layout.findViewById(R.id.textview_addnewtext);
+					atv.setText(spdata.getString("TextShow", getString(R.string.default_text)));
+					final ListView lv = (ListView) layout.findViewById(R.id.listview_textedit);
+					final LinearLayout ll = (LinearLayout) layout.findViewById(R.id.layout_textedit);
+					if (((App)getApplicationContext()).DynamicNumService)
+					{
+						final String[] dynamiclist = getResources().getStringArray(R.array.floatsetting_dynamic_list);
+						String[] dynamicname = getResources().getStringArray(R.array.floatsetting_dynamic_name);
+						String[] result = new String[dynamiclist.length ];
+						for (int i = 0;i < dynamiclist.length;i++)
+						{
+							result[i] = "<" + dynamiclist[i] + ">" + "\n" + dynamicname[i];
+						}
+						ArrayAdapter<String> av = new ArrayAdapter<String>(FloatTextSetting.this, android.R.layout.simple_list_item_1, result);
+						lv.setAdapter(av);
+						lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+								public void onItemClick(AdapterView<?> adapter, View v, int i, long l)
+								{
+									atv.getText().insert(atv.getSelectionStart() , "<" + dynamiclist[i] + ">");
+								}
+							});
+					}
+					else
+					{
+						ll.setVisibility(View.GONE);
+					}
                     AlertDialog.Builder textedit = new AlertDialog.Builder(FloatTextSetting.this)
                         .setTitle(R.string.xml_set_textedit_title)
                         .setView(layout)
                         .setNegativeButton(R.string.cancel, null)
                         .setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
-                            public void onClick (DialogInterface d , int i)
+                            public void onClick(DialogInterface d , int i)
                             {
                                 String text = atv.getText().toString();
                                 if (text.replaceAll("\\s+", "").equalsIgnoreCase(""))
@@ -251,7 +267,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             });
         Preference textsize = findPreference("TextSize");
         textsize.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick (Preference p1)
+                public boolean onPreferenceClick(Preference p1)
                 {
                     LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
                     View layout = inflater.inflate(R.layout.dialog_textsize_edit, null);
@@ -263,11 +279,11 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     bar.setMax(100);
                     bar.setProgress(TextSize.intValue());
                     bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch (SeekBar bar)
+                            public void onStartTrackingTouch(SeekBar bar)
                             {}
-                            public void onStopTrackingTouch (SeekBar bar)
+                            public void onStopTrackingTouch(SeekBar bar)
                             {}
-                            public void onProgressChanged (SeekBar bar , int i , boolean state)
+                            public void onProgressChanged(SeekBar bar , int i , boolean state)
                             {
                                 TextSize = Float.parseFloat(String.valueOf(i));
                                 text.setText(getString(R.string.text_size_now) + "：" + TextSize.intValue());
@@ -284,7 +300,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             });
         ColorPickerPreference textcolor = (ColorPickerPreference) findPreference("ColorPicker");
         textcolor.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange (Preference p1, Object p2)
+                public boolean onPreferenceChange(Preference p1, Object p2)
                 {
                     TextColor = p2;
                     spedit.putInt("ColorPicker", p2);
@@ -296,7 +312,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         textcolor.setHexValueEnabled(true);
         Preference texcolor = findPreference("TextColorEnd");
         texcolor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick (Preference p)
+                public boolean onPreferenceClick(Preference p)
                 {
                     LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
                     View layout = inflater.inflate(R.layout.dialog_textcolor_transparency_edit, null);
@@ -317,11 +333,11 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     }
                     tt.setText(getString(R.string.text_edit_color_transparency_now) + Integer.parseInt(TextTransparency, 16));
                     st.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch (SeekBar bar)
+                            public void onStartTrackingTouch(SeekBar bar)
                             {}
-                            public void onStopTrackingTouch (SeekBar bar)
+                            public void onStopTrackingTouch(SeekBar bar)
                             {}
-                            public void onProgressChanged (SeekBar bar , int i , boolean state)
+                            public void onProgressChanged(SeekBar bar , int i , boolean state)
                             {
                                 TextTransparency = Integer.toHexString(i) + "";
                                 if (i < 16)
@@ -354,7 +370,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             });
         CheckBoxPreference textthick = (CheckBoxPreference) findPreference("TextThick");
         textthick.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange (Preference p1, Object p2)
+                public boolean onPreferenceChange(Preference p1, Object p2)
                 {
                     TextThick = (Boolean)p2;
                     updateview();
@@ -363,7 +379,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             });
         CheckBoxPreference texttop = (CheckBoxPreference) findPreference("TextTop");
         texttop.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange (Preference p1, Object p2)
+                public boolean onPreferenceChange(Preference p1, Object p2)
                 {
                     TextTop = (Boolean)p2;
                     updateview();
@@ -372,7 +388,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             });
         Preference floatshow = findPreference("FloatShow");
         floatshow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange (Preference p1, Object p2)
+                public boolean onPreferenceChange(Preference p1, Object p2)
                 {
                     FloatShow = (Boolean)p2;
                     updateview();
@@ -389,7 +405,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         }
         Preference shadow = findPreference("TextShadow");
         shadow.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick (Preference p1)
+                public boolean onPreferenceClick(Preference p1)
                 {
                     LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
                     View layout = inflater.inflate(R.layout.dialog_textshadow_edit, null);
@@ -411,7 +427,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     sy.setText(getString(R.string.xml_set_text_shadow_dy) + (int)TextShadowY);
                     sr.setText(getString(R.string.xml_set_text_shadow_radius) + (int)TextShadowRadius);
                     ss.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-                            public void onCheckedChanged (CompoundButton b, boolean c)
+                            public void onCheckedChanged(CompoundButton b, boolean c)
                             {
                                 TextShadow = c;
                                 spedit.putBoolean("TextShadow", TextShadow);
@@ -420,14 +436,14 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                             }
                         });
                     bx.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch (SeekBar bar)
+                            public void onStartTrackingTouch(SeekBar bar)
                             {}
-                            public void onStopTrackingTouch (SeekBar bar)
+                            public void onStopTrackingTouch(SeekBar bar)
                             {
                                 spedit.putFloat("TextShadowX", TextShadowX);
                                 spedit.commit();
                             }
-                            public void onProgressChanged (SeekBar bar , int i , boolean state)
+                            public void onProgressChanged(SeekBar bar , int i , boolean state)
                             {
                                 TextShadowX = i;
                                 sx.setText(getString(R.string.xml_set_text_shadow_dx) + (int)TextShadowX);
@@ -435,14 +451,14 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                             }
                         });
                     by.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch (SeekBar bar)
+                            public void onStartTrackingTouch(SeekBar bar)
                             {}
-                            public void onStopTrackingTouch (SeekBar bar)
+                            public void onStopTrackingTouch(SeekBar bar)
                             {
                                 spedit.putFloat("TextShadowY", TextShadowY);
                                 spedit.commit();
                             }
-                            public void onProgressChanged (SeekBar bar , int i , boolean state)
+                            public void onProgressChanged(SeekBar bar , int i , boolean state)
                             {
                                 TextShadowY = i;
                                 sy.setText(getString(R.string.xml_set_text_shadow_dy) + (int)TextShadowY);
@@ -450,14 +466,14 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                             }
                         });
                     br.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch (SeekBar bar)
+                            public void onStartTrackingTouch(SeekBar bar)
                             {}
-                            public void onStopTrackingTouch (SeekBar bar)
+                            public void onStopTrackingTouch(SeekBar bar)
                             {
                                 spedit.putFloat("TextShadowRadius", TextShadowRadius);
                                 spedit.commit();
                             }
-                            public void onProgressChanged (SeekBar bar , int i , boolean state)
+                            public void onProgressChanged(SeekBar bar , int i , boolean state)
                             {
                                 TextShadowRadius = i;
                                 sr.setText(getString(R.string.xml_set_text_shadow_radius) + (int)TextShadowRadius);
@@ -474,7 +490,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             });
         ColorPickerPreference textshadowcolor = (ColorPickerPreference) findPreference("TextShadowColor");
         textshadowcolor.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange (Preference p1, Object p2)
+                public boolean onPreferenceChange(Preference p1, Object p2)
                 {
                     TextShadowColor = p2;
                     spedit.putInt("TextShadowColor", p2);
@@ -486,7 +502,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         textshadowcolor.setHexValueEnabled(true);
         Preference texshadowcolor = findPreference("TextShadowColorEnd");
         texshadowcolor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick (Preference p)
+                public boolean onPreferenceClick(Preference p)
                 {
                     LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
                     View layout = inflater.inflate(R.layout.dialog_textcolor_transparency_edit, null);
@@ -507,11 +523,11 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     }
                     tt.setText(getString(R.string.text_edit_color_transparency_now) + Integer.parseInt(TextShadowTransparency, 16));
                     st.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch (SeekBar bar)
+                            public void onStartTrackingTouch(SeekBar bar)
                             {}
-                            public void onStopTrackingTouch (SeekBar bar)
+                            public void onStopTrackingTouch(SeekBar bar)
                             {}
-                            public void onProgressChanged (SeekBar bar , int i , boolean state)
+                            public void onProgressChanged(SeekBar bar , int i , boolean state)
                             {
                                 TextShadowTransparency = Integer.toHexString(i) + "";
                                 if (i < 16)
@@ -548,7 +564,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             textmove.setSummaryOn(R.string.text_move_on_sum);
         }
         textmove.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange (Preference p1, Object p2)
+                public boolean onPreferenceChange(Preference p1, Object p2)
                 {
                     TextMove = (Boolean)p2;
                     updateview();
@@ -558,7 +574,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         Preference textspeed = findPreference("TextSpeed");
         textspeed.setEnabled(((App)getApplicationContext()).getMovingMethod());
         textspeed.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick (Preference p1)
+                public boolean onPreferenceClick(Preference p1)
                 {
                     LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
                     View layout = inflater.inflate(R.layout.dialog_textspeed_edit, null);
@@ -570,14 +586,14 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     bar.setMax(10);
                     bar.setProgress(TextSpeed);
                     bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch (SeekBar bar)
+                            public void onStartTrackingTouch(SeekBar bar)
                             {}
-                            public void onStopTrackingTouch (SeekBar bar)
+                            public void onStopTrackingTouch(SeekBar bar)
                             {
                                 spedit.putInt("TextSpeed", TextSpeed);
                                 spedit.commit();
                             }
-                            public void onProgressChanged (SeekBar bar , int i , boolean state)
+                            public void onProgressChanged(SeekBar bar , int i , boolean state)
                             {
                                 TextSpeed = i;
                                 text.setText(getString(R.string.text_speed_now) + "：" + TextSpeed);
@@ -592,7 +608,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             });
         ColorPickerPreference baccolor = (ColorPickerPreference) findPreference("BackgroundColor");
         baccolor.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange (Preference p1, Object p2)
+                public boolean onPreferenceChange(Preference p1, Object p2)
                 {
                     BackgroundColor = p2;
                     spedit.putInt("BackgroundColor", p2);
@@ -604,7 +620,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         baccolor.setHexValueEnabled(true);
         Preference baccolorTransparency = findPreference("BackgroundColorEnd");
         baccolorTransparency.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick (Preference p)
+                public boolean onPreferenceClick(Preference p)
                 {
                     LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
                     View layout = inflater.inflate(R.layout.dialog_textcolor_transparency_edit, null);
@@ -625,11 +641,11 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     }
                     tt.setText(getString(R.string.text_edit_color_transparency_now) + Integer.parseInt(WinTransparency, 16));
                     st.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch (SeekBar bar)
+                            public void onStartTrackingTouch(SeekBar bar)
                             {}
-                            public void onStopTrackingTouch (SeekBar bar)
+                            public void onStopTrackingTouch(SeekBar bar)
                             {}
-                            public void onProgressChanged (SeekBar bar , int i , boolean state)
+                            public void onProgressChanged(SeekBar bar , int i , boolean state)
                             {
                                 WinTransparency = Integer.toHexString(i) + "";
                                 if (i < 16)
@@ -662,7 +678,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             });
         CheckBoxPreference autotop = (CheckBoxPreference) findPreference("TextAutoTop");
         autotop.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange (Preference p, Object v)
+                public boolean onPreferenceChange(Preference p, Object v)
                 {
                     AutoTop = (Boolean)v;
                     updateview();
@@ -672,7 +688,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         Preference dynamiclist = findPreference("DynamicList");
         dynamiclist.setEnabled(((App)getApplicationContext()).DynamicNumService);
         dynamiclist.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick (Preference p)
+                public boolean onPreferenceClick(Preference p)
                 {
                     FloatTextSettingMethod.showDlist(FloatTextSetting.this);
                     return true;
@@ -680,7 +696,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             });
         Preference floatmove = findPreference("FloatMove");
         floatmove.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick (Preference p)
+                public boolean onPreferenceClick(Preference p)
                 {
                     LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
                     View layout = inflater.inflate(R.layout.dialog_floatmove, null);
@@ -689,7 +705,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     move_x.setText(String.valueOf(wmParams.x));
                     move_y.setText(String.valueOf(wmParams.y));
                     final Handler handler = new Handler(){
-                        public void handleMessage (Message msg)
+                        public void handleMessage(Message msg)
                         {
                             switch (msg.what)
                             {
@@ -727,7 +743,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             });
 		CheckBoxPreference floatsize = (CheckBoxPreference) findPreference("FloatSize");
 		floatsize.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-				public boolean onPreferenceChange (Preference p, Object o)
+				public boolean onPreferenceChange(Preference p, Object o)
 				{
 					FloatSize = o;
 					updateview();
@@ -736,7 +752,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 			});
 		Preference floatwide = findPreference("FloatWide");
         floatwide.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick (Preference p)
+                public boolean onPreferenceClick(Preference p)
                 {
 					LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
                     View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
@@ -748,14 +764,14 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     bar.setMax(wm.getDefaultDisplay().getHeight());
                     bar.setProgress((int)FloatWide);
                     bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch (SeekBar bar)
+                            public void onStartTrackingTouch(SeekBar bar)
                             {}
-                            public void onStopTrackingTouch (SeekBar bar)
+                            public void onStopTrackingTouch(SeekBar bar)
                             {
                                 spedit.putFloat("FloatWide", FloatWide);
                                 spedit.commit();
                             }
-                            public void onProgressChanged (SeekBar bar , int i , boolean state)
+                            public void onProgressChanged(SeekBar bar , int i , boolean state)
                             {
                                 FloatWide = i;
                                 text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
@@ -770,7 +786,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 			});
 		Preference floatlong = findPreference("FloatLong");
         floatlong.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick (Preference p)
+                public boolean onPreferenceClick(Preference p)
                 {
 					LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
                     View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
@@ -782,14 +798,14 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     bar.setMax(wm.getDefaultDisplay().getWidth());
                     bar.setProgress((int)FloatLong);
                     bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch (SeekBar bar)
+                            public void onStartTrackingTouch(SeekBar bar)
                             {}
-                            public void onStopTrackingTouch (SeekBar bar)
+                            public void onStopTrackingTouch(SeekBar bar)
                             {
                                 spedit.putFloat("FloatLong", FloatLong);
                                 spedit.commit();
                             }
-                            public void onProgressChanged (SeekBar bar , int i , boolean state)
+                            public void onProgressChanged(SeekBar bar , int i , boolean state)
                             {
                                 FloatLong = i;
                                 text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
@@ -804,7 +820,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 			});
     }
 
-    private void prepareshow ()
+    private void prepareshow()
     {
         if (Build.VERSION.SDK_INT >= 23)
         {
@@ -823,19 +839,19 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         }
     }
 
-    private void updateview ()
+    private void updateview()
     {
         updatefloatview(FloatShow, TextShow, TextSize, TextColor, TextThick, TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide);
     }
 
-    private void startshow ()
+    private void startshow()
     {
         floatview = FloatTextSettingMethod.CreateFloatView(this, TextShow, TextSize, TextColor, TextThick, TextSpeed, EditID, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, TextShadowColor);
         linearlayout = FloatTextSettingMethod.CreateLayout(this, EditID);
         wmParams = FloatTextSettingMethod.CreateFloatLayout(this, wm, floatview, linearlayout, FloatShow, TextTop, TextMove, BackgroundColor, FloatSize, FloatLong, FloatWide);
     }
 
-    private void stopshow ()
+    private void stopshow()
     {
         if (wm != null)
         {
@@ -850,7 +866,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         }
     }
 
-    private void updatefloatview (boolean show, String Text, Float Size, int Paint, boolean Thick, boolean TextTop, boolean autotop, boolean move, int speed, boolean shadow, float shadowx, float shadowy, float shadowradius, int bac, int shadowcolor, boolean fs, float fl, float fw)
+    private void updatefloatview(boolean show, String Text, Float Size, int Paint, boolean Thick, boolean TextTop, boolean autotop, boolean move, int speed, boolean shadow, float shadowx, float shadowy, float shadowradius, int bac, int shadowcolor, boolean fs, float fl, float fw)
     {
         App utils = ((App)getApplicationContext());
         if (wm != null)
@@ -926,7 +942,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         }
     }
 
-    private void saveall (Context ctx, FloatTextView fv, FloatLinearLayout fll, String text, WindowManager.LayoutParams layout, boolean savedetails, boolean show, String position, boolean texttop, boolean autotop, boolean textmove, int speed)
+    private void saveall(Context ctx, FloatTextView fv, FloatLinearLayout fll, String text, WindowManager.LayoutParams layout, boolean savedetails, boolean show, String position, boolean texttop, boolean autotop, boolean textmove, int speed)
     {
         App utils = ((App)ctx.getApplicationContext());
         FloatTextSettingMethod.savedata(ctx, fv, fll, text, layout);
@@ -940,14 +956,14 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         }
     }
 
-    private void setall (int i)
+    private void setall(int i)
     {
         Position = linearlayout.getPosition();
         App utils = ((App)getApplicationContext());
         utils.setDatas(i, floatview, linearlayout, wmParams, TextShow, TextColor, TextSize, TextThick, FloatShow, Position, LockPosition, TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide);
     }
 
-	private void setbackresult (int i)
+	private void setbackresult(int i)
 	{
 		Intent intent = new Intent();
 		intent.putExtra("RESULT", i);
@@ -957,7 +973,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 	}
 
     @Override
-    protected void onActivityResult (int requestCode, int resultCode, Intent data)
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE)
@@ -978,7 +994,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     }
 
     @Override 
-    public boolean onCreateOptionsMenu (Menu menu)
+    public boolean onCreateOptionsMenu(Menu menu)
     {  
         MenuInflater inflater = getMenuInflater();
         if (EditMode)
@@ -993,7 +1009,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected (MenuItem item)
+    public boolean onOptionsItemSelected(MenuItem item)
     {
         switch (item.getItemId())
         {
@@ -1030,7 +1046,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     }
 
     @Override
-    public boolean onKeyDown (int keyCode, KeyEvent event)
+    public boolean onKeyDown(int keyCode, KeyEvent event)
     {
         if (keyCode == KeyEvent.KEYCODE_BACK)
 		{
@@ -1044,7 +1060,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     .setTitle(R.string.exit_text_add)
                     .setMessage(R.string.exit_text_add_alert)
                     .setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
-                        public void onClick (DialogInterface p1, int p2)
+                        public void onClick(DialogInterface p1, int p2)
                         {
                             if (!FloatWinSaved && FloatShow)
                             {
@@ -1061,7 +1077,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     }
 
     @Override
-    protected void onDestroy ()
+    protected void onDestroy()
     {
         if (!FloatWinSaved && FloatShow)
         {

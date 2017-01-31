@@ -172,6 +172,11 @@ public class FloatManageMethod
 				{
                     return FloatManageMethod.Reshow(ctx, han);
 				}
+				else
+				{
+					FloatData fd = new FloatData(ctx);
+					fd.savedata();
+				}
 			}
 		}
 		else
@@ -180,6 +185,11 @@ public class FloatManageMethod
 			{
                 return FloatManageMethod.Reshow(ctx, han);
             }
+			else
+			{
+				FloatData fd = new FloatData(ctx);
+				fd.savedata();
+			}
         }
         return null;
     }

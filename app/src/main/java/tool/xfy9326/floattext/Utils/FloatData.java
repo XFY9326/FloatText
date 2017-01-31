@@ -3,8 +3,11 @@ package tool.xfy9326.floattext.Utils;
 import android.app.*;
 import android.content.*;
 import android.util.*;
+import java.io.*;
 import java.util.*;
+import org.json.*;
 import tool.xfy9326.floattext.*;
+import tool.xfy9326.floattext.Method.*;
 
 public class FloatData
 {
@@ -16,7 +19,7 @@ public class FloatData
 	private SharedPreferences spdata;
 	private SharedPreferences.Editor spedit;
 
-	public FloatData (Context ctx)
+	public FloatData(Context ctx)
 	{
 		this.ctx = ctx;
 		spdatat = ctx.getSharedPreferences("FloatTextList", Activity.MODE_PRIVATE);
@@ -24,11 +27,9 @@ public class FloatData
         spdata = ctx.getSharedPreferences("FloatShowList", Activity.MODE_PRIVATE);
         spedit = spdata.edit();
 	}
-	
-    public void savedata ()
+
+    public void savedata()
     {
-        SafeGuard.isSignatureAvailable(ctx);
-        SafeGuard.isPackageNameAvailable(ctx);
         App utils = ((App)ctx.getApplicationContext());
         spedit.putInt("Version", FloatDataVersion);
         speditt.putString("TextArray", TextArr_encode(utils.getTextData()).toString());
@@ -55,7 +56,7 @@ public class FloatData
 		speditt.apply();
     }
 
-    public void getSaveArrayData ()
+    public void getSaveArrayData()
     {
         App utils = ((App)ctx.getApplicationContext());
         int version = spdata.getInt("Version", 0);
@@ -106,14 +107,149 @@ public class FloatData
 		ArrayList<Float> floatwide = NewFloatKey(spdata.getString("FloatWideArray", "[]"), "100");
         utils.replaceDatas(textarr, color, size, thick, show, position, lock, top, autotop, move, speed, shadow, shadowx, shadowy, shadowradius, backgroundcolor, textshadowcolor, floatsize, floatlong, floatwide);
     }
-	
-	private void updateVersion (int i)
+
+	public boolean OutputData(String path, int VersionCode)
+	{
+		String jsonresult = "";
+		JSONObject mainobject = new JSONObject();
+		JSONObject dataobject = new JSONObject();
+		JSONObject textobject = new JSONObject();
+		try
+		{
+			textobject.put("TextArray", spdatat.getString("TextArray", "[]"));
+
+			xmltojson(dataobject, "SizeArray");
+			xmltojson(dataobject, "ColorArray");
+			xmltojson(dataobject, "ThickArray");
+			xmltojson(dataobject, "ShowArray");
+			xmltojson(dataobject, "LockArray");
+			xmltojson(dataobject, "PositionArray");
+			xmltojson(dataobject, "TopArray");
+			xmltojson(dataobject, "AutoTopArray");
+			xmltojson(dataobject, "MoveArray");
+			xmltojson(dataobject, "SpeedArray");
+			xmltojson(dataobject, "ShadowArray");
+			xmltojson(dataobject, "ShadowXArray");
+			xmltojson(dataobject, "ShadowYArray");
+			xmltojson(dataobject, "ShadowRadiusArray");
+			xmltojson(dataobject, "BackgroundColorArray");
+			xmltojson(dataobject, "TextShadowColorArray");
+			xmltojson(dataobject, "FloatSizeArray");
+			xmltojson(dataobject, "FloatLongArray");
+			xmltojson(dataobject, "FloatWideArray");
+
+			mainobject.put("FloatText_Version", VersionCode);
+			mainobject.put("Data_Version", FloatDataVersion);
+			mainobject.put("Text", textobject);
+			mainobject.put("Data", dataobject);
+
+			jsonresult = mainobject.toString();
+		}
+		catch (JSONException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		if (!IOMethod.writefile(path, jsonresult))
+		{
+			return false;
+		}
+		return true;
+	}
+
+	public boolean InputData(String path)
+	{
+		File bak = new File(path);
+		if (bak.exists() && !bak.isDirectory())
+		{
+			String[] data = IOMethod.readfile(bak);
+			if (data[0] != "Failed")
+			{
+				String str = "";
+				for (int i = 0;i < data.length;i++)
+				{
+					str += data[i];
+				}
+				if (str != "" && !str.startsWith("error"))
+				{
+					try
+					{
+						JSONObject mainobject = new JSONObject(str);
+						//int FloatText_Version = mainobject.getInt("FloatText_Version");
+						//int Data_Version = mainobject.getInt("Data_Version");
+						JSONObject dataobject = mainobject.getJSONObject("Data");
+						JSONObject textobject = mainobject.getJSONObject("Text");
+
+						String text = textobject.getString("TextArray");
+						String oldtext = spdatat.getString("TextArray", "[]");
+						if (oldtext.equalsIgnoreCase("[]"))
+						{
+							oldtext = text;
+						}
+						else
+						{
+							oldtext = CombineArrayString(oldtext, text);
+						}
+						speditt.putString("TextArray", oldtext);
+
+						Iterator it = dataobject.keys();
+						while (it.hasNext())
+						{
+							String key = it.next().toString();
+							if (spdata.contains(key))
+							{
+								String old = spdata.getString(key, "[]");
+								String get = dataobject.getString(key);
+								if (old.equalsIgnoreCase("[]"))
+								{
+									old = get;
+								}
+								else
+								{
+									old = CombineArrayString(old, get);
+								}
+								spedit.putString(key, old);
+							}
+						}
+
+						spedit.commit();
+						speditt.commit();
+						return true;
+					}
+					catch (JSONException e)
+					{
+						e.printStackTrace();
+						return false;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	private String CombineArrayString(String a1, String a2)
+	{
+		if (a1.length() == 2)
+		{
+			return a2;
+		}
+		String str = a1.substring(0, a1.length() - 1) + ", " + a2.substring(1, a2.length());
+		return str;
+	}
+
+	private JSONObject xmltojson(JSONObject obj, String name) throws JSONException
+	{
+		obj.put(name, spdata.getString(name, "[]"));
+		return obj;
+	}
+
+	private void updateVersion(int i)
 	{
 		spedit.putInt("Version", i);
 		spedit.commit();
 	}
 
-    private static ArrayList<String> TextArr_decode (ArrayList<String> str)
+    private static ArrayList<String> TextArr_decode(ArrayList<String> str)
     {
         ArrayList<String> output = new ArrayList<String>();
         output.addAll(str);
@@ -128,7 +264,7 @@ public class FloatData
         return output;
     }
 
-    private static ArrayList<String> TextArr_encode (ArrayList<String> str)
+    private static ArrayList<String> TextArr_encode(ArrayList<String> str)
     {
         ArrayList<String> output = new ArrayList<String>();
         output.addAll(str);
@@ -143,35 +279,35 @@ public class FloatData
         return output;
     }
 
-    private ArrayList<String> NewStringKey (String fix, String def)
+    private ArrayList<String> NewStringKey(String fix, String def)
     {
         fix = NewKey(fix, def);
         ArrayList<String> res = StringToStringArrayList(fix);
         return FixKey(res, def);
     }
 
-    private ArrayList<Integer> NewIntegerKey (String fix, String def)
+    private ArrayList<Integer> NewIntegerKey(String fix, String def)
     {
         fix = NewKey(fix, def);
         ArrayList<Integer> res = StringToIntegerArrayList(fix);
         return FixKey(res, Integer.valueOf(def));
     }
 
-    private ArrayList<Float> NewFloatKey (String fix, String def)
+    private ArrayList<Float> NewFloatKey(String fix, String def)
     {
         fix = NewKey(fix, def);
         ArrayList<Float> res = StringToFloatArrayList(fix);
         return FixKey(res, Float.valueOf(def));
     }
 
-    private ArrayList<Boolean> NewBooleanKey (String fix, String def)
+    private ArrayList<Boolean> NewBooleanKey(String fix, String def)
     {
         fix = NewKey(fix, def);
         ArrayList<Boolean> res = StringToBooleanArrayList(fix);
         return FixKey(res, Boolean.valueOf(def));
     }
 
-    private String NewKey (String fix, String def)
+    private String NewKey(String fix, String def)
     {
         if (fix.equalsIgnoreCase("[]") && DataNum != 0)
         {
@@ -185,7 +321,7 @@ public class FloatData
         return fix;
     }
 
-    private ArrayList<String> FixKey (ArrayList<String> str, String def)
+    private ArrayList<String> FixKey(ArrayList<String> str, String def)
     {
         while (str.size() < DataNum)
         {
@@ -194,7 +330,7 @@ public class FloatData
         return str;
     }
 
-    private ArrayList<Float> FixKey (ArrayList<Float> str, Float def)
+    private ArrayList<Float> FixKey(ArrayList<Float> str, Float def)
     {
         while (str.size() < DataNum)
         {
@@ -203,7 +339,7 @@ public class FloatData
         return str;
     }
 
-    private ArrayList<Integer> FixKey (ArrayList<Integer> str, Integer def)
+    private ArrayList<Integer> FixKey(ArrayList<Integer> str, Integer def)
     {
         while (str.size() < DataNum)
         {
@@ -212,7 +348,7 @@ public class FloatData
         return str;
     }
 
-    private ArrayList<Boolean> FixKey (ArrayList<Boolean> str, Boolean def)
+    private ArrayList<Boolean> FixKey(ArrayList<Boolean> str, Boolean def)
     {
         while (str.size() < DataNum)
         {
@@ -221,7 +357,7 @@ public class FloatData
         return str;
     }
 
-    private final static ArrayList<String> StringToStringArrayList (String str)
+    public final static ArrayList<String> StringToStringArrayList(String str)
     {
         ArrayList<String> arr = new ArrayList<String>();
         if (str.contains("[") && str.length() >= 3)
@@ -247,7 +383,7 @@ public class FloatData
         return arr;
     }
 
-    private final static ArrayList<Float> StringToFloatArrayList (String str)
+    public final static ArrayList<Float> StringToFloatArrayList(String str)
     {
         ArrayList<Float> arr = new ArrayList<Float>();
         if (str.contains("[") && str.length() >= 3)
@@ -270,7 +406,7 @@ public class FloatData
         return arr;
     }
 
-    private final static ArrayList<Integer> StringToIntegerArrayList (String str)
+    public final static ArrayList<Integer> StringToIntegerArrayList(String str)
     {
         ArrayList<Integer> arr = new ArrayList<Integer>();
         if (str.contains("[") && str.length() >= 3)
@@ -293,7 +429,7 @@ public class FloatData
         return arr;
     }
 
-    private final static ArrayList<Boolean> StringToBooleanArrayList (String str)
+    public final static ArrayList<Boolean> StringToBooleanArrayList(String str)
     {
         ArrayList<Boolean> arr = new ArrayList<Boolean>();
         if (str.contains("[") && str.length() >= 3)

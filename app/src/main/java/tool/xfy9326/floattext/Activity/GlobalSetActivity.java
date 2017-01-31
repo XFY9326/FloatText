@@ -12,6 +12,7 @@ import android.text.*;
 import android.view.*;
 import android.widget.*;
 import java.io.*;
+import java.text.*;
 import java.util.*;
 import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Method.*;
@@ -22,6 +23,7 @@ import tool.xfy9326.floattext.View.*;
 import android.app.AlertDialog;
 import android.support.v7.app.ActionBar;
 import tool.xfy9326.floattext.R;
+import tool.xfy9326.floattext.FileSelector.*;
 
 public class GlobalSetActivity extends AppCompatPreferenceActivity
 {
@@ -31,9 +33,15 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 	private static int ADVANCE_TEXT_SET = 1;
 	private static int ADVANCE_TEXT_NOTIFICATION_SET = 2;
 	private static int FLOAT_TEXT_GET_TYPEFACE_PERMISSION = 3;
+	private static int FLOAT_TEXT_GET_BACKUP_PERMISSION = 4;
+	private static int FLOAT_TEXT_GET_RECOVER_PERMISSION = 5;
+	private static int FLOAT_TEXT_SELECT_RECOVER_FILE = 6;
+	private String[] AppNames;
+	private String[] PkgNames;
+	private boolean[] AppState;
 
     @Override
-    protected void onCreate (Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.global_settings);
@@ -41,7 +49,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
         setDataToApp();
     }
 
-	private void sethome ()
+	private void sethome()
 	{
 		ActionBar actionBar = getSupportActionBar();
 		if (actionBar != null)
@@ -50,11 +58,11 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
         }
 	}
 
-    private void setDataToApp ()
+    private void setDataToApp()
     {
         CheckBoxPreference movemethod = (CheckBoxPreference) findPreference("TextMovingMethod");
         movemethod.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange (Preference p1, Object p2)
+                public boolean onPreferenceChange(Preference p1, Object p2)
                 {
                     ((App)getApplicationContext()).setMovingMethod((boolean)p2);
                     Toast.makeText(GlobalSetActivity.this, R.string.restart_to_apply, Toast.LENGTH_LONG).show();
@@ -62,7 +70,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
                 }
             });
         Preference typeface = findPreference("TextTypeface");
-        SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
+        final SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
         default_typeface = setdata.getString("DefaultTTFName", "Default");
         if (default_typeface.equalsIgnoreCase("Default"))
         {
@@ -70,7 +78,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
         }
         typeface.setSummary(getString(R.string.xml_global_text_typeface_summary) + default_typeface);
         typeface.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick (Preference pre)
+                public boolean onPreferenceClick(Preference pre)
                 {
 					if (Build.VERSION.SDK_INT > 22)
 					{
@@ -95,18 +103,18 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
         language_choice = setdata.getInt("Language", 0);
         language.setSummary(getString(R.string.xml_global_language_sum) + lan_list[language_choice]);
         language.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick (final Preference pre)
+                public boolean onPreferenceClick(final Preference pre)
                 {
                     AlertDialog.Builder lan = new AlertDialog.Builder(GlobalSetActivity.this)
                         .setTitle(R.string.xml_global_language)
                         .setSingleChoiceItems(lan_list, language_choice, new DialogInterface.OnClickListener(){
-                            public void onClick (DialogInterface dialog, int which)
+                            public void onClick(DialogInterface dialog, int which)
                             {
                                 language_choice = which;
                             }
                         })
                         .setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
-                            public void onClick (DialogInterface p1, int p2)
+                            public void onClick(DialogInterface p1, int p2)
                             {
                                 SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
                                 setdata.edit().putInt("Language", language_choice).commit();
@@ -116,7 +124,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
-                            public void onClick (DialogInterface d, int i)
+                            public void onClick(DialogInterface d, int i)
                             {
                                 SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
                                 language_choice = setdata.getInt("Language", 0);
@@ -128,7 +136,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
             });
         CheckBoxPreference stayalive = (CheckBoxPreference) findPreference("StayAliveService");
         stayalive.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange (Preference p1, Object p2)
+                public boolean onPreferenceChange(Preference p1, Object p2)
                 {
                     ((App)getApplicationContext()).setStayAliveService((boolean)p2);
                     Intent service = new Intent(GlobalSetActivity.this, FloatWindowStayAliveService.class);
@@ -146,7 +154,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
             });
         CheckBoxPreference dynamicnum = (CheckBoxPreference) findPreference("DynamicNumService");
         dynamicnum.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange (Preference p1, Object p2)
+                public boolean onPreferenceChange(Preference p1, Object p2)
                 {
                     ((App)getApplicationContext()).setDynamicNumService((boolean)p2);
                     Intent service = new Intent(GlobalSetActivity.this, FloatTextUpdateService.class);
@@ -171,7 +179,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 		setADTsum(adts);
 		adts.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
 			{
-				public boolean onPreferenceClick (Preference p)
+				public boolean onPreferenceClick(Preference p)
 				{
 					Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
 					startActivityForResult(intent, ADVANCE_TEXT_SET);
@@ -187,7 +195,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 		{
 			setNOSsum(nous);
 			nous.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-					public boolean onPreferenceClick (Preference p)
+					public boolean onPreferenceClick(Preference p)
 					{
 						if (Build.VERSION.SDK_INT >= 18)
 						{
@@ -200,7 +208,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 		}
         CheckBoxPreference develop = (CheckBoxPreference) findPreference("DevelopMode");
         develop.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange (Preference p1, Object p2)
+                public boolean onPreferenceChange(Preference p1, Object p2)
                 {
                     ((App)getApplicationContext()).setDevelopMode((boolean)p2);
                     return true;
@@ -208,7 +216,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
             });
         CheckBoxPreference html = (CheckBoxPreference) findPreference("HtmlMode");
         html.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange (Preference p1, Object p2)
+                public boolean onPreferenceChange(Preference p1, Object p2)
                 {
                     ((App)getApplicationContext()).setHtmlMode((boolean)p2);
                     Toast.makeText(GlobalSetActivity.this, R.string.restart_to_apply, Toast.LENGTH_LONG).show();
@@ -217,7 +225,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
             });
         CheckBoxPreference hidetext = (CheckBoxPreference) findPreference("ListTextHide");
         hidetext.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange (Preference p1, Object p2)
+                public boolean onPreferenceChange(Preference p1, Object p2)
                 {
                     ((App)getApplicationContext()).setListTextHide((boolean)p2);
                     return true;
@@ -225,7 +233,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
             });
         CheckBoxPreference onlyshowinhome = (CheckBoxPreference)findPreference("WinOnlyShowInHome");
         onlyshowinhome.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange (Preference p1, Object p2)
+                public boolean onPreferenceChange(Preference p1, Object p2)
                 {
                     if (!(boolean)p2)
                     {
@@ -243,9 +251,138 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		Preference filter = findPreference("WinFilter");
+		filter.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
+				public boolean onPreferenceClick(Preference p)
+				{
+					final ArrayList<String> FilterApplication = FloatData.StringToStringArrayList(setdata.getString("Filter_Application", "[]"));
+					getAppInfo(GlobalSetActivity.this, FilterApplication);
+					AlertDialog.Builder alert = new AlertDialog.Builder(GlobalSetActivity.this)
+						.setTitle(R.string.xml_global_win_filter)
+						.setMultiChoiceItems(AppNames, AppState, new DialogInterface.OnMultiChoiceClickListener(){
+							public void onClick(DialogInterface d, int i, boolean b)
+							{
+								AppState[i] = b;
+							}
+						})
+						.setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
+							public void onClick(DialogInterface d, int i)
+							{
+								FilterApplication.clear();
+								for (int a = 0; a < AppState.length; a ++)
+								{
+									if (AppState[a])
+									{
+										FilterApplication.add(PkgNames[a]);
+									}
+								}
+								((App)getApplicationContext()).setFilterApplication(FilterApplication);
+								SharedPreferences.Editor ed = setdata.edit();
+								ed.putString("Filter_Application", FilterApplication.toString());
+								ed.commit();
+							}
+						})
+						.setNegativeButton(R.string.cancel, null);
+					alert.show();
+					return true;
+				}
+			});
+		Preference backup = findPreference("DataBackup");
+		backup.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
+				public boolean onPreferenceClick(Preference p)
+				{
+					if (Build.VERSION.SDK_INT > 22)
+					{
+						if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+						{
+							requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, FLOAT_TEXT_GET_BACKUP_PERMISSION);
+						}
+						else
+						{
+							backupdata();
+						}
+					}
+					else
+					{
+						backupdata();
+					}
+					return true;
+				}
+			});
+		Preference recover = findPreference("DataRecover");
+		recover.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
+				public boolean onPreferenceClick(Preference p)
+				{
+					if (Build.VERSION.SDK_INT > 22)
+					{
+						if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+						{
+							requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, FLOAT_TEXT_GET_RECOVER_PERMISSION);
+						}
+						else
+						{
+							recoverdata(null);
+						}
+					}
+					else
+					{
+						recoverdata(null);
+					}
+					return true;
+				}
+			});
     }
 
-	private void getTypeFace (final Preference pre)
+	private void recoverdata(String path)
+	{
+		if (path == null)
+		{
+			SelectFile sf = new SelectFile(FLOAT_TEXT_SELECT_RECOVER_FILE, SelectFile.TYPE_ChooseFile);
+			sf.setFileType("ftbak");
+			sf.start(GlobalSetActivity.this);
+		}
+		else
+		{
+			FloatData fd = new FloatData(GlobalSetActivity.this);
+			if (fd.InputData(path))
+			{
+				final Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+				intent.putExtra("RecoverText", 1);
+				startActivity(intent);
+				finishAndRemoveTask();
+				System.exit(0);
+			}
+			else
+			{
+				Toast.makeText(GlobalSetActivity.this, R.string.recover_failed, Toast.LENGTH_SHORT).show();
+			}
+		}
+	}
+
+	private void backupdata()
+	{
+		if (((App)getApplicationContext()).getFloatText().size() == 0)
+		{
+			Toast.makeText(GlobalSetActivity.this, R.string.backup_nofound, Toast.LENGTH_SHORT).show();
+		}
+		else
+		{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+			String path = Environment.getExternalStorageDirectory().toString() + "/FloatText/Backup/FloatText>" + sdf.format(new Date()) + ".ftbak";
+			FloatData fd = new FloatData(GlobalSetActivity.this);
+			if (fd.OutputData(path, AboutActivity.getVersionCode(GlobalSetActivity.this)))
+			{
+				Toast.makeText(GlobalSetActivity.this, getString(R.string.backup_success) + path, Toast.LENGTH_SHORT).show();
+			}
+			else
+			{
+				Toast.makeText(GlobalSetActivity.this, R.string.backup_failed, Toast.LENGTH_SHORT).show();
+			}
+		}
+	}
+
+	private void getTypeFace(final Preference pre)
 	{
 		File path = new File(Environment.getExternalStorageDirectory().toString() + "/FloatText/TTFs");
 		if (!path.exists())
@@ -279,13 +416,13 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 		AlertDialog.Builder pathselect = new AlertDialog.Builder(GlobalSetActivity.this)
 			.setTitle(R.string.text_choose_typeface)
 			.setSingleChoiceItems(ttfname, defaultchoice, new DialogInterface.OnClickListener(){
-				public void onClick (DialogInterface p1, int p2)
+				public void onClick(DialogInterface p1, int p2)
 				{
 					typeface_choice = p2;
 				}
 			})
 			.setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
-				public void onClick (DialogInterface p1, int p2)
+				public void onClick(DialogInterface p1, int p2)
 				{
 					SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
 					if (typeface_choice == 0)
@@ -307,7 +444,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 		pathselect.show();
 	}
 
-	public static boolean isAccessibilitySettingsOn (Context context)
+	public static boolean isAccessibilitySettingsOn(Context context)
 	{
         int accessibilityEnabled = 0;
         try
@@ -329,7 +466,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
         return false;
     }
 
-	public static boolean isNotificationListenerEnabled (Context ctx)
+	public static boolean isNotificationListenerEnabled(Context ctx)
 	{  
 		String pkgName = ctx.getPackageName();  
 		final String flat = Settings.Secure.getString(ctx.getContentResolver(), "enabled_notification_listeners");  
@@ -351,7 +488,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 		return false;  
 	}  
 
-    private String getExtraName (String filename)
+    private static String getExtraName(String filename)
     { 
         if ((filename != null) && (filename.length() > 0))
         { 
@@ -364,20 +501,23 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
         return "No_Name"; 
     }
 
-	private void setADTsum (Preference p)
+	private void setADTsum(Preference p)
 	{
+		Preference filter = findPreference("WinFilterSwitch");
 		if (isAccessibilitySettingsOn(this))
 		{
+			filter.setEnabled(true);
 			p.setSummary(getString(R.string.status) + getString(R.string.on) + "\n" + getString(R.string.xml_global_service_advancetext_sum));
 		}
 		else
 		{
+			filter.setEnabled(false);
 			FloatManageMethod.setWinManager(this);
 			p.setSummary(getString(R.string.status) + getString(R.string.off) + "\n" + getString(R.string.xml_global_service_advancetext_sum));
 		}
 	}
 
-	private void setNOSsum (Preference p)
+	private void setNOSsum(Preference p)
 	{
 		if (isNotificationListenerEnabled(this))
 		{
@@ -389,8 +529,54 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 		}
 	}
 
+	private void getAppInfo(Context ctx, ArrayList<String> PkgHave)
+	{
+		List<String> homes = FloatServiceMethod.getHomes(ctx);
+		PackageManager pm = ctx.getPackageManager();
+		List<PackageInfo> info = pm.getInstalledPackages(0);
+		String FloatTextPkgName = ctx.getPackageName();
+		orderList(ctx, info);
+		int num = info.size() - homes.size() - 1;
+		AppNames = new String[num];
+		PkgNames = new String[num];
+		AppState = new boolean[num];
+		int countnum = 0;
+		for (int i = 0; i < info.size();i++)
+		{
+			String pkgname = info.get(i).packageName;
+			if (!homes.contains(pkgname) && !pkgname.equalsIgnoreCase(FloatTextPkgName))
+			{
+				AppNames[countnum] = info.get(i).applicationInfo.loadLabel(ctx.getPackageManager()).toString();
+				PkgNames[countnum] = pkgname;
+				if (PkgHave.contains(pkgname))
+				{
+					AppState[countnum] = true;
+				}
+				else
+				{
+					AppState[countnum] = false;
+				}
+				countnum++;
+			}
+		}
+	}
+
+	private static List<PackageInfo> orderList(final Context ctx, List<PackageInfo> list)
+	{
+		Collections.sort(list, new Comparator<PackageInfo>() {
+                @Override
+                public int compare(PackageInfo o1, PackageInfo o2)
+                {
+					String str1 = o1.applicationInfo.loadLabel(ctx.getPackageManager()).toString();
+					String str2 = o2.applicationInfo.loadLabel(ctx.getPackageManager()).toString();
+                    return str1.compareTo(str2);
+                }
+            });
+		return list;
+	}
+
 	@Override
-	public boolean onOptionsItemSelected (MenuItem item)
+	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		if (item.getItemId() == android.R.id.home)
 		{
@@ -400,7 +586,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 	}
 
 	@Override
-	protected void onActivityResult (int requestCode, int resultCode, Intent data)
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
 		if (requestCode == FLOAT_TEXT_GET_TYPEFACE_PERMISSION)
 		{
@@ -409,7 +595,21 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 				getTypeFace(findPreference("TextTypeface"));
 			}
 		}
-		if (requestCode == ADVANCE_TEXT_SET)
+		else if (requestCode == FLOAT_TEXT_GET_BACKUP_PERMISSION)
+		{
+			if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+			{
+				backupdata();
+			}
+		}
+		else if (requestCode == FLOAT_TEXT_GET_RECOVER_PERMISSION)
+		{
+			if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+			{
+				recoverdata(null);
+			}
+		}
+		else if (requestCode == ADVANCE_TEXT_SET)
 		{
 			Preference adts = findPreference("AdvanceTextService");
 			setADTsum(adts);
@@ -418,6 +618,11 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 		{
 			Preference nous = findPreference("NotificationListenerService");
 			setNOSsum(nous);
+		}
+		else if (requestCode == FLOAT_TEXT_SELECT_RECOVER_FILE)
+		{
+			String str = data.getStringExtra("FilePath");
+			recoverdata(str);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}

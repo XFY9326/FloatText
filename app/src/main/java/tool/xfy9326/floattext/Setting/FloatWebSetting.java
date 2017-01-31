@@ -12,6 +12,7 @@ import android.view.WindowManager.*;
 import android.view.inputmethod.*;
 import android.webkit.*;
 import android.widget.*;
+import android.widget.SeekBar.*;
 import android.widget.TextView.*;
 import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Activity.*;
@@ -25,8 +26,6 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
 {
     private static final int REQUEST_CODE = 1;
     private String WebUrl;
-    private int webheight;
-    private int webwidth;
     private View toolbar;
     private WebView webview;
     private boolean savewin = false;
@@ -37,9 +36,11 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
     private WindowManager.LayoutParams wmParams = null;
 	private EditText urltext;
 	private ProgressBar urlloading;
+	private float FloatLong;
+	private float FloatWide;
 
     @Override
-    protected void onCreate (Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         spdata = PreferenceManager.getDefaultSharedPreferences(this);
@@ -51,9 +52,11 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
         preferenceset();
         defaultkeyget();
         prepareshow();
+		SafeGuard.isSignatureAvailable(this);
+        SafeGuard.isPackageNameAvailable(this);
     }
 
-	private void sethome ()
+	private void sethome()
 	{
 		ActionBar actionBar = getSupportActionBar();
 		if (actionBar != null)
@@ -62,7 +65,7 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
         }
 	}
 
-    private void wmcheck ()
+    private void wmcheck()
     {
         if (wm == null)
         {
@@ -75,45 +78,89 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
         }
     }
 
-    private void defaultkeyget ()
+    private void defaultkeyget()
     {
-        webwidth = Integer.parseInt(spdata.getString("WebWidth", "600"));
-        webheight = Integer.parseInt(spdata.getString("WebHeight", "800"));
+        FloatWide = Integer.parseInt(spdata.getString("WebWidth", "600"));
+        FloatLong = Integer.parseInt(spdata.getString("WebHeight", "800"));
         WebUrl = spdata.getString("WebUrl", "https://xfy9326.github.io/FloatText/");
     }
 
-    private void preferenceset ()
+    private void preferenceset()
     {
         EditTextPreference url = (EditTextPreference) findPreference("WebUrl");
         url.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange (Preference p1, Object p2)
+                public boolean onPreferenceChange(Preference p1, Object p2)
                 {
                     WebUrl = (String)p2;
                     updateview();
                     return true;
                 }
             });
-        EditTextPreference width = (EditTextPreference) findPreference("WebWidth");
-        width.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange (Preference p1, Object p2)
+        Preference width = findPreference("WebWidth");
+        width.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
+                public boolean onPreferenceClick(Preference p1)
                 {
-                    webwidth = Integer.parseInt(p2.toString());
-                    updateview();
+					LayoutInflater inflater = LayoutInflater.from(FloatWebSetting.this);  
+                    View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(FloatWebSetting.this);
+                    dialog.setTitle(R.string.xml_web_win_width);
+                    final TextView text = (TextView) layout.findViewById(R.id.textview_size_now);
+                    SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_size);
+                    text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
+                    bar.setMax(wm.getDefaultDisplay().getHeight());
+                    bar.setProgress((int)FloatWide);
+                    bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+                            public void onStartTrackingTouch(SeekBar bar)
+                            {}
+                            public void onStopTrackingTouch(SeekBar bar)
+                            {}
+                            public void onProgressChanged(SeekBar bar , int i , boolean state)
+                            {
+                                FloatWide = i;
+                                text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
+                                updateview();
+                            }
+                        });
+                    dialog.setView(layout);
+                    dialog.setPositiveButton(R.string.close, null);
+                    dialog.show();
                     return true;
                 }
             });
-        EditTextPreference height = (EditTextPreference) findPreference("WebHeight");
-        height.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange (Preference p1, Object p2)
+        Preference height = findPreference("WebHeight");
+        height.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
+                public boolean onPreferenceClick(Preference p1)
                 {
-                    webheight = Integer.parseInt(p2.toString());
-                    updateview();
+					LayoutInflater inflater = LayoutInflater.from(FloatWebSetting.this);  
+                    View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(FloatWebSetting.this);
+                    dialog.setTitle(R.string.xml_web_win_height);
+                    final TextView text = (TextView) layout.findViewById(R.id.textview_size_now);
+                    SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_size);
+                    text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
+                    bar.setMax(wm.getDefaultDisplay().getWidth());
+                    bar.setProgress((int)FloatLong);
+                    bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+                            public void onStartTrackingTouch(SeekBar bar)
+                            {}
+                            public void onStopTrackingTouch(SeekBar bar)
+                            {}
+                            public void onProgressChanged(SeekBar bar , int i , boolean state)
+                            {
+                                FloatLong = i;
+                                text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
+                                updateview();
+                            }
+                        });
+                    dialog.setView(layout);
+                    dialog.setPositiveButton(R.string.close, null);
+                    dialog.show();
                     return true;
                 }
             });
         Preference reload = findPreference("WebReload");
         reload.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick (Preference p1)
+                public boolean onPreferenceClick(Preference p1)
                 {
                     webview.reload();
                     return true;
@@ -121,7 +168,7 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
             });
     }
 
-    private void prepareshow ()
+    private void prepareshow()
     {
         if (Build.VERSION.SDK_INT >= 23)
         {
@@ -140,7 +187,7 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
         }
     }
 
-    private void CreateView ()
+    private void CreateView()
     {
 		LayoutInflater inflater = LayoutInflater.from(this);
         toolbar = inflater.inflate(R.layout.webview_toolbar, null);
@@ -150,7 +197,7 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
 		urlloading.setVisibility(View.GONE);
 		webview = FloatWebSettingMethod.CreateFloatWebView(this, WebUrl);
 		webview.setWebViewClient(new WebViewClient(){
-                public boolean shouldOverrideUrlLoading (WebView view, String wurl)
+                public boolean shouldOverrideUrlLoading(WebView view, String wurl)
                 {
 					WebUrl = wurl;
                     view.loadUrl(wurl);
@@ -158,7 +205,7 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
                     return true;
                 }
 
-				public void onPageStarted (WebView view, String purl, Bitmap ic)
+				public void onPageStarted(WebView view, String purl, Bitmap ic)
 				{
 					urltext.setText(purl);
 					urlloading.setVisibility(View.VISIBLE);
@@ -173,10 +220,10 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
             });
         linearlayout = FloatTextSettingMethod.CreateLayout(this, -1);
         toolbar_set(this, webview, toolbar);
-        wmParams = FloatWebSettingMethod.CreateFloatLayout(this, wm, webview, toolbar, linearlayout, 150, 150, true, webwidth, webheight);
+        wmParams = FloatWebSettingMethod.CreateFloatLayout(this, wm, webview, toolbar, linearlayout, 150, 150, true, (int)FloatWide, (int)FloatLong);
     }
 
-    private void toolbar_set (Context ctx, final WebView webview, final View view)
+    private void toolbar_set(Context ctx, final WebView webview, final View view)
     {
         Button hide = (Button) view.findViewById(R.id.webview_hide);
         Button previous = (Button) view.findViewById(R.id.webview_previous);
@@ -185,7 +232,7 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
         Button close = (Button) view.findViewById(R.id.webview_close);
 		Button urlenter = (Button) view.findViewById(R.id.webviewtoolbar_enter);
 		urltext.setOnEditorActionListener(new OnEditorActionListener(){
-				public boolean onEditorAction (TextView v, int actionId, KeyEvent event)
+				public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
 				{
 					if (actionId == EditorInfo.IME_ACTION_SEND || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) || actionId == EditorInfo.IME_ACTION_DONE)
 					{
@@ -195,45 +242,45 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
 				}
 			});
         hide.setOnClickListener(new OnClickListener(){
-                public void onClick (View v)
+                public void onClick(View v)
                 {
                     setsmallwin(wm, view, linearlayout);
                 }
             });
         previous.setOnClickListener(new OnClickListener(){
-                public void onClick (View v)
+                public void onClick(View v)
                 {
                     webview.goBack();
                 }
             });
         next.setOnClickListener(new OnClickListener(){
-                public void onClick (View v)
+                public void onClick(View v)
                 {
                     webview.goForward();
                 }
             });
         reload.setOnClickListener(new OnClickListener(){
-                public void onClick (View v)
+                public void onClick(View v)
                 {
                     webview.reload();
                 }
             });
         close.setOnClickListener(new OnClickListener(){
-                public void onClick (View v)
+                public void onClick(View v)
                 {
                     stopshow(FloatWebSetting.this);
                     FloatWebSetting.this.finish();
                 }
             });
 		urlenter.setOnClickListener(new OnClickListener(){
-                public void onClick (View v)
+                public void onClick(View v)
                 {
                     webview.loadUrl(FloatWebSettingMethod.urlfix(urltext.getText().toString()));
                 }
             });
     }
 
-    private void setsmallwin (WindowManager wm, View view, final FloatLinearLayout layout)
+    private void setsmallwin(WindowManager wm, View view, final FloatLinearLayout layout)
     {
         layout.removeView(webview);
         layout.removeView(view);
@@ -241,7 +288,7 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
         final View toolbar_hide = inflater.inflate(R.layout.webview_toolbar_hide, null);
         Button back = (Button) toolbar_hide.findViewById(R.id.webview_show);
         back.setOnClickListener(new OnClickListener(){
-                public void onClick (View v)
+                public void onClick(View v)
                 {
                     backbigwin(toolbar_hide, layout);
                 }
@@ -251,7 +298,7 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
 		updateview();
     }
 
-    private void backbigwin (View v, FloatLinearLayout layout)
+    private void backbigwin(View v, FloatLinearLayout layout)
     {
         layout.removeView(v);
         layout.addView(toolbar);
@@ -260,19 +307,19 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
 		updateview();
     }
 
-    private void updateview ()
+    private void updateview()
     {
         TableRow.LayoutParams params = new TableRow.LayoutParams();
         params.width = TableRow.LayoutParams.WRAP_CONTENT;
         params.height = TableRow.LayoutParams.WRAP_CONTENT;
-        params.width = webwidth;
-        params.height = webheight;
+        params.width = (int)FloatWide;
+        params.height = (int)FloatLong;
         webview.setLayoutParams(params);
         webview.loadUrl(WebUrl);
 		wm.updateViewLayout(linearlayout, wmParams);
     }
 
-    private void stopshow (Context ctx)
+    private void stopshow(Context ctx)
     {
         if (wm != null)
         {
@@ -301,7 +348,7 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
         }
     }
 
-	private void setbackresult (int i)
+	private void setbackresult(int i)
 	{
 		Intent intent = new Intent();
 		intent.putExtra("RESULT", i);
@@ -309,7 +356,7 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
 	}
 
     @Override
-    protected void onActivityResult (int requestCode, int resultCode, Intent data)
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE)
@@ -330,7 +377,7 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
     }
 
     @Override 
-    public boolean onCreateOptionsMenu (Menu menu)
+    public boolean onCreateOptionsMenu(Menu menu)
     {  
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.floatsetting_action_bar, menu);
@@ -338,7 +385,7 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected (MenuItem item)
+    public boolean onOptionsItemSelected(MenuItem item)
     {
         switch (item.getItemId())
         {
@@ -359,7 +406,7 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
     }
 
     @Override
-    protected void onDestroy ()
+    protected void onDestroy()
     {
         if (!savewin)
         {

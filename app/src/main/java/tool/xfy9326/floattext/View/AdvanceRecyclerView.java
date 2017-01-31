@@ -8,8 +8,8 @@ import android.widget.*;
 
 public class AdvanceRecyclerView extends RecyclerView
 {
-
     private View emptyView;
+	
     final private AdapterDataObserver observer = new AdapterDataObserver() {
         @Override
         public void onChanged ()

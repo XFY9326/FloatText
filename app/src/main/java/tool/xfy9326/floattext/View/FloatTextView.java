@@ -19,7 +19,7 @@ public class FloatTextView extends TextView implements Runnable
     private int ID = 0;
     private boolean htmlmode = true;
 
-    public FloatTextView (Context context, boolean htmlmode)
+    public FloatTextView(Context context, boolean htmlmode)
     {
         super(context);
         this.ctx = context.getApplicationContext();
@@ -30,7 +30,7 @@ public class FloatTextView extends TextView implements Runnable
     }
 
     @Override
-    public void setText (CharSequence text, TextView.BufferType type)
+    public void setText(CharSequence text, TextView.BufferType type)
     {
         text = htmlcodefix(text);
         super.setText(text, type);
@@ -38,7 +38,7 @@ public class FloatTextView extends TextView implements Runnable
         invalidate();
     }
 
-    private CharSequence htmlcodefix (CharSequence text)
+    private CharSequence htmlcodefix(CharSequence text)
     {
         if (htmlmode)
         {
@@ -51,15 +51,15 @@ public class FloatTextView extends TextView implements Runnable
         return text;
     }
 
-    public void setMoveSpeed (int i)
+    public void setMoveSpeed(int i)
     {
         this.movespeed = i;
         invalidate();
     }
 
     @Override 
-    protected void onDraw (Canvas canvas)
-    { 
+    protected void onDraw(Canvas canvas)
+    {
         super.onDraw(canvas); 
         if (!isMeasure)
         {
@@ -69,7 +69,7 @@ public class FloatTextView extends TextView implements Runnable
         invalidate();
     }
 
-    private void getTextWidth ()
+    private void getTextWidth()
     { 
         Paint paint = this.getPaint(); 
         String str = this.getText().toString(); 
@@ -77,7 +77,7 @@ public class FloatTextView extends TextView implements Runnable
     }
 
     @Override 
-    public void run ()
+    public void run()
     { 
         currentScrollX += movespeed;
         scrollTo(currentScrollX, 0); 
@@ -94,7 +94,7 @@ public class FloatTextView extends TextView implements Runnable
         invalidate();
     } 
 
-    public void startScroll ()
+    public void startScroll()
     {
         this.removeCallbacks(this);
         post(this);
@@ -102,7 +102,7 @@ public class FloatTextView extends TextView implements Runnable
         invalidate();
     } 
 
-    public void stopScroll ()
+    public void stopScroll()
     {
         scrollTo(textWidth, 0);
         currentScrollX = 0;
@@ -110,12 +110,12 @@ public class FloatTextView extends TextView implements Runnable
         invalidate();
     }
 
-    public void setID (int i)
+    public void setID(int i)
     {
         ID = i;
     }
 
-    public void setTypefaceFile (String ttf)
+    public void setTypefaceFile(String ttf)
     {
         if (!ttf.equalsIgnoreCase("Default"))
         {
@@ -123,20 +123,20 @@ public class FloatTextView extends TextView implements Runnable
             setTypeface(tf);
         }
     }
-    
+
     public void setShadow(boolean shadow, float x, float y, float r, int color)
     {
-        if(shadow)
+        if (shadow)
         {
             setShadowLayer(r, x, y, color);
         }
         else
         {
-            setShadowLayer(0, 0, 0, color);
+            setShadowLayer(0, 0, 0, 0);
         }
     }
 
-    public void setMoving (boolean bool, int mode)
+    public void setMoving(boolean bool, int mode)
     {
         switch (mode)
         {
@@ -177,5 +177,5 @@ public class FloatTextView extends TextView implements Runnable
                 break;
         }
     }
-    
+
 }

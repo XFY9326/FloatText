@@ -8,16 +8,18 @@ import java.util.*;
 import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Activity.*;
 import tool.xfy9326.floattext.Method.*;
+import android.preference.*;
 
 public class FloatAdvanceTextUpdateService extends AccessibilityService
 {
 	private String currentactivity;
 	private String notifymes;
 	private String toasts;
+	private String oldactivity = "";
 	private boolean sentrule = false;
 
 	@Override
-	public void onCreate ()
+	public void onCreate()
 	{
 		currentactivity = toasts = notifymes = getString(R.string.loading);
 		FloatManageMethod.setWinManager(this);
@@ -25,7 +27,7 @@ public class FloatAdvanceTextUpdateService extends AccessibilityService
 	}
 
 	@Override
-	public void onAccessibilityEvent (AccessibilityEvent event)
+	public void onAccessibilityEvent(AccessibilityEvent event)
 	{
 		int eventType = event.getEventType();
         switch (eventType)
@@ -69,11 +71,11 @@ public class FloatAdvanceTextUpdateService extends AccessibilityService
 	}
 
 	@Override
-	public void onInterrupt ()
+	public void onInterrupt()
 	{
 	}
 
-	private boolean getRule ()
+	private boolean getRule()
 	{
 		if (Build.VERSION.SDK_INT < 18 || !GlobalSetActivity.isNotificationListenerEnabled(this))
 		{
@@ -82,7 +84,7 @@ public class FloatAdvanceTextUpdateService extends AccessibilityService
 		return false;
 	}
 
-	private void sendmes ()
+	private void sendmes()
 	{
 		Intent intent = new Intent();
 		intent.setAction(FloatServiceMethod.TEXT_ADVANCE_UPDATE_ACTION);
@@ -93,6 +95,23 @@ public class FloatAdvanceTextUpdateService extends AccessibilityService
 		}
 		intent.putExtra("Toasts", toasts);
 		sendBroadcast(intent);
+		updateactivity();
+	}
+
+	private void updateactivity()
+	{
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(FloatAdvanceTextUpdateService.this);
+		if (sp.getBoolean("WinFilterSwitch", false))
+		{
+			if (!oldactivity.equalsIgnoreCase(currentactivity))
+			{
+				Intent intent = new Intent();
+				intent.setAction(FloatServiceMethod.ACTIVITY_CHANGE_ACTION);
+				intent.putExtra("CurrentActivity", currentactivity);
+				sendBroadcast(intent);
+				oldactivity = currentactivity;
+			}
+		}
 	}
 
 }

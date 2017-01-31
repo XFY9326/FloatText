@@ -33,6 +33,7 @@ public class App extends Application
 	private ArrayList<Boolean> FloatSize = new ArrayList<Boolean>();
 	private ArrayList<Float> FloatLong = new ArrayList<Float>();
 	private ArrayList<Float> FloatWide = new ArrayList<Float>();
+	private ArrayList<String> FilterApplication = new ArrayList<String>();
     private ListViewAdapter listviewadapter = null;
     private WindowManager floatwinmanager = null;
     public boolean MovingMethod = false;
@@ -58,6 +59,16 @@ public class App extends Application
         SafeGuard.isSignatureAvailable(this);
         SafeGuard.isPackageNameAvailable(this);
     }
+	
+	public void setFilterApplication(ArrayList<String> filterApplication)
+	{
+		FilterApplication = filterApplication;
+	}
+
+	public ArrayList<String> getFilterApplication()
+	{
+		return FilterApplication;
+	}
 	
 	public ArrayList<Float> getFloatWide ()
 	{

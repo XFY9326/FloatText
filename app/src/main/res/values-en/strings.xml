@@ -82,6 +82,11 @@
 	<string name="advancetext_service_label">FloatText advanced service</string>
 	<string name="advancetext_service_description">FloatText advanced dynamic variable service\nOpens this service, allowing the use of advanced dynamic variables.\nThis service will listen to the user interface operation, but will not upload any data, please do not worry.</string>
 	<string name="floatnotification_service_label">FloatText Notification Listener Service</string>
+	<string name="backup_success">Data backup success\nFile Path:</string>
+	<string name="backup_failed">Data backup failed</string>
+	<string name="backup_nofound">Nothing to backup</string>
+	<string name="recover_success">Data recover success</string>
+	<string name="recover_failed">Data recover failed</string>
     <!-- Color Picker -->
     <string name="dialog_color_picker">Color Picker</string>
     <string name="press_color_to_apply">Choose color to apply changes</string>
@@ -177,8 +182,11 @@
     <string name="xml_global_win_longclicklock">Long click to lock the float window</string>
     <string name="xml_global_win_longclicklock_on">Long click will lock the window</string>
     <string name="xml_global_win_longclicklock_off">Long click will not lock the window</string>
-    <string name="xml_global_win_onlyshowinhome">Only float in home</string>
-    <string name="xml_global_win_onlyshowinhome_sum">Can not edit float window \nNeed to open Float Window Guard service</string>
+    <string name="xml_global_win_onlyshowinhome">Only Show Float in home</string>
+    <string name="xml_global_win_onlyshowinhome_sum">Can not edit Float window \nNeed to open Float Window Guard service</string>
+	<string name="xml_global_win_filter_switch">Float Window Show Filter</string>
+	<string name="xml_global_win_filter">Float Window Show Filter List</string>
+    <string name="xml_global_win_filter_sum">Not Show Float Window in Specified Application\nNeed to open FloatText Advance Service</string>
     <string name="xml_global_text_type">Moving text show model</string>
     <string name="xml_global_text_common">‍Traditional model\n(‍The speed is  ‍unchangebale but more steady)</string>
     <string name="xml_global_text_advanced">Advanced model\n(Can change speed but use more CPU)</string>
@@ -199,11 +207,16 @@
     <string name="xml_global_htmlmode_on">Use #[HTML] as the head of the text to use HTML code</string>
     <string name="xml_global_htmlmode_off">Can not use HTML code to change the text type</string>
     <string name="xml_global_devlopmode">Experimental Functions</string>
-    <string name="xml_global_devlopmode_on">Will show unstable functions</string>
-    <string name="xml_global_devlopmode_off">Will not show unstable functions</string>
+    <string name="xml_global_devlopmode_on">Will show functions still in testing</string>
+    <string name="xml_global_devlopmode_off">Will not show functions still in testing</string>
     <string name="xml_global_language">Language Setting</string>
     <string name="xml_global_language_sum">Current Language:</string>
-
+	<string name="xml_global_data_title">Data Backup and Recover</string>
+	<string name="xml_global_data_backup">Data Backup</string>
+	<string name="xml_global_data_backup_sum">Backup all current Float window into the SD card</string>
+	<string name="xml_global_data_recover">Data Recover</string>
+	<string name="xml_global_data_recover_sum">Recover Float window data from the backup file</string>
+	
     <string name="fileselect_activity_title">File Selector</string>
     <string name="fileselect_defaultpath_error">Default File Path Error！</string>
     <string name="fileselect_file_nofound">File No Found！</string>

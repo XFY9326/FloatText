@@ -48,12 +48,12 @@ public class AboutActivity extends AppCompatPreferenceActivity
 				}
 			});
         Preference version = findPreference("Version");
-        version.setSummary(getVersionName(this) + "(" + getVersionCode(this) + ")");
+        version.setSummary(getVersionName(this) + " (" + getVersionCode(this) + ")");
         version.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
             {
                 public boolean onPreferenceClick (Preference p)
                 {
-                    Toast.makeText(AboutActivity.this, "╭( ′• o •′ )╭☞就是这个人！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AboutActivity.this, "(ง •̀_•́)ง", Toast.LENGTH_SHORT).show();
                     return true;
                 }
             });

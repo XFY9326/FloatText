@@ -12,25 +12,25 @@ import android.view.View.*;
 import android.widget.*;
 import java.io.*;
 import tool.xfy9326.floattext.*;
-import tool.xfy9326.floattext.Method.*;
+import tool.xfy9326.floattext.Utils.*;
 
 import android.support.v7.widget.Toolbar;
 import tool.xfy9326.floattext.R;
 
-public class ImportTTF extends AppCompatActivity
+public class ImportBackupFile extends AppCompatActivity
 {
-    private String FilePath = null;
+	private String FilePath = null;
 	private static int FLOAT_TEXT_PERMISSION = 1;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_api_import);
+	@Override
+	protected void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_api_import);
 		Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(tb);
 		setAll();
-    }
+	}
 
 	private void setAll()
 	{
@@ -42,20 +42,22 @@ public class ImportTTF extends AppCompatActivity
 			}
 			else
 			{
-				FloatManageMethod.preparefolder();
+				FloatData fd = new FloatData(this);
+				fd.savedata();
 				FilePath = getIntentData();
 				setView();
 			}
 		}
 		else
 		{
-			FloatManageMethod.preparefolder();
+			FloatData fd = new FloatData(this);
+			fd.savedata();
 			FilePath = getIntentData();
 			setView();
 		}
 	}
 
-    private String getIntentData()
+	private String getIntentData()
     {
         String path = null;
         Intent intent = getIntent();
@@ -68,40 +70,33 @@ public class ImportTTF extends AppCompatActivity
         return path;
     }
 
-    private void setView()
+	private void setView()
     {
         Button importfile = (Button) findViewById(R.id.button_importttf);
         TextView filename = (TextView) findViewById(R.id.textview_selectttf);
-        final File ttf = new File(FilePath);
-        filename.setText(ttf.getName());
+        final File bak = new File(FilePath);
+        filename.setText(bak.getName());
         importfile.setOnClickListener(new OnClickListener(){
                 public void onClick(View v)
                 {
-                    if (ttf.exists())
+                    if (bak.exists())
                     {
-                        File ttf_c = new File(Environment.getExternalStorageDirectory().toString() + "/FloatText/TTFs/"  + ttf.getName());
-                        if (!ttf_c.exists())
-                        {
-                            if (IOMethod.CopyFile(ttf, ttf_c))
-                            {
-                                Toast.makeText(ImportTTF.this, R.string.ttf_import_success, Toast.LENGTH_SHORT).show();
-
-                            }
-                            else
-                            {
-                                Toast.makeText(ImportTTF.this, R.string.ttf_import_failed, Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                        else
-                        {
-                            Toast.makeText(ImportTTF.this, R.string.ttf_import_exist, Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                    	FloatData fd = new FloatData(ImportBackupFile.this);
+						if (fd.InputData(FilePath))
+						{
+							final Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
+							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+							intent.putExtra("RecoverText", 1);
+							startActivity(intent);
+							finishAndRemoveTask();
+							System.exit(0);
+						}
+					}
                     else
                     {
-                        Toast.makeText(ImportTTF.this, R.string.ttf_import_failed, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ImportBackupFile.this, R.string.recover_failed, Toast.LENGTH_SHORT).show();
+						ImportBackupFile.this.finish();
                     }
-					ImportTTF.this.finish();
                 }
             });
     }
@@ -111,7 +106,8 @@ public class ImportTTF extends AppCompatActivity
 	{
 		if (requestCode == FLOAT_TEXT_PERMISSION)
 		{
-			FloatManageMethod.preparefolder();
+			FloatData fd = new FloatData(this);
+			fd.savedata();
 			FilePath = getIntentData();
 			setView();
 		}
