@@ -2,7 +2,6 @@ package tool.xfy9326.floattext.Setting;
 
 import android.app.*;
 import android.content.*;
-import android.graphics.*;
 import android.os.*;
 import android.preference.*;
 import android.provider.*;
@@ -52,10 +51,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     private float TextShadowY;
     private float TextShadowRadius;
     private int BackgroundColor;
-    private String TextTransparency;
-    private String WinTransparency;
     private int TextShadowColor;
-    private String TextShadowTransparency;
 	private boolean FloatSize;
 	private float FloatLong;
 	private float FloatWide;
@@ -203,6 +199,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 
     private void buttonset()
     {
+		final LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);
         Preference tips = findPreference("tips");
         String[] tiparr = getResources().getStringArray(R.array.floatsetting_tips);
         Random random = new Random();
@@ -211,18 +208,24 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         Preference textshow = findPreference("TextShow");
         textshow.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p)
-                {
-                    LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
+                {  
                     View layout = inflater.inflate(R.layout.dialog_text_edit, null);
                     final EditText atv = (EditText) layout.findViewById(R.id.textview_addnewtext);
-					atv.setText(spdata.getString("TextShow", getString(R.string.default_text)));
+					if (spdata.getBoolean("TextAutoClear", false))
+					{
+						atv.setText("");
+					}
+					else
+					{
+						atv.setText(spdata.getString("TextShow", getString(R.string.default_text)));
+					}
 					final ListView lv = (ListView) layout.findViewById(R.id.listview_textedit);
 					final LinearLayout ll = (LinearLayout) layout.findViewById(R.id.layout_textedit);
 					if (((App)getApplicationContext()).DynamicNumService)
 					{
 						final String[] dynamiclist = getResources().getStringArray(R.array.floatsetting_dynamic_list);
 						String[] dynamicname = getResources().getStringArray(R.array.floatsetting_dynamic_name);
-						String[] result = new String[dynamiclist.length ];
+						String[] result = new String[dynamiclist.length];
 						for (int i = 0;i < dynamiclist.length;i++)
 						{
 							result[i] = "<" + dynamiclist[i] + ">" + "\n" + dynamicname[i];
@@ -240,8 +243,8 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 					{
 						ll.setVisibility(View.GONE);
 					}
-                    AlertDialog.Builder textedit = new AlertDialog.Builder(FloatTextSetting.this)
-                        .setTitle(R.string.xml_set_textedit_title)
+                    AlertDialog.Builder textedit = new AlertDialog.Builder(FloatTextSetting.this);
+					textedit.setTitle(R.string.xml_set_textedit_title)
                         .setView(layout)
                         .setNegativeButton(R.string.cancel, null)
                         .setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
@@ -268,8 +271,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         Preference textsize = findPreference("TextSize");
         textsize.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p1)
-                {
-                    LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
+                {  
                     View layout = inflater.inflate(R.layout.dialog_textsize_edit, null);
                     AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
                     dialog.setTitle(R.string.text_size_set);
@@ -310,64 +312,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                 }
             });
         textcolor.setHexValueEnabled(true);
-        Preference texcolor = findPreference("TextColorEnd");
-        texcolor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick(Preference p)
-                {
-                    LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
-                    View layout = inflater.inflate(R.layout.dialog_textcolor_transparency_edit, null);
-                    final TextView tt = (TextView) layout.findViewById(R.id.textview_texttransparency_now);
-                    final SeekBar st = (SeekBar) layout.findViewById(R.id.seekbar_texttransparency);
-                    st.setMax(Integer.parseInt("FF", 16));
-                    final String cor = FloatTextSettingMethod.IntColortoHex(TextColor);
-                    if (cor.length() > 7)
-                    {
-                        String nowend = cor.substring(1, 3);
-                        TextTransparency = nowend;
-                        st.setProgress(Integer.parseInt(nowend, 16));
-                    }
-                    else
-                    {
-                        st.setProgress(Integer.parseInt("FF", 16));
-                        TextTransparency = "FF";
-                    }
-                    tt.setText(getString(R.string.text_edit_color_transparency_now) + Integer.parseInt(TextTransparency, 16));
-                    st.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch(SeekBar bar)
-                            {}
-                            public void onStopTrackingTouch(SeekBar bar)
-                            {}
-                            public void onProgressChanged(SeekBar bar , int i , boolean state)
-                            {
-                                TextTransparency = Integer.toHexString(i) + "";
-                                if (i < 16)
-                                {
-                                    TextTransparency = "0" + TextTransparency;
-                                }
-                                tt.setText(getString(R.string.text_edit_color_transparency_now) + Integer.parseInt(TextTransparency, 16));
-                                if (cor.length() > 7)
-                                {
-                                    String corn = "#" + TextTransparency + cor.substring(3);
-                                    TextColor = Color.parseColor(corn);
-                                }
-                                else
-                                {
-                                    String corn = "#" + TextTransparency + cor.substring(1);
-                                    TextColor = Color.parseColor(corn);
-                                }
-                                spedit.putInt("ColorPicker", TextColor);
-                                spedit.commit();
-                                updateview();
-                            }
-                        });
-                    AlertDialog.Builder tex = new AlertDialog.Builder(FloatTextSetting.this);
-                    tex.setTitle(R.string.text_edit_color_transparency);
-                    tex.setView(layout);
-                    tex.setPositiveButton(R.string.close, null);
-                    tex.show();
-                    return true;
-                }
-            });
+		textcolor.setAlphaSliderEnabled(true);
         CheckBoxPreference textthick = (CheckBoxPreference) findPreference("TextThick");
         textthick.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p1, Object p2)
@@ -406,8 +351,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         Preference shadow = findPreference("TextShadow");
         shadow.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p1)
-                {
-                    LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
+                {  
                     View layout = inflater.inflate(R.layout.dialog_textshadow_edit, null);
                     final Switch ss = (Switch) layout.findViewById(R.id.switch_textshadow);
                     final TextView sx = (TextView) layout.findViewById(R.id.textview_shadowDx);
@@ -500,64 +444,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                 }
             });
         textshadowcolor.setHexValueEnabled(true);
-        Preference texshadowcolor = findPreference("TextShadowColorEnd");
-        texshadowcolor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick(Preference p)
-                {
-                    LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
-                    View layout = inflater.inflate(R.layout.dialog_textcolor_transparency_edit, null);
-                    final TextView tt = (TextView) layout.findViewById(R.id.textview_texttransparency_now);
-                    final SeekBar st = (SeekBar) layout.findViewById(R.id.seekbar_texttransparency);
-                    st.setMax(Integer.parseInt("FF", 16) - 1);
-                    final String cor = FloatTextSettingMethod.IntColortoHex(TextShadowColor);
-                    if (cor.length() > 7)
-                    {
-                        String nowend = cor.substring(1, 3);
-                        TextShadowTransparency = nowend;
-                        st.setProgress(Integer.parseInt(nowend, 16));
-                    }
-                    else
-                    {
-                        st.setProgress(Integer.parseInt("FF", 16));
-                        TextShadowTransparency = "FF";
-                    }
-                    tt.setText(getString(R.string.text_edit_color_transparency_now) + Integer.parseInt(TextShadowTransparency, 16));
-                    st.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch(SeekBar bar)
-                            {}
-                            public void onStopTrackingTouch(SeekBar bar)
-                            {}
-                            public void onProgressChanged(SeekBar bar , int i , boolean state)
-                            {
-                                TextShadowTransparency = Integer.toHexString(i) + "";
-                                if (i < 16)
-                                {
-                                    TextShadowTransparency = "0" + TextShadowTransparency;
-                                }
-                                tt.setText(getString(R.string.text_edit_color_transparency_now) + Integer.parseInt(TextShadowTransparency, 16));
-                                if (cor.length() > 7)
-                                {
-                                    String corn = "#" + TextShadowTransparency + cor.substring(3);
-                                    TextShadowColor = Color.parseColor(corn);
-                                }
-                                else
-                                {
-                                    String corn = "#" + TextShadowTransparency + cor.substring(1);
-                                    TextShadowColor = Color.parseColor(corn);
-                                }
-                                spedit.putInt("TextShadowColor", TextShadowColor);
-                                spedit.commit();
-                                updateview();
-                            }
-                        });
-                    AlertDialog.Builder tex = new AlertDialog.Builder(FloatTextSetting.this);
-                    tex.setTitle(R.string.text_edit_color_transparency);
-                    tex.setView(layout);
-                    tex.setPositiveButton(R.string.close, null);
-                    tex.show();
-                    return true;
-                }
-            });
+		textshadowcolor.setAlphaSliderEnabled(true);
         CheckBoxPreference textmove = (CheckBoxPreference) findPreference("TextMove");
         if (((App)getApplicationContext()).getMovingMethod())
         {
@@ -576,7 +463,6 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         textspeed.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p1)
                 {
-                    LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
                     View layout = inflater.inflate(R.layout.dialog_textspeed_edit, null);
                     AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
                     dialog.setTitle(R.string.text_speed_set);
@@ -618,64 +504,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                 }
             });
         baccolor.setHexValueEnabled(true);
-        Preference baccolorTransparency = findPreference("BackgroundColorEnd");
-        baccolorTransparency.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick(Preference p)
-                {
-                    LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
-                    View layout = inflater.inflate(R.layout.dialog_textcolor_transparency_edit, null);
-                    final TextView tt = (TextView) layout.findViewById(R.id.textview_texttransparency_now);
-                    final SeekBar st = (SeekBar) layout.findViewById(R.id.seekbar_texttransparency);
-                    st.setMax(Integer.parseInt("FF", 16));
-                    final String cor = FloatTextSettingMethod.IntColortoHex(BackgroundColor);
-                    if (cor.length() > 7)
-                    {
-                        String nowend = cor.substring(1, 3);
-                        WinTransparency = nowend;
-                        st.setProgress(Integer.parseInt(nowend, 16));
-                    }
-                    else
-                    {
-                        st.setProgress(Integer.parseInt("FF", 16));
-                        WinTransparency = "FF";
-                    }
-                    tt.setText(getString(R.string.text_edit_color_transparency_now) + Integer.parseInt(WinTransparency, 16));
-                    st.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch(SeekBar bar)
-                            {}
-                            public void onStopTrackingTouch(SeekBar bar)
-                            {}
-                            public void onProgressChanged(SeekBar bar , int i , boolean state)
-                            {
-                                WinTransparency = Integer.toHexString(i) + "";
-                                if (i < 16)
-                                {
-                                    WinTransparency = "0" + WinTransparency;
-                                }
-                                tt.setText(getString(R.string.text_edit_color_transparency_now) + Integer.parseInt(WinTransparency, 16));
-                                if (cor.length() > 7)
-                                {
-                                    String corn = "#" + WinTransparency + cor.substring(3);
-                                    BackgroundColor = Color.parseColor(corn);
-                                }
-                                else
-                                {
-                                    String corn = "#" + WinTransparency + cor.substring(1);
-                                    BackgroundColor = Color.parseColor(corn);
-                                }
-                                spedit.putInt("BackgroundColor", BackgroundColor);
-                                spedit.commit();
-                                updateview();
-                            }
-                        });
-                    AlertDialog.Builder tex = new AlertDialog.Builder(FloatTextSetting.this);
-                    tex.setTitle(R.string.text_edit_color_transparency);
-                    tex.setView(layout);
-                    tex.setPositiveButton(R.string.close, null);
-                    tex.show();
-                    return true;
-                }
-            });
+		baccolor.setAlphaSliderEnabled(true);
         CheckBoxPreference autotop = (CheckBoxPreference) findPreference("TextAutoTop");
         autotop.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p, Object v)
@@ -685,20 +514,10 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     return true;
                 }
             });
-        Preference dynamiclist = findPreference("DynamicList");
-        dynamiclist.setEnabled(((App)getApplicationContext()).DynamicNumService);
-        dynamiclist.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick(Preference p)
-                {
-                    FloatTextSettingMethod.showDlist(FloatTextSetting.this);
-                    return true;
-                }
-            });
         Preference floatmove = findPreference("FloatMove");
         floatmove.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p)
-                {
-                    LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
+                {  
                     View layout = inflater.inflate(R.layout.dialog_floatmove, null);
                     move_x = (TextView) layout.findViewById(R.id.textview_floatmove_x);
                     move_y = (TextView) layout.findViewById(R.id.textview_floatmove_y);
@@ -753,8 +572,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		Preference floatwide = findPreference("FloatWide");
         floatwide.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p)
-                {
-					LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
+                {  
                     View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
                     AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
                     dialog.setTitle(R.string.xml_set_win_wide);
@@ -787,8 +605,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		Preference floatlong = findPreference("FloatLong");
         floatlong.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p)
-                {
-					LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);  
+                {  
                     View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
                     AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
                     dialog.setTitle(R.string.xml_set_win_long);

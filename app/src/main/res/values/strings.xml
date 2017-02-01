@@ -59,6 +59,7 @@
     <string name="about">关于应用</string>
     <string name="settings">全局设置</string>
     <string name="licence">开源协议</string>
+	<string name="licence_sum">所有代码使用的开源协议</string>
     <string name="float_move_title">悬浮窗口位置微调</string>
     <string name="choose_float_type">创建悬浮窗类型</string>
     <string name="dynamic_list_title">可用动态变量列表(点击复制)</string>
@@ -87,12 +88,11 @@
 	<string name="backup_nofound">没有可以备份的数据</string>
 	<string name="recover_success">数据恢复成功</string>
 	<string name="recover_failed">数据恢复失败</string>
+	<string name="dynamicservice_no_open">动态变量服务没有开启！</string>
     <!-- Color Picker -->
     <string name="dialog_color_picker">颜色选择器</string>
     <string name="press_color_to_apply">选择颜色以应用更改</string>
     <!-- XML -->
-    <string name="xml_about_thirdcode">第三方代码使用列表</string>
-    <string name="xml_about_support">感谢源码的支持</string>
     <string name="xml_about_indexurl">官网首页</string>
     <string name="xml_about_thanklist">感谢名单</string>
     <string name="xml_about_thanklist_sum">在此列出名单感谢所有对本应用有所帮助的人</string>
@@ -114,8 +114,6 @@
     <string name="xml_set_thick">文字粗体显示</string>
     <string name="xml_set_color">文字颜色设置</string>
     <string name="xml_set_color_sum">让文字显示不同的颜色</string>
-    <string name="xml_set_colorend">文字颜色透明度</string>
-    <string name="xml_set_colorend_sum">调整文字颜色的透明度</string>
     <string name="xml_set_effectset">效果设置</string>
     <string name="xml_set_text_shadow">文字阴影设置</string>
     <string name="xml_set_text_shadow_sum">设置悬浮窗文字的阴影</string>
@@ -125,8 +123,6 @@
     <string name="xml_set_text_shadow_radius">阴影扩散度:</string>
     <string name="xml_set_text_shadow_color">阴影颜色设置</string>
     <string name="xml_set_text_shadow_color_sum">让阴影显示不同的颜色</string>
-    <string name="xml_set_text_shadowend_color">阴影颜色透明度</string>
-    <string name="xml_set_text_shadowend_sum">调整阴影颜色的透明度</string>
     <string name="xml_set_textmove">文字跑马灯效果</string>
     <string name="xml_set_textmove_on">(与动态变量不兼容)\n效果开启(仅在文字较多时有效果)</string>
     <string name="xml_set_textmove_off">(与动态变量不兼容)\n效果关闭</string>
@@ -135,8 +131,6 @@
     <string name="xml_set_win">窗口设置</string>
     <string name="xml_set_win_color">窗口背景颜色设置</string>
     <string name="xml_set_win_color_sum">让窗口背景显示不同的颜色</string>
-    <string name="xml_set_win_colorend">窗口颜色透明度</string>
-    <string name="xml_set_win_colorend_sum">调整窗口颜色的透明度</string>
 	<string name="xml_set_win_size">窗口大小调整</string>
 	<string name="xml_set_win_size_sum_on">手动调整窗口大小</string>
 	<string name="xml_set_win_size_sum_off">自动调整窗口大小</string>
@@ -152,9 +146,7 @@
     <string name="xml_set_autotop_off">不自动吸顶</string>
     <string name="xml_set_move">窗口位置微调</string>
     <string name="xml_set_move_sum">微调窗口的显示位置</string>
-    <string name="xml_set_dynamicstr">动态变量</string>
     <string name="xml_set_dynamiclist">动态变量列表</string>
-    <string name="xml_set_dynamiclist_sum">查看可用的动态变量\n(全局设置中开启动态变量服务后可用)</string>
     <string name="xml_web_defaulttip">Web悬浮窗联网失败时，多刷新就好了</string>
     <string name="xml_web_defaulttip_sum">本功能仅供测试</string>
 	<string name="xml_web_usetip">使用注意事项</string>
@@ -193,6 +185,8 @@
     <string name="xml_global_text">文字全局设置</string>
     <string name="xml_global_text_typeface">字体设置</string>
     <string name="xml_global_text_typeface_summary">把ttf字体文件放入/FloatText/TTFs文件夹内即可读取\n当前字体:</string>
+	<string name="xml_global_text_clear_text">自动清空输入框</string>
+	<string name="xml_global_text_clear_text_sum">每次修改悬浮窗时自动清空输入框内文字</string>
     <string name="xml_global_serviceset">服务设置</string>
     <string name="xml_global_service_stayalive">悬浮窗进程守护服务</string>
     <string name="xml_global_service_stayalive_on">开启(后台服务可能增加耗电并导致卡顿)</string>

@@ -36,17 +36,6 @@ public class AboutActivity extends AppCompatPreferenceActivity
 
     private void preset ()
     {
-		Preference pst = findPreference("ThirdCode");
-		pst.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-				public boolean onPreferenceClick (Preference p)
-				{
-					AlertDialog.Builder list = new AlertDialog.Builder(AboutActivity.this)
-						.setTitle(R.string.xml_about_thirdcode)
-						.setMessage(R.string.thirdcode_use);
-					list.show();
-					return true;
-				}
-			});
         Preference version = findPreference("Version");
         version.setSummary(getVersionName(this) + " (" + getVersionCode(this) + ")");
         version.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()

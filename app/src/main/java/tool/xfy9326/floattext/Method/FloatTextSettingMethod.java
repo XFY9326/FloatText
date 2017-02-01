@@ -19,8 +19,8 @@ import tool.xfy9326.floattext.View.*;
 public class FloatTextSettingMethod
 {
     private boolean longClicked;
-	
-	public static void showDlist (final Context ctx)
+
+	public static void showDlist(final Context ctx)
 	{
 		final String[] dynamiclist = ctx.getResources().getStringArray(R.array.floatsetting_dynamic_list);
 		String[] dynamicname = ctx.getResources().getStringArray(R.array.floatsetting_dynamic_name);
@@ -33,7 +33,7 @@ public class FloatTextSettingMethod
 		AlertDialog.Builder list = new AlertDialog.Builder(ctx)
 			.setTitle(R.string.dynamic_list_title)
 			.setItems(result, new DialogInterface.OnClickListener(){
-				public void onClick (DialogInterface d, int i)
+				public void onClick(DialogInterface d, int i)
 				{
 					if (i != dynamiclist.length)
 					{
@@ -53,7 +53,7 @@ public class FloatTextSettingMethod
 		list.show();
 	}
 
-    public static String IntColortoHex (int color)
+    public static String IntColortoHex(int color)
     {
         String R, G, B, C;
         StringBuffer sb = new StringBuffer();
@@ -73,7 +73,7 @@ public class FloatTextSettingMethod
         return sb.toString();
     }
 
-    public static FloatTextView CreateFloatView (final Context ctx, String Text, Float Size, int Paint, boolean Thick, int speed, int id, boolean shadow, float shadowx, float shadowy, float shadowradius, int shadowcolor)
+    public static FloatTextView CreateFloatView(final Context ctx, String Text, Float Size, int Paint, boolean Thick, int speed, int id, boolean shadow, float shadowx, float shadowy, float shadowradius, int shadowcolor)
     {
         FloatTextView floatview = new FloatTextView(ctx, ((App)ctx.getApplicationContext()).getHtmlMode());
         floatview.setText(Text.toString());
@@ -87,7 +87,7 @@ public class FloatTextSettingMethod
         return floatview;
     }
 
-    public static String typeface_fix (Context ctx)
+    public static String typeface_fix(Context ctx)
     {
         SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
         String filename = setdata.getString("DefaultTTFName", "Default");
@@ -115,19 +115,19 @@ public class FloatTextSettingMethod
         return "Default";
     }
 
-    public static FloatLinearLayout CreateLayout (Context ctx, int ID)
+    public static FloatLinearLayout CreateLayout(Context ctx, int ID)
     {
         FloatLinearLayout layout = new FloatLinearLayout(ctx, ID);
 		layout.setGravity(Gravity.CENTER_HORIZONTAL);
         return layout;
     }
 
-    public static WindowManager.LayoutParams CreateFloatLayout (Context ctx, WindowManager wm, FloatTextView floatview, FloatLinearLayout layout, boolean show, boolean top, boolean move, int bac, boolean fs, float fl, float fw)
+    public static WindowManager.LayoutParams CreateFloatLayout(Context ctx, WindowManager wm, FloatTextView floatview, FloatLinearLayout layout, boolean show, boolean top, boolean move, int bac, boolean fs, float fl, float fw)
     {
         return CreateFloatLayout(ctx, wm, floatview, layout, show, 100, 150, top, move, bac, fs, fl, fw);
     }
 
-    public static WindowManager.LayoutParams CreateFloatLayout (Context ctx, WindowManager wm, FloatTextView floatview, FloatLinearLayout layout, boolean show, float px, float py, boolean top, boolean move, int bac, boolean fs, float fl, float fw)
+    public static WindowManager.LayoutParams CreateFloatLayout(Context ctx, WindowManager wm, FloatTextView floatview, FloatLinearLayout layout, boolean show, float px, float py, boolean top, boolean move, int bac, boolean fs, float fl, float fw)
     {
         WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams();
         wmParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
@@ -177,7 +177,7 @@ public class FloatTextSettingMethod
         return wmParams;
     }
 
-    public static void askforpermission (Activity act, int code)
+    public static void askforpermission(Activity act, int code)
     {
         final int askcode = code;
         final Activity activity = act;
@@ -186,7 +186,7 @@ public class FloatTextSettingMethod
             .setTitle(R.string.ask_for_premission)
             .setMessage(R.string.ask_for_premisdion_msg)
             .setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
-                public void onClick (DialogInterface p1, int p2)
+                public void onClick(DialogInterface p1, int p2)
                 {
                     Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
                     intent.setData(Uri.parse("package:" + ctx.getPackageName()));
@@ -194,7 +194,7 @@ public class FloatTextSettingMethod
                 }
             })
             .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
-                public void onClick (DialogInterface p1, int p2)
+                public void onClick(DialogInterface p1, int p2)
                 {
                     activity.finish();
                 }
@@ -203,7 +203,7 @@ public class FloatTextSettingMethod
         dialog.show();
     }
 
-    public static void savedata (Context ctx, FloatTextView fv, FloatLinearLayout fll, String text, WindowManager.LayoutParams layout)
+    public static void savedata(Context ctx, FloatTextView fv, FloatLinearLayout fll, String text, WindowManager.LayoutParams layout)
     {
         App utils = ((App)ctx.getApplicationContext());
         ArrayList<FloatTextView> floatdata = utils.getFloatView();
@@ -216,17 +216,17 @@ public class FloatTextSettingMethod
         floatlinearlayout.add(fll);
     }
 
-    public OnTouchListener ButtonOnLongRepeatClickListener (final int Code, final Handler handler)
+    public OnTouchListener ButtonOnLongRepeatClickListener(final int Code, final Handler handler)
     {
         OnTouchListener controllisten = new OnTouchListener(){
-            public boolean onTouch (View v, MotionEvent event)
+            public boolean onTouch(View v, MotionEvent event)
             {
                 if (event.getAction() == MotionEvent.ACTION_DOWN)
                 {
                     longClicked = true;
                     Thread t = new Thread(){  
                         @Override  
-                        public void run ()
+                        public void run()
                         {  
                             super.run();  
                             while (longClicked)  

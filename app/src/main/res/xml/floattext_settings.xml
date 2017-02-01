@@ -44,12 +44,6 @@
             android:summary="@string/xml_set_color_sum"
             android:dependency="FloatShow"
             android:defaultValue="0xffff0fff" />
-        <Preference 
-            android:key="TextColorEnd" 
-            android:title="@string/xml_set_colorend" 
-            android:summary="@string/xml_set_colorend_sum"
-            android:dependency="FloatShow"
-        />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/xml_set_effectset">
 		<CheckBoxPreference 
@@ -79,12 +73,6 @@
             android:summary="@string/xml_set_text_shadow_color_sum"
             android:dependency="FloatShow"
             android:defaultValue="0x99000000" />
-        <Preference 
-            android:key="TextShadowColorEnd" 
-            android:title="@string/xml_set_text_shadowend_color" 
-            android:summary="@string/xml_set_text_shadowend_sum"
-            android:dependency="FloatShow"
-        />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/xml_set_win"> 
         <Preference 
@@ -135,19 +123,5 @@
             android:summary="@string/xml_set_win_color_sum"
             android:dependency="FloatShow"
             android:defaultValue="0x00ffffff" />
-        <Preference 
-            android:key="BackgroundColorEnd" 
-            android:title="@string/xml_set_win_colorend" 
-            android:summary="@string/xml_set_win_colorend_sum"
-            android:dependency="FloatShow"
-        />
-    </PreferenceCategory>
-	<PreferenceCategory android:title="@string/xml_set_dynamicstr"> 
-        <Preference 
-            android:key="DynamicList"
-            android:title="@string/xml_set_dynamiclist"
-            android:summary="@string/xml_set_dynamiclist_sum"
-            android:enabled="false"
-        />
     </PreferenceCategory>
 </PreferenceScreen> 

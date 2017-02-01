@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:card_view="http://schemas.android.com/apk/res-auto"
+	android:layout_height="match_parent"
+	android:layout_width="match_parent"
+	android:padding="5dp">
+	
+	<android.support.v7.widget.CardView
+		android:orientation="horizontal"
+		android:clickable="true"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="10dp"
+		android:foreground="?android:attr/selectableItemBackground"
+		card_view:cardCornerRadius="3dp"
+		card_view:cardElevation="3dp"
+		card_view:cardPreventCornerOverlap="true">
+
+		<RelativeLayout
+			android:layout_height="match_parent"
+			android:layout_width="match_parent"
+			android:padding="10dp">
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:layout_width="wrap_content"
+				android:id="@+id/licence_title"/>
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceSmall"
+				android:layout_width="match_parent"
+				android:layout_below="@id/licence_title"
+				android:id="@+id/licence_url"
+				android:layout_marginTop="5dp"/>
+
+			<TextView
+				android:layout_below="@id/licence_url"
+				android:layout_marginTop="8dp"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceSmall"
+				android:layout_width="match_parent"
+				android:id="@+id/licence_data"
+				android:background="@color/colorCodeBackGround"/>
+
+		</RelativeLayout>
+
+	</android.support.v7.widget.CardView>
+	
+</RelativeLayout>
+

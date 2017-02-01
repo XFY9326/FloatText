@@ -62,6 +62,12 @@
             android:summaryOff="@string/xml_global_text_common"
             android:defaultValue="false"
         />
+		<CheckBoxPreference 
+            android:key="TextAutoClear"
+            android:title="@string/xml_global_text_clear_text"
+            android:summary="@string/xml_global_text_clear_text_sum"
+            android:defaultValue="false"
+        />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/xml_global_serviceset"> 
         <CheckBoxPreference 

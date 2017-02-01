@@ -10,8 +10,7 @@
 		android:id="@+id/textview_addnewtext"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:ems="10"
-		android:text="@string/default_text">
+		android:ems="10">
 
 	</EditText>
 

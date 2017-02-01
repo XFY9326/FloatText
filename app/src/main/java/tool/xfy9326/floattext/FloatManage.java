@@ -15,6 +15,7 @@ import android.support.v7.app.*;
 import android.support.v7.widget.*;
 import android.view.*;
 import android.view.View.*;
+import android.widget.*;
 import java.util.*;
 import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Activity.*;
@@ -23,6 +24,7 @@ import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
 import android.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import tool.xfy9326.floattext.R;
 
 public class FloatManage extends AppCompatActivity
@@ -42,7 +44,7 @@ public class FloatManage extends AppCompatActivity
     private Handler mHandler;
 
     @Override
-    protected void onCreate (Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 		FloatManageMethod.RootTask(this);
@@ -54,7 +56,7 @@ public class FloatManage extends AppCompatActivity
         SetAll(this);
     }
 
-	private void ListViewSet ()
+	private void ListViewSet()
     {
         App utils = (App)getApplicationContext();
         FloatDataName = utils.getFloatText();
@@ -69,13 +71,13 @@ public class FloatManage extends AppCompatActivity
         utils.setListviewadapter(listadapter);
     }
 
-	private void contentset ()
+	private void contentset()
 	{
 		Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(tb);
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatbutton);
 		fab.setOnClickListener(new OnClickListener(){
-				public void onClick (View v)
+				public void onClick(View v)
 				{
 					FloatManageMethod.addFloatWindow(FloatManage.this, FloatDataName);
 				}
@@ -91,7 +93,7 @@ public class FloatManage extends AppCompatActivity
 		{
 			navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 					@Override
-					public boolean onNavigationItemSelected (MenuItem item) 
+					public boolean onNavigationItemSelected(MenuItem item) 
 					{
 						mDrawerLayout.closeDrawers();
 						switch (item.getItemId())
@@ -131,7 +133,14 @@ public class FloatManage extends AppCompatActivity
 								}
 								break;
 							case R.id.menu_wordlist:
-								FloatTextSettingMethod.showDlist(FloatManage.this);
+								if (((App)getApplicationContext()).DynamicNumService)
+								{
+									FloatTextSettingMethod.showDlist(FloatManage.this);
+								}
+								else
+								{
+									snackshow(FloatManage.this, getString(R.string.dynamicservice_no_open));
+								}
 								break;
 							case R.id.menu_about:
 								Intent aboutintent = new Intent(FloatManage.this, AboutActivity.class);
@@ -159,7 +168,7 @@ public class FloatManage extends AppCompatActivity
 		}
 	}
 
-    private void SetAll (final Activity ctx)
+    private void SetAll(final Activity ctx)
     {
         App utils = (App)getApplicationContext();
 		SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
@@ -169,7 +178,7 @@ public class FloatManage extends AppCompatActivity
         if (!utils.GetSave)
         {
             runOnUiThread(new Runnable(){
-                    public void run ()
+                    public void run()
                     {
                         ag_loading.show();
                     }
@@ -202,23 +211,23 @@ public class FloatManage extends AppCompatActivity
 		}
     }
 
-    private void closeag ()
+    private void closeag()
     {
         FloatManage.this.runOnUiThread(new Runnable(){
-                public void run ()
+                public void run()
                 {
                     ag_loading.dismiss();
                 }
             });
     }
 
-    private void importtxt (Intent data)
+    private void importtxt(Intent data)
     {
         final String Path = data.getStringExtra("FilePath");
         final Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         Thread thread = new Thread(new Runnable(){
-                public void run ()
+                public void run()
                 {
                     boolean result = FloatManageMethod.importtxt(FloatManage.this, Path);
                     if (result)
@@ -245,10 +254,10 @@ public class FloatManage extends AppCompatActivity
 		System.exit(0);
     }
 
-	private void setHandle ()
+	private void setHandle()
 	{
 		mHandler = new Handler() {
-			public void handleMessage (Message msg)
+			public void handleMessage(Message msg)
 			{
 				switch (msg.what)
 				{
@@ -281,7 +290,7 @@ public class FloatManage extends AppCompatActivity
 			}};
 	}
 
-	public static void snackshow (Activity ctx, String str)
+	public static void snackshow(Activity ctx, String str)
 	{
 		CoordinatorLayout cl = (CoordinatorLayout) ctx.findViewById(R.id.FloatManage_MainLayout);
 		Snackbar sb = Snackbar.make(cl, str, Snackbar.LENGTH_SHORT);
@@ -290,7 +299,7 @@ public class FloatManage extends AppCompatActivity
 	}
 
     @Override
-    protected void onActivityResult (int requestCode, int resultCode, Intent data)
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
 		if (listadapter == null)
 		{
@@ -321,7 +330,7 @@ public class FloatManage extends AppCompatActivity
 				{
 					case 1:
 						new Handler().postDelayed(new Runnable(){   
-								public void run ()
+								public void run()
 								{   
 									snackshow(FloatManage.this, getString(R.string.save_text_ok));
 								}   
@@ -329,7 +338,7 @@ public class FloatManage extends AppCompatActivity
 						break;
 					case 2:
 						new Handler().postDelayed(new Runnable(){   
-								public void run ()
+								public void run()
 								{   
 									snackshow(FloatManage.this, getString(R.string.delete_text_ok));
 								}   
@@ -337,7 +346,7 @@ public class FloatManage extends AppCompatActivity
 						break;
 					case 3:
 						new Handler().postDelayed(new Runnable(){   
-								public void run ()
+								public void run()
 								{   
 									snackshow(FloatManage.this, getString(R.string.premission_ask_failed));
 								}   
@@ -386,7 +395,7 @@ public class FloatManage extends AppCompatActivity
     }
 
     @Override
-    public boolean onKeyDown (int keyCode, KeyEvent event)
+    public boolean onKeyDown(int keyCode, KeyEvent event)
     {
         if (keyCode == KeyEvent.KEYCODE_BACK)
         {
@@ -416,7 +425,7 @@ public class FloatManage extends AppCompatActivity
     }
 
     @Override
-    public void onConfigurationChanged (Configuration newConfig)
+    public void onConfigurationChanged(Configuration newConfig)
     {
         super.onConfigurationChanged(newConfig);
         spdata = PreferenceManager.getDefaultSharedPreferences(this);
@@ -425,7 +434,7 @@ public class FloatManage extends AppCompatActivity
     }
 
     @Override
-    protected void onDestroy ()
+    protected void onDestroy()
     {
         System.gc();
         super.onDestroy();

@@ -2,10 +2,32 @@ package tool.xfy9326.floattext.Method;
 
 import java.io.*;
 import java.util.*;
+import android.content.*;
 
 public class IOMethod
 {
-	public static boolean CopyFile (File fromFile, File toFile)
+	public static String readAssets(Context ctx, String path)
+	{
+		String result="";
+        try
+        {
+            InputStreamReader inputReader = new InputStreamReader(ctx.getResources().getAssets().open(path));
+            BufferedReader bufReader = new BufferedReader(inputReader);
+            String line="";
+            while ((line = bufReader.readLine()) != null)
+            {
+                result += line + "\n";
+            }
+        }
+        catch (IOException e)
+        {
+            result = "No Found";
+			e.printStackTrace();
+        }
+		return result;
+	}
+
+	public static boolean CopyFile(File fromFile, File toFile)
     {
         try
         {
@@ -27,8 +49,8 @@ public class IOMethod
             return false;
         }
     }
-	
-    public static String[] readfile (File file)
+
+    public static String[] readfile(File file)
     {
         ArrayList<String> output = new ArrayList<String>();
         try
@@ -52,7 +74,7 @@ public class IOMethod
         }
     }
 
-    public static boolean writefile (String path, String data)
+    public static boolean writefile(String path, String data)
     {
         try
         {
@@ -89,7 +111,7 @@ public class IOMethod
         }
     }
 
-    public static void pathset (String path)
+    public static void pathset(String path)
     {
         String[] dirs = path.split("/");
         String pth = "";

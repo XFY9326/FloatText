@@ -59,6 +59,7 @@
     <string name="about">About Us</string>
     <string name="settings">Global Setting</string>
     <string name="licence">Licence</string>
+	<string name="licence_sum">The Open Source Licence of all codes</string>
     <string name="float_move_title">Float position change</string>
     <string name="choose_float_type">Add float type</string>
     <string name="dynamic_list_title">Available dynamic variables (Click to copy)</string>
@@ -87,12 +88,11 @@
 	<string name="backup_nofound">Nothing to backup</string>
 	<string name="recover_success">Data recover success</string>
 	<string name="recover_failed">Data recover failed</string>
+	<string name="dynamicservice_no_open">Dynamic Service does not open!</string>
     <!-- Color Picker -->
     <string name="dialog_color_picker">Color Picker</string>
     <string name="press_color_to_apply">Choose color to apply changes</string>
     <!-- XML -->
-    <string name="xml_about_thirdcode">Support Library</string>
-    <string name="xml_about_support">Thanks for the code support.</string>
     <string name="xml_about_indexurl">Official Website</string>
     <string name="xml_about_thanklist">Thank List</string>
     <string name="xml_about_thanklist_sum">We thank for all the people contributing to the appliance and make a list here</string>
@@ -114,8 +114,6 @@
     <string name="xml_set_thick">Text Thick Set</string>
     <string name="xml_set_color">Text Color Set</string>
     <string name="xml_set_color_sum">Display the color in different colors</string>
-    <string name="xml_set_colorend">Text color transparency</string>
-    <string name="xml_set_colorend_sum">Adjust text color transparency</string>
     <string name="xml_set_effectset">Set the effect</string>
     <string name="xml_set_text_shadow">Text Shadow Settings</string>
     <string name="xml_set_text_shadow_sum">Set the shadow of this text</string>
@@ -125,8 +123,6 @@
     <string name="xml_set_text_shadow_radius">Radius:</string>
     <string name="xml_set_text_shadow_color">Shadow Color</string>
     <string name="xml_set_text_shadow_color_sum">Show different shadow color</string>
-    <string name="xml_set_text_shadowend_color">Shadow color transparency</string>
-    <string name="xml_set_text_shadowend_sum">Adjust shadow color transparency</string>
     <string name="xml_set_textmove">Text Move Effect</string>
     <string name="xml_set_textmove_on">(Be unavailable to dynamic variables)\nEffect on(Effect only in large amount text)</string>
     <string name="xml_set_textmove_off">(Be unavailable to dynamic variables)\nEffect off</string>
@@ -135,8 +131,6 @@
     <string name="xml_set_win">Float Set</string>
     <string name="xml_set_win_color">Window background color set</string>
     <string name="xml_set_win_color_sum">Display the color in different colors</string>
-    <string name="xml_set_win_colorend">Window color transparency</string>
-    <string name="xml_set_win_colorend_sum">Adjust window color transparency</string>
 	<string name="xml_set_win_size">Adjust the Float Size</string>
 	<string name="xml_set_win_size_sum_on">Adjust it by hand</string>
 	<string name="xml_set_win_size_sum_off">Auto Adjust</string>
@@ -152,9 +146,7 @@
     <string name="xml_set_autotop_off">Not stick to top automatically</string>
     <string name="xml_set_move">Float position fine tuning</string>
     <string name="xml_set_move_sum">Fine tuning the position</string>
-    <string name="xml_set_dynamicstr">Dynamic Words</string>
     <string name="xml_set_dynamiclist">Dynamic Words List</string>
-    <string name="xml_set_dynamiclist_sum">Saw Dynamic Word List\n(Open this Service in Global Setting first)</string>
     <string name="xml_web_defaulttip">Reload if Web Float Window failed to connect.</string>
     <string name="xml_web_defaulttip_sum">This function is only for test</string>
 	<string name="xml_web_usetip">Note</string>
@@ -193,6 +185,8 @@
     <string name="xml_global_text">Text global settings</string>
     <string name="xml_global_text_typeface">Font setting</string>
     <string name="xml_global_text_typeface_summary">Put .ttf file into /FloatText/TTFs to read\nNow Font:</string>
+	<string name="xml_global_text_clear_text">Auto clear input text</string>
+	<string name="xml_global_text_clear_text_sum">Clear input text when change text of float window</string>
     <string name="xml_global_serviceset">Service settings</string>
     <string name="xml_global_service_stayalive">Float Window Guard Service</string>
     <string name="xml_global_service_stayalive_on">Open(May use more CPU)</string>

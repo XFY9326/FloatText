@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen 
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <Preference
-        android:title="@string/xml_about_thirdcode"  
-        android:summary="@string/xml_about_support"
-		android:key="ThirdCode">
-    </Preference> 
-    <Preference
-        android:title="@string/xml_about_thanklist"
-        android:summary="@string/xml_about_thanklist_sum"
-        android:key="ThankList"
-    />
-    <PreferenceScreen
+	<PreferenceScreen
         android:title="@string/licence"
-        android:summary="Apache License 2.0">
+        android:summary="@string/licence_sum">
         <intent
             android:action="android.intent.action.MAIN"  
             android:targetPackage="tool.xfy9326.floattext"  
             android:targetClass="tool.xfy9326.floattext.Activity.LicenceActivity" />
     </PreferenceScreen>
+	<Preference
+        android:title="@string/xml_about_thanklist"
+        android:summary="@string/xml_about_thanklist_sum"
+        android:key="ThankList"
+    />
     <PreferenceScreen
         android:title="@string/xml_about_indexurl"
         android:summary="https://xfy9326.github.io/FloatText/">

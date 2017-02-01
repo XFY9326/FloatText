@@ -1,64 +1,66 @@
 package tool.xfy9326.floattext.Activity;
 
-import android.app.*;
-import android.content.*;
 import android.os.*;
 import android.support.v7.app.*;
 import android.support.v7.widget.*;
+import android.text.*;
+import android.text.method.*;
 import android.view.*;
 import android.widget.*;
-import java.io.*;
 import tool.xfy9326.floattext.*;
+import tool.xfy9326.floattext.Method.*;
 
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 
 public class LicenceActivity extends AppCompatActivity
 {
 
     @Override
-    protected void onCreate (Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_licence);
 		Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(tb);
 		sethome();
-		String path = "LICENSE_CN.txt";
-		SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
-        int lan = setdata.getInt("Language", 0);
-		switch (lan)
-		{
-            case 1:
-                path = "LICENSE_CN.txt";
-                break;
-            case 2:
-                path = "LICENSE_CN.txt";
-                break;
-            case 3:
-                path = "LICENSE_EN.txt";
-                break;
-		}
-        TextView str = (TextView) findViewById(R.id.textview_license);
-        String result="";
-        try
-        {
-            InputStreamReader inputReader = new InputStreamReader(getResources().getAssets().open(path));
-            BufferedReader bufReader = new BufferedReader(inputReader);
-            String line="";
-            while ((line = bufReader.readLine()) != null)
-            {
-                result += line + "\n";
-            }
-        }
-        catch (IOException e)
-        {
-            result = "No Found";
-        }
-        str.setText(result);
+		String floattext_path = "FloatText_LICENCE.txt";
+		String icon_path = "Android-Material-Icons_LICENCE.txt";
+		String preference_path = "ColorPickerPreference_LICENSE.txt";
+		String and_path = "Android-Support-Library_LICENCE.txt";
+
+        String ft_licence = IOMethod.readAssets(this, floattext_path);
+		String ic_licence = IOMethod.readAssets(this, icon_path);
+		String pre_licence = IOMethod.readAssets(this, preference_path);
+		String and_licence = IOMethod.readAssets(this, and_path);
+
+		String ft_url = "https://github.com/XFY9326/FloatText";
+		String ic_url = "https://github.com/MajeurAndroid/Android-Material-Icons";
+		String pre_url = "https://github.com/attenzione/android-ColorPickerPreference";
+		String and_url = "http://source.android.com/";
+
+        LinearLayout ll = (LinearLayout) findViewById(R.id.layout_license);
+
+		addlicence("FloatText", ft_url, ft_licence, ll);
+		addlicence("Android-Material-Icons", ic_url, ic_licence, ll);
+		addlicence("ColorPickerPreference", pre_url, pre_licence, ll);
+		addlicence("Android-Support-Library", and_url, and_licence, ll);
     }
 
-	private void sethome ()
+	private void addlicence(String title, String html, String data, LinearLayout ll)
+	{
+		LayoutInflater inflater = LayoutInflater.from(LicenceActivity.this);  
+		View layout = inflater.inflate(R.layout.layout_each_licence, null);
+		TextView tit = (TextView) layout.findViewById(R.id.licence_title);
+		tit.setText(title);
+		TextView str = (TextView) layout.findViewById(R.id.licence_data);
+		str.setText(data);
+		TextView url = (TextView) layout.findViewById(R.id.licence_url);
+		url.setText(Html.fromHtml("<a href='" + html + "'>" + html + "</a>"));
+		url.setMovementMethod(LinkMovementMethod.getInstance());
+		ll.addView(layout);
+	}
+
+	private void sethome()
 	{
 		ActionBar actionBar = getSupportActionBar();
 		if (actionBar != null)
@@ -68,7 +70,7 @@ public class LicenceActivity extends AppCompatActivity
 	}
 
 	@Override
-	public boolean onOptionsItemSelected (MenuItem item)
+	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		if (item.getItemId() == android.R.id.home)
 		{

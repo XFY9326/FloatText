@@ -621,8 +621,11 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 		}
 		else if (requestCode == FLOAT_TEXT_SELECT_RECOVER_FILE)
 		{
-			String str = data.getStringExtra("FilePath");
-			recoverdata(str);
+			if (data != null)
+			{
+				String str = data.getStringExtra("FilePath");
+				recoverdata(str);
+			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
