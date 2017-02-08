@@ -1,7 +1,9 @@
 package tool.xfy9326.floattext.Method;
 
+import android.*;
 import android.app.*;
 import android.content.*;
+import android.content.pm.*;
 import android.content.res.*;
 import android.graphics.*;
 import android.net.*;
@@ -23,12 +25,15 @@ import tool.xfy9326.floattext.Setting.*;
 import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
+import tool.xfy9326.floattext.R;
+
 public class FloatManageMethod
 {
 	public static boolean waitdoubleclick = false;
 	public static Handler waithandle;
 	public static Runnable waitrun;
 
+	//根Activity判断
 	public static void RootTask(Activity act)
 	{
 		if (!act.isTaskRoot())
@@ -37,6 +42,7 @@ public class FloatManageMethod
         }
 	}
 
+	//重启应用
 	public static void restartApplication(Context ctx)
     {
         Intent intent = ctx.getPackageManager().getLaunchIntentForPackage(ctx.getPackageName());
@@ -45,6 +51,7 @@ public class FloatManageMethod
         System.exit(0);
     }
 
+	//设置加载窗口
     public static AlertDialog setLoadingDialog(Context ctx)
     {
         LayoutInflater inflater = LayoutInflater.from(ctx);  
@@ -56,6 +63,7 @@ public class FloatManageMethod
         return ag;
     }
 
+	//导入文本
     public static boolean importtxt(Context ctx, String path)
     {
         File file = new File(path);
@@ -64,7 +72,7 @@ public class FloatManageMethod
         ArrayList<String> fixline = new ArrayList<String>();
         for (int i = 0;i < lines.length;i++)
         {
-            if (!lines[i].toString().replaceAll("\\s+", "").equalsIgnoreCase(""))
+            if (!lines.toString().isEmpty() && !lines[i].toString().replaceAll("\\s+", "").equalsIgnoreCase("") && !lines[i].toString().replace(" ","").replace("\n","").equals(""))
             {
                 fixline.add(lines[i]);
             }
@@ -89,6 +97,7 @@ public class FloatManageMethod
         }
     }
 
+	//输出文本
     public static void exporttxt(Context ctx)
     {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
@@ -110,6 +119,7 @@ public class FloatManageMethod
         }
     }
 
+	//选择文件
 	public static void selectFile(Activity ctx)
 	{
 		Toast.makeText(ctx, R.string.text_import_notice, Toast.LENGTH_LONG).show();
@@ -117,6 +127,7 @@ public class FloatManageMethod
 		sf.start(ctx);
 	}
 
+	//关闭所有窗口
     public static void closeAllWin(Context ctx)
     {
         WindowManager wm =((App)ctx.getApplicationContext()).getFloatwinmanager();
@@ -131,6 +142,7 @@ public class FloatManageMethod
         }
     }
 
+	//权限提示
 	public static void notifypermission(final Activity ctx)
 	{
 		if (Build.VERSION.SDK_INT >= 23)
@@ -155,8 +167,8 @@ public class FloatManageMethod
 			}
 		}
 	}
-
-
+	
+	//权限判断与悬浮窗重现
     public static Thread PrepareSave(Activity ctx, Handler han)
     {
 		if (Build.VERSION.SDK_INT >= 23)
@@ -170,7 +182,7 @@ public class FloatManageMethod
 				FloatManageMethod.delayaskforpermission(ctx);
 				if (((App)ctx.getApplicationContext()).getTextData().size() > 0)
 				{
-                    return FloatManageMethod.Reshow(ctx, han);
+					return FloatManageMethod.Reshow(ctx, han);
 				}
 				else
 				{
@@ -194,6 +206,7 @@ public class FloatManageMethod
         return null;
     }
 
+	//关闭应用
 	public static void ShutSown(Activity ctx)
 	{
 		FloatManageMethod.stopservice(ctx);
@@ -201,11 +214,17 @@ public class FloatManageMethod
 		utils.setGetSave(false);
 		utils.setFloatReshow(true);
 		FloatManageMethod.closeAllWin(ctx);
-		ctx.finishAndRemoveTask();
+		ctx.finish();
 		System.gc();
-		System.exit(0);
+		new Handler().postDelayed(new Runnable(){  
+                public void run()
+                {
+                    System.exit(0);
+                }  
+            }, 100); 
 	}
 
+	//后台运行应用
 	public static void RunInBack(Activity ctx)
 	{
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -222,6 +241,7 @@ public class FloatManageMethod
 		}
 	}
 
+	//关闭应用控制(双击)
     public static void CloseApp(final Activity ctx)
     {
 		if (waitdoubleclick)
@@ -263,13 +283,15 @@ public class FloatManageMethod
 		}
     }
 
+	//设置WindowManager
     public static void setWinManager(Context ctx)
     {
         WindowManager wm = (WindowManager)ctx.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
         ((App)ctx.getApplicationContext()).setFloatwinmanager(wm);
     }
 
-    public static void first_ask_for_premission(final Activity ctx)
+	//首次请求权限
+    public static void first_ask_for_premission(final Context ctx)
     {
         SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
         SharedPreferences.Editor setedit = setdata.edit();
@@ -292,6 +314,7 @@ public class FloatManageMethod
         }
     }
 
+	//准备文件夹
     public static void preparefolder()
     {
         String typeface_path = Environment.getExternalStorageDirectory().toString() + "/FloatText/TTFs";
@@ -302,6 +325,7 @@ public class FloatManageMethod
         }
     }
 
+	//延迟请求权限
     public static void delayaskforpermission(final Activity act)
     {
         new Handler().postDelayed(new Runnable(){  
@@ -312,6 +336,7 @@ public class FloatManageMethod
             }, 2000); 
     }
 
+	//请求权限
     public static void askforpermission(final Activity act, int code)
     {
         final int askcode = code;
@@ -339,7 +364,8 @@ public class FloatManageMethod
         dialog.show();
     }
 
-    public static Thread getSaveData(final Activity ctx, final App utils, final SharedPreferences spdata, final Handler han)
+	//读取并且设置应用所有数据
+    public static Thread getSaveData(final Context ctx, final App utils, final SharedPreferences spdata, final Handler han)
     {
         Thread thread = new Thread() {
             public void run()
@@ -357,6 +383,7 @@ public class FloatManageMethod
         return thread;
     }
 
+	//重现悬浮窗
     public static Thread Reshow(final Activity ctx, final Handler han)
     {
         Thread thread = new Thread() {
@@ -383,48 +410,47 @@ public class FloatManageMethod
 				final ArrayList<Boolean> FloatSize = utils.getFloatSize();
 				final ArrayList<Float> FloatLong = utils.getFloatLong();
 				final ArrayList<Float> FloatWide = utils.getFloatWide();
-                ctx.runOnUiThread(new Runnable(){
-                        @Override
-                        public void run()
-                        {
-                            if (Text.size() != 0 && Size.size() != 0 && Color.size() != 0 && Thick.size() != 0)
-                            {
-                                WindowManager wm = utils.getFloatwinmanager();
-                                for (int i = 0;i < Text.size();i++)
-                                {
-                                    FloatTextView fv = FloatTextSettingMethod.CreateFloatView(ctx, Text.get(i), Size.get(i), Color.get(i), Thick.get(i), Speed.get(i), i, Shadow.get(i), ShadowX.get(i), ShadowY.get(i), ShadowRadius.get(i), ShadowColor.get(i));
-                                    FloatLinearLayout fll = FloatTextSettingMethod.CreateLayout(ctx, i);
-                                    fll.changeShowState(Show.get(i));
-                                    String[] ptemp = new String[]{"100", "150"};
-                                    if (Lock.get(i))
-                                    {
-                                        ptemp = Position.get(i).toString().split("_");
-                                        fll.setAddPosition(Float.parseFloat(ptemp[0]), Float.parseFloat(ptemp[1]));
-                                    }
-                                    WindowManager.LayoutParams layout = FloatTextSettingMethod.CreateFloatLayout(ctx, wm, fv, fll, Show.get(i), Float.parseFloat(ptemp[0]), Float.parseFloat(ptemp[1]), Top.get(i), Move.get(i), BackgroundColor.get(i), FloatSize.get(i), FloatLong.get(i), FloatWide.get(i));
-                                    fll.setFloatLayoutParams(layout);
-                                    fll.setPositionLocked(Lock.get(i));
-                                    fll.setTop(AutoTop.get(i));
-                                    if (utils.getMovingMethod())
-                                    {
-                                        fv.setMoving(Move.get(i), 0);
-                                    }
-                                    else
-                                    {
-                                        fv.setMoving(Move.get(i), 1);
-                                        if (Move.get(i))
-                                        {
-                                            fll.setShowState(false);
-                                            fll.setShowState(true);
-                                        }
-                                    }
-                                    FloatTextSettingMethod.savedata(ctx, fv, fll, Text.get(i), layout);
-                                }
-                            }
-                            utils.getListviewadapter().notifyDataSetChanged();
-                        }
-                    }
-                );
+				ctx.runOnUiThread(new Runnable(){
+						public void run()
+						{
+							if (Text.size() != 0 && Size.size() != 0 && Color.size() != 0 && Thick.size() != 0)
+							{
+								WindowManager wm = utils.getFloatwinmanager();
+								for (int i = 0;i < Text.size();i++)
+								{
+									FloatTextView fv = FloatTextSettingMethod.CreateFloatView(ctx, Text.get(i), Size.get(i), Color.get(i), Thick.get(i), Speed.get(i), i, Shadow.get(i), ShadowX.get(i), ShadowY.get(i), ShadowRadius.get(i), ShadowColor.get(i));
+									FloatLinearLayout fll = FloatTextSettingMethod.CreateLayout(ctx, i);
+									fll.changeShowState(Show.get(i));
+									String[] ptemp = new String[]{"100", "150"};
+									if (Lock.get(i))
+									{
+										ptemp = Position.get(i).toString().split("_");
+										fll.setAddPosition(Float.parseFloat(ptemp[0]), Float.parseFloat(ptemp[1]));
+									}
+									WindowManager.LayoutParams layout = FloatTextSettingMethod.CreateFloatLayout(ctx, wm, fv, fll, Show.get(i), Float.parseFloat(ptemp[0]), Float.parseFloat(ptemp[1]), Top.get(i), Move.get(i), BackgroundColor.get(i), FloatSize.get(i), FloatLong.get(i), FloatWide.get(i));
+									fll.setFloatLayoutParams(layout);
+									fll.setPositionLocked(Lock.get(i));
+									fll.setTop(AutoTop.get(i));
+									if (utils.getMovingMethod())
+									{
+										fv.setMoving(Move.get(i), 0);
+									}
+									else
+									{
+										fv.setMoving(Move.get(i), 1);
+										if (Move.get(i))
+										{
+											fll.setShowState(false);
+											fll.setShowState(true);
+										}
+									}
+									FloatTextSettingMethod.savedata(ctx, fv, fll, Text.get(i), layout);
+								}
+							}
+							utils.getListviewadapter().notifyDataSetChanged();
+						}
+					}
+				);
                 if (han != null)
                 {
                     han.obtainMessage(1).sendToTarget();
@@ -434,7 +460,8 @@ public class FloatManageMethod
         return thread;
     }
 
-    public static void floattext_typeface_check(Context ctx)
+	//字体文件检测
+    public static void floattext_typeface_check(Context ctx, boolean alert)
     {
         SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
         String filename = setdata.getString("DefaultTTFName", "Default");
@@ -454,9 +481,13 @@ public class FloatManageMethod
             }
         }
         setdata.edit().putString("DefaultTTFName", "Default").commit();
-        FloatManage.snackshow((Activity)ctx, ctx.getString(R.string.text_typeface_err));
+		if (alert)
+		{
+			FloatManage.snackshow((Activity)ctx, ctx.getString(R.string.text_typeface_err));
+		}
     }
 
+	//语言设置 数据
     public static void LanguageInit(Activity ctx)
     {
         SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
@@ -464,6 +495,7 @@ public class FloatManageMethod
         LanguageSet(ctx, lan);
     }
 
+	//语言设置 分类
     public static void LanguageSet(Activity ctx, int i)
     {
         Resources resource = ctx.getResources();
@@ -486,7 +518,8 @@ public class FloatManageMethod
         ctx.getBaseContext().getResources().updateConfiguration(config, null);
     }
 
-    public static void startservice(Activity ctx)
+	//启动服务
+    public static void startservice(Context ctx)
     {
         if (((App)ctx.getApplicationContext()).getDynamicNumService())
         {
@@ -513,6 +546,7 @@ public class FloatManageMethod
         }
     }
 
+	//关闭服务
     public static void stopservice(Activity ctx)
     {
         Intent service = new Intent(ctx, FloatWindowStayAliveService.class);
@@ -525,6 +559,7 @@ public class FloatManageMethod
 		ctx.stopService(notifyservice);
     }
 
+	//用户新建悬浮窗时的提示
     public static void addFloatWindow(final Activity ctx, final ArrayList<String> FloatDataName)
     {
         if (((App)ctx.getApplicationContext()).getDevelopMode())

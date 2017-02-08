@@ -6,6 +6,7 @@ import android.content.*;
 
 public class IOMethod
 {
+	//读取资源文件
 	public static String readAssets(Context ctx, String path)
 	{
 		String result="";
@@ -27,6 +28,7 @@ public class IOMethod
 		return result;
 	}
 
+	//复制文件
 	public static boolean CopyFile(File fromFile, File toFile)
     {
         try
@@ -50,6 +52,7 @@ public class IOMethod
         }
     }
 
+	//读取文件
     public static String[] readfile(File file)
     {
         ArrayList<String> output = new ArrayList<String>();
@@ -74,6 +77,7 @@ public class IOMethod
         }
     }
 
+	//写入文件
     public static boolean writefile(String path, String data)
     {
         try
@@ -111,6 +115,7 @@ public class IOMethod
         }
     }
 
+	//设置文件夹
     public static void pathset(String path)
     {
         String[] dirs = path.split("/");

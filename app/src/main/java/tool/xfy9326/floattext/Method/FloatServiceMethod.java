@@ -23,6 +23,7 @@ public class FloatServiceMethod
 	public static int DYNAMIC_LIST_VERSION = 5;
 	public static String ACTIVITY_CHANGE_ACTION = "tool.xfy9326.floattext.Service.FloatAdvanceTextUpdateService.action.ACTIVITY_CHANGE_ACTION";
 	
+	//动态变量更新列表
 	public static SharedPreferences setUpdateList (Context ctx)
 	{
 		SharedPreferences list = ctx.getSharedPreferences("DynamicList", ctx.MODE_PRIVATE);
@@ -84,6 +85,7 @@ public class FloatServiceMethod
 		return list;
 	}
 	
+	//判断是否有字符
 	public static boolean hasWord (String all, String part)
     {
         return all.contains(part);
@@ -138,6 +140,7 @@ public class FloatServiceMethod
         return Btob(arr.toArray(new Boolean[arr.size()]));
 	}
 
+	//判断是否在启动器界面
     public static boolean isHome (Context ctx, List<String> homes)
     {
         ActivityManager mActivityManager = (ActivityManager)ctx.getSystemService(Context.ACTIVITY_SERVICE);
@@ -153,6 +156,7 @@ public class FloatServiceMethod
         }
     }
 
+	//布尔值对象转换
 	public static boolean[] Btob (Boolean[] B)
 	{
 		boolean[] b = new boolean[B.length];
@@ -163,6 +167,7 @@ public class FloatServiceMethod
 		return b;
 	}
 
+	//获取启动器包名
     public static List<String> getHomes (Context ctx)
     {
         List<String> names = new ArrayList<String>();
@@ -178,6 +183,7 @@ public class FloatServiceMethod
         return names;
     }
 
+	//修复null
 	public static String fixnull (String str, String def)
 	{
 		if (str == null)
@@ -187,6 +193,7 @@ public class FloatServiceMethod
 		return str;
 	}
 
+	//获取网速
     public static long getTotalRxBytes (Context ctx)
     {
         return TrafficStats.getUidRxBytes(ctx.getApplicationInfo().uid) == TrafficStats.UNSUPPORTED ? 0 : (TrafficStats.getTotalRxBytes() / 1024);
@@ -197,6 +204,7 @@ public class FloatServiceMethod
         return TrafficStats.getUidRxBytes(ctx.getApplicationInfo().uid) == TrafficStats.UNSUPPORTED ? 0 : (TrafficStats.getTotalTxBytes() / 1024);
     }
 
+	//获取代理
     public static boolean isVpnUsed ()
     {
         try
@@ -224,6 +232,7 @@ public class FloatServiceMethod
         return false;
 	}
 
+	//网速单位设置
     public static String netspeedset (float speed)
     {
         String NS = "KB/s";
@@ -240,6 +249,7 @@ public class FloatServiceMethod
         return Math.round(speed * 100) / 100.00 + NS;
     }
 
+	//获取CPU运行率
     public static int getProcessCpuRate ()
     {
         int rate = 0;
@@ -271,6 +281,7 @@ public class FloatServiceMethod
         return rate;
     }
 
+	//获取内存状态
     public static String getMeminfo (Context ctx)
     {
         ActivityManager mam = (ActivityManager) ctx.getSystemService(Context.ACTIVITY_SERVICE);
@@ -282,6 +293,7 @@ public class FloatServiceMethod
         return result;
     }
 
+	//日期计算
     public static String datecount (Context ctx, String date)
     {
         DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
@@ -411,12 +423,14 @@ public class FloatServiceMethod
         return outputdate;
     }
 
+	//判断屏幕开启
     public static boolean isScreenOn (Context ctx)
     {
         PowerManager pm = (PowerManager)ctx.getSystemService(Context.POWER_SERVICE);
         return pm.isScreenOn();
     }
 
+	//获取IP
     public static String getIP (Context ctx)
     {
         WifiManager wifiService = (WifiManager) ctx.getSystemService(ctx.WIFI_SERVICE);
@@ -424,6 +438,7 @@ public class FloatServiceMethod
         return intToIp(wifiinfo.getIpAddress());
     }
 
+	//int转IP
     public static String intToIp (int i)
     {
         return (i & 0xFF) + "." + ((i >> 8) & 0xFF) + "." + ((i >> 16) & 0xFF) + "." + (i >> 24 & 0xFF);

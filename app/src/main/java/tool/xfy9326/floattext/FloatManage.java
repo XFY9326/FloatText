@@ -35,6 +35,7 @@ public class FloatManage extends AppCompatActivity
     public static int FLOAT_TEXT_IMPORT_CODE = 5;
 	public static int FLOAT_TEXT_IMPORT_PERMISSION = 7;
 	public static int FLOAT_TEXT_EXPORT_PERMISSION = 8;
+	public static int FLOAT_TEXT_SYSTEM_PERMISSION = 10;
     private AdvanceRecyclerView listview = null;
     private ListViewAdapter listadapter = null;
     private SharedPreferences spdata;
@@ -170,7 +171,27 @@ public class FloatManage extends AppCompatActivity
 
     private void SetAll(final Activity ctx)
     {
-        App utils = (App)getApplicationContext();
+        FloatStart(ctx);
+        Intent intent = getIntent();
+        int importresult = intent.getIntExtra("ImportText", 0);
+		int recoverresult = intent.getIntExtra("RecoverText", 0);
+        if (importresult == 1)
+        {
+            snackshow(ctx, getString(R.string.text_import_success));
+        }
+        else if (importresult == 2)
+        {
+            snackshow(ctx, getString(R.string.text_import_error));
+        }
+		if (recoverresult == 1)
+		{
+			snackshow(ctx, getString(R.string.recover_success));
+		}
+    }
+
+	private void FloatStart(final Activity ctx)
+	{
+		App utils = (App)getApplicationContext();
 		SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
 		utils.setFilterApplication(FloatData.StringToStringArrayList(setdata.getString("Filter_Application", "[]")));
         spdata = PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -194,22 +215,7 @@ public class FloatManage extends AppCompatActivity
             ListViewSet();
 			FloatManageMethod.startservice(FloatManage.this);
         }
-        Intent intent = getIntent();
-        int importresult = intent.getIntExtra("ImportText", 0);
-		int recoverresult = intent.getIntExtra("RecoverText", 0);
-        if (importresult == 1)
-        {
-            snackshow(ctx, getString(R.string.text_import_success));
-        }
-        else if (importresult == 2)
-        {
-            snackshow(ctx, getString(R.string.text_import_error));
-        }
-		if (recoverresult == 1)
-		{
-			snackshow(ctx, getString(R.string.recover_success));
-		}
-    }
+	}
 
     private void closeag()
     {
@@ -249,8 +255,17 @@ public class FloatManage extends AppCompatActivity
         {
             e.printStackTrace();
         }
-        startActivity(intent);
-        finishAndRemoveTask();
+		if (Build.VERSION.SDK_INT >= 21)
+		{
+			startActivity(intent);
+			finishAndRemoveTask();
+		}
+		else
+		{
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			startActivity(intent);
+			finish();
+		}
 		System.exit(0);
     }
 
@@ -262,25 +277,9 @@ public class FloatManage extends AppCompatActivity
 				switch (msg.what)
 				{
 					case 0:
-						boolean close_ag = false;
-						App utils = ((App)getApplicationContext());
-						Thread r = FloatManageMethod.PrepareSave(FloatManage.this, mHandler);
-						if (r != null)
+						if (PermissionCheck(true))
 						{
-							if (utils.FloatWinReshow)
-							{
-								r.start();
-								close_ag = true;
-								utils.setFloatReshow(false);
-							}
-						}
-						FloatManageMethod.floattext_typeface_check(FloatManage.this);
-						FloatManageMethod.startservice(FloatManage.this);
-						FloatManageMethod.first_ask_for_premission(FloatManage.this);
-						ListViewSet();
-						if (!close_ag)
-						{
-							closeag();
+							FloatRecover(FloatManage.this);
 						}
 						break;
 					case 1:
@@ -288,6 +287,47 @@ public class FloatManage extends AppCompatActivity
 						break;
 				}
 			}};
+	}
+
+	private void FloatRecover(Activity ctx)
+	{
+		boolean close_ag = false;
+		App utils = ((App)ctx.getApplicationContext());
+		Thread r = FloatManageMethod.PrepareSave(ctx, mHandler);
+		FloatManageMethod.floattext_typeface_check(ctx, true);
+		if (r != null)
+		{
+			if (utils.FloatWinReshow)
+			{
+				r.start();
+				close_ag = true;
+				utils.setFloatReshow(false);
+			}
+		}
+		FloatManageMethod.startservice(ctx);
+		FloatManageMethod.first_ask_for_premission(ctx);
+		ListViewSet();
+		if (!close_ag)
+		{
+			closeag();
+		}
+	}
+
+	private boolean PermissionCheck(boolean request)
+	{
+		int result = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+		if (result == PackageManager.PERMISSION_GRANTED)
+		{
+			return true;
+		}
+		else
+		{
+			if (request)
+			{
+				requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, FLOAT_TEXT_SYSTEM_PERMISSION);
+			}
+			return false;
+		}
 	}
 
 	public static void snackshow(Activity ctx, String str)
@@ -298,26 +338,39 @@ public class FloatManage extends AppCompatActivity
 		System.gc();
 	}
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-		if (listadapter == null)
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+	{
+		if (requestCode == FLOAT_TEXT_SYSTEM_PERMISSION)
 		{
-			listadapter = ((App)getApplicationContext()).getListviewadapter();
+			if (PermissionCheck(false))
+			{
+				FloatRecover(this);
+			}
 		}
-		if (requestCode == FLOAT_TEXT_IMPORT_PERMISSION)
+		else if (requestCode == FLOAT_TEXT_IMPORT_PERMISSION)
 		{
 			if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
 			{
 				FloatManageMethod.selectFile(this);
 			}
 		}
-		if (requestCode == FLOAT_TEXT_EXPORT_PERMISSION)
+		else if (requestCode == FLOAT_TEXT_EXPORT_PERMISSION)
 		{
 			if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
 			{
 				FloatManageMethod.exporttxt(this);
 			}
+		}
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+	}
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+		if (listadapter == null)
+		{
+			listadapter = ((App)getApplicationContext()).getListviewadapter();
 		}
         if (requestCode == FLOATTEXT_RESULT_CODE)
         {
@@ -383,7 +436,7 @@ public class FloatManage extends AppCompatActivity
             }
 			listadapter.notifyDataSetChanged();
         }
-        if (requestCode == FLOAT_TEXT_IMPORT_CODE)
+        else if (requestCode == FLOAT_TEXT_IMPORT_CODE)
         {
             if (data != null)
             {

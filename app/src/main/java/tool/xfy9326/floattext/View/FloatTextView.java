@@ -7,6 +7,11 @@ import android.view.*;
 import android.widget.*;
 import tool.xfy9326.floattext.Utils.*;
 
+/*
+悬浮窗文字控件
+主要用于对悬浮窗内文字进行修改
+*/
+
 public class FloatTextView extends TextView implements Runnable
 {
     private Context ctx;
@@ -38,6 +43,7 @@ public class FloatTextView extends TextView implements Runnable
         invalidate();
     }
 
+	//HTML模式判断
     private CharSequence htmlcodefix(CharSequence text)
     {
         if (htmlmode)
@@ -50,7 +56,8 @@ public class FloatTextView extends TextView implements Runnable
         }
         return text;
     }
-
+	
+	//跑马灯移动速度
     public void setMoveSpeed(int i)
     {
         this.movespeed = i;
@@ -69,6 +76,7 @@ public class FloatTextView extends TextView implements Runnable
         invalidate();
     }
 
+	//获取文字宽度
     private void getTextWidth()
     { 
         Paint paint = this.getPaint(); 
@@ -76,6 +84,7 @@ public class FloatTextView extends TextView implements Runnable
         textWidth = (int) paint.measureText(str); 
     }
 
+	//高级跑马灯实现
     @Override 
     public void run()
     { 
@@ -94,6 +103,7 @@ public class FloatTextView extends TextView implements Runnable
         invalidate();
     } 
 
+	//跑马灯控制
     public void startScroll()
     {
         this.removeCallbacks(this);
@@ -110,11 +120,13 @@ public class FloatTextView extends TextView implements Runnable
         invalidate();
     }
 
+	//悬浮窗序号设置
     public void setID(int i)
     {
         ID = i;
     }
 
+	//设置字体文件
     public void setTypefaceFile(String ttf)
     {
         if (!ttf.equalsIgnoreCase("Default"))
@@ -124,6 +136,7 @@ public class FloatTextView extends TextView implements Runnable
         }
     }
 
+	//设置阴影
     public void setShadow(boolean shadow, float x, float y, float r, int color)
     {
         if (shadow)
@@ -136,6 +149,7 @@ public class FloatTextView extends TextView implements Runnable
         }
     }
 
+	//跑马灯主控制
     public void setMoving(boolean bool, int mode)
     {
         switch (mode)

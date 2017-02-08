@@ -89,6 +89,7 @@
 	<string name="recover_success">數據恢復成功</string>
 	<string name="recover_failed">數據恢復失敗</string>
 	<string name="dynamicservice_no_open">動態變量服務沒有開啟！</string>
+	<string name="permission_error">權限獲取失敗！</string>
     <!-- Color Picker -->
     <string name="dialog_color_picker">顏色選擇器</string>
     <string name="press_color_to_apply">選擇顏色以套用變更</string>
@@ -163,6 +164,9 @@
     <string name="xml_web_win_height">視窗高度</string>
     <string name="xml_web_win_height_sum">變更目前視窗的高度</string>
     <string name="xml_web_win_height_title">高度設定</string>
+	<string name="xml_global_system">系統設置</string>
+	<string name="xml_global_system_boot">開機時自動啟動懸浮視窗</string>
+	<string name="xml_global_system_boot_sum">請在系統管理中允許本應用程式開機自啟\n注：服務啟動可能會比較緩慢</string>
     <string name="xml_global_manageset">管理界面設定</string>
     <string name="xml_global_deletealert">刪除懸浮視窗時顯示提示</string>
     <string name="xml_global_deletealert_on">顯示提示</string>

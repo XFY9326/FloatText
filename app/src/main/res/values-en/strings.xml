@@ -89,6 +89,7 @@
 	<string name="recover_success">Data recover success</string>
 	<string name="recover_failed">Data recover failed</string>
 	<string name="dynamicservice_no_open">Dynamic Service does not open!</string>
+	<string name="permission_error">Permission Denied!</string>
     <!-- Color Picker -->
     <string name="dialog_color_picker">Color Picker</string>
     <string name="press_color_to_apply">Choose color to apply changes</string>
@@ -163,6 +164,9 @@
     <string name="xml_web_win_height">The height of this window</string>
     <string name="xml_web_win_height_sum">Change the height of this window</string>
     <string name="xml_web_win_height_title">Height Set</string>
+	<string name="xml_global_system">System Settings</string>
+	<string name="xml_global_system_boot">Show Float Window automatically after boot</string>
+	<string name="xml_global_system_boot_sum">Please allow this application boot in System Manage\nAttention:The Services may start slow!</string>
     <string name="xml_global_manageset">‍Manage List Settings</string>
     <string name="xml_global_deletealert">‍‍Alert while ‍deleting the floating window</string>
     <string name="xml_global_deletealert_on">‍Show alert dialog</string>

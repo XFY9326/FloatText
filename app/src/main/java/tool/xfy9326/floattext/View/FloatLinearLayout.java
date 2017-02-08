@@ -10,6 +10,12 @@ import java.util.*;
 import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Utils.*;
 
+/*
+悬浮窗线性布局
+主要用于进行窗体操作
+比如锁定，移动，显示在通知栏等
+*/
+
 public class FloatLinearLayout extends LinearLayout
 {
     private Context ctx;
@@ -35,6 +41,7 @@ public class FloatLinearLayout extends LinearLayout
     private long nowlongclicktime = 0;
     private double longclicksecond = 1;
     private boolean longclickmove = false;
+	//长按处理
     private Handler mHandler = new Handler() {
         public void handleMessage (Message msg)
         {
@@ -45,7 +52,7 @@ public class FloatLinearLayout extends LinearLayout
                     {
                         ArrayList<Boolean> lock = ((App)ctx.getApplicationContext()).getLockPosition();
                         ArrayList<String> position = ((App)ctx.getApplicationContext()).getPosition();
-                        if (FLOAT_ID < lock.size())
+                        if (FLOAT_ID < lock.size() && lockposition == false)
                         {
                             setPositionLocked(true);
                             lock.set(FLOAT_ID, true);
@@ -69,6 +76,7 @@ public class FloatLinearLayout extends LinearLayout
         this.wm = ((App)context.getApplicationContext()).getFloatwinmanager();
     }
 
+	//窗体移动
     @Override
     public boolean onTouchEvent (MotionEvent event)
     {
@@ -114,6 +122,7 @@ public class FloatLinearLayout extends LinearLayout
         return true;
     }
 
+	//长按判断
     private void setlongclick ()
     {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -154,11 +163,13 @@ public class FloatLinearLayout extends LinearLayout
         }
     }
 
+	//窗口在通知栏上显示
     public void setTop (boolean bool)
     {
         this.top = bool;
     }
 
+	//设置初始位置
     public void setAddPosition (float sx, float sy)
     {
         this.px = sx;
@@ -167,6 +178,7 @@ public class FloatLinearLayout extends LinearLayout
         this.LastY = sy;
     }
 
+	//设置窗体状态
     public void setShowState (boolean bool)
     {
         if (bool)
@@ -187,16 +199,19 @@ public class FloatLinearLayout extends LinearLayout
         }
     }
 
+	//修正改变窗体状态
     public void changeShowState (boolean bool)
     {
         this.ShowState = bool;
     }
 
+	//设置窗体布局
     public void setFloatLayoutParams (WindowManager.LayoutParams wmLayoutParams)
     {
         this.wmParams = wmLayoutParams;
     }
 
+	//设置可触摸
     public void setTouchable (WindowManager.LayoutParams layout, boolean bool)
     {
         if (bool)
@@ -213,22 +228,26 @@ public class FloatLinearLayout extends LinearLayout
         }
     }
 
+	//设置默认Flag
     public void setLayout_default_flags (int layout_default_flags)
     {
         this.layout_default_flags = layout_default_flags;
     }
 
+	//锁定窗口
     public void setPositionLocked (boolean bool)
     {
         this.lockposition = bool;
         setTouchable(wmParams, !bool);
     }
 
+	//获取锁定状态
     public boolean getPositionLocked ()
     {
         return lockposition;
     }
 
+	//更新位置
     private void updateViewPosition ()
     {
         LastX = x - mTouchX;
@@ -238,6 +257,7 @@ public class FloatLinearLayout extends LinearLayout
         wm.updateViewLayout(this, wmParams);
     }
 
+	//获取位置
     public String getPosition ()
     {
         LastX = wmParams.x;

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen 
     xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title="@string/xml_global_system"> 
+        <CheckBoxPreference 
+            android:key="FloatAutoBoot"
+            android:title="@string/xml_global_system_boot"
+            android:summary="@string/xml_global_system_boot_sum"
+            android:defaultValue="false"
+        />
+	</PreferenceCategory>
     <PreferenceCategory android:title="@string/xml_global_manageset"> 
         <Preference 
             android:key="Language"

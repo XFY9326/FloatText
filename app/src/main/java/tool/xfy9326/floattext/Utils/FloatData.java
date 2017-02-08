@@ -9,6 +9,10 @@ import org.json.*;
 import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Method.*;
 
+/*
+数据操作
+*/
+
 public class FloatData
 {
 	private Context ctx;
@@ -28,6 +32,7 @@ public class FloatData
         spedit = spdata.edit();
 	}
 
+	//保存
     public void savedata()
     {
         App utils = ((App)ctx.getApplicationContext());
@@ -56,6 +61,7 @@ public class FloatData
 		speditt.apply();
     }
 
+	//获取
     public void getSaveArrayData()
     {
         App utils = ((App)ctx.getApplicationContext());
@@ -108,6 +114,7 @@ public class FloatData
         utils.replaceDatas(textarr, color, size, thick, show, position, lock, top, autotop, move, speed, shadow, shadowx, shadowy, shadowradius, backgroundcolor, textshadowcolor, floatsize, floatlong, floatwide);
     }
 
+	//输出
 	public boolean OutputData(String path, int VersionCode)
 	{
 		String jsonresult = "";
@@ -157,6 +164,7 @@ public class FloatData
 		return true;
 	}
 
+	//导入
 	public boolean InputData(String path)
 	{
 		File bak = new File(path);

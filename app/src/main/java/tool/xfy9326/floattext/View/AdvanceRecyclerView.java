@@ -6,6 +6,11 @@ import android.util.*;
 import android.view.*;
 import android.widget.*;
 
+/*
+高级列表操作
+支持空列表时显示空布局
+*/
+
 public class AdvanceRecyclerView extends RecyclerView
 {
     private View emptyView;

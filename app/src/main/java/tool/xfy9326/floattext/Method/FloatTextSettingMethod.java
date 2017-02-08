@@ -20,6 +20,7 @@ public class FloatTextSettingMethod
 {
     private boolean longClicked;
 
+	//动态变量列表显示
 	public static void showDlist(final Context ctx)
 	{
 		final String[] dynamiclist = ctx.getResources().getStringArray(R.array.floatsetting_dynamic_list);
@@ -53,6 +54,7 @@ public class FloatTextSettingMethod
 		list.show();
 	}
 
+	//Int数值颜色转16进制
     public static String IntColortoHex(int color)
     {
         String R, G, B, C;
@@ -73,6 +75,7 @@ public class FloatTextSettingMethod
         return sb.toString();
     }
 
+	//新建悬浮文字控件
     public static FloatTextView CreateFloatView(final Context ctx, String Text, Float Size, int Paint, boolean Thick, int speed, int id, boolean shadow, float shadowx, float shadowy, float shadowradius, int shadowcolor)
     {
         FloatTextView floatview = new FloatTextView(ctx, ((App)ctx.getApplicationContext()).getHtmlMode());
@@ -86,7 +89,8 @@ public class FloatTextSettingMethod
         floatview.setTypefaceFile(typeface_fix(ctx));
         return floatview;
     }
-
+	
+	//修复字体不存在问题
     public static String typeface_fix(Context ctx)
     {
         SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
@@ -115,6 +119,7 @@ public class FloatTextSettingMethod
         return "Default";
     }
 
+	//新建悬浮线性布局
     public static FloatLinearLayout CreateLayout(Context ctx, int ID)
     {
         FloatLinearLayout layout = new FloatLinearLayout(ctx, ID);
@@ -122,11 +127,13 @@ public class FloatTextSettingMethod
         return layout;
     }
 
+	//新建悬浮窗布局(固定初始显示位置)
     public static WindowManager.LayoutParams CreateFloatLayout(Context ctx, WindowManager wm, FloatTextView floatview, FloatLinearLayout layout, boolean show, boolean top, boolean move, int bac, boolean fs, float fl, float fw)
     {
         return CreateFloatLayout(ctx, wm, floatview, layout, show, 100, 150, top, move, bac, fs, fl, fw);
     }
 
+	//新建悬浮窗布局
     public static WindowManager.LayoutParams CreateFloatLayout(Context ctx, WindowManager wm, FloatTextView floatview, FloatLinearLayout layout, boolean show, float px, float py, boolean top, boolean move, int bac, boolean fs, float fl, float fw)
     {
         WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams();
@@ -177,6 +184,7 @@ public class FloatTextSettingMethod
         return wmParams;
     }
 
+	//请求悬浮窗权限
     public static void askforpermission(Activity act, int code)
     {
         final int askcode = code;
@@ -202,7 +210,8 @@ public class FloatTextSettingMethod
             .setCancelable(false);
         dialog.show();
     }
-
+	
+	//保存悬浮窗数据
     public static void savedata(Context ctx, FloatTextView fv, FloatLinearLayout fll, String text, WindowManager.LayoutParams layout)
     {
         App utils = ((App)ctx.getApplicationContext());
@@ -216,6 +225,7 @@ public class FloatTextSettingMethod
         floatlinearlayout.add(fll);
     }
 
+	//微调悬浮窗位置中长按功能实现
     public OnTouchListener ButtonOnLongRepeatClickListener(final int Code, final Handler handler)
     {
         OnTouchListener controllisten = new OnTouchListener(){

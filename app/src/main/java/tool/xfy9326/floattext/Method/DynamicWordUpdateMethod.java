@@ -8,6 +8,10 @@ import java.util.regex.*;
 import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
+/*
+本方法用于动态变量的更新
+*/
+
 public class DynamicWordUpdateMethod
 {
     private Context context;
@@ -45,10 +49,17 @@ public class DynamicWordUpdateMethod
 				{
 					str = updatetext(str, list[a].toString(), data[a].toString(), info[a]);
 				}
-                if (floattext.get(i) != str)
+                if (floattext.get(i) != str && wm != null)
                 {
                     floatview.get(i).setText(str);
-					wm.updateViewLayout(linearlayout.get(i), floatlayout.get(i));
+					try
+					{
+						wm.updateViewLayout(linearlayout.get(i), floatlayout.get(i));
+					}
+					catch(IllegalArgumentException e)
+					{
+						e.printStackTrace();
+					}
                 }
             }
         }

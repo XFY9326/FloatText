@@ -64,8 +64,11 @@ public class FloatAdvanceTextUpdateService extends AccessibilityService
 				}
 				break;
 			case AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED:
-				currentactivity = event.getClassName().toString();
-				sendmes();
+				if (event.getClassName() != null)
+				{
+					currentactivity = event.getClassName().toString();
+					sendmes();
+				}
 				break;
 		}
 	}

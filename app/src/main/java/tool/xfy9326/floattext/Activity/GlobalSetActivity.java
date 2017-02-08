@@ -349,8 +349,17 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 				final Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				intent.putExtra("RecoverText", 1);
-				startActivity(intent);
-				finishAndRemoveTask();
+				if (Build.VERSION.SDK_INT >= 21)
+				{
+					startActivity(intent);
+					finishAndRemoveTask();
+				}
+				else
+				{
+					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+					startActivity(intent);
+					finish();
+				}
 				System.exit(0);
 			}
 			else
@@ -586,7 +595,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
 	{
 		if (requestCode == FLOAT_TEXT_GET_TYPEFACE_PERMISSION)
 		{
@@ -609,7 +618,13 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 				recoverdata(null);
 			}
 		}
-		else if (requestCode == ADVANCE_TEXT_SET)
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		if (requestCode == ADVANCE_TEXT_SET)
 		{
 			Preference adts = findPreference("AdvanceTextService");
 			setADTsum(adts);

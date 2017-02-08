@@ -87,8 +87,17 @@ public class ImportBackupFile extends AppCompatActivity
 							final Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
 							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 							intent.putExtra("RecoverText", 1);
-							startActivity(intent);
-							finishAndRemoveTask();
+							if (Build.VERSION.SDK_INT >= 21)
+							{
+								startActivity(intent);
+								finishAndRemoveTask();
+							}
+							else
+							{
+								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+								startActivity(intent);
+								finish();
+							}
 							System.exit(0);
 						}
 					}

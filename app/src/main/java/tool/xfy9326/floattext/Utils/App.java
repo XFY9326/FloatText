@@ -7,6 +7,10 @@ import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.CrashReport.*;
 import tool.xfy9326.floattext.View.*;
 
+/*
+数据缓存
+*/
+
 public class App extends Application
 {
     private ArrayList<FloatTextView> floatview = new ArrayList<FloatTextView>();
@@ -50,6 +54,7 @@ public class App extends Application
     {
         super.onCreate();
         init();
+		//错误截取报告
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(this, "FloatText", "tool.xfy9326.floattext.FloatManage", "1069665464@qq.com");
     }

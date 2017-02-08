@@ -14,6 +14,7 @@ import tool.xfy9326.floattext.View.*;
 public class FloatWebSettingMethod
 {
 
+	//URL修复
 	public static String urlfix (String str)
 	{
 		if (!str.contains("://"))
@@ -23,6 +24,7 @@ public class FloatWebSettingMethod
 		return str;
 	}
 
+	//新建Web悬浮窗
     public static WebView CreateFloatWebView (Context ctx, String url)
     {
         String cachePath = Environment.getExternalStorageDirectory().getAbsolutePath().toString() + "/FloatText/WebCache/";
@@ -48,6 +50,7 @@ public class FloatWebSettingMethod
         return webview;
     }
 
+	//
     public static WindowManager.LayoutParams CreateFloatLayout (final Context ctx, WindowManager wm, WebView fwv, View tview, FloatLinearLayout layout, float px, float py, boolean show, int width, int height)
     {
         WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams();

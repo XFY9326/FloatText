@@ -16,6 +16,10 @@ import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Setting.*;
 import tool.xfy9326.floattext.Utils.*;
 
+/*
+管理列表操作
+*/
+
 public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHolder>
 {
     private static int FLOAT_RESULT_CODE = 0;
@@ -46,6 +50,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
         }
     }
 
+	//设置显示状态的数据
     public void setTextShow(ArrayList<String> ts)
 	{
         this.textshow = ts;
@@ -77,6 +82,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
             FloatManageMethod.restartApplication(context);
         }
         String listtext = textshow.get(index);
+		//保持显示的文字和悬浮窗内样式一致
         if (!Show.get(index))
 		{
             SpannableString str = new SpannableString(listtext);
@@ -102,7 +108,9 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
         view.textView.getPaint().setFakeBoldText(utils.getThickData().get(index));
         view.textView.setTextColor(utils.getColorData().get(index));
         view.textView.setEllipsize(TextUtils.TruncateAt.END);
+		//单行显示
         view.textView.setSingleLine(utils.getListTextHide());
+		//点击文字隐藏和显示悬浮窗
         view.textView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v)
@@ -137,7 +145,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 				}
 			});
 
-
+		//锁定图标和监听设置
         ArrayList<Boolean> lock = ((App) context.getApplicationContext()).getLockPosition();
         if (lock.get(index))
 		{
@@ -154,7 +162,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 					System.out.println("ListViewAdapter: " + context);
 				}
 			});
-
+		//删除按钮监听
         view.del_button.setOnClickListener(new OnClickListener() {
 				public void onClick(View v)
 				{
@@ -180,6 +188,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 					}
 				}
 			});
+		//编辑按钮监听
         view.edit_button.setOnClickListener(new OnClickListener() {
 				public void onClick(View v)
 				{
@@ -199,6 +208,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 			});
     }
 
+	//控件获取
     public static class ViewHolder extends RecyclerView.ViewHolder
 	{
         public TextView textView;
@@ -216,6 +226,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
         }
     }
 
+	//控制删除悬浮窗的显示
     private void delwin(int index)
 	{
         if (FloatWinDelete(index))
@@ -228,6 +239,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
         }
     }
 
+	//锁定悬浮窗
     private void FloatWinLock(Context context, final int index, Button lock_button)
 	{
 		App utils = ((App) context.getApplicationContext());
@@ -254,6 +266,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
         dat.savedata();
     }
 
+	//删除悬浮窗
     private boolean FloatWinDelete(final int index)
 	{
         App utils = ((App) context.getApplicationContext());

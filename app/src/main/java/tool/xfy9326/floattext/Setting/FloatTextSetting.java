@@ -195,6 +195,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		FloatSize = spdata.getBoolean("FloatSize", false);
 		FloatLong = spdata.getFloat("FloatLong", 100);
 		FloatWide = spdata.getFloat("FloatWide", 100);
+		LockPosition = false;
     }
 
     private void buttonset()
@@ -811,6 +812,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 			}
             if (EditMode)
             {
+				linearlayout.setTouchable(wmParams, !LockPosition);
                 ArrayList<Boolean> sf = utils.getShowFloat();
                 sf.set(EditID, show);
                 utils.setShowFloat(sf);
