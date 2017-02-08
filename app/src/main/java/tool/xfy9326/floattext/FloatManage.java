@@ -315,19 +315,23 @@ public class FloatManage extends AppCompatActivity
 
 	private boolean PermissionCheck(boolean request)
 	{
-		int result = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-		if (result == PackageManager.PERMISSION_GRANTED)
+		if (Build.VERSION.SDK_INT >= 23)
 		{
-			return true;
-		}
-		else
-		{
-			if (request)
+			int result = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+			if (result == PackageManager.PERMISSION_GRANTED)
 			{
-				requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, FLOAT_TEXT_SYSTEM_PERMISSION);
+				return true;
 			}
-			return false;
+			else
+			{
+				if (request)
+				{
+					requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, FLOAT_TEXT_SYSTEM_PERMISSION);
+				}
+				return false;
+			}
 		}
+		return true;
 	}
 
 	public static void snackshow(Activity ctx, String str)
