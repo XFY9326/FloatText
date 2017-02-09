@@ -32,6 +32,40 @@ public class FloatManageMethod
 	public static boolean waitdoubleclick = false;
 	public static Handler waithandle;
 	public static Runnable waitrun;
+	
+	//导入或导出的权限检查
+	public static void TextFileSolve (Activity ctx, int type, int requestcode)
+	{
+		if (Build.VERSION.SDK_INT > 22)
+		{
+			if (ctx.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+			{
+				ctx.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestcode);
+			}
+			else
+			{
+				if (type == 0)
+				{
+					FloatManageMethod.exporttxt(ctx);
+				}
+				else if (type == 1)
+				{
+					FloatManageMethod.selectFile(ctx);
+				}
+			}
+		}
+		else
+		{
+			if (type == 0)
+			{
+				FloatManageMethod.exporttxt(ctx);
+			}
+			else if (type == 1)
+			{
+				FloatManageMethod.selectFile(ctx);
+			}
+		}
+	}
 
 	//根Activity判断
 	public static void RootTask(Activity act)
@@ -41,15 +75,22 @@ public class FloatManageMethod
             act.finish();
         }
 	}
-
+	
 	//重启应用
-	public static void restartApplication(Context ctx)
-    {
-        Intent intent = ctx.getPackageManager().getLaunchIntentForPackage(ctx.getPackageName());
+	public static void restartApplication (Context ctx, Intent intent)
+	{
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        ctx.startActivity(intent);
-        System.exit(0);
-    }
+		if (Build.VERSION.SDK_INT >= 21)
+		{
+			ctx.startActivity(intent);
+		}
+		else
+		{
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			ctx.startActivity(intent);
+		}
+		System.exit(0);
+	}
 
 	//设置加载窗口
     public static AlertDialog setLoadingDialog(Context ctx)
@@ -123,7 +164,7 @@ public class FloatManageMethod
 	public static void selectFile(Activity ctx)
 	{
 		Toast.makeText(ctx, R.string.text_import_notice, Toast.LENGTH_LONG).show();
-		SelectFile sf = new SelectFile(FloatManage.FLOAT_TEXT_IMPORT_CODE, SelectFile.TYPE_ChooseFile);
+		SelectFile sf = new SelectFile(StaticNum.FLOAT_TEXT_IMPORT_CODE, SelectFile.TYPE_ChooseFile);
 		sf.start(ctx);
 	}
 
@@ -175,7 +216,7 @@ public class FloatManageMethod
 		{
 			if (!Settings.canDrawOverlays(ctx))
 			{
-				FloatManageMethod.askforpermission(ctx, FloatManage.RESHOW_PERMISSION_RESULT_CODE);
+				FloatManageMethod.askforpermission(ctx, StaticNum.RESHOW_PERMISSION_RESULT_CODE);
 			}
 			else
 			{
@@ -223,7 +264,7 @@ public class FloatManageMethod
                 }  
             }, 100); 
 	}
-
+	
 	//后台运行应用
 	public static void RunInBack(Activity ctx)
 	{
@@ -574,7 +615,7 @@ public class FloatManageMethod
                         {
                             Intent intent = new Intent(ctx, FloatTextSetting.class);
                             intent.putExtra("EditID", FloatDataName.size());
-                            ctx.startActivityForResult(intent, FloatManage.FLOATTEXT_RESULT_CODE);
+                            ctx.startActivityForResult(intent, StaticNum.FLOATTEXT_RESULT_CODE);
                         }
                         else if (which == 1)
                         {
@@ -589,7 +630,7 @@ public class FloatManageMethod
         {
             Intent intent = new Intent(ctx, FloatTextSetting.class);
             intent.putExtra("EditID", FloatDataName.size());
-            ctx.startActivityForResult(intent, FloatManage.FLOATTEXT_RESULT_CODE);
+            ctx.startActivityForResult(intent, StaticNum.FLOATTEXT_RESULT_CODE);
         }
     }
 

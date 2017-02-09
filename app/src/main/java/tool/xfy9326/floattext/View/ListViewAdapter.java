@@ -79,7 +79,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
         ArrayList<Boolean> Show = utils.getShowFloat();
         if (Show.size() != textshow.size())
 		{
-            FloatManageMethod.restartApplication(context);
+            FloatManageMethod.restartApplication(context, context.getPackageManager().getLaunchIntentForPackage(context.getPackageName()));
         }
         String listtext = textshow.get(index);
 		//保持显示的文字和悬浮窗内样式一致

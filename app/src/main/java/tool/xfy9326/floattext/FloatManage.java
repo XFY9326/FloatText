@@ -29,13 +29,6 @@ import tool.xfy9326.floattext.R;
 
 public class FloatManage extends AppCompatActivity
 {
-    public static int FLOATTEXT_RESULT_CODE = 0;
-    public static int RESHOW_PERMISSION_RESULT_CODE = 2;
-    public static int FLOATSET_RESULT_CODE = 3;
-    public static int FLOAT_TEXT_IMPORT_CODE = 5;
-	public static int FLOAT_TEXT_IMPORT_PERMISSION = 7;
-	public static int FLOAT_TEXT_EXPORT_PERMISSION = 8;
-	public static int FLOAT_TEXT_SYSTEM_PERMISSION = 10;
     private AdvanceRecyclerView listview = null;
     private ListViewAdapter listadapter = null;
     private SharedPreferences spdata;
@@ -97,75 +90,51 @@ public class FloatManage extends AppCompatActivity
 					public boolean onNavigationItemSelected(MenuItem item) 
 					{
 						mDrawerLayout.closeDrawers();
-						switch (item.getItemId())
-						{
-							case R.id.menu_import:
-								if (Build.VERSION.SDK_INT > 22)
-								{
-									if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
-									{
-										requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, FLOAT_TEXT_IMPORT_PERMISSION);
-									}
-									else
-									{
-										FloatManageMethod.selectFile(FloatManage.this);
-									}
-								}
-								else
-								{
-									FloatManageMethod.selectFile(FloatManage.this);
-								}
-								break;
-							case R.id.menu_export:
-								if (Build.VERSION.SDK_INT > 22)
-								{
-									if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
-									{
-										requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, FLOAT_TEXT_EXPORT_PERMISSION);
-									}
-									else
-									{
-										FloatManageMethod.exporttxt(FloatManage.this);
-									}
-								}
-								else
-								{
-									FloatManageMethod.exporttxt(FloatManage.this);
-								}
-								break;
-							case R.id.menu_wordlist:
-								if (((App)getApplicationContext()).DynamicNumService)
-								{
-									FloatTextSettingMethod.showDlist(FloatManage.this);
-								}
-								else
-								{
-									snackshow(FloatManage.this, getString(R.string.dynamicservice_no_open));
-								}
-								break;
-							case R.id.menu_about:
-								Intent aboutintent = new Intent(FloatManage.this, AboutActivity.class);
-								startActivity(aboutintent);
-								break;
-							case R.id.menu_set:
-								Intent setintent = new Intent(FloatManage.this, GlobalSetActivity.class);
-								startActivityForResult(setintent, FLOATSET_RESULT_CODE);
-								break;
-							case R.id.menu_back:
-								DrawerLayout drawer = (DrawerLayout) findViewById(R.id.main_drawer_layout);
-								if (drawer.isDrawerOpen(GravityCompat.START))
-								{
-									drawer.closeDrawer(GravityCompat.START);
-								}
-								FloatManageMethod.RunInBack(FloatManage.this);
-								break;
-							case R.id.menu_exit:
-								FloatManageMethod.ShutSown(FloatManage.this);
-								break;
-						}
+						DrawerSet(mDrawerLayout, item.getItemId());
 						return false;
 					}
 				});
+		}
+	}
+	
+	private void DrawerSet (DrawerLayout mDrawerLayout, int item)
+	{
+		switch (item)
+		{
+			case R.id.menu_import:
+				FloatManageMethod.TextFileSolve(FloatManage.this, 1, StaticNum.FLOAT_TEXT_IMPORT_PERMISSION);
+				break;
+			case R.id.menu_export:
+				FloatManageMethod.TextFileSolve(FloatManage.this, 0, StaticNum.FLOAT_TEXT_EXPORT_PERMISSION);
+				break;
+			case R.id.menu_wordlist:
+				if (((App)getApplicationContext()).DynamicNumService)
+				{
+					FloatTextSettingMethod.showDlist(FloatManage.this);
+				}
+				else
+				{
+					snackshow(FloatManage.this, getString(R.string.dynamicservice_no_open));
+				}
+				break;
+			case R.id.menu_about:
+				Intent aboutintent = new Intent(FloatManage.this, AboutActivity.class);
+				startActivity(aboutintent);
+				break;
+			case R.id.menu_set:
+				Intent setintent = new Intent(FloatManage.this, GlobalSetActivity.class);
+				startActivityForResult(setintent, StaticNum.FLOATSET_RESULT_CODE);
+				break;
+			case R.id.menu_back:
+				if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
+				{
+					mDrawerLayout.closeDrawer(GravityCompat.START);
+				}
+				FloatManageMethod.RunInBack(FloatManage.this);
+				break;
+			case R.id.menu_exit:
+				FloatManageMethod.ShutSown(FloatManage.this);
+				break;
 		}
 	}
 
@@ -205,9 +174,9 @@ public class FloatManage extends AppCompatActivity
                     }
                 });
             Thread t = FloatManageMethod.getSaveData(ctx, utils, spdata, mHandler);
-            t.start();
             FloatManageMethod.preparefolder();
             FloatManageMethod.setWinManager(FloatManage.this);
+			t.start();
             utils.setGetSave(true);
         }
         else
@@ -231,7 +200,6 @@ public class FloatManage extends AppCompatActivity
     {
         final String Path = data.getStringExtra("FilePath");
         final Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         Thread thread = new Thread(new Runnable(){
                 public void run()
                 {
@@ -255,18 +223,7 @@ public class FloatManage extends AppCompatActivity
         {
             e.printStackTrace();
         }
-		if (Build.VERSION.SDK_INT >= 21)
-		{
-			startActivity(intent);
-			finishAndRemoveTask();
-		}
-		else
-		{
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-			startActivity(intent);
-			finish();
-		}
-		System.exit(0);
+		FloatManageMethod.restartApplication(this, intent);
     }
 
 	private void setHandle()
@@ -326,12 +283,78 @@ public class FloatManage extends AppCompatActivity
 			{
 				if (request)
 				{
-					requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, FLOAT_TEXT_SYSTEM_PERMISSION);
+					requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, StaticNum.FLOAT_TEXT_SYSTEM_PERMISSION);
 				}
 				return false;
 			}
 		}
 		return true;
+	}
+	
+	private void  AlertTextShow(Intent data)
+	{
+		if (data != null)
+		{
+			int s = data.getIntExtra("RESULT", 0);
+			int p = data.getIntExtra("POSITION", 0);
+			boolean e = data.getBooleanExtra("EDITMODE", false);
+			switch (s)
+			{
+				case 1:
+					new Handler().postDelayed(new Runnable(){   
+							public void run()
+							{   
+								snackshow(FloatManage.this, getString(R.string.save_text_ok));
+							}   
+						}, 300);   
+					break;
+				case 2:
+					new Handler().postDelayed(new Runnable(){   
+							public void run()
+							{   
+								snackshow(FloatManage.this, getString(R.string.delete_text_ok));
+							}   
+						}, 300);   
+					break;
+				case 3:
+					new Handler().postDelayed(new Runnable(){   
+							public void run()
+							{   
+								snackshow(FloatManage.this, getString(R.string.premission_ask_failed));
+							}   
+						}, 300);   
+					break;
+			}
+			FloatDataName = ((App)getApplicationContext()).getFloatText();
+			if (e)
+			{
+				listadapter.notifyItemChanged(p);
+			}
+			else
+			{
+				listadapter.notifyItemInserted(p);
+				listadapter.notifyItemRangeChanged(p, listadapter.getItemCount());
+			}
+		}
+		FloatData dat = new FloatData(this);
+		dat.savedata();
+	}
+	
+	private void ReshowPermisdionGot()
+	{
+		if (Build.VERSION.SDK_INT >= 23)
+		{
+			if (Settings.canDrawOverlays(this))
+			{
+				Thread t = FloatManageMethod.Reshow(this, null);
+				t.start();
+			}
+			else
+			{
+				snackshow(this, getString(R.string.premission_ask_failed));
+			}
+		}
+		listadapter.notifyDataSetChanged();
 	}
 
 	public static void snackshow(Activity ctx, String str)
@@ -345,21 +368,21 @@ public class FloatManage extends AppCompatActivity
 	@Override
 	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
 	{
-		if (requestCode == FLOAT_TEXT_SYSTEM_PERMISSION)
+		if (requestCode == StaticNum.FLOAT_TEXT_SYSTEM_PERMISSION)
 		{
 			if (PermissionCheck(false))
 			{
 				FloatRecover(this);
 			}
 		}
-		else if (requestCode == FLOAT_TEXT_IMPORT_PERMISSION)
+		else if (requestCode == StaticNum.FLOAT_TEXT_IMPORT_PERMISSION)
 		{
 			if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
 			{
 				FloatManageMethod.selectFile(this);
 			}
 		}
-		else if (requestCode == FLOAT_TEXT_EXPORT_PERMISSION)
+		else if (requestCode == StaticNum.FLOAT_TEXT_EXPORT_PERMISSION)
 		{
 			if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
 			{
@@ -376,71 +399,15 @@ public class FloatManage extends AppCompatActivity
 		{
 			listadapter = ((App)getApplicationContext()).getListviewadapter();
 		}
-        if (requestCode == FLOATTEXT_RESULT_CODE)
+        if (requestCode == StaticNum.FLOATTEXT_RESULT_CODE)
         {
-			if (data != null)
-			{
-				int s = data.getIntExtra("RESULT", 0);
-				int p = data.getIntExtra("POSITION", 0);
-				boolean e = data.getBooleanExtra("EDITMODE", false);
-				switch (s)
-				{
-					case 1:
-						new Handler().postDelayed(new Runnable(){   
-								public void run()
-								{   
-									snackshow(FloatManage.this, getString(R.string.save_text_ok));
-								}   
-							}, 300);   
-						break;
-					case 2:
-						new Handler().postDelayed(new Runnable(){   
-								public void run()
-								{   
-									snackshow(FloatManage.this, getString(R.string.delete_text_ok));
-								}   
-							}, 300);   
-						break;
-					case 3:
-						new Handler().postDelayed(new Runnable(){   
-								public void run()
-								{   
-									snackshow(FloatManage.this, getString(R.string.premission_ask_failed));
-								}   
-							}, 300);   
-						break;
-				}
-				FloatDataName = ((App)getApplicationContext()).getFloatText();
-				if (e)
-				{
-					listadapter.notifyItemChanged(p);
-				}
-				else
-				{
-					listadapter.notifyItemInserted(p);
-					listadapter.notifyItemRangeChanged(p, listadapter.getItemCount());
-				}
-			}
-            FloatData dat = new FloatData(this);
-            dat.savedata();
+			AlertTextShow(data);
         }
-        else if (requestCode == RESHOW_PERMISSION_RESULT_CODE)
+        else if (requestCode == StaticNum.RESHOW_PERMISSION_RESULT_CODE)
         {
-            if (Build.VERSION.SDK_INT >= 23)
-            {
-                if (Settings.canDrawOverlays(this))
-                {
-                    Thread t = FloatManageMethod.Reshow(this, null);
-                    t.start();
-                }
-                else
-                {
-                    snackshow(this, getString(R.string.premission_ask_failed));
-                }
-            }
-			listadapter.notifyDataSetChanged();
+            ReshowPermisdionGot();
         }
-        else if (requestCode == FLOAT_TEXT_IMPORT_CODE)
+        else if (requestCode == StaticNum.FLOAT_TEXT_IMPORT_CODE)
         {
             if (data != null)
             {
@@ -466,7 +433,7 @@ public class FloatManage extends AppCompatActivity
 				FloatManageMethod.CloseApp(this);
 			}
         }
-		if (keyCode == KeyEvent.KEYCODE_MENU)
+		else if (keyCode == KeyEvent.KEYCODE_MENU)
 		{
 			DrawerLayout drawer = (DrawerLayout) findViewById(R.id.main_drawer_layout);
 			if (drawer.isDrawerOpen(GravityCompat.START))

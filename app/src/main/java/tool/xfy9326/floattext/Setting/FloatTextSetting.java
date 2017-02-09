@@ -21,6 +21,10 @@ import tool.xfy9326.floattext.View.*;
 import android.app.AlertDialog;
 import android.support.v7.app.ActionBar;
 
+/*
+ 文字悬浮窗设置界面
+ */
+
 public class FloatTextSetting extends AppCompatPreferenceActivity
 {
     private static final int REQUEST_CODE = 1;
@@ -80,6 +84,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         SafeGuard.isPackageNameAvailable(this);
     }
 
+	//ToolBar设置
 	private void sethome()
 	{
 		ActionBar actionBar = getSupportActionBar();
@@ -89,6 +94,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         }
 	}
 
+	//WindowManager为null错误检测
     private void wmcheck()
     {
         if (wm == null)
@@ -102,10 +108,13 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         }
     }
 
+	//设置所有可用数据
     private void setkeys()
     {
         Intent intent = getIntent();
+		//编辑模式
         EditMode = intent.getBooleanExtra("EditMode", false);
+		//编辑代号
         EditID = intent.getIntExtra("EditID", 0);
         if (EditMode)
         {
@@ -118,12 +127,13 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         }
     }
 
+	//获取编辑悬浮窗的数据，进行覆盖
     private void editkeyget(int i)
     {
         App utils = ((App)getApplicationContext());
 		if (utils.getFloatView().size() < i + 1)
 		{
-			FloatManageMethod.restartApplication(this);
+			FloatManageMethod.restartApplication(this, getPackageManager().getLaunchIntentForPackage(getPackageName()));
 		}
         wmParams = utils.getFloatLayout().get(i);
         floatview = utils.getFloatView().get(i);
@@ -149,6 +159,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		FloatWide = utils.getFloatWide().get(i);
     }
 
+	//设置编辑悬浮窗的数据为默认数据
     private void editkeyset()
     {
         spedit.putString("TextShow", TextShow);
@@ -172,6 +183,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         spedit.commit();
     }
 
+	//默认数据获取
     private void defaultkeyget()
     {
         TextShow = spdata.getString("TextShow", getString(R.string.default_text));
@@ -198,20 +210,24 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		LockPosition = false;
     }
 
+	//界面所有操作设置，操作后必须更新视图
     private void buttonset()
     {
 		final LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);
+		//小提示
         Preference tips = findPreference("tips");
         String[] tiparr = getResources().getStringArray(R.array.floatsetting_tips);
         Random random = new Random();
         int tipnum = random.nextInt(tiparr.length - 1);
         tips.setSummary(tiparr[tipnum]);
+		//悬浮窗文字设置
         Preference textshow = findPreference("TextShow");
         textshow.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p)
                 {  
                     View layout = inflater.inflate(R.layout.dialog_text_edit, null);
                     final EditText atv = (EditText) layout.findViewById(R.id.textview_addnewtext);
+					//自动清空输入
 					if (spdata.getBoolean("TextAutoClear", false))
 					{
 						atv.setText("");
@@ -220,6 +236,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 					{
 						atv.setText(spdata.getString("TextShow", getString(R.string.default_text)));
 					}
+					//动态变量列表显示
 					final ListView lv = (ListView) layout.findViewById(R.id.listview_textedit);
 					final LinearLayout ll = (LinearLayout) layout.findViewById(R.id.layout_textedit);
 					if (((App)getApplicationContext()).DynamicNumService)
@@ -252,6 +269,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                             public void onClick(DialogInterface d , int i)
                             {
                                 String text = atv.getText().toString();
+								//空文本检测
                                 if (text.replaceAll("\\s+", "").equalsIgnoreCase(""))
                                 {
                                     Toast.makeText(FloatTextSetting.this, R.string.text_error, Toast.LENGTH_SHORT).show();
@@ -269,6 +287,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//文字大小设置
         Preference textsize = findPreference("TextSize");
         textsize.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p1)
@@ -301,6 +320,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//文字颜色设置
         ColorPickerPreference textcolor = (ColorPickerPreference) findPreference("ColorPicker");
         textcolor.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p1, Object p2)
@@ -314,6 +334,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             });
         textcolor.setHexValueEnabled(true);
 		textcolor.setAlphaSliderEnabled(true);
+		//粗体设置
         CheckBoxPreference textthick = (CheckBoxPreference) findPreference("TextThick");
         textthick.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p1, Object p2)
@@ -323,6 +344,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//悬浮窗可以显示在通知栏
         CheckBoxPreference texttop = (CheckBoxPreference) findPreference("TextTop");
         texttop.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p1, Object p2)
@@ -332,6 +354,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//是否显示悬浮窗后
         Preference floatshow = findPreference("FloatShow");
         floatshow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p1, Object p2)
@@ -349,6 +372,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         {
             floatshow.setEnabled(false);
         }
+		//文字阴影设置
         Preference shadow = findPreference("TextShadow");
         shadow.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p1)
@@ -433,6 +457,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//文字阴影颜色设置
         ColorPickerPreference textshadowcolor = (ColorPickerPreference) findPreference("TextShadowColor");
         textshadowcolor.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p1, Object p2)
@@ -446,6 +471,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             });
         textshadowcolor.setHexValueEnabled(true);
 		textshadowcolor.setAlphaSliderEnabled(true);
+		//跑马灯开关
         CheckBoxPreference textmove = (CheckBoxPreference) findPreference("TextMove");
         if (((App)getApplicationContext()).getMovingMethod())
         {
@@ -459,6 +485,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//跑马灯速度设置
         Preference textspeed = findPreference("TextSpeed");
         textspeed.setEnabled(((App)getApplicationContext()).getMovingMethod());
         textspeed.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
@@ -493,6 +520,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//背景颜色设置
         ColorPickerPreference baccolor = (ColorPickerPreference) findPreference("BackgroundColor");
         baccolor.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p1, Object p2)
@@ -506,6 +534,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             });
         baccolor.setHexValueEnabled(true);
 		baccolor.setAlphaSliderEnabled(true);
+		//自动吸顶
         CheckBoxPreference autotop = (CheckBoxPreference) findPreference("TextAutoTop");
         autotop.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p, Object v)
@@ -515,6 +544,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//悬浮窗微调
         Preference floatmove = findPreference("FloatMove");
         floatmove.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p)
@@ -561,6 +591,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//悬浮窗大小自定义开关
 		CheckBoxPreference floatsize = (CheckBoxPreference) findPreference("FloatSize");
 		floatsize.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
 				public boolean onPreferenceChange(Preference p, Object o)
@@ -570,6 +601,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 					return true;
 				}
 			});
+		//悬浮窗Y轴设置
 		Preference floatwide = findPreference("FloatWide");
         floatwide.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p)
@@ -633,6 +665,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 					return true;
 				}
 			});
+		//悬浮窗X轴设置
 		Preference floatlong = findPreference("FloatLong");
         floatlong.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p)
@@ -698,6 +731,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 			});
     }
 
+	//权限检测
     private void prepareshow()
     {
         if (Build.VERSION.SDK_INT >= 23)
@@ -717,11 +751,13 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         }
     }
 
+	//简化更新视图
     private void updateview()
     {
         updatefloatview(FloatShow, TextShow, TextSize, TextColor, TextThick, TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide);
     }
 
+	//创建新悬浮窗
     private void startshow()
     {
         floatview = FloatTextSettingMethod.CreateFloatView(this, TextShow, TextSize, TextColor, TextThick, TextSpeed, EditID, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, TextShadowColor);
@@ -729,6 +765,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         wmParams = FloatTextSettingMethod.CreateFloatLayout(this, wm, floatview, linearlayout, FloatShow, TextTop, TextMove, BackgroundColor, FloatSize, FloatLong, FloatWide);
     }
 
+	//停止显示
     private void stopshow()
     {
         if (wm != null)
@@ -744,6 +781,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         }
     }
 
+	//更新视图
     private void updatefloatview(boolean show, String Text, Float Size, int Paint, boolean Thick, boolean TextTop, boolean autotop, boolean move, int speed, boolean shadow, float shadowx, float shadowy, float shadowradius, int bac, int shadowcolor, boolean fs, float fl, float fw)
     {
         App utils = ((App)getApplicationContext());
@@ -821,6 +859,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         }
     }
 
+	//保存所有数据
     private void saveall(Context ctx, FloatTextView fv, FloatLinearLayout fll, String text, WindowManager.LayoutParams layout, boolean savedetails, boolean show, String position, boolean texttop, boolean autotop, boolean textmove, int speed)
     {
         App utils = ((App)ctx.getApplicationContext());
@@ -835,6 +874,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         }
     }
 
+	//设置数据
     private void setall(int i)
     {
         Position = linearlayout.getPosition();
@@ -842,13 +882,41 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         utils.setDatas(i, floatview, linearlayout, wmParams, TextShow, TextColor, TextSize, TextThick, FloatShow, Position, LockPosition, TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide);
     }
 
+	//返回消息
 	private void setbackresult(int i)
 	{
 		Intent intent = new Intent();
 		intent.putExtra("RESULT", i);
 		intent.putExtra("POSITION", EditID);
 		intent.putExtra("EDITMODE", EditMode);
-		setResult(FloatManage.FLOATTEXT_RESULT_CODE, intent);
+		setResult(StaticNum.FLOATTEXT_RESULT_CODE, intent);
+	}
+
+	//返回事件处理
+	private void backpressed()
+	{
+		if (EditMode)
+		{
+			Toast.makeText(this, R.string.set_save, Toast.LENGTH_SHORT).show();
+		}
+		else
+		{
+			AlertDialog.Builder exit = new AlertDialog.Builder(this)
+				.setTitle(R.string.exit_text_add)
+				.setMessage(R.string.exit_text_add_alert)
+				.setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
+					public void onClick(DialogInterface p1, int p2)
+					{
+						if (!FloatWinSaved && FloatShow)
+						{
+							stopshow();
+						}
+						FloatTextSetting.this.finish();
+					}
+				})
+				.setNegativeButton(R.string.cancel, null);
+			exit.show();
+		}
 	}
 
     @Override
@@ -893,7 +961,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         switch (item.getItemId())
         {
 			case android.R.id.home:
-				onKeyDown(KeyEvent.KEYCODE_BACK, null);
+				backpressed();
 				break;
             case R.id.save_win:
 				if (!FloatWinSaved)
@@ -929,28 +997,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     {
         if (keyCode == KeyEvent.KEYCODE_BACK)
 		{
-            if (EditMode)
-            {
-                Toast.makeText(this, R.string.set_save, Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
-                AlertDialog.Builder exit = new AlertDialog.Builder(this)
-                    .setTitle(R.string.exit_text_add)
-                    .setMessage(R.string.exit_text_add_alert)
-                    .setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
-                        public void onClick(DialogInterface p1, int p2)
-                        {
-                            if (!FloatWinSaved && FloatShow)
-                            {
-                                stopshow();
-                            }
-                            FloatTextSetting.this.finish();
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, null);
-                exit.show();
-            }
+            backpressed();
         }
         return false;
     }

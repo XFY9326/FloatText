@@ -120,7 +120,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
                                 setdata.edit().putInt("Language", language_choice).commit();
                                 FloatManageMethod.LanguageSet(GlobalSetActivity.this, language_choice);
                                 pre.setSummary(getString(R.string.xml_global_language_sum) + lan_list[language_choice]);
-                                FloatManageMethod.restartApplication(GlobalSetActivity.this);
+                                FloatManageMethod.restartApplication(GlobalSetActivity.this, getPackageManager().getLaunchIntentForPackage(getPackageName()));
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
@@ -446,7 +446,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 						pre.setSummary(getString(R.string.xml_global_text_typeface_summary) + ttfname[typeface_choice]);
 						default_typeface = ttfname[typeface_choice];
 					}
-					FloatManageMethod.restartApplication(GlobalSetActivity.this);
+					FloatManageMethod.restartApplication(GlobalSetActivity.this, getPackageManager().getLaunchIntentForPackage(getPackageName()));
 				}
 			})
 			.setNegativeButton(R.string.cancel, null);

@@ -412,7 +412,34 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
 	{
 		Intent intent = new Intent();
 		intent.putExtra("RESULT", i);
-		setResult(FloatManage.FLOATTEXT_RESULT_CODE, intent);
+		setResult(StaticNum.FLOATTEXT_RESULT_CODE, intent);
+	}
+
+	//返回事件处理
+	private void backpressed()
+	{
+		AlertDialog.Builder exit = new AlertDialog.Builder(this)
+			.setTitle(R.string.exit_text_add)
+			.setMessage(R.string.exit_text_add_alert)
+			.setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
+				public void onClick(DialogInterface p1, int p2)
+				{
+					setbackresult(2);
+					FloatWebSetting.this.finish();
+				}
+			})
+			.setNegativeButton(R.string.cancel, null);
+		exit.show();
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+		if (keyCode == KeyEvent.KEYCODE_BACK)
+		{
+			backpressed();
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 
     @Override
@@ -450,7 +477,7 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
         switch (item.getItemId())
         {
 			case android.R.id.home:
-				onKeyDown(KeyEvent.KEYCODE_BACK, null);
+				backpressed();
 				break;
             case R.id.save_win:
                 savewin = true;

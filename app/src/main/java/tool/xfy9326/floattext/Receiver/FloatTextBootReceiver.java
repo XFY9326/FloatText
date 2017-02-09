@@ -19,7 +19,6 @@ import tool.xfy9326.floattext.R;
 
 public class FloatTextBootReceiver extends BroadcastReceiver
 {
-	private Handler mHandler;
 	private SharedPreferences spdata;
 
 	@Override
@@ -35,7 +34,6 @@ public class FloatTextBootReceiver extends BroadcastReceiver
 				{
 					if (Settings.canDrawOverlays(ctx) && ctx.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
 					{
-						setHandle(ctx);
 						FloatStart(ctx);
 					}
 					else
@@ -45,7 +43,6 @@ public class FloatTextBootReceiver extends BroadcastReceiver
 				}
 				else
 				{
-					setHandle(ctx);
 					FloatStart(ctx);
 				}
 			}
@@ -54,42 +51,25 @@ public class FloatTextBootReceiver extends BroadcastReceiver
 
 	private void FloatStart(final Context ctx)
 	{
-		App utils = (App)ctx.getApplicationContext();
-		SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
-		Thread t = FloatManageMethod.getSaveData(ctx, utils, spdata, mHandler);
-		t.start();
-		try
+		final App utils = (App)ctx.getApplicationContext();
+		final SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
+		FloatData dat = new FloatData(ctx);
+		dat.getSaveArrayData();
+		utils.setMovingMethod(spdata.getBoolean("TextMovingMethod", false));
+		utils.setStayAliveService(spdata.getBoolean("StayAliveService", false));
+		utils.setDynamicNumService(spdata.getBoolean("DynamicNumService", false));
+		utils.setDevelopMode(spdata.getBoolean("DevelopMode", false));
+		utils.setHtmlMode(spdata.getBoolean("HtmlMode", true));
+		utils.setListTextHide(spdata.getBoolean("ListTextHide", false));
+		utils.setFilterApplication(FloatData.StringToStringArrayList(setdata.getString("Filter_Application", "[]")));
+		if (((App)ctx.getApplicationContext()).getTextData().size() > 0)
 		{
-			t.join();
-			if (((App)ctx.getApplicationContext()).getTextData().size() > 0)
-			{
-				FloatManageMethod.startservice(ctx);
-				utils.setFilterApplication(FloatData.StringToStringArrayList(setdata.getString("Filter_Application", "[]")));
-				FloatManageMethod.preparefolder();
-				FloatManageMethod.setWinManager(ctx);
-				utils.setGetSave(true);
-			}
+			FloatManageMethod.startservice(ctx);
+			FloatManageMethod.preparefolder();
+			FloatManageMethod.setWinManager(ctx);
+			Reshow(ctx);
+			utils.setGetSave(true);
 		}
-		catch (InterruptedException e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	private void setHandle(final Context ctx)
-	{
-		mHandler = new Handler() {
-			public void handleMessage(Message msg)
-			{
-				switch (msg.what)
-				{
-					case 0:
-						App utils = ((App)ctx.getApplicationContext());
-						Reshow(ctx);
-						utils.setFloatReshow(false);
-						FloatManageMethod.floattext_typeface_check(ctx, false);
-				}
-			}};
 	}
 
 	private void Reshow(Context ctx)
