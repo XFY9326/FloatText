@@ -5,7 +5,6 @@ import android.content.*;
 import android.content.pm.*;
 import android.os.*;
 import android.support.v7.app.*;
-import android.support.v7.widget.*;
 import android.view.*;
 import android.view.View.*;
 import android.widget.*;
@@ -14,7 +13,6 @@ import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Utils.*;
 
-import android.support.v7.widget.Toolbar;
 import tool.xfy9326.floattext.R;
 
 public class ImportBackupFile extends AppCompatActivity
@@ -26,9 +24,7 @@ public class ImportBackupFile extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_api_import);
-		Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
-		setSupportActionBar(tb);
+		ImportMethod.ViewSet(this);
 		setAll();
 	}
 
@@ -71,7 +67,7 @@ public class ImportBackupFile extends AppCompatActivity
 		}
 		else
 		{
-			Toast.makeText(ImportBackupFile.this, R.string.recover_failed, Toast.LENGTH_SHORT).show();
+			ImportMethod.Show(ImportBackupFile.this, R.string.recover_failed);
 			ImportBackupFile.this.finish();
 		}
 	}

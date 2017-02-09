@@ -5,7 +5,6 @@ import android.content.*;
 import android.content.pm.*;
 import android.os.*;
 import android.support.v7.app.*;
-import android.support.v7.widget.*;
 import android.view.*;
 import android.view.View.*;
 import android.widget.*;
@@ -13,7 +12,6 @@ import java.io.*;
 import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Method.*;
 
-import android.support.v7.widget.Toolbar;
 import tool.xfy9326.floattext.R;
 
 public class ImportTTF extends AppCompatActivity
@@ -25,9 +23,7 @@ public class ImportTTF extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_api_import);
-		Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
-		setSupportActionBar(tb);
+        ImportMethod.ViewSet(this);
 		setAll();
     }
 
@@ -64,22 +60,21 @@ public class ImportTTF extends AppCompatActivity
 			{
 				if (IOMethod.CopyFile(ttf, ttf_c))
 				{
-					Toast.makeText(ImportTTF.this, R.string.ttf_import_success, Toast.LENGTH_SHORT).show();
-
+					ImportMethod.Show(ImportTTF.this, R.string.ttf_import_success);
 				}
 				else
 				{
-					Toast.makeText(ImportTTF.this, R.string.ttf_import_failed, Toast.LENGTH_SHORT).show();
+					ImportMethod.Show(ImportTTF.this, R.string.ttf_import_failed);
 				}
 			}
 			else
 			{
-				Toast.makeText(ImportTTF.this, R.string.ttf_import_exist, Toast.LENGTH_SHORT).show();
+				ImportMethod.Show(ImportTTF.this, R.string.ttf_import_exist);
 			}
 		}
 		else
 		{
-			Toast.makeText(ImportTTF.this, R.string.ttf_import_failed, Toast.LENGTH_SHORT).show();
+			ImportMethod.Show(ImportTTF.this, R.string.ttf_import_failed);
 		}
 		ImportTTF.this.finish();
 	}
