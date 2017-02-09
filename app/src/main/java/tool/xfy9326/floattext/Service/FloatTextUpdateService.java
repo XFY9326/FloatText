@@ -68,20 +68,20 @@ public class FloatTextUpdateService extends Service
 	private String week;
 
     @Override
-    public IBinder onBind (Intent p1)
+    public IBinder onBind(Intent p1)
     {
         return null;
     }
 
     @Override
-    public void onCreate ()
+    public void onCreate()
     {
         super.onCreate();
         init();
         timerset();
     }
 
-	private String[] SetPostKey ()
+	private String[] SetPostKey()
 	{
 		String[] PostList = new String[22];
 		PostList[0] = time0;
@@ -109,7 +109,7 @@ public class FloatTextUpdateService extends Service
 		return PostList;
 	}
 
-	private void setDefaultKey ()
+	private void setDefaultKey()
 	{
 		String str = getString(R.string.loading);
 		time0 = 
@@ -132,7 +132,7 @@ public class FloatTextUpdateService extends Service
 			week = str;
 	}
 
-    private void init ()
+    private void init()
     {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(FloatServiceMethod.TEXT_ADVANCE_UPDATE_ACTION);
@@ -166,7 +166,7 @@ public class FloatTextUpdateService extends Service
 		SetListKeys(this);
     }
 
-    private void sendBroadcast ()
+    private void sendBroadcast()
     {
 		bundle = new Bundle();
         bundle.putStringArray("LIST", LIST);
@@ -177,7 +177,7 @@ public class FloatTextUpdateService extends Service
 		System.gc();
 	}
 
-	private String getClip ()
+	private String getClip()
 	{
 		if (clip != null)
 		{
@@ -195,7 +195,7 @@ public class FloatTextUpdateService extends Service
 		return  str;
 	}
 
-    private void getTime ()
+    private void getTime()
     {
 		time0 = sdf12.format(new Date());
 		time1 = sdf24.format(new Date());
@@ -205,7 +205,7 @@ public class FloatTextUpdateService extends Service
 		week = sdf_week.format(new Date());
 	}
 
-    private String getNetSpeed ()
+    private String getNetSpeed()
     {
         float nowTotalRxBytes = FloatServiceMethod.getTotalRxBytes(this);
         float nowTotalTxBytes = FloatServiceMethod.getTotalTxBytes(this);
@@ -223,83 +223,22 @@ public class FloatTextUpdateService extends Service
         return FloatServiceMethod.netspeedset(downspeed) + "↓" + FloatServiceMethod.netspeedset(upspeed) + "↑";
     }
 
-    private void timerset ()
+    private void timerset()
     {
         timer_a.schedule(new TimerTask()
             {
                 @Override
-                public void run ()
+                public void run()
                 {
 					boolean FloatWinMode = hasFloatWin(FloatTextUpdateService.this);
 					boolean FloatScreenMode = FloatServiceMethod.isScreenOn(FloatTextUpdateService.this);
                     if (FloatWinMode && FloatScreenMode)
                     {
-						if (sensor_use_dynamic_word && !register_sensor)
-                        {
-                            register_sensor = true;
-                            msensor.registerListener(sreceiver, sensor_tem, SensorManager.SENSOR_DELAY_UI);
-                            msensor.registerListener(sreceiver, sensor_light, SensorManager.SENSOR_DELAY_UI);
-                            msensor.registerListener(sreceiver, sensor_gravity, SensorManager.SENSOR_DELAY_UI);
-                            msensor.registerListener(sreceiver, sensor_step, SensorManager.SENSOR_DELAY_UI);
-                            msensor.registerListener(sreceiver, sensor_pressure, SensorManager.SENSOR_DELAY_UI);
-                            msensor.registerListener(sreceiver, sensor_proximity, SensorManager.SENSOR_DELAY_UI);
-                        }
-						if (!timer_run)
-						{
-							timer_run = true;
-							timer = new Timer();
-							timer_f = new Timer();
-							timer_s = new Timer();
-							registerReceiver(breceiver, battery_filter);
-							timer.schedule(new TimerTask()
-								{
-									@Override
-									public void run ()
-									{
-										if (time_dynamicword)
-										{
-											getTime();
-										}
-										sendBroadcast();
-									}
-								}, 150, 1000);
-							timer_s.schedule(new TimerTask()
-								{
-									@Override
-									public void run ()
-									{
-										localip = FloatServiceMethod.getIP(FloatTextUpdateService.this);
-									}
-								}, 300, 5000);
-							timer_f.schedule(new TimerTask()
-								{
-									@Override
-									public void run ()
-									{
-										if (high_cpu_use_dynamicword)
-										{
-											cpurate = FloatServiceMethod.getProcessCpuRate() + "%";
-											meminfo = FloatServiceMethod.getMeminfo(FloatTextUpdateService.this);
-										}
-									}
-								}, 200, 2000);
-						}
+						timeropen();
                     }
                     else if (!FloatWinMode && timer_run || !FloatScreenMode && timer_run)
                     {
-                        timer_run = false;
-                        if (timer != null && timer_f != null && timer_s != null)
-                        {
-                            timer.cancel();
-                            timer_f.cancel();
-                            timer_s.cancel();
-                            timer = null;
-                            timer_f = null;
-                            timer_s = null;
-                            unregisterReceiver(breceiver);
-                            msensor.unregisterListener(sreceiver);
-                            register_sensor = false;
-                        }
+                        timerclose();
                     }
                     if (!sensor_use_dynamic_word && register_sensor)
                     {
@@ -310,7 +249,98 @@ public class FloatTextUpdateService extends Service
             }, 100, 3500);
     }
 
-	private static void SetListKeys (Context ctx)
+	private void timeropen()
+	{
+		sensorregister();
+		if (!timer_run)
+		{
+			timer_run = true;
+			registerReceiver(breceiver, battery_filter);
+			timercommon();
+			timerslow();
+			timerfew();
+		}
+	}
+
+	private void timercommon()
+	{
+		timer = new Timer();
+		timer.schedule(new TimerTask()
+			{
+				@Override
+				public void run()
+				{
+					if (time_dynamicword)
+					{
+						getTime();
+					}
+					sendBroadcast();
+				}
+			}, 150, 1000);
+	}
+
+	private void timerslow()
+	{
+		timer_s = new Timer();
+		timer_s.schedule(new TimerTask()
+			{
+				@Override
+				public void run()
+				{
+					localip = FloatServiceMethod.getIP(FloatTextUpdateService.this);
+				}
+			}, 300, 5000);
+	}
+
+	private void timerfew()
+	{
+		timer_f = new Timer();
+		timer_f.schedule(new TimerTask()
+			{
+				@Override
+				public void run()
+				{
+					if (high_cpu_use_dynamicword)
+					{
+						cpurate = FloatServiceMethod.getProcessCpuRate() + "%";
+						meminfo = FloatServiceMethod.getMeminfo(FloatTextUpdateService.this);
+					}
+				}
+			}, 200, 2000);
+	}
+
+	private void sensorregister()
+	{
+		if (sensor_use_dynamic_word && !register_sensor)
+		{
+			register_sensor = true;
+			msensor.registerListener(sreceiver, sensor_tem, SensorManager.SENSOR_DELAY_UI);
+			msensor.registerListener(sreceiver, sensor_light, SensorManager.SENSOR_DELAY_UI);
+			msensor.registerListener(sreceiver, sensor_gravity, SensorManager.SENSOR_DELAY_UI);
+			msensor.registerListener(sreceiver, sensor_step, SensorManager.SENSOR_DELAY_UI);
+			msensor.registerListener(sreceiver, sensor_pressure, SensorManager.SENSOR_DELAY_UI);
+			msensor.registerListener(sreceiver, sensor_proximity, SensorManager.SENSOR_DELAY_UI);
+		}
+	}
+
+	private void timerclose()
+	{
+		timer_run = false;
+		if (timer != null && timer_f != null && timer_s != null)
+		{
+			timer.cancel();
+			timer_f.cancel();
+			timer_s.cancel();
+			timer = null;
+			timer_f = null;
+			timer_s = null;
+			unregisterReceiver(breceiver);
+			msensor.unregisterListener(sreceiver);
+			register_sensor = false;
+		}
+	}
+
+	private static void SetListKeys(Context ctx)
 	{
 		SharedPreferences sp = FloatServiceMethod.setUpdateList(ctx);
 		LIST = FloatServiceMethod.StringtoStringArray(sp.getString("LIST", "[]"));
@@ -318,7 +348,7 @@ public class FloatTextUpdateService extends Service
 	}
 
     @Override
-    public void onDestroy ()
+    public void onDestroy()
     {
         timer_a.cancel();
         if (timer_run)
@@ -337,7 +367,7 @@ public class FloatTextUpdateService extends Service
         super.onDestroy();
     }
 
-    private boolean hasFloatWin (Context ctx)
+    private boolean hasFloatWin(Context ctx)
     {
         boolean highcpudynamicset = false;
         boolean sensordynamicset = false;
@@ -404,7 +434,7 @@ public class FloatTextUpdateService extends Service
 	private class AdvanceTextReceiver extends BroadcastReceiver
 	{
 		@Override
-		public void onReceive (Context p1, Intent p2)
+		public void onReceive(Context p1, Intent p2)
 		{
 			currentactivity = FloatServiceMethod.fixnull(p2.getStringExtra("CurrentActivity"), currentactivity);
 			toasts = FloatServiceMethod.fixnull(p2.getStringExtra("Toasts"), toasts);
@@ -415,7 +445,7 @@ public class FloatTextUpdateService extends Service
     private class BatteryReceiver extends BroadcastReceiver
     {
         @Override
-        public void onReceive (Context context, Intent intent)
+        public void onReceive(Context context, Intent intent)
         {
             int current = intent.getExtras().getInt("level");
             int total = intent.getExtras().getInt("scale");
@@ -426,7 +456,7 @@ public class FloatTextUpdateService extends Service
     private class SensorReceiver implements SensorEventListener
     {
         @Override
-        public void onSensorChanged (SensorEvent p1)
+        public void onSensorChanged(SensorEvent p1)
         {
             if (p1.sensor.getType() == Sensor.TYPE_TEMPERATURE)
             {
@@ -455,7 +485,7 @@ public class FloatTextUpdateService extends Service
         }
 
         @Override
-        public void onAccuracyChanged (Sensor p1, int p2)
+        public void onAccuracyChanged(Sensor p1, int p2)
         {}
 
     }
