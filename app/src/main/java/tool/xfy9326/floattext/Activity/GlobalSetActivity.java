@@ -15,6 +15,7 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 import tool.xfy9326.floattext.*;
+import tool.xfy9326.floattext.FileSelector.*;
 import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Service.*;
 import tool.xfy9326.floattext.Utils.*;
@@ -23,19 +24,12 @@ import tool.xfy9326.floattext.View.*;
 import android.app.AlertDialog;
 import android.support.v7.app.ActionBar;
 import tool.xfy9326.floattext.R;
-import tool.xfy9326.floattext.FileSelector.*;
 
 public class GlobalSetActivity extends AppCompatPreferenceActivity
 {
     private String default_typeface;
     private int typeface_choice;
     private int language_choice;
-	private static int ADVANCE_TEXT_SET = 1;
-	private static int ADVANCE_TEXT_NOTIFICATION_SET = 2;
-	private static int FLOAT_TEXT_GET_TYPEFACE_PERMISSION = 3;
-	private static int FLOAT_TEXT_GET_BACKUP_PERMISSION = 4;
-	private static int FLOAT_TEXT_GET_RECOVER_PERMISSION = 5;
-	private static int FLOAT_TEXT_SELECT_RECOVER_FILE = 6;
 	private String[] AppNames;
 	private String[] PkgNames;
 	private boolean[] AppState;
@@ -46,7 +40,9 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.global_settings);
 		sethome();
-        setDataToApp();
+        ViewSet();
+		ServiceViewSet();
+		DataViewSet();
     }
 
 	private void sethome()
@@ -58,7 +54,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
         }
 	}
 
-    private void setDataToApp()
+    private void ViewSet()
     {
         CheckBoxPreference movemethod = (CheckBoxPreference) findPreference("TextMovingMethod");
         movemethod.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
@@ -80,21 +76,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
         typeface.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference pre)
                 {
-					if (Build.VERSION.SDK_INT > 22)
-					{
-						if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
-						{
-							requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, FLOAT_TEXT_GET_TYPEFACE_PERMISSION);
-						}
-						else
-						{
-							getTypeFace(pre);
-						}
-					}
-					else
-					{
-						getTypeFace(pre);
-					}
+					DataAction(0, pre, StaticNum.FLOAT_TEXT_GET_TYPEFACE_PERMISSION);
                     return true;
                 }
             });
@@ -109,53 +91,6 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
                     return true;
                 }
             });
-        CheckBoxPreference stayalive = (CheckBoxPreference) findPreference("StayAliveService");
-        stayalive.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange(Preference p1, Object p2)
-                {
-                    StayAliveSet((boolean)p2);
-                    return true;
-                }
-            });
-        CheckBoxPreference dynamicnum = (CheckBoxPreference) findPreference("DynamicNumService");
-        dynamicnum.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange(Preference p1, Object p2)
-                {
-                    DymanicSet((boolean)p2);
-                    return true;
-                }
-            });
-		Preference adts = findPreference("AdvanceTextService");
-		setADTsum(adts);
-		adts.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-			{
-				public boolean onPreferenceClick(Preference p)
-				{
-					Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-					startActivityForResult(intent, ADVANCE_TEXT_SET);
-					return true;
-				}
-			});
-		Preference nous = findPreference("NotificationListenerService");
-		if (Build.VERSION.SDK_INT < 18)
-		{
-			nous.setEnabled(false);
-		}
-		else
-		{
-			setNOSsum(nous);
-			nous.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-					public boolean onPreferenceClick(Preference p)
-					{
-						if (Build.VERSION.SDK_INT >= 18)
-						{
-							Intent intent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
-							startActivityForResult(intent, ADVANCE_TEXT_NOTIFICATION_SET);
-						}
-						return true;
-					}
-				});
-		}
         CheckBoxPreference develop = (CheckBoxPreference) findPreference("DevelopMode");
         develop.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p1, Object p2)
@@ -197,25 +132,66 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 					return true;
 				}
 			});
+
+    }
+	private void ServiceViewSet()
+	{
+		CheckBoxPreference stayalive = (CheckBoxPreference) findPreference("StayAliveService");
+        stayalive.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
+                public boolean onPreferenceChange(Preference p1, Object p2)
+                {
+                    StayAliveSet((boolean)p2);
+                    return true;
+                }
+            });
+        CheckBoxPreference dynamicnum = (CheckBoxPreference) findPreference("DynamicNumService");
+        dynamicnum.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
+                public boolean onPreferenceChange(Preference p1, Object p2)
+                {
+                    DymanicSet((boolean)p2);
+                    return true;
+                }
+            });
+		Preference adts = findPreference("AdvanceTextService");
+		setADTsum(adts);
+		adts.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+			{
+				public boolean onPreferenceClick(Preference p)
+				{
+					Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+					startActivityForResult(intent,StaticNum.ADVANCE_TEXT_SET);
+					return true;
+				}
+			});
+		Preference nous = findPreference("NotificationListenerService");
+		if (Build.VERSION.SDK_INT < 18)
+		{
+			nous.setEnabled(false);
+		}
+		else
+		{
+			setNOSsum(nous);
+			nous.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
+					public boolean onPreferenceClick(Preference p)
+					{
+						if (Build.VERSION.SDK_INT >= 18)
+						{
+							Intent intent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
+							startActivityForResult(intent, StaticNum.ADVANCE_TEXT_NOTIFICATION_SET);
+						}
+						return true;
+					}
+				});
+		}
+	}
+
+	private void DataViewSet()
+	{
 		Preference backup = findPreference("DataBackup");
 		backup.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
 				public boolean onPreferenceClick(Preference p)
 				{
-					if (Build.VERSION.SDK_INT > 22)
-					{
-						if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
-						{
-							requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, FLOAT_TEXT_GET_BACKUP_PERMISSION);
-						}
-						else
-						{
-							backupdata();
-						}
-					}
-					else
-					{
-						backupdata();
-					}
+					DataAction(2, p, StaticNum.FLOAT_TEXT_GET_BACKUP_PERMISSION);
 					return true;
 				}
 			});
@@ -223,26 +199,53 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 		recover.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
 				public boolean onPreferenceClick(Preference p)
 				{
-					if (Build.VERSION.SDK_INT > 22)
-					{
-						if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
-						{
-							requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, FLOAT_TEXT_GET_RECOVER_PERMISSION);
-						}
-						else
-						{
-							recoverdata(null);
-						}
-					}
-					else
-					{
-						recoverdata(null);
-					}
+					DataAction(1, p, StaticNum.FLOAT_TEXT_GET_RECOVER_PERMISSION);
 					return true;
 				}
 			});
-    }
-	
+	}
+
+	private void DataAction(int type, Preference pre, int requestcode)
+	{
+		if (Build.VERSION.SDK_INT > 22)
+		{
+			if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+			{
+				requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestcode);
+			}
+			else
+			{
+				if (type == 0)
+				{
+					getTypeFace(pre);
+				}
+				else if (type == 1)
+				{
+					recoverdata(null);
+				}
+				else if (type == 2)
+				{
+					backupdata();
+				}
+			}
+		}
+		else
+		{
+			if (type == 0)
+			{
+				getTypeFace(pre);
+			}
+			else if (type == 1)
+			{
+				recoverdata(null);
+			}
+			else if (type == 2)
+			{
+				backupdata();
+			}
+		}
+	}
+
 	private void HomeSet(boolean b)
 	{
 		if (!b)
@@ -259,7 +262,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 			adp.notifyDataSetChanged();
 		}
 	}
-	
+
 	private void StayAliveSet(boolean b)
 	{
 		((App)getApplicationContext()).setStayAliveService(b);
@@ -294,7 +297,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 			stopService(notifyservice);
 		}
 	}
-	
+
 	private void FilterSet(final SharedPreferences setdata)
 	{
 		final ArrayList<String> FilterApplication = FloatData.StringToStringArrayList(setdata.getString("Filter_Application", "[]"));
@@ -362,7 +365,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 	{
 		if (path == null)
 		{
-			SelectFile sf = new SelectFile(FLOAT_TEXT_SELECT_RECOVER_FILE, SelectFile.TYPE_ChooseFile);
+			SelectFile sf = new SelectFile(StaticNum.FLOAT_TEXT_SELECT_RECOVER_FILE, SelectFile.TYPE_ChooseFile);
 			sf.setFileType("ftbak");
 			sf.start(GlobalSetActivity.this);
 		}
@@ -610,21 +613,21 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 	@Override
 	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
 	{
-		if (requestCode == FLOAT_TEXT_GET_TYPEFACE_PERMISSION)
+		if (requestCode == StaticNum.FLOAT_TEXT_GET_TYPEFACE_PERMISSION)
 		{
 			if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
 			{
 				getTypeFace(findPreference("TextTypeface"));
 			}
 		}
-		else if (requestCode == FLOAT_TEXT_GET_BACKUP_PERMISSION)
+		else if (requestCode == StaticNum.FLOAT_TEXT_GET_BACKUP_PERMISSION)
 		{
 			if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
 			{
 				backupdata();
 			}
 		}
-		else if (requestCode == FLOAT_TEXT_GET_RECOVER_PERMISSION)
+		else if (requestCode == StaticNum.FLOAT_TEXT_GET_RECOVER_PERMISSION)
 		{
 			if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
 			{
@@ -637,17 +640,17 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		if (requestCode == ADVANCE_TEXT_SET)
+		if (requestCode == StaticNum.ADVANCE_TEXT_SET)
 		{
 			Preference adts = findPreference("AdvanceTextService");
 			setADTsum(adts);
 		}
-		else if (requestCode == ADVANCE_TEXT_NOTIFICATION_SET)
+		else if (requestCode == StaticNum.ADVANCE_TEXT_NOTIFICATION_SET)
 		{
 			Preference nous = findPreference("NotificationListenerService");
 			setNOSsum(nous);
 		}
-		else if (requestCode == FLOAT_TEXT_SELECT_RECOVER_FILE)
+		else if (requestCode == StaticNum.FLOAT_TEXT_SELECT_RECOVER_FILE)
 		{
 			if (data != null)
 			{

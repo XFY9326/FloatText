@@ -430,7 +430,6 @@ public class FloatManageMethod
         Thread thread = new Thread() {
 			public void run()
             {
-				Looper.prepare();
                 final App utils = ((App)ctx.getApplicationContext());
                 final ArrayList<String> Text = utils.getTextData();
                 final ArrayList<Float> Size = utils.getSizeData();
@@ -452,41 +451,47 @@ public class FloatManageMethod
 				final ArrayList<Boolean> FloatSize = utils.getFloatSize();
 				final ArrayList<Float> FloatLong = utils.getFloatLong();
 				final ArrayList<Float> FloatWide = utils.getFloatWide();
-				if (Text.size() != 0 && Size.size() != 0 && Color.size() != 0 && Thick.size() != 0)
-				{
-					WindowManager wm = utils.getFloatwinmanager();
-					for (int i = 0;i < Text.size();i++)
-					{
-						FloatTextView fv = FloatTextSettingMethod.CreateFloatView(ctx, Text.get(i), Size.get(i), Color.get(i), Thick.get(i), Speed.get(i), i, Shadow.get(i), ShadowX.get(i), ShadowY.get(i), ShadowRadius.get(i), ShadowColor.get(i));
-						FloatLinearLayout fll = FloatTextSettingMethod.CreateLayout(ctx, i);
-						fll.changeShowState(Show.get(i));
-						String[] ptemp = new String[]{"100", "150"};
-						if (Lock.get(i))
+				ctx.runOnUiThread(new Runnable(){
+						public void run()
 						{
-							ptemp = Position.get(i).toString().split("_");
-							fll.setAddPosition(Float.parseFloat(ptemp[0]), Float.parseFloat(ptemp[1]));
-						}
-						WindowManager.LayoutParams layout = FloatTextSettingMethod.CreateFloatLayout(ctx, wm, fv, fll, Show.get(i), Float.parseFloat(ptemp[0]), Float.parseFloat(ptemp[1]), Top.get(i), Move.get(i), BackgroundColor.get(i), FloatSize.get(i), FloatLong.get(i), FloatWide.get(i));
-						fll.setFloatLayoutParams(layout);
-						fll.setPositionLocked(Lock.get(i));
-						fll.setTop(AutoTop.get(i));
-						if (utils.getMovingMethod())
-						{
-							fv.setMoving(Move.get(i), 0);
-						}
-						else
-						{
-							fv.setMoving(Move.get(i), 1);
-							if (Move.get(i))
+							if (Text.size() != 0 && Size.size() != 0 && Color.size() != 0 && Thick.size() != 0)
 							{
-								fll.setShowState(false);
-								fll.setShowState(true);
+								WindowManager wm = utils.getFloatwinmanager();
+								for (int i = 0;i < Text.size();i++)
+								{
+									FloatTextView fv = FloatTextSettingMethod.CreateFloatView(ctx, Text.get(i), Size.get(i), Color.get(i), Thick.get(i), Speed.get(i), i, Shadow.get(i), ShadowX.get(i), ShadowY.get(i), ShadowRadius.get(i), ShadowColor.get(i));
+									FloatLinearLayout fll = FloatTextSettingMethod.CreateLayout(ctx, i);
+									fll.changeShowState(Show.get(i));
+									String[] ptemp = new String[]{"100", "150"};
+									if (Lock.get(i))
+									{
+										ptemp = Position.get(i).toString().split("_");
+										fll.setAddPosition(Float.parseFloat(ptemp[0]), Float.parseFloat(ptemp[1]));
+									}
+									WindowManager.LayoutParams layout = FloatTextSettingMethod.CreateFloatLayout(ctx, wm, fv, fll, Show.get(i), Float.parseFloat(ptemp[0]), Float.parseFloat(ptemp[1]), Top.get(i), Move.get(i), BackgroundColor.get(i), FloatSize.get(i), FloatLong.get(i), FloatWide.get(i));
+									fll.setFloatLayoutParams(layout);
+									fll.setPositionLocked(Lock.get(i));
+									fll.setTop(AutoTop.get(i));
+									if (utils.getMovingMethod())
+									{
+										fv.setMoving(Move.get(i), 0);
+									}
+									else
+									{
+										fv.setMoving(Move.get(i), 1);
+										if (Move.get(i))
+										{
+											fll.setShowState(false);
+											fll.setShowState(true);
+										}
+									}
+									FloatTextSettingMethod.savedata(ctx, fv, fll, Text.get(i), layout);
+								}
 							}
+							utils.getListviewadapter().notifyDataSetChanged();
 						}
-						FloatTextSettingMethod.savedata(ctx, fv, fll, Text.get(i), layout);
 					}
-				}
-				utils.getListviewadapter().notifyDataSetChanged();
+				);
                 if (han != null)
                 {
                     han.obtainMessage(1).sendToTarget();
