@@ -64,6 +64,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+		LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);
         spdata = PreferenceManager.getDefaultSharedPreferences(this);
         spedit = spdata.edit();
         wm = ((App)getApplicationContext()).getFloatwinmanager();
@@ -71,7 +72,8 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         setkeys();
         addPreferencesFromResource(R.xml.floattext_settings);
         sethome();
-		buttonset();
+		FloatTextViewSet(inflater);
+		FloatWinViewSet(inflater);
         if (!EditMode)
         {
             prepareshow();
@@ -211,9 +213,8 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     }
 
 	//界面所有操作设置，操作后必须更新视图
-    private void buttonset()
+    private void FloatTextViewSet(final LayoutInflater inflater)
     {
-		final LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);
 		//小提示
         Preference tips = findPreference("tips");
         String[] tiparr = getResources().getStringArray(R.array.floatsetting_tips);
@@ -225,65 +226,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         textshow.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p)
                 {  
-                    View layout = inflater.inflate(R.layout.dialog_text_edit, null);
-                    final EditText atv = (EditText) layout.findViewById(R.id.textview_addnewtext);
-					//自动清空输入
-					if (spdata.getBoolean("TextAutoClear", false))
-					{
-						atv.setText("");
-					}
-					else
-					{
-						atv.setText(spdata.getString("TextShow", getString(R.string.default_text)));
-					}
-					//动态变量列表显示
-					final ListView lv = (ListView) layout.findViewById(R.id.listview_textedit);
-					final LinearLayout ll = (LinearLayout) layout.findViewById(R.id.layout_textedit);
-					if (((App)getApplicationContext()).DynamicNumService)
-					{
-						final String[] dynamiclist = getResources().getStringArray(R.array.floatsetting_dynamic_list);
-						String[] dynamicname = getResources().getStringArray(R.array.floatsetting_dynamic_name);
-						String[] result = new String[dynamiclist.length];
-						for (int i = 0;i < dynamiclist.length;i++)
-						{
-							result[i] = "<" + dynamiclist[i] + ">" + "\n" + dynamicname[i];
-						}
-						ArrayAdapter<String> av = new ArrayAdapter<String>(FloatTextSetting.this, android.R.layout.simple_list_item_1, result);
-						lv.setAdapter(av);
-						lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-								public void onItemClick(AdapterView<?> adapter, View v, int i, long l)
-								{
-									atv.getText().insert(atv.getSelectionStart() , "<" + dynamiclist[i] + ">");
-								}
-							});
-					}
-					else
-					{
-						ll.setVisibility(View.GONE);
-					}
-                    AlertDialog.Builder textedit = new AlertDialog.Builder(FloatTextSetting.this);
-					textedit.setTitle(R.string.xml_set_textedit_title)
-                        .setView(layout)
-                        .setNegativeButton(R.string.cancel, null)
-                        .setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
-                            public void onClick(DialogInterface d , int i)
-                            {
-                                String text = atv.getText().toString();
-								//空文本检测
-                                if (text.replaceAll("\\s+", "").equalsIgnoreCase(""))
-                                {
-                                    Toast.makeText(FloatTextSetting.this, R.string.text_error, Toast.LENGTH_SHORT).show();
-                                }
-                                else
-                                {
-                                    TextShow = text;
-                                    spedit.putString("TextShow", text);
-                                    spedit.commit();
-                                    updateview();
-                                }
-                            }
-                        });
-                    textedit.show();
+                    FloatTextShowSet(inflater);
                     return true;
                 }
             });
@@ -292,31 +235,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         textsize.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p1)
                 {  
-                    View layout = inflater.inflate(R.layout.dialog_textsize_edit, null);
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
-                    dialog.setTitle(R.string.text_size_set);
-                    final TextView text = (TextView) layout.findViewById(R.id.textview_textsize_now);
-                    SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_textsize);
-                    text.setText(getString(R.string.text_size_now) + "：" + TextSize.intValue());
-                    bar.setMax(100);
-                    bar.setProgress(TextSize.intValue());
-                    bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch(SeekBar bar)
-                            {}
-                            public void onStopTrackingTouch(SeekBar bar)
-                            {}
-                            public void onProgressChanged(SeekBar bar , int i , boolean state)
-                            {
-                                TextSize = Float.parseFloat(String.valueOf(i));
-                                text.setText(getString(R.string.text_size_now) + "：" + TextSize.intValue());
-                                spedit.putFloat("TextSize", TextSize);
-                                spedit.commit();
-                                updateview();
-                            }
-                        });
-                    dialog.setView(layout);
-                    dialog.setPositiveButton(R.string.close, null);
-                    dialog.show();
+                    TextSizeSet(inflater);
                     return true;
                 }
             });
@@ -344,116 +263,12 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     return true;
                 }
             });
-		//悬浮窗可以显示在通知栏
-        CheckBoxPreference texttop = (CheckBoxPreference) findPreference("TextTop");
-        texttop.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange(Preference p1, Object p2)
-                {
-                    TextTop = (Boolean)p2;
-                    updateview();
-                    return true;
-                }
-            });
-		//是否显示悬浮窗后
-        Preference floatshow = findPreference("FloatShow");
-        floatshow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange(Preference p1, Object p2)
-                {
-                    FloatShow = (Boolean)p2;
-                    updateview();
-                    return true;
-                }
-            });
-        if (!spdata.getBoolean("WinOnlyShowInHome", false) || !EditMode)
-        {
-            floatshow.setEnabled(true);
-        }
-        else
-        {
-            floatshow.setEnabled(false);
-        }
 		//文字阴影设置
         Preference shadow = findPreference("TextShadow");
         shadow.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p1)
                 {  
-                    View layout = inflater.inflate(R.layout.dialog_textshadow_edit, null);
-                    final Switch ss = (Switch) layout.findViewById(R.id.switch_textshadow);
-                    final TextView sx = (TextView) layout.findViewById(R.id.textview_shadowDx);
-                    final TextView sy = (TextView) layout.findViewById(R.id.textview_shadowDy);
-                    final TextView sr = (TextView) layout.findViewById(R.id.textview_radius);
-                    final SeekBar bx = (SeekBar) layout.findViewById(R.id.seekbar_shadowDx);
-                    final SeekBar by = (SeekBar) layout.findViewById(R.id.seekbar_shadowDy);
-                    final SeekBar br = (SeekBar) layout.findViewById(R.id.seekbar_radius);
-                    bx.setMax(30);
-                    by.setMax(30);
-                    br.setMax(25);
-                    ss.setChecked(TextShadow);
-                    bx.setProgress((int)TextShadowX);
-                    by.setProgress((int)TextShadowY);
-                    br.setProgress((int)TextShadowRadius);
-                    sx.setText(getString(R.string.xml_set_text_shadow_dx) + (int)TextShadowX);
-                    sy.setText(getString(R.string.xml_set_text_shadow_dy) + (int)TextShadowY);
-                    sr.setText(getString(R.string.xml_set_text_shadow_radius) + (int)TextShadowRadius);
-                    ss.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-                            public void onCheckedChanged(CompoundButton b, boolean c)
-                            {
-                                TextShadow = c;
-                                spedit.putBoolean("TextShadow", TextShadow);
-                                spedit.commit();
-                                updateview();
-                            }
-                        });
-                    bx.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch(SeekBar bar)
-                            {}
-                            public void onStopTrackingTouch(SeekBar bar)
-                            {
-                                spedit.putFloat("TextShadowX", TextShadowX);
-                                spedit.commit();
-                            }
-                            public void onProgressChanged(SeekBar bar , int i , boolean state)
-                            {
-                                TextShadowX = i;
-                                sx.setText(getString(R.string.xml_set_text_shadow_dx) + (int)TextShadowX);
-                                updateview();
-                            }
-                        });
-                    by.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch(SeekBar bar)
-                            {}
-                            public void onStopTrackingTouch(SeekBar bar)
-                            {
-                                spedit.putFloat("TextShadowY", TextShadowY);
-                                spedit.commit();
-                            }
-                            public void onProgressChanged(SeekBar bar , int i , boolean state)
-                            {
-                                TextShadowY = i;
-                                sy.setText(getString(R.string.xml_set_text_shadow_dy) + (int)TextShadowY);
-                                updateview();
-                            }
-                        });
-                    br.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch(SeekBar bar)
-                            {}
-                            public void onStopTrackingTouch(SeekBar bar)
-                            {
-                                spedit.putFloat("TextShadowRadius", TextShadowRadius);
-                                spedit.commit();
-                            }
-                            public void onProgressChanged(SeekBar bar , int i , boolean state)
-                            {
-                                TextShadowRadius = i;
-                                sr.setText(getString(R.string.xml_set_text_shadow_radius) + (int)TextShadowRadius);
-                                updateview();
-                            }
-                        });
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
-                    dialog.setTitle(R.string.xml_set_text_shadow);
-                    dialog.setPositiveButton(R.string.close, null);
-                    dialog.setView(layout);
-                    dialog.show();
+                    TextShadowSet(inflater);
                     return true;
                 }
             });
@@ -491,35 +306,14 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         textspeed.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p1)
                 {
-                    View layout = inflater.inflate(R.layout.dialog_textspeed_edit, null);
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
-                    dialog.setTitle(R.string.text_speed_set);
-                    final TextView text = (TextView) layout.findViewById(R.id.textview_textspeed_now);
-                    SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_textspeed);
-                    text.setText(getString(R.string.text_speed_now) + "：" + TextSpeed);
-                    bar.setMax(10);
-                    bar.setProgress(TextSpeed);
-                    bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch(SeekBar bar)
-                            {}
-                            public void onStopTrackingTouch(SeekBar bar)
-                            {
-                                spedit.putInt("TextSpeed", TextSpeed);
-                                spedit.commit();
-                            }
-                            public void onProgressChanged(SeekBar bar , int i , boolean state)
-                            {
-                                TextSpeed = i;
-                                text.setText(getString(R.string.text_speed_now) + "：" + TextSpeed);
-                                updateview();
-                            }
-                        });
-                    dialog.setView(layout);
-                    dialog.setPositiveButton(R.string.close, null);
-                    dialog.show();
+                    TextSpeedSet(inflater);
                     return true;
                 }
             });
+    }
+	
+	private void FloatWinViewSet(final LayoutInflater inflater)
+	{
 		//背景颜色设置
         ColorPickerPreference baccolor = (ColorPickerPreference) findPreference("BackgroundColor");
         baccolor.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
@@ -544,50 +338,40 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//悬浮窗可以显示在通知栏
+        CheckBoxPreference texttop = (CheckBoxPreference) findPreference("TextTop");
+        texttop.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
+                public boolean onPreferenceChange(Preference p1, Object p2)
+                {
+                    TextTop = (Boolean)p2;
+                    updateview();
+                    return true;
+                }
+            });
+		//是否显示悬浮窗后
+        Preference floatshow = findPreference("FloatShow");
+        floatshow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
+                public boolean onPreferenceChange(Preference p1, Object p2)
+                {
+                    FloatShow = (Boolean)p2;
+                    updateview();
+                    return true;
+                }
+            });
+		if (!spdata.getBoolean("WinOnlyShowInHome", false) || !EditMode)
+        {
+            floatshow.setEnabled(true);
+        }
+        else
+        {
+            floatshow.setEnabled(false);
+        }
 		//悬浮窗微调
         Preference floatmove = findPreference("FloatMove");
         floatmove.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p)
                 {  
-                    View layout = inflater.inflate(R.layout.dialog_floatmove, null);
-                    move_x = (TextView) layout.findViewById(R.id.textview_floatmove_x);
-                    move_y = (TextView) layout.findViewById(R.id.textview_floatmove_y);
-                    move_x.setText(String.valueOf(wmParams.x));
-                    move_y.setText(String.valueOf(wmParams.y));
-                    final Handler handler = new Handler(){
-                        public void handleMessage(Message msg)
-                        {
-                            switch (msg.what)
-                            {
-                                case 0:
-									wmParams.x--;
-                                    break;
-                                case 1:
-									wmParams.x++;
-                                    break;
-                                case 2:
-									wmParams.y--;
-                                    break;
-                                case 3:
-									wmParams.y++;
-                                    break;
-                            }
-							updateview();
-                        }
-                    };
-                    FloatTextSettingMethod method = new FloatTextSettingMethod();
-                    final Button control_left = (Button) layout.findViewById(R.id.button_floatmove_left);
-                    control_left.setOnTouchListener(method.ButtonOnLongRepeatClickListener(0, handler));
-                    final Button control_right = (Button) layout.findViewById(R.id.button_floatmove_right);
-                    control_right.setOnTouchListener(method.ButtonOnLongRepeatClickListener(1, handler));
-                    final Button control_up = (Button) layout.findViewById(R.id.button_floatmove_up);
-                    control_up.setOnTouchListener(method.ButtonOnLongRepeatClickListener(2, handler));
-                    final Button control_down = (Button) layout.findViewById(R.id.button_floatmove_down);
-                    control_down.setOnTouchListener(method.ButtonOnLongRepeatClickListener(3, handler));
-                    AlertDialog.Builder move = new AlertDialog.Builder(FloatTextSetting.this)
-                        .setTitle(R.string.float_move_title)
-                        .setView(layout);
-                    move.show();
+                    FloatMoveSet(inflater);
                     return true;
                 }
             });
@@ -606,62 +390,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         floatwide.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p)
                 {  
-                    View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
-                    dialog.setTitle(R.string.xml_set_win_wide);
-                    final TextView text = (TextView) layout.findViewById(R.id.textview_size_now);
-                    final SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_size);
-                    text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
-					Button minus = (Button) layout.findViewById(R.id.floatsize_button_minus);
-					Button plus = (Button) layout.findViewById(R.id.floatsize_button_plus);
-					minus.setOnClickListener(new OnClickListener(){
-							public void onClick(View v)
-							{
-								if (FloatWide > 0)
-								{
-									FloatWide--;
-									spedit.putFloat("FloatWide", FloatWide);
-									spedit.commit();
-									bar.setProgress((int)FloatWide);
-									text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
-									updateview();
-								}
-							}
-						});
-					plus.setOnClickListener(new OnClickListener(){
-							public void onClick(View v)
-							{
-								if (FloatWide < wm.getDefaultDisplay().getHeight())
-								{
-									FloatWide++;
-									spedit.putFloat("FloatWide", FloatWide);
-									spedit.commit();
-									bar.setProgress((int)FloatWide);
-									text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
-									updateview();
-								}
-							}
-						});
-                    bar.setMax(wm.getDefaultDisplay().getHeight());
-                    bar.setProgress((int)FloatWide);
-                    bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch(SeekBar bar)
-                            {}
-                            public void onStopTrackingTouch(SeekBar bar)
-                            {
-                                spedit.putFloat("FloatWide", FloatWide);
-                                spedit.commit();
-                            }
-                            public void onProgressChanged(SeekBar bar , int i , boolean state)
-                            {
-                                FloatWide = i;
-                                text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
-                                updateview();
-                            }
-                        });
-                    dialog.setView(layout);
-                    dialog.setPositiveButton(R.string.close, null);
-                    dialog.show();
+                    FloatWideSet(inflater);
 					return true;
 				}
 			});
@@ -670,66 +399,377 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         floatlong.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p)
                 {  
-                    View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
-                    dialog.setTitle(R.string.xml_set_win_long);
-                    final TextView text = (TextView) layout.findViewById(R.id.textview_size_now);
-                    final SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_size);
-                    text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
-					Button minus = (Button) layout.findViewById(R.id.floatsize_button_minus);
-					Button plus = (Button) layout.findViewById(R.id.floatsize_button_plus);
-					minus.setOnClickListener(new OnClickListener(){
-							public void onClick(View v)
-							{
-								if (FloatLong > 0)
-								{
-									FloatLong--;
-									spedit.putFloat("FloatLong", FloatLong);
-									spedit.commit();
-									bar.setProgress((int)FloatLong);
-									text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
-									updateview();
-								}
-							}
-						});
-					plus.setOnClickListener(new OnClickListener(){
-							public void onClick(View v)
-							{
-								if (FloatLong < wm.getDefaultDisplay().getWidth())
-								{
-									FloatLong++;
-									spedit.putFloat("FloatLong", FloatLong);
-									spedit.commit();
-									bar.setProgress((int)FloatLong);
-									text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
-									updateview();
-								}
-							}
-						});
-                    bar.setMax(wm.getDefaultDisplay().getWidth());
-                    bar.setProgress((int)FloatLong);
-                    bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch(SeekBar bar)
-                            {}
-                            public void onStopTrackingTouch(SeekBar bar)
-                            {
-                                spedit.putFloat("FloatLong", FloatLong);
-                                spedit.commit();
-                            }
-                            public void onProgressChanged(SeekBar bar , int i , boolean state)
-                            {
-                                FloatLong = i;
-                                text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
-                                updateview();
-                            }
-                        });
-                    dialog.setView(layout);
-                    dialog.setPositiveButton(R.string.close, null);
-                    dialog.show();
+                    FloatLongSet(inflater);
 					return true;
 				}
 			});
-    }
+	}
+	
+	private void TextSizeSet(LayoutInflater inflater)
+	{
+		View layout = inflater.inflate(R.layout.dialog_textsize_edit, null);
+		AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
+		dialog.setTitle(R.string.text_size_set);
+		final TextView text = (TextView) layout.findViewById(R.id.textview_textsize_now);
+		SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_textsize);
+		text.setText(getString(R.string.text_size_now) + "：" + TextSize.intValue());
+		bar.setMax(100);
+		bar.setProgress(TextSize.intValue());
+		bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+				public void onStartTrackingTouch(SeekBar bar)
+				{}
+				public void onStopTrackingTouch(SeekBar bar)
+				{}
+				public void onProgressChanged(SeekBar bar , int i , boolean state)
+				{
+					TextSize = Float.parseFloat(String.valueOf(i));
+					text.setText(getString(R.string.text_size_now) + "：" + TextSize.intValue());
+					spedit.putFloat("TextSize", TextSize);
+					spedit.commit();
+					updateview();
+				}
+			});
+		dialog.setView(layout);
+		dialog.setPositiveButton(R.string.close, null);
+		dialog.show();
+	}
+	
+	private void TextSpeedSet(LayoutInflater inflater)
+	{
+		View layout = inflater.inflate(R.layout.dialog_textspeed_edit, null);
+		AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
+		dialog.setTitle(R.string.text_speed_set);
+		final TextView text = (TextView) layout.findViewById(R.id.textview_textspeed_now);
+		SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_textspeed);
+		text.setText(getString(R.string.text_speed_now) + "：" + TextSpeed);
+		bar.setMax(10);
+		bar.setProgress(TextSpeed);
+		bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+				public void onStartTrackingTouch(SeekBar bar)
+				{}
+				public void onStopTrackingTouch(SeekBar bar)
+				{
+					spedit.putInt("TextSpeed", TextSpeed);
+					spedit.commit();
+				}
+				public void onProgressChanged(SeekBar bar , int i , boolean state)
+				{
+					TextSpeed = i;
+					text.setText(getString(R.string.text_speed_now) + "：" + TextSpeed);
+					updateview();
+				}
+			});
+		dialog.setView(layout);
+		dialog.setPositiveButton(R.string.close, null);
+		dialog.show();
+	}
+	
+	private void FloatLongSet(LayoutInflater inflater)
+	{
+		View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
+		AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
+		dialog.setTitle(R.string.xml_set_win_long);
+		final TextView text = (TextView) layout.findViewById(R.id.textview_size_now);
+		final SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_size);
+		text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
+		Button minus = (Button) layout.findViewById(R.id.floatsize_button_minus);
+		Button plus = (Button) layout.findViewById(R.id.floatsize_button_plus);
+		minus.setOnClickListener(new OnClickListener(){
+				public void onClick(View v)
+				{
+					if (FloatLong > 0)
+					{
+						FloatLong--;
+						spedit.putFloat("FloatLong", FloatLong);
+						spedit.commit();
+						bar.setProgress((int)FloatLong);
+						text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
+						updateview();
+					}
+				}
+			});
+		plus.setOnClickListener(new OnClickListener(){
+				public void onClick(View v)
+				{
+					if (FloatLong < wm.getDefaultDisplay().getWidth())
+					{
+						FloatLong++;
+						spedit.putFloat("FloatLong", FloatLong);
+						spedit.commit();
+						bar.setProgress((int)FloatLong);
+						text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
+						updateview();
+					}
+				}
+			});
+		bar.setMax(wm.getDefaultDisplay().getWidth());
+		bar.setProgress((int)FloatLong);
+		bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+				public void onStartTrackingTouch(SeekBar bar)
+				{}
+				public void onStopTrackingTouch(SeekBar bar)
+				{
+					spedit.putFloat("FloatLong", FloatLong);
+					spedit.commit();
+				}
+				public void onProgressChanged(SeekBar bar , int i , boolean state)
+				{
+					FloatLong = i;
+					text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
+					updateview();
+				}
+			});
+		dialog.setView(layout);
+		dialog.setPositiveButton(R.string.close, null);
+		dialog.show();
+	}
+	
+	private void FloatWideSet(LayoutInflater inflater)
+	{
+		View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
+		AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
+		dialog.setTitle(R.string.xml_set_win_wide);
+		final TextView text = (TextView) layout.findViewById(R.id.textview_size_now);
+		final SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_size);
+		text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
+		Button minus = (Button) layout.findViewById(R.id.floatsize_button_minus);
+		Button plus = (Button) layout.findViewById(R.id.floatsize_button_plus);
+		minus.setOnClickListener(new OnClickListener(){
+				public void onClick(View v)
+				{
+					if (FloatWide > 0)
+					{
+						FloatWide--;
+						spedit.putFloat("FloatWide", FloatWide);
+						spedit.commit();
+						bar.setProgress((int)FloatWide);
+						text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
+						updateview();
+					}
+				}
+			});
+		plus.setOnClickListener(new OnClickListener(){
+				public void onClick(View v)
+				{
+					if (FloatWide < wm.getDefaultDisplay().getHeight())
+					{
+						FloatWide++;
+						spedit.putFloat("FloatWide", FloatWide);
+						spedit.commit();
+						bar.setProgress((int)FloatWide);
+						text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
+						updateview();
+					}
+				}
+			});
+		bar.setMax(wm.getDefaultDisplay().getHeight());
+		bar.setProgress((int)FloatWide);
+		bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+				public void onStartTrackingTouch(SeekBar bar)
+				{}
+				public void onStopTrackingTouch(SeekBar bar)
+				{
+					spedit.putFloat("FloatWide", FloatWide);
+					spedit.commit();
+				}
+				public void onProgressChanged(SeekBar bar , int i , boolean state)
+				{
+					FloatWide = i;
+					text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
+					updateview();
+				}
+			});
+		dialog.setView(layout);
+		dialog.setPositiveButton(R.string.close, null);
+		dialog.show();
+	}
+	
+	private void FloatTextShowSet (LayoutInflater inflater)
+	{
+		View layout = inflater.inflate(R.layout.dialog_text_edit, null);
+		final EditText atv = (EditText) layout.findViewById(R.id.textview_addnewtext);
+		//自动清空输入
+		if (spdata.getBoolean("TextAutoClear", false))
+		{
+			atv.setText("");
+		}
+		else
+		{
+			atv.setText(spdata.getString("TextShow", getString(R.string.default_text)));
+		}
+		//动态变量列表显示
+		final ListView lv = (ListView) layout.findViewById(R.id.listview_textedit);
+		final LinearLayout ll = (LinearLayout) layout.findViewById(R.id.layout_textedit);
+		if (((App)getApplicationContext()).DynamicNumService)
+		{
+			final String[] dynamiclist = getResources().getStringArray(R.array.floatsetting_dynamic_list);
+			String[] dynamicname = getResources().getStringArray(R.array.floatsetting_dynamic_name);
+			String[] result = new String[dynamiclist.length];
+			for (int i = 0;i < dynamiclist.length;i++)
+			{
+				result[i] = "<" + dynamiclist[i] + ">" + "\n" + dynamicname[i];
+			}
+			ArrayAdapter<String> av = new ArrayAdapter<String>(FloatTextSetting.this, android.R.layout.simple_list_item_1, result);
+			lv.setAdapter(av);
+			lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+					public void onItemClick(AdapterView<?> adapter, View v, int i, long l)
+					{
+						atv.getText().insert(atv.getSelectionStart() , "<" + dynamiclist[i] + ">");
+					}
+				});
+		}
+		else
+		{
+			ll.setVisibility(View.GONE);
+		}
+		AlertDialog.Builder textedit = new AlertDialog.Builder(FloatTextSetting.this);
+		textedit.setTitle(R.string.xml_set_textedit_title)
+			.setView(layout)
+			.setNegativeButton(R.string.cancel, null)
+			.setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
+				public void onClick(DialogInterface d , int i)
+				{
+					String text = atv.getText().toString();
+					//空文本检测
+					if (text.replaceAll("\\s+", "").equalsIgnoreCase(""))
+					{
+						Toast.makeText(FloatTextSetting.this, R.string.text_error, Toast.LENGTH_SHORT).show();
+					}
+					else
+					{
+						TextShow = text;
+						spedit.putString("TextShow", text);
+						spedit.commit();
+						updateview();
+					}
+				}
+			});
+		textedit.show();
+	}
+	
+	private void FloatMoveSet(LayoutInflater inflater)
+	{
+		View layout = inflater.inflate(R.layout.dialog_floatmove, null);
+		move_x = (TextView) layout.findViewById(R.id.textview_floatmove_x);
+		move_y = (TextView) layout.findViewById(R.id.textview_floatmove_y);
+		move_x.setText(String.valueOf(wmParams.x));
+		move_y.setText(String.valueOf(wmParams.y));
+		final Handler handler = new Handler(){
+			public void handleMessage(Message msg)
+			{
+				switch (msg.what)
+				{
+					case 0:
+						wmParams.x--;
+						break;
+					case 1:
+						wmParams.x++;
+						break;
+					case 2:
+						wmParams.y--;
+						break;
+					case 3:
+						wmParams.y++;
+						break;
+				}
+				updateview();
+			}
+		};
+		FloatTextSettingMethod method = new FloatTextSettingMethod();
+		final Button control_left = (Button) layout.findViewById(R.id.button_floatmove_left);
+		control_left.setOnTouchListener(method.ButtonOnLongRepeatClickListener(0, handler));
+		final Button control_right = (Button) layout.findViewById(R.id.button_floatmove_right);
+		control_right.setOnTouchListener(method.ButtonOnLongRepeatClickListener(1, handler));
+		final Button control_up = (Button) layout.findViewById(R.id.button_floatmove_up);
+		control_up.setOnTouchListener(method.ButtonOnLongRepeatClickListener(2, handler));
+		final Button control_down = (Button) layout.findViewById(R.id.button_floatmove_down);
+		control_down.setOnTouchListener(method.ButtonOnLongRepeatClickListener(3, handler));
+		AlertDialog.Builder move = new AlertDialog.Builder(FloatTextSetting.this)
+			.setTitle(R.string.float_move_title)
+			.setView(layout);
+		move.show();
+	}
+	
+	private void TextShadowSet(LayoutInflater inflater)
+	{
+		View layout = inflater.inflate(R.layout.dialog_textshadow_edit, null);
+		final Switch ss = (Switch) layout.findViewById(R.id.switch_textshadow);
+		final TextView sx = (TextView) layout.findViewById(R.id.textview_shadowDx);
+		final TextView sy = (TextView) layout.findViewById(R.id.textview_shadowDy);
+		final TextView sr = (TextView) layout.findViewById(R.id.textview_radius);
+		final SeekBar bx = (SeekBar) layout.findViewById(R.id.seekbar_shadowDx);
+		final SeekBar by = (SeekBar) layout.findViewById(R.id.seekbar_shadowDy);
+		final SeekBar br = (SeekBar) layout.findViewById(R.id.seekbar_radius);
+		bx.setMax(30);
+		by.setMax(30);
+		br.setMax(25);
+		ss.setChecked(TextShadow);
+		bx.setProgress((int)TextShadowX);
+		by.setProgress((int)TextShadowY);
+		br.setProgress((int)TextShadowRadius);
+		sx.setText(getString(R.string.xml_set_text_shadow_dx) + (int)TextShadowX);
+		sy.setText(getString(R.string.xml_set_text_shadow_dy) + (int)TextShadowY);
+		sr.setText(getString(R.string.xml_set_text_shadow_radius) + (int)TextShadowRadius);
+		ss.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+				public void onCheckedChanged(CompoundButton b, boolean c)
+				{
+					TextShadow = c;
+					spedit.putBoolean("TextShadow", TextShadow);
+					spedit.commit();
+					updateview();
+				}
+			});
+		bx.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+				public void onStartTrackingTouch(SeekBar bar)
+				{}
+				public void onStopTrackingTouch(SeekBar bar)
+				{
+					spedit.putFloat("TextShadowX", TextShadowX);
+					spedit.commit();
+				}
+				public void onProgressChanged(SeekBar bar , int i , boolean state)
+				{
+					TextShadowX = i;
+					sx.setText(getString(R.string.xml_set_text_shadow_dx) + (int)TextShadowX);
+					updateview();
+				}
+			});
+		by.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+				public void onStartTrackingTouch(SeekBar bar)
+				{}
+				public void onStopTrackingTouch(SeekBar bar)
+				{
+					spedit.putFloat("TextShadowY", TextShadowY);
+					spedit.commit();
+				}
+				public void onProgressChanged(SeekBar bar , int i , boolean state)
+				{
+					TextShadowY = i;
+					sy.setText(getString(R.string.xml_set_text_shadow_dy) + (int)TextShadowY);
+					updateview();
+				}
+			});
+		br.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+				public void onStartTrackingTouch(SeekBar bar)
+				{}
+				public void onStopTrackingTouch(SeekBar bar)
+				{
+					spedit.putFloat("TextShadowRadius", TextShadowRadius);
+					spedit.commit();
+				}
+				public void onProgressChanged(SeekBar bar , int i , boolean state)
+				{
+					TextShadowRadius = i;
+					sr.setText(getString(R.string.xml_set_text_shadow_radius) + (int)TextShadowRadius);
+					updateview();
+				}
+			});
+		AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
+		dialog.setTitle(R.string.xml_set_text_shadow);
+		dialog.setPositiveButton(R.string.close, null);
+		dialog.setView(layout);
+		dialog.show();
+	}
 
 	//权限检测
     private void prepareshow()
@@ -749,12 +789,6 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         {
             startshow();
         }
-    }
-
-	//简化更新视图
-    private void updateview()
-    {
-        updatefloatview(FloatShow, TextShow, TextSize, TextColor, TextThick, TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide);
     }
 
 	//创建新悬浮窗
@@ -782,7 +816,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     }
 
 	//更新视图
-    private void updatefloatview(boolean show, String Text, Float Size, int Paint, boolean Thick, boolean TextTop, boolean autotop, boolean move, int speed, boolean shadow, float shadowx, float shadowy, float shadowradius, int bac, int shadowcolor, boolean fs, float fl, float fw)
+    private void updateview()
     {
         App utils = ((App)getApplicationContext());
         if (wm != null)
@@ -795,28 +829,28 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             if (EditMode)
             {
                 ArrayList<String> floattext = utils.getFloatText();
-                floattext.set(EditID, Text.toString());
+                floattext.set(EditID, TextShow.toString());
                 utils.setFloatText(floattext);
             }
-            floatview.setText(Text.toString());
-            floatview.setTextSize(Size);
-            floatview.setTextColor(Paint);
-            floatview.setShadow(shadow, shadowx, shadowy, shadowradius, shadowcolor);
+            floatview.setText(TextShow.toString());
+            floatview.setTextSize(TextSize);
+            floatview.setTextColor(TextColor);
+            floatview.setShadow(TextShadow, TextShadowX, TextShadowY, TextShadowRadius, TextShadowColor);
             linearlayout.setFloatLayoutParams(wmParams);
             if (((App)getApplicationContext()).getMovingMethod())
             {
-                floatview.setMoving(move, 0);
+                floatview.setMoving(TextMove, 0);
             }
             else
             {
-                floatview.setMoving(move, 1);
-                if (move)
+                floatview.setMoving(TextMove, 1);
+                if (TextMove)
                 {
                     linearlayout.setShowState(false);
                     linearlayout.setShowState(true);
                 }
             }
-            floatview.setMoveSpeed(speed);
+            floatview.setMoveSpeed(TextSpeed);
             if (TextThick)
             {
                 floatview.getPaint().setFakeBoldText(true);
@@ -827,7 +861,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             }
             if (TextTop)
             {
-                linearlayout.setTop(autotop);
+                linearlayout.setTop(AutoTop);
                 wmParams.flags = LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_LAYOUT_IN_SCREEN;
             }
             else
@@ -836,12 +870,12 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                 wmParams.flags = LayoutParams.FLAG_NOT_FOCUSABLE;
             }
             linearlayout.setLayout_default_flags(wmParams.flags);
-            linearlayout.setShowState(show);
-            linearlayout.setBackgroundColor(bac);
-			if (fs)
+            linearlayout.setShowState(FloatShow);
+            linearlayout.setBackgroundColor(BackgroundColor);
+			if (FloatSize)
 			{
-				wmParams.width = (int)fl;
-				wmParams.height = (int)fw;
+				wmParams.width = (int)FloatLong;
+				wmParams.height = (int)FloatWide;
 			}
 			else
 			{
@@ -852,7 +886,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             {
 				linearlayout.setTouchable(wmParams, !LockPosition);
                 ArrayList<Boolean> sf = utils.getShowFloat();
-                sf.set(EditID, show);
+                sf.set(EditID, FloatShow);
                 utils.setShowFloat(sf);
             }
             wm.updateViewLayout(linearlayout, wmParams);
@@ -860,17 +894,17 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     }
 
 	//保存所有数据
-    private void saveall(Context ctx, FloatTextView fv, FloatLinearLayout fll, String text, WindowManager.LayoutParams layout, boolean savedetails, boolean show, String position, boolean texttop, boolean autotop, boolean textmove, int speed)
+    private void saveall(String text, boolean savedetails)
     {
-        App utils = ((App)ctx.getApplicationContext());
-        FloatTextSettingMethod.savedata(ctx, fv, fll, text, layout);
-        if (!texttop)
+        App utils = ((App)getApplicationContext());
+        FloatTextSettingMethod.savedata(this, floatview, linearlayout, text, wmParams);
+        if (!TextTop)
         {
-            autotop = true;
+            AutoTop = true;
         }
         if (savedetails)
         {
-            utils.addDatas(TextShow, TextColor, TextSize, TextThick, show, position, false, texttop, autotop, textmove, speed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide);
+            utils.addDatas(TextShow, TextColor, TextSize, TextThick, FloatShow, Position, false, TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide);
         }
     }
 
@@ -973,7 +1007,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 					}
 					else
 					{
-						saveall(this, floatview, linearlayout, spdata.getString("TextShow", getString(R.string.default_text)), wmParams, true, FloatShow, Position, TextTop, AutoTop, TextMove, TextSpeed);
+						saveall(spdata.getString("TextShow", getString(R.string.default_text)), true);
 					}
 					FloatWinSaved = true;
 					setbackresult(1);
