@@ -14,6 +14,7 @@ import tool.xfy9326.floattext.*;
 
 import java.lang.Process;
 import java.text.ParseException;
+import tool.xfy9326.floattext.Utils.*;
 
 public class FloatServiceMethod
 {
@@ -93,50 +94,13 @@ public class FloatServiceMethod
 
 	public static String[] StringtoStringArray (String str)
 	{
-		ArrayList<String> arr = new ArrayList<String>();
-        if (str.contains("[") && str.length() >= 3)
-        {
-            str = str.substring(1, str.length() - 1);
-            if (str.contains(","))
-            {
-                String[] temp = str.split(",");
-                for (int i = 0;i < temp.length;i++)
-                {
-                    if (i != 0)
-                    {
-                        temp[i] = temp[i].substring(1, temp[i].length());
-                    }
-                    arr.add(temp[i].toString());
-                }
-            }
-            else
-            {
-                arr.add(str.toString());
-            }
-        }
+		ArrayList<String> arr = FloatData.StringToStringArrayList(str);
         return arr.toArray(new String[arr.size()]);
 	}
 
 	public static boolean[] StringtoBooleanArray (String str)
 	{
-		ArrayList<Boolean> arr = new ArrayList<Boolean>();
-        if (str.contains("[") && str.length() >= 3)
-        {
-            str = str.substring(1, str.length() - 1);
-            if (str.contains(","))
-            {
-                String[] temp = str.split(",");
-                for (int i = 0;i < temp.length;i++)
-                {
-                    temp[i] = temp[i].replaceAll("\\s+", "");
-                    arr.add(Boolean.parseBoolean(temp[i]));
-                }
-            }
-            else
-            {
-                arr.add(Boolean.parseBoolean(str));
-            }
-        }
+		ArrayList<Boolean> arr = FloatData.StringToBooleanArrayList(str);
         return Btob(arr.toArray(new Boolean[arr.size()]));
 	}
 

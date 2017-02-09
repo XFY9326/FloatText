@@ -17,15 +17,16 @@ public class FloatData
 {
 	private Context ctx;
     private int DataNum = 0;
-    public static int FloatDataVersion = 2;
 	private SharedPreferences spdatat;
 	private SharedPreferences.Editor speditt;
 	private SharedPreferences spdata;
 	private SharedPreferences.Editor spedit;
+	private App utils;
 
 	public FloatData(Context ctx)
 	{
 		this.ctx = ctx;
+		utils = ((App)ctx.getApplicationContext());
 		spdatat = ctx.getSharedPreferences("FloatTextList", Activity.MODE_PRIVATE);
         speditt = spdatat.edit();
         spdata = ctx.getSharedPreferences("FloatShowList", Activity.MODE_PRIVATE);
@@ -35,8 +36,7 @@ public class FloatData
 	//保存
     public void savedata()
     {
-        App utils = ((App)ctx.getApplicationContext());
-        spedit.putInt("Version", FloatDataVersion);
+        spedit.putInt("Version", StaticNum.FloatDataVersion);
         speditt.putString("TextArray", TextArr_encode(utils.getTextData()).toString());
         spedit.putString("ColorArray", utils.getColorData().toString());
         spedit.putString("ThickArray", utils.getThickData().toString());
@@ -64,33 +64,10 @@ public class FloatData
 	//获取
     public void getSaveArrayData()
     {
-        App utils = ((App)ctx.getApplicationContext());
         int version = spdata.getInt("Version", 0);
-        String text = spdatat.getString("TextArray", "[]");
         ArrayList<String> textarr = new ArrayList<String>();
-        if (version < 1)
-        {
-            textarr.addAll(StringToStringArrayList(text));
-			speditt.putString("TextArray", TextArr_encode(textarr).toString());
-			speditt.commit();
-            updateVersion(1);
-        }
-		textarr.addAll(TextArr_decode(StringToStringArrayList(text)));
-		if (version < 2)
-		{
-			String text_v = spdata.getString("TextArray", "[]");
-			textarr.clear();
-			if (version < 1)
-			{
-				textarr.addAll(StringToStringArrayList(text_v));
-			}
-			textarr.addAll(TextArr_decode(StringToStringArrayList(text_v)));
-			spedit.remove("TextArray");
-			speditt.putString("TextArray", TextArr_encode(textarr).toString());
-			spedit.commit();
-			speditt.commit();
-			updateVersion(2);
-		}
+        VersionFix_1(version, textarr);
+		VersionFix_2(version, textarr);
         DataNum = textarr.size();
         ArrayList<Float> size = NewFloatKey(spdata.getString("SizeArray", "[]"), "20.0");
         ArrayList<Integer> color = NewIntegerKey(spdata.getString("ColorArray", "[]"), "-61441");
@@ -113,6 +90,41 @@ public class FloatData
 		ArrayList<Float> floatwide = NewFloatKey(spdata.getString("FloatWideArray", "[]"), "100");
         utils.replaceDatas(textarr, color, size, thick, show, position, lock, top, autotop, move, speed, shadow, shadowx, shadowy, shadowradius, backgroundcolor, textshadowcolor, floatsize, floatlong, floatwide);
     }
+	
+	private void VersionFix_1(int version, ArrayList<String> textarr)
+	{
+		String text = spdatat.getString("TextArray", "[]");
+		if (version < 1)
+        {
+            textarr.addAll(StringToStringArrayList(text));
+			speditt.putString("TextArray", TextArr_encode(textarr).toString());
+			speditt.commit();
+            updateVersion(1);
+        }
+		else
+		{
+			textarr.addAll(TextArr_decode(StringToStringArrayList(text)));
+		}
+	}
+	
+	private void VersionFix_2(int version, ArrayList<String> textarr)
+	{
+		if (version < 2)
+		{
+			String text_v = spdata.getString("TextArray", "[]");
+			textarr.clear();
+			if (version < 1)
+			{
+				textarr.addAll(StringToStringArrayList(text_v));
+			}
+			textarr.addAll(TextArr_decode(StringToStringArrayList(text_v)));
+			spedit.remove("TextArray");
+			speditt.putString("TextArray", TextArr_encode(textarr).toString());
+			spedit.commit();
+			speditt.commit();
+			updateVersion(2);
+		}
+	}
 
 	//输出
 	public boolean OutputData(String path, int VersionCode)
@@ -146,7 +158,7 @@ public class FloatData
 			xmltojson(dataobject, "FloatWideArray");
 
 			mainobject.put("FloatText_Version", VersionCode);
-			mainobject.put("Data_Version", FloatDataVersion);
+			mainobject.put("Data_Version", StaticNum.FloatDataVersion);
 			mainobject.put("Text", textobject);
 			mainobject.put("Data", dataobject);
 
@@ -180,59 +192,64 @@ public class FloatData
 				}
 				if (str != "" && !str.startsWith("error"))
 				{
-					try
-					{
-						JSONObject mainobject = new JSONObject(str);
-						//int FloatText_Version = mainobject.getInt("FloatText_Version");
-						//int Data_Version = mainobject.getInt("Data_Version");
-						JSONObject dataobject = mainobject.getJSONObject("Data");
-						JSONObject textobject = mainobject.getJSONObject("Text");
-
-						String text = textobject.getString("TextArray");
-						String oldtext = spdatat.getString("TextArray", "[]");
-						if (oldtext.equalsIgnoreCase("[]"))
-						{
-							oldtext = text;
-						}
-						else
-						{
-							oldtext = CombineArrayString(oldtext, text);
-						}
-						speditt.putString("TextArray", oldtext);
-
-						Iterator it = dataobject.keys();
-						while (it.hasNext())
-						{
-							String key = it.next().toString();
-							if (spdata.contains(key))
-							{
-								String old = spdata.getString(key, "[]");
-								String get = dataobject.getString(key);
-								if (old.equalsIgnoreCase("[]"))
-								{
-									old = get;
-								}
-								else
-								{
-									old = CombineArrayString(old, get);
-								}
-								spedit.putString(key, old);
-							}
-						}
-
-						spedit.commit();
-						speditt.commit();
-						return true;
-					}
-					catch (JSONException e)
-					{
-						e.printStackTrace();
-						return false;
-					}
+					return InputDataAction(str);
 				}
 			}
 		}
 		return false;
+	}
+	
+	private boolean InputDataAction(String str)
+	{
+		try
+		{
+			JSONObject mainobject = new JSONObject(str);
+			//int FloatText_Version = mainobject.getInt("FloatText_Version");
+			//int Data_Version = mainobject.getInt("Data_Version");
+			JSONObject dataobject = mainobject.getJSONObject("Data");
+			JSONObject textobject = mainobject.getJSONObject("Text");
+
+			String text = textobject.getString("TextArray");
+			String oldtext = spdatat.getString("TextArray", "[]");
+			if (oldtext.equalsIgnoreCase("[]"))
+			{
+				oldtext = text;
+			}
+			else
+			{
+				oldtext = CombineArrayString(oldtext, text);
+			}
+			speditt.putString("TextArray", oldtext);
+
+			Iterator it = dataobject.keys();
+			while (it.hasNext())
+			{
+				String key = it.next().toString();
+				if (spdata.contains(key))
+				{
+					String old = spdata.getString(key, "[]");
+					String get = dataobject.getString(key);
+					if (old.equalsIgnoreCase("[]"))
+					{
+						old = get;
+					}
+					else
+					{
+						old = CombineArrayString(old, get);
+					}
+					spedit.putString(key, old);
+				}
+			}
+
+			spedit.commit();
+			speditt.commit();
+			return true;
+		}
+		catch (JSONException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	private String CombineArrayString(String a1, String a2)
