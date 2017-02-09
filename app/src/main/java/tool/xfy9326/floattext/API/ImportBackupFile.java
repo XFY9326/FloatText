@@ -16,6 +16,7 @@ import tool.xfy9326.floattext.Utils.*;
 
 import android.support.v7.widget.Toolbar;
 import tool.xfy9326.floattext.R;
+import tool.xfy9326.floattext.Method.*;
 
 public class ImportBackupFile extends AppCompatActivity
 {
@@ -85,20 +86,8 @@ public class ImportBackupFile extends AppCompatActivity
 						if (fd.InputData(FilePath))
 						{
 							final Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
-							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 							intent.putExtra("RecoverText", 1);
-							if (Build.VERSION.SDK_INT >= 21)
-							{
-								startActivity(intent);
-								finishAndRemoveTask();
-							}
-							else
-							{
-								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-								startActivity(intent);
-								finish();
-							}
-							System.exit(0);
+							FloatManageMethod.restartApplication(ImportBackupFile.this, intent);
 						}
 					}
                     else

@@ -103,34 +103,9 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
         language_choice = setdata.getInt("Language", 0);
         language.setSummary(getString(R.string.xml_global_language_sum) + lan_list[language_choice]);
         language.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick(final Preference pre)
+                public boolean onPreferenceClick(Preference pre)
                 {
-                    AlertDialog.Builder lan = new AlertDialog.Builder(GlobalSetActivity.this)
-                        .setTitle(R.string.xml_global_language)
-                        .setSingleChoiceItems(lan_list, language_choice, new DialogInterface.OnClickListener(){
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-                                language_choice = which;
-                            }
-                        })
-                        .setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
-                            public void onClick(DialogInterface p1, int p2)
-                            {
-                                SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
-                                setdata.edit().putInt("Language", language_choice).commit();
-                                FloatManageMethod.LanguageSet(GlobalSetActivity.this, language_choice);
-                                pre.setSummary(getString(R.string.xml_global_language_sum) + lan_list[language_choice]);
-                                FloatManageMethod.restartApplication(GlobalSetActivity.this, getPackageManager().getLaunchIntentForPackage(getPackageName()));
-                            }
-                        })
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
-                            public void onClick(DialogInterface d, int i)
-                            {
-                                SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
-                                language_choice = setdata.getInt("Language", 0);
-                            }
-                        });
-                    lan.show();
+                    LanguageSet(pre, lan_list);
                     return true;
                 }
             });
@@ -138,17 +113,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
         stayalive.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p1, Object p2)
                 {
-                    ((App)getApplicationContext()).setStayAliveService((boolean)p2);
-                    Intent service = new Intent(GlobalSetActivity.this, FloatWindowStayAliveService.class);
-                    if ((boolean)p2)
-                    {
-                        startService(service);
-                    }
-                    else
-                    {
-						FloatManageMethod.setWinManager(GlobalSetActivity.this);
-                        stopService(service);
-                    }
+                    StayAliveSet((boolean)p2);
                     return true;
                 }
             });
@@ -156,22 +121,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
         dynamicnum.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p1, Object p2)
                 {
-                    ((App)getApplicationContext()).setDynamicNumService((boolean)p2);
-                    Intent service = new Intent(GlobalSetActivity.this, FloatTextUpdateService.class);
-					Intent asservice = new Intent(GlobalSetActivity.this, FloatAdvanceTextUpdateService.class);
-					Intent notifyservice = new Intent(GlobalSetActivity.this, FloatNotificationListenerService.class);
-                    if ((boolean)p2)
-                    {
-                        startService(service);
-						startService(asservice);
-						startService(notifyservice);
-                    }
-                    else
-                    {
-                        stopService(service);
-						stopService(asservice);
-						stopService(notifyservice);
-                    }
+                    DymanicSet((boolean)p2);
                     return true;
                 }
             });
@@ -235,19 +185,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
         onlyshowinhome.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p1, Object p2)
                 {
-                    if (!(boolean)p2)
-                    {
-                        App utils = ((App)getApplicationContext());
-                        ArrayList<FloatLinearLayout> layout = utils.getFloatlinearlayout();
-                        ArrayList<Boolean> show = utils.getShowFloat();
-                        ListViewAdapter adp = utils.getListviewadapter();
-                        for (int i = 0;i < layout.size(); i++)
-                        {
-                            layout.get(i).setShowState(true);
-                            show.set(i, true);
-                        }
-                        adp.notifyDataSetChanged();
-                    }
+                    HomeSet((boolean)p2);
                     return true;
                 }
             });
@@ -255,35 +193,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 		filter.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
 				public boolean onPreferenceClick(Preference p)
 				{
-					final ArrayList<String> FilterApplication = FloatData.StringToStringArrayList(setdata.getString("Filter_Application", "[]"));
-					getAppInfo(GlobalSetActivity.this, FilterApplication);
-					AlertDialog.Builder alert = new AlertDialog.Builder(GlobalSetActivity.this)
-						.setTitle(R.string.xml_global_win_filter)
-						.setMultiChoiceItems(AppNames, AppState, new DialogInterface.OnMultiChoiceClickListener(){
-							public void onClick(DialogInterface d, int i, boolean b)
-							{
-								AppState[i] = b;
-							}
-						})
-						.setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
-							public void onClick(DialogInterface d, int i)
-							{
-								FilterApplication.clear();
-								for (int a = 0; a < AppState.length; a ++)
-								{
-									if (AppState[a])
-									{
-										FilterApplication.add(PkgNames[a]);
-									}
-								}
-								((App)getApplicationContext()).setFilterApplication(FilterApplication);
-								SharedPreferences.Editor ed = setdata.edit();
-								ed.putString("Filter_Application", FilterApplication.toString());
-								ed.commit();
-							}
-						})
-						.setNegativeButton(R.string.cancel, null);
-					alert.show();
+					FilterSet(setdata);
 					return true;
 				}
 			});
@@ -332,6 +242,121 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 				}
 			});
     }
+	
+	private void HomeSet(boolean b)
+	{
+		if (!b)
+		{
+			App utils = ((App)getApplicationContext());
+			ArrayList<FloatLinearLayout> layout = utils.getFloatlinearlayout();
+			ArrayList<Boolean> show = utils.getShowFloat();
+			ListViewAdapter adp = utils.getListviewadapter();
+			for (int i = 0;i < layout.size(); i++)
+			{
+				layout.get(i).setShowState(true);
+				show.set(i, true);
+			}
+			adp.notifyDataSetChanged();
+		}
+	}
+	
+	private void StayAliveSet(boolean b)
+	{
+		((App)getApplicationContext()).setStayAliveService(b);
+		Intent service = new Intent(GlobalSetActivity.this, FloatWindowStayAliveService.class);
+		if (b)
+		{
+			startService(service);
+		}
+		else
+		{
+			FloatManageMethod.setWinManager(GlobalSetActivity.this);
+			stopService(service);
+		}
+	}
+
+	private void DymanicSet(boolean b)
+	{
+		((App)getApplicationContext()).setDynamicNumService(b);
+		Intent service = new Intent(GlobalSetActivity.this, FloatTextUpdateService.class);
+		Intent asservice = new Intent(GlobalSetActivity.this, FloatAdvanceTextUpdateService.class);
+		Intent notifyservice = new Intent(GlobalSetActivity.this, FloatNotificationListenerService.class);
+		if (b)
+		{
+			startService(service);
+			startService(asservice);
+			startService(notifyservice);
+		}
+		else
+		{
+			stopService(service);
+			stopService(asservice);
+			stopService(notifyservice);
+		}
+	}
+	
+	private void FilterSet(final SharedPreferences setdata)
+	{
+		final ArrayList<String> FilterApplication = FloatData.StringToStringArrayList(setdata.getString("Filter_Application", "[]"));
+		getAppInfo(GlobalSetActivity.this, FilterApplication);
+		AlertDialog.Builder alert = new AlertDialog.Builder(GlobalSetActivity.this)
+			.setTitle(R.string.xml_global_win_filter)
+			.setMultiChoiceItems(AppNames, AppState, new DialogInterface.OnMultiChoiceClickListener(){
+				public void onClick(DialogInterface d, int i, boolean b)
+				{
+					AppState[i] = b;
+				}
+			})
+			.setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
+				public void onClick(DialogInterface d, int i)
+				{
+					FilterApplication.clear();
+					for (int a = 0; a < AppState.length; a ++)
+					{
+						if (AppState[a])
+						{
+							FilterApplication.add(PkgNames[a]);
+						}
+					}
+					((App)getApplicationContext()).setFilterApplication(FilterApplication);
+					SharedPreferences.Editor ed = setdata.edit();
+					ed.putString("Filter_Application", FilterApplication.toString());
+					ed.commit();
+				}
+			})
+			.setNegativeButton(R.string.cancel, null);
+		alert.show();
+	}
+
+	private void LanguageSet(final Preference pre, final String[] lan_list)
+	{
+		AlertDialog.Builder lan = new AlertDialog.Builder(GlobalSetActivity.this)
+			.setTitle(R.string.xml_global_language)
+			.setSingleChoiceItems(lan_list, language_choice, new DialogInterface.OnClickListener(){
+				public void onClick(DialogInterface dialog, int which)
+				{
+					language_choice = which;
+				}
+			})
+			.setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
+				public void onClick(DialogInterface p1, int p2)
+				{
+					SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
+					setdata.edit().putInt("Language", language_choice).commit();
+					FloatManageMethod.LanguageSet(GlobalSetActivity.this, language_choice);
+					pre.setSummary(getString(R.string.xml_global_language_sum) + lan_list[language_choice]);
+					FloatManageMethod.restartApplication(GlobalSetActivity.this, getPackageManager().getLaunchIntentForPackage(getPackageName()));
+				}
+			})
+			.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
+				public void onClick(DialogInterface d, int i)
+				{
+					SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
+					language_choice = setdata.getInt("Language", 0);
+				}
+			});
+		lan.show();
+	}
 
 	private void recoverdata(String path)
 	{
@@ -347,20 +372,8 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 			if (fd.InputData(path))
 			{
 				final Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
-				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				intent.putExtra("RecoverText", 1);
-				if (Build.VERSION.SDK_INT >= 21)
-				{
-					startActivity(intent);
-					finishAndRemoveTask();
-				}
-				else
-				{
-					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-					startActivity(intent);
-					finish();
-				}
-				System.exit(0);
+				FloatManageMethod.restartApplication(GlobalSetActivity.this, intent);
 			}
 			else
 			{
