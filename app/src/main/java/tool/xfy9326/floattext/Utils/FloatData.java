@@ -6,12 +6,11 @@ import android.util.*;
 import java.io.*;
 import java.util.*;
 import org.json.*;
-import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Method.*;
 
 /*
-数据操作
-*/
+ 数据操作
+ */
 
 public class FloatData
 {
@@ -90,7 +89,7 @@ public class FloatData
 		ArrayList<Float> floatwide = NewFloatKey(spdata.getString("FloatWideArray", "[]"), "100");
         utils.replaceDatas(textarr, color, size, thick, show, position, lock, top, autotop, move, speed, shadow, shadowx, shadowy, shadowradius, backgroundcolor, textshadowcolor, floatsize, floatlong, floatwide);
     }
-	
+
 	private void VersionFix_1(int version, ArrayList<String> textarr)
 	{
 		String text = spdatat.getString("TextArray", "[]");
@@ -106,7 +105,7 @@ public class FloatData
 			textarr.addAll(TextArr_decode(StringToStringArrayList(text)));
 		}
 	}
-	
+
 	private void VersionFix_2(int version, ArrayList<String> textarr)
 	{
 		if (version < 2)
@@ -180,75 +179,91 @@ public class FloatData
 	public boolean InputData(String path)
 	{
 		File bak = new File(path);
-		if (bak.exists() && !bak.isDirectory())
+		if (!bak.exists() && bak.isDirectory())
+		{
+			return false;
+		}
+		else
 		{
 			String[] data = IOMethod.readfile(bak);
-			if (data[0] != "Failed")
+			String str = "";
+			for (int i = 0;i < data.length;i++)
 			{
-				String str = "";
-				for (int i = 0;i < data.length;i++)
-				{
-					str += data[i];
-				}
-				if (str != "" && !str.startsWith("error"))
-				{
-					return InputDataAction(str);
-				}
+				str += data[i];
 			}
-		}
-		return false;
-	}
-	
-	private boolean InputDataAction(String str)
-	{
-		try
-		{
-			JSONObject mainobject = new JSONObject(str);
-			//int FloatText_Version = mainobject.getInt("FloatText_Version");
-			//int Data_Version = mainobject.getInt("Data_Version");
-			JSONObject dataobject = mainobject.getJSONObject("Data");
-			JSONObject textobject = mainobject.getJSONObject("Text");
-
-			String text = textobject.getString("TextArray");
-			String oldtext = spdatat.getString("TextArray", "[]");
-			if (oldtext.equalsIgnoreCase("[]"))
+			if (!str.equalsIgnoreCase("Failed"))
 			{
-				oldtext = text;
+				return InputDataAction(str);
 			}
 			else
 			{
-				oldtext = CombineArrayString(oldtext, text);
+				return false;
 			}
-			speditt.putString("TextArray", oldtext);
-
-			Iterator it = dataobject.keys();
-			while (it.hasNext())
-			{
-				String key = it.next().toString();
-				if (spdata.contains(key))
-				{
-					String old = spdata.getString(key, "[]");
-					String get = dataobject.getString(key);
-					if (old.equalsIgnoreCase("[]"))
-					{
-						old = get;
-					}
-					else
-					{
-						old = CombineArrayString(old, get);
-					}
-					spedit.putString(key, old);
-				}
-			}
-
-			spedit.commit();
-			speditt.commit();
-			return true;
 		}
-		catch (JSONException e)
+	}
+
+	private boolean InputDataAction(String str)
+	{
+		if (str != "" && !str.startsWith("error"))
 		{
-			e.printStackTrace();
+			try
+			{
+				JSONObject mainobject = new JSONObject(str);
+				//int FloatText_Version = mainobject.getInt("FloatText_Version");
+				//int Data_Version = mainobject.getInt("Data_Version");
+				JSONObject dataobject = mainobject.getJSONObject("Data");
+				JSONObject textobject = mainobject.getJSONObject("Text");
+
+				String text = textobject.getString("TextArray");
+				String oldtext = spdatat.getString("TextArray", "[]");
+				if (oldtext.equalsIgnoreCase("[]"))
+				{
+					oldtext = text;
+				}
+				else
+				{
+					oldtext = CombineArrayString(oldtext, text);
+				}
+				speditt.putString("TextArray", oldtext);
+
+				savetofile(dataobject);
+				
+				spedit.commit();
+				speditt.commit();
+				return true;
+			}
+			catch (JSONException e)
+			{
+				e.printStackTrace();
+				return false;
+			}
+		}
+		else
+		{
 			return false;
+		}
+	}
+	
+	private void savetofile(JSONObject dataobject) throws JSONException
+	{
+		Iterator it = dataobject.keys();
+		while (it.hasNext())
+		{
+			String key = it.next().toString();
+			if (spdata.contains(key))
+			{
+				String old = spdata.getString(key, "[]");
+				String get = dataobject.getString(key);
+				if (old.equalsIgnoreCase("[]"))
+				{
+					old = get;
+				}
+				else
+				{
+					old = CombineArrayString(old, get);
+				}
+				spedit.putString(key, old);
+			}
 		}
 	}
 
