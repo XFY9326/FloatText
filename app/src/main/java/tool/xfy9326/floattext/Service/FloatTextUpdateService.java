@@ -14,7 +14,7 @@ import tool.xfy9326.floattext.Utils.*;
 public class FloatTextUpdateService extends Service
 {
 	private static String[] LIST;
-	private static boolean[] INFO;
+	private static int[] INFO;
     private Timer timer = null;
     private Timer timer_f = null;
     private Timer timer_s = null;
@@ -170,7 +170,7 @@ public class FloatTextUpdateService extends Service
     {
 		bundle = new Bundle();
         bundle.putStringArray("LIST", LIST);
-		bundle.putBooleanArray("INFO", INFO);
+		bundle.putIntArray("INFO", INFO);
 		bundle.putStringArray("DATA", SetPostKey());
         timeIntent.putExtras(bundle);
         sendBroadcast(timeIntent);
@@ -344,7 +344,7 @@ public class FloatTextUpdateService extends Service
 	{
 		SharedPreferences sp = FloatServiceMethod.setUpdateList(ctx);
 		LIST = FloatServiceMethod.StringtoStringArray(sp.getString("LIST", "[]"));
-		INFO = FloatServiceMethod.StringtoBooleanArray(sp.getString("INFO", "[]"));
+		INFO = FloatServiceMethod.StringtoIntegerArray(sp.getString("INFO", "[]"));
 	}
 
     @Override

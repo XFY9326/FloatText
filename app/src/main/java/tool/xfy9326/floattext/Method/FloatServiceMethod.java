@@ -21,7 +21,7 @@ public class FloatServiceMethod
     public static String TEXT_UPDATE_ACTION = "tool.xfy9326.floattext.Service.FloatTextUpdateService.action.TEXT_UPDATE_ACTION";
     public static String TEXT_STATE_UPDATE_ACTION = "tool.xfy9326.floattext.Service.FloatTextUpdateService.action.TEXT_STATE_UPDATE_ACTION";
 	public static String TEXT_ADVANCE_UPDATE_ACTION = "tool.xfy9326.floattext.Service.FloatAdvanceTextUpdateService.action.TEXT_ADVANCE_UPDATE_ACTION";
-	public static int DYNAMIC_LIST_VERSION = 5;
+	public static int DYNAMIC_LIST_VERSION = 6;
 	public static String ACTIVITY_CHANGE_ACTION = "tool.xfy9326.floattext.Service.FloatAdvanceTextUpdateService.action.ACTIVITY_CHANGE_ACTION";
 	
 	//动态变量更新列表
@@ -33,51 +33,51 @@ public class FloatServiceMethod
 		if (version != DYNAMIC_LIST_VERSION)
 		{
 			ArrayList<String> KeyList = new ArrayList<String>();
-			ArrayList<Boolean> InfoList = new ArrayList<Boolean>();
+			ArrayList<Integer> InfoList = new ArrayList<Integer>();
 			KeyList.add("SystemTime");
-			InfoList.add(false);
+			InfoList.add(0);
 			KeyList.add("SystemTime_24");
-			InfoList.add(false);
+			InfoList.add(0);
 			KeyList.add("Clock");
-			InfoList.add(false);
+			InfoList.add(0);
 			KeyList.add("Clock_24");
-			InfoList.add(false);
+			InfoList.add(0);
 			KeyList.add("Date");
-			InfoList.add(false);
+			InfoList.add(0);
 			KeyList.add("CPURate");
-			InfoList.add(false);
+			InfoList.add(0);
 			KeyList.add("NetSpeed");
-			InfoList.add(false);
+			InfoList.add(0);
 			KeyList.add("MemRate");
-			InfoList.add(false);
+			InfoList.add(0);
 			KeyList.add("LocalIP");
-			InfoList.add(false);
+			InfoList.add(0);
 			KeyList.add("Battery");
-			InfoList.add(false);
+			InfoList.add(0);
 			KeyList.add("Sensor_Light");
-			InfoList.add(false);
+			InfoList.add(0);
 			KeyList.add("Sensor_Gravity");
-			InfoList.add(false);
+			InfoList.add(0);
 			KeyList.add("Sensor_Pressure");
-			InfoList.add(false);
+			InfoList.add(0);
 			KeyList.add("Sensor_CPUTemperature");
-			InfoList.add(false);
+			InfoList.add(0);
 			KeyList.add("Sensor_Proximity");
-			InfoList.add(false);
+			InfoList.add(0);
 			KeyList.add("Sensor_Step");
-			InfoList.add(false);
+			InfoList.add(0);
 			KeyList.add("ClipBoard");
-			InfoList.add(false);
+			InfoList.add(0);
 			KeyList.add("CurrentActivity");
-			InfoList.add(false);
+			InfoList.add(0);
 			KeyList.add("Notifications");
-			InfoList.add(false);
+			InfoList.add(0);
 			KeyList.add("Toasts");
-			InfoList.add(false);
+			InfoList.add(0);
 			KeyList.add("Week");
-			InfoList.add(false);
+			InfoList.add(0);
 			KeyList.add("(DateCount_)(.*?)");
-			InfoList.add(true);
+			InfoList.add(1);
 			list_editor.putInt("Version", DYNAMIC_LIST_VERSION);
 			list_editor.putString("LIST", KeyList.toString());
 			list_editor.putString("INFO", InfoList.toString());
@@ -98,10 +98,10 @@ public class FloatServiceMethod
         return arr.toArray(new String[arr.size()]);
 	}
 
-	public static boolean[] StringtoBooleanArray (String str)
+	public static int[] StringtoIntegerArray (String str)
 	{
-		ArrayList<Boolean> arr = FloatData.StringToBooleanArrayList(str);
-        return Btob(arr.toArray(new Boolean[arr.size()]));
+		ArrayList<Integer> arr = FloatData.StringToIntegerArrayList(str);
+        return Itoi(arr.toArray(new Integer[arr.size()]));
 	}
 
 	//判断是否在启动器界面
@@ -121,12 +121,12 @@ public class FloatServiceMethod
     }
 
 	//布尔值对象转换
-	public static boolean[] Btob (Boolean[] B)
+	public static int[] Itoi (Integer[] B)
 	{
-		boolean[] b = new boolean[B.length];
+		int[] b = new int[B.length];
 		for (int i = 0;i < B.length;i++)
 		{
-			b[i] = B[i];
+			b[i] = B[i].intValue();
 		}
 		return b;
 	}

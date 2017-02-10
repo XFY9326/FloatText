@@ -9,8 +9,8 @@ import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
 /*
-本方法用于动态变量的更新
-*/
+ 本方法用于动态变量的更新
+ */
 
 public class DynamicWordUpdateMethod
 {
@@ -22,17 +22,17 @@ public class DynamicWordUpdateMethod
     private ArrayList<Boolean> ShowFloat = new ArrayList<Boolean>();
     private WindowManager wm;
 
-    public DynamicWordUpdateMethod (Context ctx)
+    public DynamicWordUpdateMethod(Context ctx)
     {
         this.context = ctx;
     }
 
-    public void UpdateText (Intent intent)
+    public void UpdateText(Intent intent)
     {
         Bundle bundle = intent.getExtras();
 		String[] list = bundle.getStringArray("LIST");
 		String[] data = bundle.getStringArray("DATA");
-		boolean[] info = bundle.getBooleanArray("INFO");
+		int[] info = bundle.getIntArray("INFO");
         App utils = ((App)context.getApplicationContext());
         wm = utils.getFloatwinmanager();
         floatview = utils.getFloatView();
@@ -42,30 +42,35 @@ public class DynamicWordUpdateMethod
         floatlayout = utils.getFloatLayout();
         for (int i = 0; i < floattext.size(); i++)
         {
-            if (ShowFloat.get(i))
-            {
-                String str = floattext.get(i);
-                for (int a = 0;a < list.length;a++)
-				{
-					str = updatetext(str, list[a].toString(), data[a].toString(), info[a]);
-				}
-                if (floattext.get(i) != str && wm != null)
-                {
-                    floatview.get(i).setText(str);
-					try
-					{
-						wm.updateViewLayout(linearlayout.get(i), floatlayout.get(i));
-					}
-					catch(IllegalArgumentException e)
-					{
-						e.printStackTrace();
-					}
-                }
-            }
+            UpdateEachText(i, list, data, info);
         }
     }
 
-    private String updatetext (String str, String tag, String change, boolean reg)
+	private void UpdateEachText(int i, String[] list, String[] data, int[] info)
+	{
+		if (ShowFloat.get(i))
+		{
+			String str = floattext.get(i);
+			for (int a = 0;a < list.length;a++)
+			{
+				str = updatetext(str, list[a].toString(), data[a].toString(), info[a]);
+			}
+			if (floattext.get(i) != str && wm != null)
+			{
+				floatview.get(i).setText(str);
+				try
+				{
+					wm.updateViewLayout(linearlayout.get(i), floatlayout.get(i));
+				}
+				catch (IllegalArgumentException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+    private String updatetext(String str, String tag, String change, int reg)
     {
         if (!change.equals("NULL"))
         {
@@ -78,23 +83,28 @@ public class DynamicWordUpdateMethod
         return str;
     }
 
-    private String search (String str, String tag, String change, boolean reg)
+    private String search(String str, String tag, String change, int reg)
     {
-        if (reg)
-        {
-            Pattern pat = Pattern.compile(tag);
-            Matcher mat = pat.matcher(str);
-            while (mat.find())
-            {
-                String get = mat.group(0).toString();
-				str = str.replace(get, FloatServiceMethod.datecount(context, (get.substring(11, get.length() - 1))));
-            }
-        }
-        else
-        {
+        if (reg == 0)
+		{
             if (str.contains(tag))
             {
                 str = str.replace(tag, change);
+            }
+        }
+		else
+		{
+            Pattern pat = Pattern.compile(tag);
+            Matcher mat = pat.matcher(str);
+			String replaceString = "";
+            while (mat.find())
+            {
+                String get = mat.group(0).toString();
+				if (reg == 1)
+				{
+					replaceString = FloatServiceMethod.datecount(context, (get.substring(11, get.length() - 1)));
+				}
+				str = str.replace(get, replaceString);
             }
         }
         return str;
