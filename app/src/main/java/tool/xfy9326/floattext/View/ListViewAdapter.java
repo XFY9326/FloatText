@@ -83,7 +83,46 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
         }
         String listtext = textshow.get(index);
 		//保持显示的文字和悬浮窗内样式一致
-        if (!Show.get(index))
+        TextReshow(index, utils, view, Show.get(index), listtext);
+		//单行显示
+        view.textView.setSingleLine(utils.getListTextHide());
+		//点击文字隐藏和显示悬浮窗
+        view.textView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v)
+				{
+					TextViewSet(index, utils, view);
+				}
+			});
+
+		//锁定图标和监听设置
+        LockViewSet(index, view);
+        view.lock_button.setOnClickListener(new OnClickListener() {
+				public void onClick(View v)
+				{
+					FloatWinLock(context, index, view.lock_button);
+					System.out.println("ListViewAdapter: " + context);
+				}
+			});
+		//删除按钮监听
+        view.del_button.setOnClickListener(new OnClickListener() {
+				public void onClick(View v)
+				{
+					DelViewSet(index);
+				}
+			});
+		//编辑按钮监听
+        view.edit_button.setOnClickListener(new OnClickListener() {
+				public void onClick(View v)
+				{
+					EditViewSet(index);
+				}
+			});
+    }
+	
+	private void TextReshow(int index, App utils, ViewHolder view, boolean show, String listtext)
+	{
+		if (!show)
 		{
             SpannableString str = new SpannableString(listtext);
             str.setSpan(new StrikethroughSpan(), 0, str.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -108,45 +147,11 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
         view.textView.getPaint().setFakeBoldText(utils.getThickData().get(index));
         view.textView.setTextColor(utils.getColorData().get(index));
         view.textView.setEllipsize(TextUtils.TruncateAt.END);
-		//单行显示
-        view.textView.setSingleLine(utils.getListTextHide());
-		//点击文字隐藏和显示悬浮窗
-        view.textView.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v)
-				{
-					ArrayList<Boolean> showFloat = ((App) context.getApplicationContext()).getShowFloat();
-					ArrayList<String> TextShow = ((App) context.getApplicationContext()).getTextData();
-					boolean iShowFloat = showFloat.get(index);
-					String iTextShow = TextShow.get(index);
-
-					iShowFloat = !showFloat.set(index, !iShowFloat);
-					FloatData dat = new FloatData(context);
-					dat.savedata();
-
-					FloatLinearLayout floatLinearLayout = utils.getFloatlinearlayout().get(index);
-					floatLinearLayout.setShowState(iShowFloat);
-
-					WindowManager.LayoutParams wmParams = utils.getFloatLayout().get(index);
-					WindowManager wm = utils.getFloatwinmanager();
-
-					if (!iShowFloat)
-					{
-						SpannableString str = new SpannableString(iTextShow);
-						str.setSpan(new StrikethroughSpan(), 0, str.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-						view.textView.setText(str);
-					}
-					else
-					{
-						view.textView.setText(iTextShow);
-					}
-
-					wm.updateViewLayout(floatLinearLayout, wmParams);
-				}
-			});
-
-		//锁定图标和监听设置
-        ArrayList<Boolean> lock = ((App) context.getApplicationContext()).getLockPosition();
+	}
+	
+	private void LockViewSet(int index, ViewHolder view)
+	{
+		ArrayList<Boolean> lock = ((App) context.getApplicationContext()).getLockPosition();
         if (lock.get(index))
 		{
             view.lock_button.setBackgroundResource(R.drawable.ic_lock);
@@ -155,58 +160,78 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 		{
             view.lock_button.setBackgroundResource(R.drawable.ic_lock_unlocked);
         }
-        view.lock_button.setOnClickListener(new OnClickListener() {
-				public void onClick(View v)
-				{
-					FloatWinLock(context, index, view.lock_button);
-					System.out.println("ListViewAdapter: " + context);
-				}
-			});
-		//删除按钮监听
-        view.del_button.setOnClickListener(new OnClickListener() {
-				public void onClick(View v)
-				{
-					SharedPreferences spdata = PreferenceManager.getDefaultSharedPreferences(context);
-					boolean show = spdata.getBoolean("FloatDeleteAlert", false);
-					if (show)
-					{
-						AlertDialog.Builder dialog = new AlertDialog.Builder(context)
-                            .setTitle(R.string.ask_for_delete)
-                            .setMessage(R.string.ask_for_delete_alert)
-                            .setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface p1, int p2)
-								{
-                                    delwin(index);
-                                }
-                            })
-                            .setNegativeButton(R.string.cancel, null);
-						dialog.show();
-					}
-					else
+	}
+	
+	private void EditViewSet(int index)
+	{
+		if (!sp.getBoolean("WinOnlyShowInHome", false))
+		{
+			App utils = ((App) context.getApplicationContext());
+			floatdata = utils.getFloatView();
+			floatlayout = utils.getFloatLayout();
+			FloatWinEdit(activity, index);
+			notifyItemChanged(index);
+		}
+		else
+		{
+			FloatManage.snackshow((Activity) context, context.getString(R.string.float_can_not_edit));
+		}
+	}
+	
+	private void DelViewSet(final int index)
+	{
+		SharedPreferences spdata = PreferenceManager.getDefaultSharedPreferences(context);
+		boolean show = spdata.getBoolean("FloatDeleteAlert", false);
+		if (show)
+		{
+			AlertDialog.Builder dialog = new AlertDialog.Builder(context)
+				.setTitle(R.string.ask_for_delete)
+				.setMessage(R.string.ask_for_delete_alert)
+				.setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface p1, int p2)
 					{
 						delwin(index);
 					}
-				}
-			});
-		//编辑按钮监听
-        view.edit_button.setOnClickListener(new OnClickListener() {
-				public void onClick(View v)
-				{
-					if (!sp.getBoolean("WinOnlyShowInHome", false))
-					{
-						App utils = ((App) context.getApplicationContext());
-						floatdata = utils.getFloatView();
-						floatlayout = utils.getFloatLayout();
-						FloatWinEdit(activity, index);
-						notifyItemChanged(index);
-					}
-					else
-					{
-						FloatManage.snackshow((Activity) context, context.getString(R.string.float_can_not_edit));
-					}
-				}
-			});
-    }
+				})
+				.setNegativeButton(R.string.cancel, null);
+			dialog.show();
+		}
+		else
+		{
+			delwin(index);
+		}
+	}
+	
+	private void TextViewSet(int index, App utils, ViewHolder view)
+	{
+		ArrayList<Boolean> showFloat = ((App) context.getApplicationContext()).getShowFloat();
+		ArrayList<String> TextShow = ((App) context.getApplicationContext()).getTextData();
+		boolean iShowFloat = showFloat.get(index);
+		String iTextShow = TextShow.get(index);
+
+		iShowFloat = !showFloat.set(index, !iShowFloat);
+		FloatData dat = new FloatData(context);
+		dat.savedata();
+
+		FloatLinearLayout floatLinearLayout = utils.getFloatlinearlayout().get(index);
+		floatLinearLayout.setShowState(iShowFloat);
+
+		WindowManager.LayoutParams wmParams = utils.getFloatLayout().get(index);
+		WindowManager wm = utils.getFloatwinmanager();
+
+		if (!iShowFloat)
+		{
+			SpannableString str = new SpannableString(iTextShow);
+			str.setSpan(new StrikethroughSpan(), 0, str.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			view.textView.setText(str);
+		}
+		else
+		{
+			view.textView.setText(iTextShow);
+		}
+
+		wm.updateViewLayout(floatLinearLayout, wmParams);
+	}
 
 	//控件获取
     public static class ViewHolder extends RecyclerView.ViewHolder
