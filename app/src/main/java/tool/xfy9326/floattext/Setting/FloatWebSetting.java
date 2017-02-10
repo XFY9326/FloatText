@@ -100,60 +100,7 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
         width.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p1)
                 {
-					LayoutInflater inflater = LayoutInflater.from(FloatWebSetting.this);  
-                    View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(FloatWebSetting.this);
-                    dialog.setTitle(R.string.xml_web_win_width);
-                    final TextView text = (TextView) layout.findViewById(R.id.textview_size_now);
-                    final SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_size);
-                    text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
-					Button minus = (Button) layout.findViewById(R.id.floatsize_button_minus);
-					Button plus = (Button) layout.findViewById(R.id.floatsize_button_plus);
-					minus.setOnClickListener(new OnClickListener(){
-							public void onClick(View v)
-							{
-								if (FloatWide > 0)
-								{
-									FloatWide--;
-									spedit.putFloat("FloatWide", FloatWide);
-									spedit.commit();
-									bar.setProgress((int)FloatWide);
-									text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
-									updateview();
-								}
-							}
-						});
-					plus.setOnClickListener(new OnClickListener(){
-							public void onClick(View v)
-							{
-								if (FloatWide < wm.getDefaultDisplay().getHeight())
-								{
-									FloatWide++;
-									spedit.putFloat("FloatWide", FloatWide);
-									spedit.commit();
-									bar.setProgress((int)FloatWide);
-									text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
-									updateview();
-								}
-							}
-						});
-                    bar.setMax(wm.getDefaultDisplay().getHeight());
-                    bar.setProgress((int)FloatWide);
-                    bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch(SeekBar bar)
-                            {}
-                            public void onStopTrackingTouch(SeekBar bar)
-                            {}
-                            public void onProgressChanged(SeekBar bar , int i , boolean state)
-                            {
-                                FloatWide = i;
-                                text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
-                                updateview();
-                            }
-                        });
-                    dialog.setView(layout);
-                    dialog.setPositiveButton(R.string.close, null);
-                    dialog.show();
+					WidthViewSet();
                     return true;
                 }
             });
@@ -161,60 +108,7 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
         height.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p1)
                 {
-					LayoutInflater inflater = LayoutInflater.from(FloatWebSetting.this);  
-                    View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(FloatWebSetting.this);
-                    dialog.setTitle(R.string.xml_web_win_height);
-                    final TextView text = (TextView) layout.findViewById(R.id.textview_size_now);
-                    final SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_size);
-                    text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
-					Button minus = (Button) layout.findViewById(R.id.floatsize_button_minus);
-					Button plus = (Button) layout.findViewById(R.id.floatsize_button_plus);
-					minus.setOnClickListener(new OnClickListener(){
-							public void onClick(View v)
-							{
-								if (FloatLong > 0)
-								{
-									FloatLong--;
-									spedit.putFloat("FloatLong", FloatLong);
-									spedit.commit();
-									bar.setProgress((int)FloatLong);
-									text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
-									updateview();
-								}
-							}
-						});
-					plus.setOnClickListener(new OnClickListener(){
-							public void onClick(View v)
-							{
-								if (FloatLong < wm.getDefaultDisplay().getWidth())
-								{
-									FloatLong++;
-									spedit.putFloat("FloatLong", FloatLong);
-									spedit.commit();
-									bar.setProgress((int)FloatLong);
-									text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
-									updateview();
-								}
-							}
-						});
-                    bar.setMax(wm.getDefaultDisplay().getWidth());
-                    bar.setProgress((int)FloatLong);
-                    bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-                            public void onStartTrackingTouch(SeekBar bar)
-                            {}
-                            public void onStopTrackingTouch(SeekBar bar)
-                            {}
-                            public void onProgressChanged(SeekBar bar , int i , boolean state)
-                            {
-                                FloatLong = i;
-                                text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
-                                updateview();
-                            }
-                        });
-                    dialog.setView(layout);
-                    dialog.setPositiveButton(R.string.close, null);
-                    dialog.show();
+					HeightViewSet();
                     return true;
                 }
             });
@@ -227,6 +121,122 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
                 }
             });
     }
+
+	private void WidthViewSet()
+	{
+		LayoutInflater inflater = LayoutInflater.from(FloatWebSetting.this);  
+		View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
+		AlertDialog.Builder dialog = new AlertDialog.Builder(FloatWebSetting.this);
+		dialog.setTitle(R.string.xml_web_win_width);
+		final TextView text = (TextView) layout.findViewById(R.id.textview_size_now);
+		final SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_size);
+		text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
+		Button minus = (Button) layout.findViewById(R.id.floatsize_button_minus);
+		Button plus = (Button) layout.findViewById(R.id.floatsize_button_plus);
+		minus.setOnClickListener(new OnClickListener(){
+				public void onClick(View v)
+				{
+					if (FloatWide > 0)
+					{
+						FloatWide--;
+						spedit.putFloat("FloatWide", FloatWide);
+						spedit.commit();
+						bar.setProgress((int)FloatWide);
+						text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
+						updateview();
+					}
+				}
+			});
+		plus.setOnClickListener(new OnClickListener(){
+				public void onClick(View v)
+				{
+					if (FloatWide < wm.getDefaultDisplay().getHeight())
+					{
+						FloatWide++;
+						spedit.putFloat("FloatWide", FloatWide);
+						spedit.commit();
+						bar.setProgress((int)FloatWide);
+						text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
+						updateview();
+					}
+				}
+			});
+		bar.setMax(wm.getDefaultDisplay().getHeight());
+		bar.setProgress((int)FloatWide);
+		bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+				public void onStartTrackingTouch(SeekBar bar)
+				{}
+				public void onStopTrackingTouch(SeekBar bar)
+				{}
+				public void onProgressChanged(SeekBar bar , int i , boolean state)
+				{
+					FloatWide = i;
+					text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
+					updateview();
+				}
+			});
+		dialog.setView(layout);
+		dialog.setPositiveButton(R.string.close, null);
+		dialog.show();
+	}
+
+	private void HeightViewSet()
+	{
+		LayoutInflater inflater = LayoutInflater.from(FloatWebSetting.this);  
+		View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
+		AlertDialog.Builder dialog = new AlertDialog.Builder(FloatWebSetting.this);
+		dialog.setTitle(R.string.xml_web_win_height);
+		final TextView text = (TextView) layout.findViewById(R.id.textview_size_now);
+		final SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_size);
+		text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
+		Button minus = (Button) layout.findViewById(R.id.floatsize_button_minus);
+		Button plus = (Button) layout.findViewById(R.id.floatsize_button_plus);
+		minus.setOnClickListener(new OnClickListener(){
+				public void onClick(View v)
+				{
+					if (FloatLong > 0)
+					{
+						FloatLong--;
+						spedit.putFloat("FloatLong", FloatLong);
+						spedit.commit();
+						bar.setProgress((int)FloatLong);
+						text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
+						updateview();
+					}
+				}
+			});
+		plus.setOnClickListener(new OnClickListener(){
+				public void onClick(View v)
+				{
+					if (FloatLong < wm.getDefaultDisplay().getWidth())
+					{
+						FloatLong++;
+						spedit.putFloat("FloatLong", FloatLong);
+						spedit.commit();
+						bar.setProgress((int)FloatLong);
+						text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
+						updateview();
+					}
+				}
+			});
+		bar.setMax(wm.getDefaultDisplay().getWidth());
+		bar.setProgress((int)FloatLong);
+		bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+				public void onStartTrackingTouch(SeekBar bar)
+				{}
+				public void onStopTrackingTouch(SeekBar bar)
+				{}
+				public void onProgressChanged(SeekBar bar , int i , boolean state)
+				{
+					FloatLong = i;
+					text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
+					updateview();
+				}
+			});
+		dialog.setView(layout);
+		dialog.setPositiveButton(R.string.close, null);
+		dialog.show();
+	}
 
     private void prepareshow()
     {
