@@ -24,6 +24,7 @@ import tool.xfy9326.floattext.View.*;
 import android.app.AlertDialog;
 import android.support.v7.app.ActionBar;
 import tool.xfy9326.floattext.R;
+import tool.xfy9326.floattext.Tool.*;
 
 public class GlobalSetActivity extends AppCompatPreferenceActivity
 {
@@ -251,8 +252,8 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 		if (!b)
 		{
 			App utils = ((App)getApplicationContext());
-			ArrayList<FloatLinearLayout> layout = utils.getFloatlinearlayout();
-			ArrayList<Boolean> show = utils.getShowFloat();
+			ArrayList<FloatLinearLayout> layout = utils.getFrameutil().getFloatlinearlayout();
+			ArrayList<Boolean> show = utils.getTextutil().getShowFloat();
 			ListViewAdapter adp = utils.getListviewadapter();
 			for (int i = 0;i < layout.size(); i++)
 			{
@@ -300,7 +301,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 
 	private void FilterSet(final SharedPreferences setdata)
 	{
-		final ArrayList<String> FilterApplication = FloatData.StringToStringArrayList(setdata.getString("Filter_Application", "[]"));
+		final ArrayList<String> FilterApplication = FormatArrayList.StringToStringArrayList(setdata.getString("Filter_Application", "[]"));
 		getAppInfo(GlobalSetActivity.this, FilterApplication);
 		AlertDialog.Builder alert = new AlertDialog.Builder(GlobalSetActivity.this)
 			.setTitle(R.string.xml_global_win_filter)
@@ -321,7 +322,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 							FilterApplication.add(PkgNames[a]);
 						}
 					}
-					((App)getApplicationContext()).setFilterApplication(FilterApplication);
+					((App)getApplicationContext()).getFrameutil().setFilterApplication(FilterApplication);
 					SharedPreferences.Editor ed = setdata.edit();
 					ed.putString("Filter_Application", FilterApplication.toString());
 					ed.commit();

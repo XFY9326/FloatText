@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.regex.*;
 import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
+import tool.xfy9326.floattext.Tool.*;
 
 /*
  本方法用于动态变量的更新
@@ -35,11 +36,11 @@ public class DynamicWordUpdateMethod
 		int[] info = bundle.getIntArray("INFO");
         App utils = ((App)context.getApplicationContext());
         wm = utils.getFloatwinmanager();
-        floatview = utils.getFloatView();
-        floattext = utils.getFloatText();
-        ShowFloat = utils.getShowFloat();
-        linearlayout = utils.getFloatlinearlayout();
-        floatlayout = utils.getFloatLayout();
+        floatview = utils.getFrameutil().getFloatview();
+        floattext = utils.getFrameutil().getFloattext();
+        ShowFloat = utils.getTextutil().getShowFloat();
+        linearlayout = utils.getFrameutil().getFloatlinearlayout();
+        floatlayout = utils.getFrameutil().getFloatlayout();
         for (int i = 0; i < floattext.size(); i++)
         {
             UpdateEachText(i, list, data, info);
@@ -102,7 +103,7 @@ public class DynamicWordUpdateMethod
                 String get = mat.group(0).toString();
 				if (reg == 1)
 				{
-					replaceString = FloatServiceMethod.datecount(context, (get.substring(11, get.length() - 1)));
+					replaceString = DateCounter.Count(context, (get.substring(11, get.length() - 1)));
 				}
 				str = str.replace(get, replaceString);
             }

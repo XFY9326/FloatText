@@ -26,6 +26,7 @@ import tool.xfy9326.floattext.View.*;
 import android.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import tool.xfy9326.floattext.R;
+import tool.xfy9326.floattext.Tool.*;
 
 public class FloatManage extends AppCompatActivity
 {
@@ -162,7 +163,7 @@ public class FloatManage extends AppCompatActivity
 	{
 		App utils = (App)getApplicationContext();
 		SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
-		utils.setFilterApplication(FloatData.StringToStringArrayList(setdata.getString("Filter_Application", "[]")));
+		utils.getFrameutil().setFilterApplication(FormatArrayList.StringToStringArrayList(setdata.getString("Filter_Application", "[]")));
         spdata = PreferenceManager.getDefaultSharedPreferences(ctx);
         spedit = spdata.edit();
         if (!utils.GetSave)

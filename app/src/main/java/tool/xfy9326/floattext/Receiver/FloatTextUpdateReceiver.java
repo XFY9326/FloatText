@@ -30,9 +30,9 @@ public class FloatTextUpdateReceiver extends BroadcastReceiver
             {
 				String actname = p2.getStringExtra("CurrentActivity");
 				App utils = ((App)p1.getApplicationContext());
-				ArrayList<String> fa = utils.getFilterApplication();
-				ArrayList<FloatLinearLayout> layout = utils.getFloatlinearlayout();
-                ArrayList<Boolean> show = utils.getShowFloat();
+				ArrayList<String> fa = utils.getFrameutil().getFilterApplication();
+				ArrayList<FloatLinearLayout> layout = utils.getFrameutil().getFloatlinearlayout();
+                ArrayList<Boolean> show = utils.getTextutil().getShowFloat();
                 ListViewAdapter adp = utils.getListviewadapter();
 				boolean findact = false;
 				for (int a = 0;a < fa.size();a++)
@@ -72,8 +72,8 @@ public class FloatTextUpdateReceiver extends BroadcastReceiver
             {
                 Bundle bundle = p2.getExtras();
                 App utils = ((App)p1.getApplicationContext());
-                ArrayList<FloatLinearLayout> layout = utils.getFloatlinearlayout();
-                ArrayList<Boolean> show = utils.getShowFloat();
+                ArrayList<FloatLinearLayout> layout = utils.getFrameutil().getFloatlinearlayout();
+                ArrayList<Boolean> show = utils.getTextutil().getShowFloat();
                 ListViewAdapter adp = utils.getListviewadapter();
                 if (bundle.getBoolean("Float_InHome"))
                 {

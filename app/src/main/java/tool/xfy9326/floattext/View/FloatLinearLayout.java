@@ -50,8 +50,8 @@ public class FloatLinearLayout extends LinearLayout
                 case 0:
                     if (FLOAT_ID != -1)
                     {
-                        ArrayList<Boolean> lock = ((App)ctx.getApplicationContext()).getLockPosition();
-                        ArrayList<String> position = ((App)ctx.getApplicationContext()).getPosition();
+                        ArrayList<Boolean> lock = ((App)ctx.getApplicationContext()).getTextutil().getLockPosition();
+                        ArrayList<String> position = ((App)ctx.getApplicationContext()).getTextutil().getPosition();
                         if (FLOAT_ID < lock.size() && lockposition == false)
                         {
                             setPositionLocked(true);

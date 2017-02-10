@@ -44,64 +44,9 @@ public class App extends Application
         SafeGuard.isPackageNameAvailable(this);
     }
 
-	public void setFilterApplication(ArrayList<String> filterApplication)
-	{
-		frameutil.setFilterApplication(filterApplication);
-	}
-
-	public ArrayList<String> getFilterApplication()
-	{
-		return frameutil.getFilterApplication();
-	}
-
-	public ArrayList<Float> getFloatWide()
-	{
-		return textutil.getFloatWide();
-	}
-
-	public ArrayList<Float> getFloatLong()
-	{
-		return textutil.getFloatLong();
-	}
-
-	public ArrayList<Boolean> getFloatSize()
-	{
-		return textutil.getFloatSize();
-	}
-
     public void setGetSave(boolean b)
     {
         this.GetSave = b;
-    }
-
-    public ArrayList<Integer> getTextShadowColor()
-    {
-        return textutil.getTextShadowColor();
-    }
-
-    public ArrayList<Integer> getBackgroundColor()
-    {
-        return textutil.getBackgroundColor();
-    }
-
-    public ArrayList<Float> getTextShadowRadius()
-    {
-        return textutil.getTextShadowRadius();
-    }
-
-    public ArrayList<Float> getTextShadowY()
-    {
-        return textutil.getTextShadowY();
-    }
-
-    public ArrayList<Float> getTextShadowX()
-    {
-        return textutil.getTextShadowX();
-    }
-
-    public ArrayList<Boolean> getTextShadow()
-    {
-        return textutil.getTextShadow();
     }
 
     public void setListviewadapter(ListViewAdapter listviewadapter)
@@ -184,69 +129,9 @@ public class App extends Application
         return MovingMethod;
     }
 
-    public ArrayList<Integer> getTextSpeed()
-    {
-        return textutil.getTextSpeed();
-    }
-
-    public ArrayList<Boolean> getTextMove()
-    {
-        return textutil.getTextMove();
-    }
-
-    public ArrayList<Boolean> getAutoTop()
-    {
-        return textutil.getAutoTop();
-    }
-
-    public ArrayList<Boolean> getTextTop()
-    {
-        return textutil.getTextTop();
-    }
-
-    public ArrayList<Boolean> getLockPosition()
-    {
-        return textutil.getLockPosition();
-    }
-
-    public ArrayList<String> getPosition()
-    {
-        return textutil.getPosition();
-    }
-
-    public void setShowFloat(ArrayList<Boolean> showfloat)
-    {
-        textutil.setShowFloat(showfloat);
-    }
-
-    public ArrayList<Boolean> getShowFloat()
-    {
-        return textutil.getShowFloat();
-    }
-
     public void setFloatReshow(boolean bool)
     {
         FloatWinReshow = bool;
-    }
-
-	public void setFloatlinearlayout(ArrayList<FloatLinearLayout> floatlinearlayout)
-    {
-        frameutil.setFloatlinearlayout(floatlinearlayout);
-    }
-
-    public ArrayList<FloatLinearLayout> getFloatlinearlayout()
-    {
-        return frameutil.getFloatlinearlayout();
-    }
-
-    public ArrayList<FloatTextView> getFloatView()
-    {
-        return frameutil.getFloatview();
-    }
-
-    public void setFloatView(ArrayList<FloatTextView> floatview)
-    {
-        frameutil.setFloatview(floatview);
     }
 
     public ArrayList<String> getFloatText()
@@ -259,34 +144,9 @@ public class App extends Application
         frameutil.setFloattext(floattext);
     }
 
-    public ArrayList<WindowManager.LayoutParams> getFloatLayout()
-    {
-        return frameutil.getFloatlayout();
-    }
-
-    public void setFloatLayout(ArrayList<WindowManager.LayoutParams> floatlayout)
-    {
-        frameutil.setFloatlayout(floatlayout);
-    }
-
     public ArrayList<String> getTextData()
     {
         return textutil.getTextShow();
-    }
-
-    public ArrayList<Float> getSizeData()
-    {
-        return textutil.getSizeShow();
-    }
-
-    public ArrayList<Integer> getColorData()
-    {
-        return textutil.getColorShow();
-    }
-
-    public ArrayList<Boolean> getThickData()
-    {
-        return textutil.getThickShow();
     }
 
 	public void setTextutil(FloatTextUtils textutil)
@@ -297,6 +157,16 @@ public class App extends Application
 	public FloatTextUtils getTextutil()
 	{
 		return textutil;
+	}
+	
+	public void setFrameutil(FloatFrameUtils frameutil)
+	{
+		this.frameutil = frameutil;
+	}
+
+	public FloatFrameUtils getFrameutil()
+	{
+		return frameutil;
 	}
 
     public void setDatas(int i, FloatTextView fv, FloatLinearLayout fll, WindowManager.LayoutParams layout, String text, int color, float size, boolean thick, boolean show, String position, boolean lp, boolean tp, boolean ap, boolean tm, int sp, boolean sha, float shax, float shay, float shad, int bac, int tsc, boolean fs, float fl, float fw)

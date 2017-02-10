@@ -215,10 +215,10 @@ public class FloatTextSettingMethod
     public static void savedata(Context ctx, FloatTextView fv, FloatLinearLayout fll, String text, WindowManager.LayoutParams layout)
     {
         App utils = ((App)ctx.getApplicationContext());
-        ArrayList<FloatTextView> floatdata = utils.getFloatView();
-        ArrayList<String> floattext = utils.getFloatText();
-        ArrayList<WindowManager.LayoutParams> floatlayout = utils.getFloatLayout();
-        ArrayList<FloatLinearLayout> floatlinearlayout = utils.getFloatlinearlayout();
+        ArrayList<FloatTextView> floatdata = utils.getFrameutil().getFloatview();
+        ArrayList<String> floattext = utils.getFrameutil().getFloattext();
+        ArrayList<WindowManager.LayoutParams> floatlayout = utils.getFrameutil().getFloatlayout();
+        ArrayList<FloatLinearLayout> floatlinearlayout = utils.getFrameutil().getFloatlinearlayout();
         floatdata.add(fv);
         floattext.add(text);
         floatlayout.add(layout);

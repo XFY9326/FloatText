@@ -16,6 +16,7 @@ import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
 import tool.xfy9326.floattext.R;
+import tool.xfy9326.floattext.Tool.*;
 
 public class FloatTextBootReceiver extends BroadcastReceiver
 {
@@ -61,7 +62,7 @@ public class FloatTextBootReceiver extends BroadcastReceiver
 		utils.setDevelopMode(spdata.getBoolean("DevelopMode", false));
 		utils.setHtmlMode(spdata.getBoolean("HtmlMode", true));
 		utils.setListTextHide(spdata.getBoolean("ListTextHide", false));
-		utils.setFilterApplication(FloatData.StringToStringArrayList(setdata.getString("Filter_Application", "[]")));
+		utils.getFrameutil().setFilterApplication(FormatArrayList.StringToStringArrayList(setdata.getString("Filter_Application", "[]")));
 		if (((App)ctx.getApplicationContext()).getTextData().size() > 0)
 		{
 			FloatManageMethod.startservice(ctx);
@@ -75,26 +76,27 @@ public class FloatTextBootReceiver extends BroadcastReceiver
 	private void Reshow(Context ctx)
 	{
 		App utils = ((App)ctx.getApplicationContext());
-		ArrayList<String> Text = utils.getTextData();
-		ArrayList<Float> Size = utils.getSizeData();
-		ArrayList<Integer> Color = utils.getColorData();
-		ArrayList<Boolean> Thick = utils.getThickData();
-		ArrayList<Boolean> Show = utils.getShowFloat();
-		ArrayList<String> Position = utils.getPosition();
-		ArrayList<Boolean> Lock = utils.getLockPosition();
-		ArrayList<Boolean> Top = utils.getTextTop();
-		ArrayList<Boolean> AutoTop = utils.getAutoTop();
-		ArrayList<Boolean> Move = utils.getTextMove();
-		ArrayList<Integer> Speed = utils.getTextSpeed();
-		ArrayList<Boolean> Shadow = utils.getTextShadow();
-		ArrayList<Float> ShadowX = utils.getTextShadowX();
-		ArrayList<Float> ShadowY = utils.getTextShadowY();
-		ArrayList<Float> ShadowRadius = utils.getTextShadowRadius();
-		ArrayList<Integer> BackgroundColor = utils.getBackgroundColor();
-		ArrayList<Integer> ShadowColor = utils.getTextShadowColor();
-		ArrayList<Boolean> FloatSize = utils.getFloatSize();
-		ArrayList<Float> FloatLong = utils.getFloatLong();
-		ArrayList<Float> FloatWide = utils.getFloatWide();
+		FloatTextUtils textutils = utils.getTextutil();
+		ArrayList<String> Text = textutils.getTextShow();
+		ArrayList<Float> Size = textutils.getSizeShow();
+		ArrayList<Integer> Color = textutils.getColorShow();
+		ArrayList<Boolean> Thick = textutils.getThickShow();
+		ArrayList<Boolean> Show = textutils.getShowFloat();
+		ArrayList<String> Position = textutils.getPosition();
+		ArrayList<Boolean> Lock = textutils.getLockPosition();
+		ArrayList<Boolean> Top = textutils.getTextTop();
+		ArrayList<Boolean> AutoTop = textutils.getAutoTop();
+		ArrayList<Boolean> Move = textutils.getTextMove();
+		ArrayList<Integer> Speed = textutils.getTextSpeed();
+		ArrayList<Boolean> Shadow = textutils.getTextShadow();
+		ArrayList<Float> ShadowX = textutils.getTextShadowX();
+		ArrayList<Float> ShadowY = textutils.getTextShadowY();
+		ArrayList<Float> ShadowRadius = textutils.getTextShadowRadius();
+		ArrayList<Integer> BackgroundColor = textutils.getBackgroundColor();
+		ArrayList<Integer> ShadowColor = textutils.getTextShadowColor();
+		ArrayList<Boolean> FloatSize = textutils.getFloatSize();
+		ArrayList<Float> FloatLong = textutils.getFloatLong();
+		ArrayList<Float> FloatWide = textutils.getFloatWide();
 		if (Text.size() != 0 && Size.size() != 0 && Color.size() != 0 && Thick.size() != 0)
 		{
 			WindowManager wm = utils.getFloatwinmanager();

@@ -172,8 +172,8 @@ public class FloatManageMethod
     public static void closeAllWin(Context ctx)
     {
         WindowManager wm =((App)ctx.getApplicationContext()).getFloatwinmanager();
-        ArrayList<FloatLinearLayout> layout =  ((App)ctx.getApplicationContext()).getFloatlinearlayout();
-        ArrayList<Boolean> show =  ((App)ctx.getApplicationContext()).getShowFloat();
+        ArrayList<FloatLinearLayout> layout =  ((App)ctx.getApplicationContext()).getFrameutil().getFloatlinearlayout();
+        ArrayList<Boolean> show =  ((App)ctx.getApplicationContext()).getTextutil().getShowFloat();
         for (int i = 0;i < layout.size();i++)
         {
             if (show.get(i))
@@ -431,26 +431,27 @@ public class FloatManageMethod
 			public void run()
             {
                 final App utils = ((App)ctx.getApplicationContext());
-                final ArrayList<String> Text = utils.getTextData();
-                final ArrayList<Float> Size = utils.getSizeData();
-                final ArrayList<Integer> Color = utils.getColorData();
-                final ArrayList<Boolean> Thick = utils.getThickData();
-                final ArrayList<Boolean> Show = utils.getShowFloat();
-                final ArrayList<String> Position = utils.getPosition();
-                final ArrayList<Boolean> Lock = utils.getLockPosition();
-                final ArrayList<Boolean> Top = utils.getTextTop();
-                final ArrayList<Boolean> AutoTop = utils.getAutoTop();
-                final ArrayList<Boolean> Move = utils.getTextMove();
-                final ArrayList<Integer> Speed = utils.getTextSpeed();
-                final ArrayList<Boolean> Shadow = utils.getTextShadow();
-                final ArrayList<Float> ShadowX = utils.getTextShadowX();
-                final ArrayList<Float> ShadowY = utils.getTextShadowY();
-                final ArrayList<Float> ShadowRadius = utils.getTextShadowRadius();
-                final ArrayList<Integer> BackgroundColor = utils.getBackgroundColor();
-                final ArrayList<Integer> ShadowColor = utils.getTextShadowColor();
-				final ArrayList<Boolean> FloatSize = utils.getFloatSize();
-				final ArrayList<Float> FloatLong = utils.getFloatLong();
-				final ArrayList<Float> FloatWide = utils.getFloatWide();
+				FloatTextUtils textutils = utils.getTextutil();
+                final ArrayList<String> Text = textutils.getTextShow();
+                final ArrayList<Float> Size = textutils.getSizeShow();
+                final ArrayList<Integer> Color = textutils.getColorShow();
+                final ArrayList<Boolean> Thick = textutils.getThickShow();
+                final ArrayList<Boolean> Show = textutils.getShowFloat();
+                final ArrayList<String> Position = textutils.getPosition();
+                final ArrayList<Boolean> Lock = textutils.getLockPosition();
+                final ArrayList<Boolean> Top = textutils.getTextTop();
+                final ArrayList<Boolean> AutoTop = textutils.getAutoTop();
+                final ArrayList<Boolean> Move = textutils.getTextMove();
+                final ArrayList<Integer> Speed = textutils.getTextSpeed();
+                final ArrayList<Boolean> Shadow = textutils.getTextShadow();
+                final ArrayList<Float> ShadowX = textutils.getTextShadowX();
+                final ArrayList<Float> ShadowY = textutils.getTextShadowY();
+                final ArrayList<Float> ShadowRadius = textutils.getTextShadowRadius();
+                final ArrayList<Integer> BackgroundColor = textutils.getBackgroundColor();
+                final ArrayList<Integer> ShadowColor = textutils.getTextShadowColor();
+				final ArrayList<Boolean> FloatSize = textutils.getFloatSize();
+				final ArrayList<Float> FloatLong = textutils.getFloatLong();
+				final ArrayList<Float> FloatWide = textutils.getFloatWide();
 				ctx.runOnUiThread(new Runnable(){
 						public void run()
 						{

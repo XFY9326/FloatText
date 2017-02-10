@@ -7,6 +7,7 @@ import java.io.*;
 import java.util.*;
 import org.json.*;
 import tool.xfy9326.floattext.Method.*;
+import tool.xfy9326.floattext.Tool.*;
 
 /*
  数据操作
@@ -35,27 +36,28 @@ public class FloatData
 	//保存
     public void savedata()
     {
+		FloatTextUtils textutils = utils.getTextutil();
         spedit.putInt("Version", StaticNum.FloatDataVersion);
-        speditt.putString("TextArray", TextArr_encode(utils.getTextData()).toString());
-        spedit.putString("ColorArray", utils.getColorData().toString());
-        spedit.putString("ThickArray", utils.getThickData().toString());
-        spedit.putString("SizeArray", utils.getSizeData().toString());
-        spedit.putString("ShowArray", utils.getShowFloat().toString());
-        spedit.putString("LockArray", utils.getLockPosition().toString());
-        spedit.putString("PositionArray", utils.getPosition().toString());
-        spedit.putString("TopArray", utils.getTextTop().toString());
-        spedit.putString("AutoTopArray", utils.getAutoTop().toString());
-        spedit.putString("MoveArray", utils.getTextMove().toString());
-        spedit.putString("SpeedArray", utils.getTextSpeed().toString());
-        spedit.putString("ShadowArray", utils.getTextShadow().toString());
-        spedit.putString("ShadowXArray", utils.getTextShadowX().toString());
-        spedit.putString("ShadowYArray", utils.getTextShadowY().toString());
-        spedit.putString("ShadowRadiusArray", utils.getTextShadowRadius().toString());
-        spedit.putString("BackgroundColorArray", utils.getBackgroundColor().toString());
-        spedit.putString("TextShadowColorArray", utils.getTextShadowColor().toString());
-		spedit.putString("FloatSizeArray", utils.getFloatSize().toString());
-		spedit.putString("FloatLongArray", utils.getFloatLong().toString());
-		spedit.putString("FloatWideArray", utils.getFloatWide().toString());
+        speditt.putString("TextArray", TextArr_encode(textutils.getTextShow()).toString());
+        spedit.putString("ColorArray", textutils.getColorShow().toString());
+        spedit.putString("ThickArray", textutils.getThickShow().toString());
+        spedit.putString("SizeArray", textutils.getSizeShow().toString());
+        spedit.putString("ShowArray", textutils.getShowFloat().toString());
+        spedit.putString("LockArray", textutils.getLockPosition().toString());
+        spedit.putString("PositionArray", textutils.getPosition().toString());
+        spedit.putString("TopArray", textutils.getTextTop().toString());
+        spedit.putString("AutoTopArray", textutils.getAutoTop().toString());
+        spedit.putString("MoveArray", textutils.getTextMove().toString());
+        spedit.putString("SpeedArray", textutils.getTextSpeed().toString());
+        spedit.putString("ShadowArray", textutils.getTextShadow().toString());
+        spedit.putString("ShadowXArray", textutils.getTextShadowX().toString());
+        spedit.putString("ShadowYArray", textutils.getTextShadowY().toString());
+        spedit.putString("ShadowRadiusArray", textutils.getTextShadowRadius().toString());
+        spedit.putString("BackgroundColorArray", textutils.getBackgroundColor().toString());
+        spedit.putString("TextShadowColorArray", textutils.getTextShadowColor().toString());
+		spedit.putString("FloatSizeArray", textutils.getFloatSize().toString());
+		spedit.putString("FloatLongArray", textutils.getFloatLong().toString());
+		spedit.putString("FloatWideArray", textutils.getFloatWide().toString());
         spedit.apply();
 		speditt.apply();
     }
@@ -97,14 +99,14 @@ public class FloatData
 		String text = spdatat.getString("TextArray", "[]");
 		if (version < 1)
         {
-            textarr.addAll(StringToStringArrayList(text));
+            textarr.addAll(FormatArrayList.StringToStringArrayList(text));
 			speditt.putString("TextArray", TextArr_encode(textarr).toString());
 			speditt.commit();
             updateVersion(1);
         }
 		else
 		{
-			textarr.addAll(TextArr_decode(StringToStringArrayList(text)));
+			textarr.addAll(TextArr_decode(FormatArrayList.StringToStringArrayList(text)));
 		}
 	}
 
@@ -116,9 +118,9 @@ public class FloatData
 			textarr.clear();
 			if (version < 1)
 			{
-				textarr.addAll(StringToStringArrayList(text_v));
+				textarr.addAll(FormatArrayList.StringToStringArrayList(text_v));
 			}
-			textarr.addAll(TextArr_decode(StringToStringArrayList(text_v)));
+			textarr.addAll(TextArr_decode(FormatArrayList.StringToStringArrayList(text_v)));
 			spedit.remove("TextArray");
 			speditt.putString("TextArray", TextArr_encode(textarr).toString());
 			spedit.commit();
@@ -324,28 +326,28 @@ public class FloatData
     private ArrayList<String> NewStringKey(String fix, String def)
     {
         fix = NewKey(fix, def);
-        ArrayList<String> res = StringToStringArrayList(fix);
+        ArrayList<String> res = FormatArrayList.StringToStringArrayList(fix);
         return FixKey(res, def);
     }
 
     private ArrayList<Integer> NewIntegerKey(String fix, String def)
     {
         fix = NewKey(fix, def);
-        ArrayList<Integer> res = StringToIntegerArrayList(fix);
+        ArrayList<Integer> res = FormatArrayList.StringToIntegerArrayList(fix);
         return FixKey(res, Integer.valueOf(def));
     }
 
     private ArrayList<Float> NewFloatKey(String fix, String def)
     {
         fix = NewKey(fix, def);
-        ArrayList<Float> res = StringToFloatArrayList(fix);
+        ArrayList<Float> res = FormatArrayList.StringToFloatArrayList(fix);
         return FixKey(res, Float.valueOf(def));
     }
 
     private ArrayList<Boolean> NewBooleanKey(String fix, String def)
     {
         fix = NewKey(fix, def);
-        ArrayList<Boolean> res = StringToBooleanArrayList(fix);
+        ArrayList<Boolean> res = FormatArrayList.StringToBooleanArrayList(fix);
         return FixKey(res, Boolean.valueOf(def));
     }
 
@@ -398,99 +400,5 @@ public class FloatData
         }
         return str;
     }
-
-    public final static ArrayList<String> StringToStringArrayList(String str)
-    {
-        ArrayList<String> arr = new ArrayList<String>();
-        if (str.contains("[") && str.length() >= 3)
-        {
-            str = str.substring(1, str.length() - 1);
-            if (str.contains(","))
-            {
-                String[] temp = str.split(",");
-                for (int i = 0;i < temp.length;i++)
-                {
-                    if (i != 0)
-                    {
-                        temp[i] = temp[i].substring(1, temp[i].length());
-                    }
-                    arr.add(temp[i].toString());
-                }
-            }
-            else
-            {
-                arr.add(str.toString());
-            }
-        }
-        return arr;
-    }
-
-    public final static ArrayList<Float> StringToFloatArrayList(String str)
-    {
-        ArrayList<Float> arr = new ArrayList<Float>();
-        if (str.contains("[") && str.length() >= 3)
-        {
-            str = str.substring(1, str.length() - 1);
-            if (str.contains(","))
-            {
-                String[] temp = str.split(",");
-                for (int i = 0;i < temp.length;i++)
-                {
-                    temp[i] = temp[i].replaceAll("\\s+", "");
-                    arr.add(Float.parseFloat(temp[i]));
-                }
-            }
-            else
-            {
-                arr.add(Float.parseFloat(str));
-            }
-        }
-        return arr;
-    }
-
-    public final static ArrayList<Integer> StringToIntegerArrayList(String str)
-    {
-        ArrayList<Integer> arr = new ArrayList<Integer>();
-        if (str.contains("[") && str.length() >= 3)
-        {
-            str = str.substring(1, str.length() - 1);
-            if (str.contains(","))
-            {
-                String[] temp = str.split(",");
-                for (int i = 0;i < temp.length;i++)
-                {
-                    temp[i] = temp[i].replaceAll("\\s+", "");
-                    arr.add(Integer.parseInt(temp[i]));
-                }
-            }
-            else
-            {
-                arr.add(Integer.parseInt(str));
-            }
-        }
-        return arr;
-    }
-
-    public final static ArrayList<Boolean> StringToBooleanArrayList(String str)
-    {
-        ArrayList<Boolean> arr = new ArrayList<Boolean>();
-        if (str.contains("[") && str.length() >= 3)
-        {
-            str = str.substring(1, str.length() - 1);
-            if (str.contains(","))
-            {
-                String[] temp = str.split(",");
-                for (int i = 0;i < temp.length;i++)
-                {
-                    temp[i] = temp[i].replaceAll("\\s+", "");
-                    arr.add(Boolean.parseBoolean(temp[i]));
-                }
-            }
-            else
-            {
-                arr.add(Boolean.parseBoolean(str));
-            }
-        }
-        return arr;
-    }
+    
 }

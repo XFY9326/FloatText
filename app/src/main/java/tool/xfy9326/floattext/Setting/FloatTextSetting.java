@@ -133,32 +133,34 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     private void editkeyget(int i)
     {
         App utils = ((App)getApplicationContext());
-		if (utils.getFloatView().size() < i + 1)
+		FloatFrameUtils frameutils = utils.getFrameutil();
+		if (frameutils.getFloatview().size() < i + 1)
 		{
 			FloatManageMethod.restartApplication(this, getPackageManager().getLaunchIntentForPackage(getPackageName()));
 		}
-        wmParams = utils.getFloatLayout().get(i);
-        floatview = utils.getFloatView().get(i);
-        linearlayout = utils.getFloatlinearlayout().get(i);
-        LockPosition = utils.getLockPosition().get(i);
-        TextShow = utils.getTextData().get(i);
-        AutoTop = utils.getAutoTop().get(i);
-        TextMove = utils.getTextMove().get(i);
-        FloatShow = utils.getShowFloat().get(i);
-        TextTop = utils.getTextTop().get(i);
-        TextThick = utils.getThickData().get(i);
-        TextSize = utils.getSizeData().get(i);
-        TextSpeed = utils.getTextSpeed().get(i);
-        TextColor = utils.getColorData().get(i);
-        TextShadow = utils.getTextShadow().get(i);
-        TextShadowX = utils.getTextShadowX().get(i);
-        TextShadowY = utils.getTextShadowY().get(i);
-        TextShadowRadius = utils.getTextShadowRadius().get(i);
-        BackgroundColor = utils.getBackgroundColor().get(i);
-        TextShadowColor = utils.getTextShadowColor().get(i);
-		FloatSize = utils.getFloatSize().get(i);
-		FloatLong = utils.getFloatLong().get(i);
-		FloatWide = utils.getFloatWide().get(i);
+		FloatTextUtils textutils = utils.getTextutil();
+        wmParams = frameutils.getFloatlayout().get(i);
+        floatview = frameutils.getFloatview().get(i);
+        linearlayout = frameutils.getFloatlinearlayout().get(i);
+        LockPosition = textutils.getLockPosition().get(i);
+        TextShow = textutils.getTextShow().get(i);
+        AutoTop = textutils.getAutoTop().get(i);
+        TextMove = textutils.getTextMove().get(i);
+        FloatShow = textutils.getShowFloat().get(i);
+        TextTop = textutils.getTextTop().get(i);
+        TextThick = textutils.getThickShow().get(i);
+        TextSize = textutils.getSizeShow().get(i);
+        TextSpeed = textutils.getTextSpeed().get(i);
+        TextColor = textutils.getColorShow().get(i);
+        TextShadow = textutils.getTextShadow().get(i);
+        TextShadowX = textutils.getTextShadowX().get(i);
+        TextShadowY = textutils.getTextShadowY().get(i);
+        TextShadowRadius = textutils.getTextShadowRadius().get(i);
+        BackgroundColor = textutils.getBackgroundColor().get(i);
+        TextShadowColor = textutils.getTextShadowColor().get(i);
+		FloatSize = textutils.getFloatSize().get(i);
+		FloatLong = textutils.getFloatLong().get(i);
+		FloatWide = textutils.getFloatWide().get(i);
     }
 
 	//设置编辑悬浮窗的数据为默认数据
@@ -885,9 +887,9 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             if (EditMode)
             {
 				linearlayout.setTouchable(wmParams, !LockPosition);
-                ArrayList<Boolean> sf = utils.getShowFloat();
+                ArrayList<Boolean> sf = utils.getTextutil().getShowFloat();
                 sf.set(EditID, FloatShow);
-                utils.setShowFloat(sf);
+                utils.getTextutil().setShowFloat(sf);
             }
             wm.updateViewLayout(linearlayout, wmParams);
         }

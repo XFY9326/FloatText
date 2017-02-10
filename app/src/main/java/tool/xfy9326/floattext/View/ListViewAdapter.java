@@ -76,7 +76,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 	{
         final int index = view.getLayoutPosition();
         final App utils = ((App) context.getApplicationContext());
-        ArrayList<Boolean> Show = utils.getShowFloat();
+        ArrayList<Boolean> Show = utils.getTextutil().getShowFloat();
         if (Show.size() != textshow.size())
 		{
             FloatManageMethod.restartApplication(context, context.getPackageManager().getLaunchIntentForPackage(context.getPackageName()));
@@ -123,6 +123,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 	
 	private void TextReshow(int index, App utils, ViewHolder view, boolean show, String listtext)
 	{
+		FloatTextUtils textutils = utils.getTextutil();
 		if (!show)
 		{
             SpannableString str = new SpannableString(listtext);
@@ -137,22 +138,22 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 		{
             view.textView.setTypeface(typeface);
         }
-        if (utils.getTextShadow().get(index))
+        if (textutils.getTextShadow().get(index))
 		{
-            view.textView.setShadowLayer(utils.getTextShadowRadius().get(index), utils.getTextShadowX().get(index), utils.getTextShadowY().get(index), utils.getTextShadowColor().get(index));
+            view.textView.setShadowLayer(textutils.getTextShadowRadius().get(index), textutils.getTextShadowX().get(index), textutils.getTextShadowY().get(index), textutils.getTextShadowColor().get(index));
         }
 		else
 		{
 			view.textView.setShadowLayer(0, 0, 0, 0);
 		}
-        view.textView.getPaint().setFakeBoldText(utils.getThickData().get(index));
-        view.textView.setTextColor(utils.getColorData().get(index));
+        view.textView.getPaint().setFakeBoldText(utils.getTextutil().getThickShow().get(index));
+        view.textView.setTextColor(utils.getTextutil().getColorShow().get(index));
         view.textView.setEllipsize(TextUtils.TruncateAt.END);
 	}
 	
 	private void LockViewSet(int index, ViewHolder view)
 	{
-		ArrayList<Boolean> lock = ((App) context.getApplicationContext()).getLockPosition();
+		ArrayList<Boolean> lock = ((App) context.getApplicationContext()).getTextutil().getLockPosition();
         if (lock.get(index))
 		{
             view.lock_button.setBackgroundResource(R.drawable.ic_lock);
@@ -168,8 +169,8 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 		if (!sp.getBoolean("WinOnlyShowInHome", false))
 		{
 			App utils = ((App) context.getApplicationContext());
-			floatdata = utils.getFloatView();
-			floatlayout = utils.getFloatLayout();
+			floatdata = utils.getFrameutil().getFloatview();
+			floatlayout = utils.getFrameutil().getFloatlayout();
 			FloatWinEdit(activity, index);
 			notifyItemChanged(index);
 		}
@@ -205,8 +206,9 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 	
 	private void TextViewSet(int index, App utils, ViewHolder view)
 	{
-		ArrayList<Boolean> showFloat = ((App) context.getApplicationContext()).getShowFloat();
-		ArrayList<String> TextShow = ((App) context.getApplicationContext()).getTextData();
+		FloatTextUtils textutils = utils.getTextutil();
+		ArrayList<Boolean> showFloat = textutils.getShowFloat();
+		ArrayList<String> TextShow = textutils.getTextShow();
 		boolean iShowFloat = showFloat.get(index);
 		String iTextShow = TextShow.get(index);
 
@@ -214,10 +216,10 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 		FloatData dat = new FloatData(context);
 		dat.savedata();
 
-		FloatLinearLayout floatLinearLayout = utils.getFloatlinearlayout().get(index);
+		FloatLinearLayout floatLinearLayout = utils.getFrameutil().getFloatlinearlayout().get(index);
 		floatLinearLayout.setShowState(iShowFloat);
 
-		WindowManager.LayoutParams wmParams = utils.getFloatLayout().get(index);
+		WindowManager.LayoutParams wmParams = utils.getFrameutil().getFloatlayout().get(index);
 		WindowManager wm = utils.getFloatwinmanager();
 
 		if (!iShowFloat)
@@ -269,9 +271,10 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
     private void FloatWinLock(Context context, final int index, Button lock_button)
 	{
 		App utils = ((App) context.getApplicationContext());
-        ArrayList<Boolean> lock = utils.getLockPosition();
-        ArrayList<String> position = utils.getPosition();
-        linearlayout = utils.getFloatlinearlayout();
+		FloatTextUtils textutils = utils.getTextutil();
+        ArrayList<Boolean> lock = textutils.getLockPosition();
+        ArrayList<String> position = textutils.getPosition();
+        linearlayout = utils.getFrameutil().getFloatlinearlayout();
         FloatLinearLayout fll = linearlayout.get(index);
         if (fll.getPositionLocked())
 		{
@@ -296,11 +299,12 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
     private boolean FloatWinDelete(final int index)
 	{
         App utils = ((App) context.getApplicationContext());
+		FloatTextUtils textutils = utils.getTextutil();
         WindowManager wm = utils.getFloatwinmanager();
-        floatdata = utils.getFloatView();
-        floatlayout = utils.getFloatLayout();
-        linearlayout = utils.getFloatlinearlayout();
-        FloatShow = utils.getShowFloat();
+        floatdata = utils.getFrameutil().getFloatview();
+        floatlayout = utils.getFrameutil().getFloatlayout();
+        linearlayout = utils.getFrameutil().getFloatlinearlayout();
+        FloatShow = textutils.getShowFloat();
         if ((int) floatdata.size() - 1 < index || floatlayout.size() != linearlayout.size())
 		{
             return false;
@@ -315,7 +319,6 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
             floatlayout.remove(index);
             linearlayout.remove(index);
             textshow.remove(index);
-            FloatTextUtils textutils = utils.getTextutil();
 			textutils.removeDatas(index);
 			utils.setTextutil(textutils);
             FloatData dat = new FloatData(context);
