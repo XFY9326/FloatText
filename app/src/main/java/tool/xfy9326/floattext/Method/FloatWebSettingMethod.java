@@ -50,23 +50,9 @@ public class FloatWebSettingMethod
         return webview;
     }
 
-	//
     public static WindowManager.LayoutParams CreateFloatLayout (final Context ctx, WindowManager wm, WebView fwv, View tview, FloatLinearLayout layout, float px, float py, boolean show, int width, int height)
     {
-        WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams();
-        wmParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
-        wmParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
-        wmParams.gravity = Gravity.LEFT | Gravity.TOP;
-        wmParams.x = (int)px;
-        wmParams.y = (int)py;
-        wmParams.format = PixelFormat.TRANSLUCENT;
-        wmParams.width = LayoutParams.WRAP_CONTENT;
-        wmParams.height = LayoutParams.WRAP_CONTENT;
-		wmParams.windowAnimations = R.style.floatwin_anim;
-        TableRow.LayoutParams params = new TableRow.LayoutParams();
-        params.width = width;
-        params.height = height;
-        fwv.setLayoutParams(params);
+        WindowManager.LayoutParams wmParams = ParamsSet(px, py, fwv, width, height);
         layout.setLayoutTransition(new LayoutTransition());
         layout.setBackgroundColor(Color.parseColor("#303F9F"));
         layout.setOrientation(FloatLinearLayout.VERTICAL);
@@ -85,5 +71,24 @@ public class FloatWebSettingMethod
         }
         return wmParams;
     }
+	
+	private static WindowManager.LayoutParams ParamsSet(float px, float py, WebView fwv, int width, int height)
+	{
+		WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams();
+        wmParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
+        wmParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
+        wmParams.gravity = Gravity.LEFT | Gravity.TOP;
+        wmParams.x = (int)px;
+        wmParams.y = (int)py;
+        wmParams.format = PixelFormat.TRANSLUCENT;
+        wmParams.width = LayoutParams.WRAP_CONTENT;
+        wmParams.height = LayoutParams.WRAP_CONTENT;
+		wmParams.windowAnimations = R.style.floatwin_anim;
+        TableRow.LayoutParams params = new TableRow.LayoutParams();
+        params.width = width;
+        params.height = height;
+        fwv.setLayoutParams(params);
+		return wmParams;
+	}
 
 }

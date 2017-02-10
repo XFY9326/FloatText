@@ -19,41 +19,7 @@ import tool.xfy9326.floattext.View.*;
 public class FloatTextSettingMethod
 {
     private boolean longClicked;
-
-	//动态变量列表显示
-	public static void showDlist(final Context ctx)
-	{
-		final String[] dynamiclist = ctx.getResources().getStringArray(R.array.floatsetting_dynamic_list);
-		String[] dynamicname = ctx.getResources().getStringArray(R.array.floatsetting_dynamic_name);
-		String[] result = new String[dynamiclist.length + 1];
-		for (int i = 0;i < dynamiclist.length;i++)
-		{
-			result[i] = "<" + dynamiclist[i] + ">" + "\n" + dynamicname[i];
-		}
-		result[dynamiclist.length] = ctx.getString(R.string.dynamic_num_tip);
-		AlertDialog.Builder list = new AlertDialog.Builder(ctx)
-			.setTitle(R.string.dynamic_list_title)
-			.setItems(result, new DialogInterface.OnClickListener(){
-				public void onClick(DialogInterface d, int i)
-				{
-					if (i != dynamiclist.length)
-					{
-						ClipboardManager clip = (ClipboardManager)ctx.getSystemService(Context.CLIPBOARD_SERVICE);
-						if (((App)ctx.getApplicationContext()).HtmlMode)
-						{
-							clip.setText("#" + dynamiclist[i] + "#");
-						}
-						else
-						{
-							clip.setText("<" + dynamiclist[i] + ">");
-						}
-						Toast.makeText(ctx, R.string.copy_ok, Toast.LENGTH_SHORT).show();
-					}
-				}
-			});
-		list.show();
-	}
-
+	
 	//Int数值颜色转16进制
     public static String IntColortoHex(int color)
     {

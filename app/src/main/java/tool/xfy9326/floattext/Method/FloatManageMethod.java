@@ -183,6 +183,47 @@ public class FloatManageMethod
         }
     }
 
+	//动态变量列表
+	public static void showDList(final Activity ctx)
+	{
+		if (((App)ctx.getApplicationContext()).DynamicNumService)
+		{
+			final String[] dynamiclist = ctx.getResources().getStringArray(R.array.floatsetting_dynamic_list);
+			String[] dynamicname = ctx.getResources().getStringArray(R.array.floatsetting_dynamic_name);
+			String[] result = new String[dynamiclist.length + 1];
+			for (int i = 0;i < dynamiclist.length;i++)
+			{
+				result[i] = "<" + dynamiclist[i] + ">" + "\n" + dynamicname[i];
+			}
+			result[dynamiclist.length] = ctx.getString(R.string.dynamic_num_tip);
+			AlertDialog.Builder list = new AlertDialog.Builder(ctx)
+				.setTitle(R.string.dynamic_list_title)
+				.setItems(result, new DialogInterface.OnClickListener(){
+					public void onClick(DialogInterface d, int i)
+					{
+						if (i != dynamiclist.length)
+						{
+							ClipboardManager clip = (ClipboardManager)ctx.getSystemService(Context.CLIPBOARD_SERVICE);
+							if (((App)ctx.getApplicationContext()).HtmlMode)
+							{
+								clip.setText("#" + dynamiclist[i] + "#");
+							}
+							else
+							{
+								clip.setText("<" + dynamiclist[i] + ">");
+							}
+							Toast.makeText(ctx, R.string.copy_ok, Toast.LENGTH_SHORT).show();
+						}
+					}
+				});
+			list.show();
+		}
+		else
+		{
+			FloatManage.snackshow(ctx, ctx.getString(R.string.dynamicservice_no_open));
+		}
+	}
+	
 	//权限提示
 	public static void notifypermission(final Activity ctx)
 	{
@@ -431,7 +472,7 @@ public class FloatManageMethod
 			public void run()
             {
                 final App utils = ((App)ctx.getApplicationContext());
-				FloatTextUtils textutils = utils.getTextutil();
+				final FloatTextUtils textutils = utils.getTextutil();
                 final ArrayList<String> Text = textutils.getTextShow();
                 final ArrayList<Float> Size = textutils.getSizeShow();
                 final ArrayList<Integer> Color = textutils.getColorShow();

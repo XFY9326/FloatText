@@ -109,14 +109,7 @@ public class FloatManage extends AppCompatActivity
 				FloatManageMethod.TextFileSolve(FloatManage.this, 0, StaticNum.FLOAT_TEXT_EXPORT_PERMISSION);
 				break;
 			case R.id.menu_wordlist:
-				if (((App)getApplicationContext()).DynamicNumService)
-				{
-					FloatTextSettingMethod.showDlist(FloatManage.this);
-				}
-				else
-				{
-					snackshow(FloatManage.this, getString(R.string.dynamicservice_no_open));
-				}
+				FloatManageMethod.showDList(this);
 				break;
 			case R.id.menu_about:
 				Intent aboutintent = new Intent(FloatManage.this, AboutActivity.class);
