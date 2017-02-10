@@ -86,6 +86,8 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
         TextReshow(index, utils, view, Show.get(index), listtext);
 		//单行显示
         view.textView.setSingleLine(utils.getListTextHide());
+		//锁定图标设置
+		LockViewSet(index, view);
 		//点击文字隐藏和显示悬浮窗
         view.textView.setOnClickListener(new OnClickListener() {
 				@Override
@@ -95,8 +97,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 				}
 			});
 
-		//锁定图标和监听设置
-        LockViewSet(index, view);
+		//锁定监听设置
         view.lock_button.setOnClickListener(new OnClickListener() {
 				public void onClick(View v)
 				{
