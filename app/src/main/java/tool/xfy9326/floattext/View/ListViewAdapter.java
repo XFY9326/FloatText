@@ -289,7 +289,9 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
             floatlayout.remove(index);
             linearlayout.remove(index);
             textshow.remove(index);
-            utils.removeDatas(index);
+            FloatTextUtils textutils = utils.getTextutil();
+			textutils.removeDatas(index);
+			utils.setTextutil(textutils);
             FloatData dat = new FloatData(context);
             dat.savedata();
             notifyItemRemoved(index);

@@ -68,26 +68,28 @@ public class FloatData
         VersionFix_1(version, textarr);
 		VersionFix_2(version, textarr);
         DataNum = textarr.size();
-        ArrayList<Float> size = NewFloatKey(spdata.getString("SizeArray", "[]"), "20.0");
-        ArrayList<Integer> color = NewIntegerKey(spdata.getString("ColorArray", "[]"), "-61441");
-        ArrayList<Boolean> thick = NewBooleanKey(spdata.getString("ThickArray", "[]"), "false");
-        ArrayList<Boolean> show = NewBooleanKey(spdata.getString("ShowArray", "[]"), "true");
-        ArrayList<Boolean> lock = NewBooleanKey(spdata.getString("LockArray", "[]"), "false");
-        ArrayList<String> position = NewStringKey(spdata.getString("PositionArray", "[]"), "50_50");
-        ArrayList<Boolean> top = NewBooleanKey(spdata.getString("TopArray", "[]"), "false");
-        ArrayList<Boolean> autotop = NewBooleanKey(spdata.getString("AutoTopArray", "[]"), "true");
-        ArrayList<Boolean> move = NewBooleanKey(spdata.getString("MoveArray", "[]"), "false");
-        ArrayList<Integer> speed = NewIntegerKey(spdata.getString("SpeedArray", "[]"), "5");
-        ArrayList<Boolean> shadow = NewBooleanKey(spdata.getString("ShadowArray", "[]"), "false");
-        ArrayList<Float> shadowx = NewFloatKey(spdata.getString("ShadowXArray", "[]"), "10.0");
-        ArrayList<Float> shadowy = NewFloatKey(spdata.getString("ShadowYArray", "[]"), "10.0");
-        ArrayList<Float> shadowradius = NewFloatKey(spdata.getString("ShadowRadiusArray", "[]"), "5.0");
-        ArrayList<Integer> backgroundcolor = NewIntegerKey(spdata.getString("BackgroundColorArray", "[]"), "16777215");
-        ArrayList<Integer> textshadowcolor = NewIntegerKey(spdata.getString("TextShadowColorArray", "[]"), "1660944384");
-		ArrayList<Boolean> floatsize = NewBooleanKey(spdata.getString("FloatSizeArray", "[]"), "false");
-		ArrayList<Float> floatlong = NewFloatKey(spdata.getString("FloatLongArray", "[]"), "100");
-		ArrayList<Float> floatwide = NewFloatKey(spdata.getString("FloatWideArray", "[]"), "100");
-        utils.replaceDatas(textarr, color, size, thick, show, position, lock, top, autotop, move, speed, shadow, shadowx, shadowy, shadowradius, backgroundcolor, textshadowcolor, floatsize, floatlong, floatwide);
+		FloatTextUtils textutils = utils.getTextutil();
+		textutils.setTextShow(textarr);
+		textutils.setSizeShow(NewFloatKey(spdata.getString("SizeArray", "[]"), "20.0"));
+        textutils.setColorShow(NewIntegerKey(spdata.getString("ColorArray", "[]"), "-61441"));
+        textutils.setThickShow(NewBooleanKey(spdata.getString("ThickArray", "[]"), "false"));
+        textutils.setShowFloat(NewBooleanKey(spdata.getString("ShowArray", "[]"), "true"));
+        textutils.setLockPosition(NewBooleanKey(spdata.getString("LockArray", "[]"), "false"));
+        textutils.setPosition(NewStringKey(spdata.getString("PositionArray", "[]"), "50_50"));
+        textutils.setTextTop(NewBooleanKey(spdata.getString("TopArray", "[]"), "false"));
+        textutils.setAutoTop(NewBooleanKey(spdata.getString("AutoTopArray", "[]"), "true"));
+        textutils.setTextMove(NewBooleanKey(spdata.getString("MoveArray", "[]"), "false"));
+        textutils.setTextSpeed(NewIntegerKey(spdata.getString("SpeedArray", "[]"), "5"));
+        textutils.setTextShadow(NewBooleanKey(spdata.getString("ShadowArray", "[]"), "false"));
+        textutils.setTextShadowX(NewFloatKey(spdata.getString("ShadowXArray", "[]"), "10.0"));
+        textutils.setTextShadowY(NewFloatKey(spdata.getString("ShadowYArray", "[]"), "10.0"));
+        textutils.setTextShadowRadius(NewFloatKey(spdata.getString("ShadowRadiusArray", "[]"), "5.0"));
+        textutils.setBackgroundColor(NewIntegerKey(spdata.getString("BackgroundColorArray", "[]"), "16777215"));
+        textutils.setTextShadowColor(NewIntegerKey(spdata.getString("TextShadowColorArray", "[]"), "1660944384"));
+		textutils.setFloatSize(NewBooleanKey(spdata.getString("FloatSizeArray", "[]"), "false"));
+		textutils.setFloatLong(NewFloatKey(spdata.getString("FloatLongArray", "[]"), "100"));
+		textutils.setFloatWide(NewFloatKey(spdata.getString("FloatWideArray", "[]"), "100"));
+        utils.setTextutil(textutils);
     }
 
 	private void VersionFix_1(int version, ArrayList<String> textarr)

@@ -8,36 +8,13 @@ import tool.xfy9326.floattext.CrashReport.*;
 import tool.xfy9326.floattext.View.*;
 
 /*
-数据缓存
-*/
+ 数据缓存
+ */
 
 public class App extends Application
 {
-    private ArrayList<FloatTextView> floatview = new ArrayList<FloatTextView>();
-    private ArrayList<String> floattext = new ArrayList<String>();
-    private ArrayList<WindowManager.LayoutParams> floatlayout = new ArrayList<WindowManager.LayoutParams>();
-    private ArrayList<FloatLinearLayout> floatlinearlayout = new ArrayList<FloatLinearLayout>();
-    private ArrayList<String> TextShow = new ArrayList<String>();
-    private ArrayList<Integer> ColorShow = new ArrayList<Integer>();
-    private ArrayList<Float> SizeShow = new ArrayList<Float>();
-    private ArrayList<Boolean> ThickShow = new ArrayList<Boolean>();
-    private ArrayList<Boolean> ShowFloat = new ArrayList<Boolean>();
-    private ArrayList<String> Position = new ArrayList<String>();
-    private ArrayList<Boolean> LockPosition = new ArrayList<Boolean>();
-    private ArrayList<Boolean> TextTop = new ArrayList<Boolean>();
-    private ArrayList<Boolean> AutoTop = new ArrayList<Boolean>();
-    private ArrayList<Boolean> TextMove = new ArrayList<Boolean>();
-    private ArrayList<Integer> TextSpeed = new ArrayList<Integer>();
-    private ArrayList<Boolean> TextShadow = new ArrayList<Boolean>();
-    private ArrayList<Float> TextShadowX = new ArrayList<Float>();
-    private ArrayList<Float> TextShadowY = new ArrayList<Float>();
-    private ArrayList<Float> TextShadowRadius = new ArrayList<Float>();
-    private ArrayList<Integer> TextShadowColor = new ArrayList<Integer>();
-    private ArrayList<Integer> BackgroundColor = new ArrayList<Integer>();
-	private ArrayList<Boolean> FloatSize = new ArrayList<Boolean>();
-	private ArrayList<Float> FloatLong = new ArrayList<Float>();
-	private ArrayList<Float> FloatWide = new ArrayList<Float>();
-	private ArrayList<String> FilterApplication = new ArrayList<String>();
+	private FloatTextUtils textutil;
+	private FloatFrameUtils frameutil;
     private ListViewAdapter listviewadapter = null;
     private WindowManager floatwinmanager = null;
     public boolean MovingMethod = false;
@@ -50,369 +27,282 @@ public class App extends Application
     public boolean GetSave = false;
 
     @Override
-    public void onCreate ()
+    public void onCreate()
     {
         super.onCreate();
         init();
-		//错误截取报告
+		//错误报告
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(this, "FloatText", "tool.xfy9326.floattext.FloatManage", "1069665464@qq.com");
     }
-    
+
     private void init()
     {
+		textutil = new FloatTextUtils();
+		frameutil = new FloatFrameUtils();
         SafeGuard.isSignatureAvailable(this);
         SafeGuard.isPackageNameAvailable(this);
     }
-	
+
 	public void setFilterApplication(ArrayList<String> filterApplication)
 	{
-		FilterApplication = filterApplication;
+		frameutil.setFilterApplication(filterApplication);
 	}
 
 	public ArrayList<String> getFilterApplication()
 	{
-		return FilterApplication;
-	}
-	
-	public ArrayList<Float> getFloatWide ()
-	{
-		return FloatWide;
+		return frameutil.getFilterApplication();
 	}
 
-	public ArrayList<Float> getFloatLong ()
+	public ArrayList<Float> getFloatWide()
 	{
-		return FloatLong;
+		return textutil.getFloatWide();
 	}
 
-	public ArrayList<Boolean> getFloatSize ()
+	public ArrayList<Float> getFloatLong()
 	{
-		return FloatSize;
+		return textutil.getFloatLong();
 	}
-    
-    public void setGetSave (boolean b)
+
+	public ArrayList<Boolean> getFloatSize()
+	{
+		return textutil.getFloatSize();
+	}
+
+    public void setGetSave(boolean b)
     {
         this.GetSave = b;
     }
 
-    public ArrayList<Integer> getTextShadowColor ()
+    public ArrayList<Integer> getTextShadowColor()
     {
-        return TextShadowColor;
+        return textutil.getTextShadowColor();
     }
 
-    public ArrayList<Integer> getBackgroundColor ()
+    public ArrayList<Integer> getBackgroundColor()
     {
-        return BackgroundColor;
+        return textutil.getBackgroundColor();
     }
 
-    public ArrayList<Float> getTextShadowRadius ()
+    public ArrayList<Float> getTextShadowRadius()
     {
-        return TextShadowRadius;
+        return textutil.getTextShadowRadius();
     }
 
-    public ArrayList<Float> getTextShadowY ()
+    public ArrayList<Float> getTextShadowY()
     {
-        return TextShadowY;
+        return textutil.getTextShadowY();
     }
 
-    public ArrayList<Float> getTextShadowX ()
+    public ArrayList<Float> getTextShadowX()
     {
-        return TextShadowX;
+        return textutil.getTextShadowX();
     }
 
-    public ArrayList<Boolean> getTextShadow ()
+    public ArrayList<Boolean> getTextShadow()
     {
-        return TextShadow;
+        return textutil.getTextShadow();
     }
 
-    public void setListviewadapter (ListViewAdapter listviewadapter)
+    public void setListviewadapter(ListViewAdapter listviewadapter)
     {
         this.listviewadapter = listviewadapter;
     }
 
-    public ListViewAdapter getListviewadapter ()
+    public ListViewAdapter getListviewadapter()
     {
         return listviewadapter;
     }
 
-    public void setFloatwinmanager (WindowManager floatwinmanager)
+    public void setFloatwinmanager(WindowManager floatwinmanager)
     {
         this.floatwinmanager = floatwinmanager;
     }
 
-    public WindowManager getFloatwinmanager ()
+    public WindowManager getFloatwinmanager()
     {
         return floatwinmanager;
     }
 
-    public void setListTextHide (boolean listTextHide)
+    public void setListTextHide(boolean listTextHide)
     {
         ListTextHide = listTextHide;
     }
 
-    public boolean getListTextHide ()
+    public boolean getListTextHide()
     {
         return ListTextHide;
     }
 
-    public void setHtmlMode (boolean htmlMode)
+    public void setHtmlMode(boolean htmlMode)
     {
         HtmlMode = htmlMode;
     }
 
-    public boolean getHtmlMode ()
+    public boolean getHtmlMode()
     {
         return HtmlMode;
     }
 
-    public void setDevelopMode (boolean developMode)
+    public void setDevelopMode(boolean developMode)
     {
         DevelopMode = developMode;
     }
 
-    public boolean getDevelopMode ()
+    public boolean getDevelopMode()
     {
         return DevelopMode;
     }
 
-    public void setFloatlinearlayout (ArrayList<FloatLinearLayout> floatlinearlayout)
-    {
-        this.floatlinearlayout = floatlinearlayout;
-    }
-
-    public ArrayList<FloatLinearLayout> getFloatlinearlayout ()
-    {
-        return floatlinearlayout;
-    }
-
-    public void setDynamicNumService (boolean DynamicNumService)
+    public void setDynamicNumService(boolean DynamicNumService)
     {
         this.DynamicNumService = DynamicNumService;
     }
 
-    public boolean getDynamicNumService ()
+    public boolean getDynamicNumService()
     {
         return DynamicNumService;
     }
 
-    public void setStayAliveService (boolean stayAliveService)
+    public void setStayAliveService(boolean stayAliveService)
     {
         StayAliveService = stayAliveService;
     }
 
-    public boolean getStayAliveService ()
+    public boolean getStayAliveService()
     {
         return StayAliveService;
     }
 
-    public void setMovingMethod (boolean movingMethod)
+    public void setMovingMethod(boolean movingMethod)
     {
         MovingMethod = movingMethod;
     }
 
-    public boolean getMovingMethod ()
+    public boolean getMovingMethod()
     {
         return MovingMethod;
     }
 
-    public ArrayList<Integer> getTextSpeed ()
+    public ArrayList<Integer> getTextSpeed()
     {
-        return TextSpeed;
+        return textutil.getTextSpeed();
     }
 
-    public ArrayList<Boolean> getTextMove ()
+    public ArrayList<Boolean> getTextMove()
     {
-        return TextMove;
+        return textutil.getTextMove();
     }
 
-    public ArrayList<Boolean> getAutoTop ()
+    public ArrayList<Boolean> getAutoTop()
     {
-        return AutoTop;
+        return textutil.getAutoTop();
     }
 
-    public ArrayList<Boolean> getTextTop ()
+    public ArrayList<Boolean> getTextTop()
     {
-        return TextTop;
+        return textutil.getTextTop();
     }
 
-    public ArrayList<Boolean> getLockPosition ()
+    public ArrayList<Boolean> getLockPosition()
     {
-        return LockPosition;
+        return textutil.getLockPosition();
     }
 
-    public ArrayList<String> getPosition ()
+    public ArrayList<String> getPosition()
     {
-        return Position;
+        return textutil.getPosition();
     }
 
-    public void setShowFloat (ArrayList<Boolean> showfloat)
+    public void setShowFloat(ArrayList<Boolean> showfloat)
     {
-        this.ShowFloat = showfloat;
+        textutil.setShowFloat(showfloat);
     }
 
-    public ArrayList<Boolean> getShowFloat ()
+    public ArrayList<Boolean> getShowFloat()
     {
-        return ShowFloat;
+        return textutil.getShowFloat();
     }
 
-    public void setFloatReshow (boolean bool)
+    public void setFloatReshow(boolean bool)
     {
         FloatWinReshow = bool;
     }
 
-    public ArrayList<FloatTextView> getFloatView ()
+	public void setFloatlinearlayout(ArrayList<FloatLinearLayout> floatlinearlayout)
     {
-        return this.floatview;
+        frameutil.setFloatlinearlayout(floatlinearlayout);
     }
 
-    public void setFloatView (ArrayList<FloatTextView> floatview)
+    public ArrayList<FloatLinearLayout> getFloatlinearlayout()
     {
-        this.floatview = floatview;
+        return frameutil.getFloatlinearlayout();
     }
 
-    public ArrayList<String> getFloatText ()
+    public ArrayList<FloatTextView> getFloatView()
     {
-        return this.floattext;
+        return frameutil.getFloatview();
     }
 
-    public void setFloatText (ArrayList<String> floattext)
+    public void setFloatView(ArrayList<FloatTextView> floatview)
     {
-        this.floattext = floattext;
+        frameutil.setFloatview(floatview);
     }
 
-    public ArrayList<WindowManager.LayoutParams> getFloatLayout ()
+    public ArrayList<String> getFloatText()
     {
-        return this.floatlayout;
+        return frameutil.getFloattext();
     }
 
-    public void setFloatLayout (ArrayList<WindowManager.LayoutParams> floatlayout)
+    public void setFloatText(ArrayList<String> floattext)
     {
-        this.floatlayout = floatlayout;
+        frameutil.setFloattext(floattext);
     }
 
-    public void setTextData (int i, String text)
+    public ArrayList<WindowManager.LayoutParams> getFloatLayout()
     {
-        TextShow.set(i, text);
+        return frameutil.getFloatlayout();
     }
 
-    public ArrayList<String> getTextData ()
+    public void setFloatLayout(ArrayList<WindowManager.LayoutParams> floatlayout)
     {
-        return TextShow;
+        frameutil.setFloatlayout(floatlayout);
     }
 
-    public ArrayList<Float> getSizeData ()
+    public ArrayList<String> getTextData()
     {
-        return SizeShow;
+        return textutil.getTextShow();
     }
 
-    public ArrayList<Integer> getColorData ()
+    public ArrayList<Float> getSizeData()
     {
-        return ColorShow;
+        return textutil.getSizeShow();
     }
 
-    public ArrayList<Boolean> getThickData ()
+    public ArrayList<Integer> getColorData()
     {
-        return ThickShow;
+        return textutil.getColorShow();
     }
 
-    public void addDatas (String text, int color, float size, boolean thick, boolean show, String position, boolean lp, boolean tp, boolean ap, boolean tm, int sp, boolean sha, float shax, float shay, float shad, int bac, int tsc, boolean fs, float fl, float fw)
+    public ArrayList<Boolean> getThickData()
     {
-        TextShow.add(text);
-        ColorShow.add(color);
-        SizeShow.add(size);
-        ThickShow.add(thick);
-        ShowFloat.add(show);
-        Position.add(position);
-        LockPosition.add(lp);
-        TextTop.add(tp);
-        AutoTop.add(ap);
-        TextMove.add(tm);
-        TextSpeed.add(sp);
-        TextShadow.add(sha);
-        TextShadowX.add(shax);
-        TextShadowY.add(shay);
-        TextShadowRadius.add(shad);
-        BackgroundColor.add(bac);
-        TextShadowColor.add(tsc);
-		FloatSize.add(fs);
-		FloatLong.add(fl);
-		FloatWide.add(fw);
+        return textutil.getThickShow();
     }
 
-    public void setDatas (int i, FloatTextView fv, FloatLinearLayout fll, WindowManager.LayoutParams layout, String text, int color, float size, boolean thick, boolean show, String position, boolean lp, boolean tp, boolean ap, boolean tm, int sp, boolean sha, float shax, float shay, float shad, int bac, int tsc, boolean fs, float fl, float fw)
-    {
-        floatview.set(i, fv);
-        floatlinearlayout.set(i, fll);
-        floatlayout.set(i, layout);
-        TextShow.set(i, text);
-        floattext.set(i, text);
-        ColorShow.set(i, color);
-        SizeShow.set(i, size);
-        ThickShow.set(i, thick);
-        ShowFloat.set(i, show);
-        Position.set(i, position);
-        LockPosition.set(i, lp);
-        TextTop.set(i, tp);
-        AutoTop.set(i, ap);
-        TextMove.set(i, tm);
-        TextSpeed.set(i, sp);
-        TextShadow.set(i, sha);
-        TextShadowX.set(i, shax);
-        TextShadowY.set(i, shay);
-        TextShadowRadius.set(i, shad);
-        BackgroundColor.set(i, bac);
-        TextShadowColor.set(i, tsc);
-		FloatSize.set(i, fs);
-		FloatLong.set(i, fl);
-		FloatWide.set(i, fw);
-    }
+	public void setTextutil(FloatTextUtils textutil)
+	{
+		this.textutil = textutil;
+	}
 
-    public void replaceDatas (ArrayList<String> text, ArrayList<Integer> color, ArrayList<Float> size, ArrayList<Boolean> thick, ArrayList<Boolean> show, ArrayList<String> position, ArrayList<Boolean> lp, ArrayList<Boolean> tp, ArrayList<Boolean> ap, ArrayList<Boolean> tm, ArrayList<Integer> sp, ArrayList<Boolean> sha, ArrayList<Float> shax, ArrayList<Float> shay, ArrayList<Float> shad, ArrayList<Integer> bac, ArrayList<Integer> tsc, ArrayList<Boolean> fs, ArrayList<Float> fl, ArrayList<Float> fw)
-    {
-        TextShow = text;
-        ColorShow = color;
-        SizeShow = size;
-        ThickShow = thick;
-        ShowFloat = show;
-        Position = position;
-        LockPosition = lp;
-        TextTop = tp;
-        AutoTop = ap;
-        TextMove = tm;
-        TextSpeed = sp;
-        TextShadow = sha;
-        TextShadowX = shax;
-        TextShadowY = shay;
-        TextShadowRadius = shad;
-        BackgroundColor = bac;
-        TextShadowColor = tsc;
-		FloatSize = fs;
-		FloatLong = fl;
-		FloatWide = fw;
-    }
+	public FloatTextUtils getTextutil()
+	{
+		return textutil;
+	}
 
-    public void removeDatas (int i)
+    public void setDatas(int i, FloatTextView fv, FloatLinearLayout fll, WindowManager.LayoutParams layout, String text, int color, float size, boolean thick, boolean show, String position, boolean lp, boolean tp, boolean ap, boolean tm, int sp, boolean sha, float shax, float shay, float shad, int bac, int tsc, boolean fs, float fl, float fw)
     {
-        TextShow.remove(i);
-        ColorShow.remove(i);
-        SizeShow.remove(i);
-        ThickShow.remove(i);
-        Position.remove(i);
-        LockPosition.remove(i);
-        TextTop.remove(i);
-        AutoTop.remove(i);
-        TextMove.remove(i);
-        TextSpeed.remove(i);
-        TextShadow.remove(i);
-        TextShadowX.remove(i);
-        TextShadowY.remove(i);
-        TextShadowRadius.remove(i);
-        BackgroundColor.remove(i);
-        TextShadowColor.remove(i);
-		FloatSize.remove(i);
-		FloatLong.remove(i);
-		FloatWide.remove(i);
-		ShowFloat.remove(i);
+        frameutil.setDatas(i, fv, fll, layout, text);
+		textutil.setDatas(i, text, color, size, thick, show, position, lp, tp, ap, tm, sp, sha, shax, shay, shad, bac, tsc, fs, fl, fw);
     }
 
 }

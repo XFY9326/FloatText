@@ -904,7 +904,9 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         }
         if (savedetails)
         {
-            utils.addDatas(TextShow, TextColor, TextSize, TextThick, FloatShow, Position, false, TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide);
+            FloatTextUtils textutils = utils.getTextutil();
+			textutils.addDatas(TextShow, TextColor, TextSize, TextThick, FloatShow, Position, false, TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide);
+			utils.setTextutil(textutils);
         }
     }
 
