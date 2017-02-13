@@ -140,11 +140,11 @@ public class DynamicWordUpdateMethod
 		}
 	}
 
-	private String FilterText(String str, String tag, String change)
+	private String FilterText(String str_def, String tag, String change)
 	{
 		try
 		{
-			str = str.substring(tag.length(), str.length());
+			String str = str_def.substring(tag.length());
 			String[] text;
 			if (str.contains(";"))
 			{
@@ -160,26 +160,27 @@ public class DynamicWordUpdateMethod
 			for (String line : text)
 			{
 				String[] info = line.split("\\|");
-				if (!found && change.contains(info[0]))
-				{
-					str = info[1];
-					found = true;
-					break;
-				}
 				if (info[0].equalsIgnoreCase("Default"))
 				{
-					def = info[1];
+					def = info[1].toString();
+					continue;
+				}
+				if (!found && change.matches(info[0].toString()))
+				{
+					str_def = info[1].toString();
+					found = true;
+					break;
 				}
 			}
 			if (!found && def != null)
 			{
-				str = def;
+				str_def = def;
 			}
-			return str;
+			return str_def;
 		}
 		catch (Exception e)
 		{
-			return str;
+			return str_def;
 		}
 	}
 }

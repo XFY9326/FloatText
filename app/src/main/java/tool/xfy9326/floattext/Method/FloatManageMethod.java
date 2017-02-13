@@ -459,6 +459,7 @@ public class FloatManageMethod
                 utils.setDevelopMode(spdata.getBoolean("DevelopMode", false));
                 utils.setHtmlMode(spdata.getBoolean("HtmlMode", true));
                 utils.setListTextHide(spdata.getBoolean("ListTextHide", false));
+				utils.setTextFilter(spdata.getBoolean("TextFilter", false));
                 han.obtainMessage(0).sendToTarget();
             }};
         return thread;

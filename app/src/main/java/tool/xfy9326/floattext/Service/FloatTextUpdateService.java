@@ -382,6 +382,7 @@ public class FloatTextUpdateService extends Service
 		boolean timedynamicset = false;
         Pattern pat = Pattern.compile("<(.*?)>");
         Pattern pat2 = Pattern.compile("#(.*?)#");
+		Pattern pat3 = Pattern.compile("//[(.*?)//]");
         ArrayList<String> list = ((App)ctx.getApplicationContext()).getFloatText();
         boolean dynamicnum = false;
         if (list.size() > 0)
@@ -391,7 +392,8 @@ public class FloatTextUpdateService extends Service
                 String str = list.get(i).toString();
                 Matcher mat = pat.matcher(str);
                 Matcher mat2 = pat2.matcher(str);
-                if (mat.find() || mat2.find())
+				Matcher mat3 = pat3.matcher(str);
+                if (mat.find() || mat2.find() || mat3.find())
                 {
 					dynamicnum = true;
 					if (!timedynamicset)
