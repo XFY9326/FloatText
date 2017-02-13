@@ -3,7 +3,7 @@ package tool.xfy9326.floattext.Utils;
 public class StaticNum
 {
 	public static int FloatDataVersion = 2;
-	public static int DYNAMIC_LIST_VERSION = 7;
+	public static int DYNAMIC_LIST_VERSION = 8;
 
 	public static int FLOATTEXT_RESULT_CODE = 0;
     public static int RESHOW_PERMISSION_RESULT_CODE = 1;

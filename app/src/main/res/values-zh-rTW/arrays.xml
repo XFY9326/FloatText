@@ -42,6 +42,7 @@
         <item>傳感器_CPU温度</item>
         <item>傳感器_距離</item>
         <item>傳感器_計步器</item>
+		<item>屏幕方向狀態</item>
         <item>剪切板</item>
 		<item>當前運行的Activity(*)</item>
 		<item>最新的通知消息(*)\n[4.3以上系統需開啟通知監聽服務]</item>

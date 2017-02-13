@@ -42,6 +42,7 @@
         <item>Sensor_CPUTemperature</item>
         <item>Sensor_Proximity</item>
         <item>Sensor_Step</item>
+		<item>Origination</item>
         <item>ClipBoard</item>
 		<item>CurrentActivity</item>
 		<item>Notifications</item>
@@ -70,6 +71,7 @@
         <item>传感器_CPU温度</item>
         <item>传感器_距离</item>
         <item>传感器_计步器</item>
+		<item>屏幕方向状态</item>
         <item>剪切板</item>
 		<item>当前运行的Activity(*)</item>
 		<item>最新的通知消息(*)\n[4.3以上系统需开启通知监听服务]</item>

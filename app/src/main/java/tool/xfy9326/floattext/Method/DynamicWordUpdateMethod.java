@@ -176,6 +176,10 @@ public class DynamicWordUpdateMethod
 			{
 				str_def = def;
 			}
+			if (str_def.equalsIgnoreCase("Empty"))
+			{
+				str_def = "";
+			}
 			return str_def;
 		}
 		catch (Exception e)

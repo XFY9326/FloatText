@@ -12,6 +12,7 @@ import android.os.PowerManager;
 import java.net.NetworkInterface;
 import tool.xfy9326.floattext.Tool.FormatArrayList;
 import tool.xfy9326.floattext.Utils.StaticNum;
+import android.content.res.Configuration;
 
 public class FloatServiceMethod
 {
@@ -72,12 +73,33 @@ public class FloatServiceMethod
 			InfoList.add(1);
 			KeyList.add("Second");
 			InfoList.add(0);
+			KeyList.add("Origination");
+			InfoList.add(0);
 			list_editor.putInt("Version", StaticNum.DYNAMIC_LIST_VERSION);
 			list_editor.putString("LIST", KeyList.toString());
 			list_editor.putString("INFO", InfoList.toString());
 			list_editor.commit();
 		}
 		return list;
+	}
+	
+	//屏幕横竖判断
+	public static String judgeOrigination(Context ctx)
+	{
+		int ori = ctx.getResources().getConfiguration().orientation;
+		if (ori == Configuration.ORIENTATION_PORTRAIT)
+		{
+			return "PORTRAIT";
+		}
+		else if (ori == Configuration.ORIENTATION_LANDSCAPE)
+		{
+			return "LANDSCAPE";
+		}
+		else if(ori == Configuration.ORIENTATION_SQUARE)
+		{
+			return "SQUARE";
+		}
+		return "UNKNOWN";
 	}
 
 	//判断是否有字符

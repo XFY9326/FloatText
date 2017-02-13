@@ -42,6 +42,7 @@
         <item>CPU Temperature Sensor</item>
         <item>Distance Sensor</item>
         <item>Walk Step Sensor</item>
+		<item>Screen Origination</item>
         <item>ClipBoard</item>
 		<item>Current Activity(*)</item>
 		<item>The latest notification(*)\n[Android 4.3 and above must open Notification Listener Service]</item>

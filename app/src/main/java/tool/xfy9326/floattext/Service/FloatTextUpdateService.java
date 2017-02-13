@@ -86,7 +86,7 @@ public class FloatTextUpdateService extends Service
 
 	private String[] SetPostKey()
 	{
-		String[] PostList = new String[23];
+		String[] PostList = new String[24];
 		PostList[0] = time0;
 		PostList[1] = time1;
 		PostList[2] = time2;
@@ -110,6 +110,7 @@ public class FloatTextUpdateService extends Service
 		PostList[20] = week;
 		PostList[21] = "None";
 		PostList[22] = time5;
+		PostList[23] = FloatServiceMethod.judgeOrigination(this);
 		return PostList;
 	}
 
@@ -382,7 +383,7 @@ public class FloatTextUpdateService extends Service
 		boolean timedynamicset = false;
         Pattern pat = Pattern.compile("<(.*?)>");
         Pattern pat2 = Pattern.compile("#(.*?)#");
-		Pattern pat3 = Pattern.compile("[(.*?)]");
+		Pattern pat3 = Pattern.compile("\\[(.*?)\\]");
         ArrayList<String> list = ((App)ctx.getApplicationContext()).getFloatText();
         boolean dynamicnum = false;
         if (list.size() > 0)
