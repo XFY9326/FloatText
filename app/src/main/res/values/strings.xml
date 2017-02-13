@@ -58,8 +58,8 @@
     <string name="ttf_import_exist">该名称的字体文件已经存在！</string>
     <string name="about">关于应用</string>
     <string name="settings">全局设置</string>
-    <string name="licence">开源协议</string>
-	<string name="licence_sum">所有代码使用的开源协议</string>
+    <string name="license">开源协议</string>
+	<string name="license_sum">所有代码使用的开源协议</string>
     <string name="float_move_title">悬浮窗口位置微调</string>
     <string name="choose_float_type">创建悬浮窗类型</string>
     <string name="dynamic_list_title">可用动态变量列表(点击复制)</string>

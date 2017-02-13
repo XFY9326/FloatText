@@ -2,12 +2,12 @@
 <PreferenceScreen 
     xmlns:android="http://schemas.android.com/apk/res/android">
 	<PreferenceScreen
-        android:title="@string/licence"
-        android:summary="@string/licence_sum">
+        android:title="@string/license"
+        android:summary="@string/license_sum">
         <intent
             android:action="android.intent.action.MAIN"  
             android:targetPackage="tool.xfy9326.floattext"  
-            android:targetClass="tool.xfy9326.floattext.Activity.LicenceActivity" />
+            android:targetClass="tool.xfy9326.floattext.Activity.LicenseActivity" />
     </PreferenceScreen>
 	<Preference
         android:title="@string/xml_about_thanklist"

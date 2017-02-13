@@ -11,7 +11,7 @@ import android.text.method.LinkMovementMethod;
 import tool.xfy9326.floattext.Method.IOMethod;
 import tool.xfy9326.floattext.R;
 
-public class LicenceActivity extends AppCompatActivity
+public class LicenseActivity extends AppCompatActivity
 {
 
     @Override
@@ -22,10 +22,10 @@ public class LicenceActivity extends AppCompatActivity
 		Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(tb);
 		sethome();
-		String floattext_path = "LICENCES/FloatText_LICENCE.txt";
-		String icon_path = "LICENCES/Android-Material-Icons_LICENCE.txt";
-		String preference_path = "LICENCES/ColorPickerPreference_LICENSE.txt";
-		String and_path = "LICENCES/Android-Support-Library_LICENCE.txt";
+		String floattext_path = "LICENSES/FloatText_LICENSE.txt";
+		String icon_path = "LICENSES/Android-Material-Icons_LICENSE.txt";
+		String preference_path = "LICENSES/ColorPickerPreference_LICENSE.txt";
+		String and_path = "LICENSES/Android-Support-Library_LICENSE.txt";
 
         String ft_licence = IOMethod.readAssets(this, floattext_path);
 		String ic_licence = IOMethod.readAssets(this, icon_path);
@@ -47,7 +47,7 @@ public class LicenceActivity extends AppCompatActivity
 
 	private void addlicence(String title, String html, String data, LinearLayout ll)
 	{
-		LayoutInflater inflater = LayoutInflater.from(LicenceActivity.this);  
+		LayoutInflater inflater = LayoutInflater.from(LicenseActivity.this);  
 		View layout = inflater.inflate(R.layout.layout_each_licence, null);
 		TextView tit = (TextView) layout.findViewById(R.id.licence_title);
 		tit.setText(title);

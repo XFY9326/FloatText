@@ -58,8 +58,8 @@
     <string name="ttf_import_exist">該名稱的字體檔案已經存在！</string>
     <string name="about">關於本應用程式</string>
     <string name="settings">整體設定</string>
-    <string name="licence">開放原始碼協議</string>
-	<string name="licence_sum">所有代碼使用的開放原始代碼協議</string>
+    <string name="license">開放原始碼協議</string>
+	<string name="license_sum">所有代碼使用的開放原始代碼協議</string>
     <string name="float_move_title">懸浮視窗位置微調</string>
     <string name="choose_float_type">建立懸浮視窗的類型</string>
     <string name="dynamic_list_title">可用的動態變量列表(點擊複製)</string>

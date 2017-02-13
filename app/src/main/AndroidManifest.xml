@@ -40,8 +40,8 @@
             android:label="@string/about">
         </activity>
         <activity
-            android:name=".Activity.LicenceActivity"
-            android:label="@string/licence"
+            android:name=".Activity.LicenseActivity"
+            android:label="@string/license"
 			android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity

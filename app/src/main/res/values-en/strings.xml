@@ -58,8 +58,8 @@
     <string name="ttf_import_exist">This TTF name has already existed！</string>
     <string name="about">About Us</string>
     <string name="settings">Global Setting</string>
-    <string name="licence">Licence</string>
-	<string name="licence_sum">The Open Source Licence of all codes</string>
+    <string name="license">License</string>
+	<string name="license_sum">The Open Source License of all codes</string>
     <string name="float_move_title">Float position change</string>
     <string name="choose_float_type">Add float type</string>
     <string name="dynamic_list_title">Available dynamic variables (Click to copy)</string>
