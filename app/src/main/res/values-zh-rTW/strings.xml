@@ -191,6 +191,9 @@
     <string name="xml_global_text_typeface_summary">把TTF字體檔案放入/FloatText/TTFs文的資料夾內即可讀取\n目前字體:</string>
 	<string name="xml_global_text_clear_text">自動清空輸入框</string>
 	<string name="xml_global_text_clear_text_sum">每次修改懸浮視窗時清空輸入框內文字</string>
+	<string name="xml_global_text_filter">文字顯示篩選器</string>
+	<string name="xml_global_text_filter_sum">在不同動態變量下顯示不同文字</string>
+	<string name="xml_global_text_filter_help">文字顯示篩選器幫助文檔</string>
     <string name="xml_global_serviceset">服務設定</string>
     <string name="xml_global_service_stayalive">懸浮視窗程式守護服務</string>
     <string name="xml_global_service_stayalive_on">開啟(背景服務可能增加耗電並導致當機)</string>

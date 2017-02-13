@@ -25,6 +25,7 @@
         <item>時鐘</item>
         <item>時鐘(24小時制)</item>
         <item>日期</item>
+		<item>秒</item>
         <item>CPU使用率</item>
         <item>網路速度</item>
         <item>記憶體使用率</item>

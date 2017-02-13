@@ -130,7 +130,22 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 					return true;
 				}
 			});
-
+		CheckBoxPreference textfilter = (CheckBoxPreference) findPreference("TextFilter");
+        textfilter.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
+                public boolean onPreferenceChange(Preference p1, Object p2)
+                {
+                    ((App)getApplicationContext()).setTextFilter((boolean)p2);
+                    return true;
+                }
+            });
+		Preference textfilterhelp = findPreference("TextFilterHelp");
+		textfilterhelp.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
+				public boolean onPreferenceClick(Preference p)
+				{
+					TextFilterHelpGet(GlobalSetActivity.this);
+					return true;
+				}
+			});
     }
 	private void ServiceViewSet()
 	{
@@ -201,6 +216,16 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 					return true;
 				}
 			});
+	}
+	
+	private void TextFilterHelpGet(Context ctx)
+	{
+		String str = IOMethod.readAssets(ctx, "HELPS/TextFilter.txt");
+		AlertDialog.Builder help = new AlertDialog.Builder(ctx);
+		help.setTitle(R.string.xml_global_text_filter);
+		help.setMessage(str);
+		help.setPositiveButton(R.string.done, null);
+		help.show();
 	}
 
 	private void DataAction(int type, Preference pre, int requestcode)

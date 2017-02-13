@@ -191,6 +191,9 @@
     <string name="xml_global_text_typeface_summary">把ttf字体文件放入/FloatText/TTFs文件夹内即可读取\n当前字体:</string>
 	<string name="xml_global_text_clear_text">自动清空输入框</string>
 	<string name="xml_global_text_clear_text_sum">每次修改悬浮窗时自动清空输入框内文字</string>
+	<string name="xml_global_text_filter">文字显示筛选器</string>
+	<string name="xml_global_text_filter_sum">在不同的动态变量下显示不同的文字</string>
+	<string name="xml_global_text_filter_help">文字显示筛选器帮助文档</string>
     <string name="xml_global_serviceset">服务设置</string>
     <string name="xml_global_service_stayalive">悬浮窗进程守护服务</string>
     <string name="xml_global_service_stayalive_on">开启(后台服务可能增加耗电并导致卡顿)</string>

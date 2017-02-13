@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import java.util.ArrayList;
 import tool.xfy9326.floattext.Tool.DateCounter;
 import tool.xfy9326.floattext.Utils.App;
+import android.util.Log;
 
 /*
  本方法用于动态变量的更新
@@ -23,6 +24,8 @@ public class DynamicWordUpdateMethod
     private ArrayList<FloatLinearLayout> linearlayout = new ArrayList<FloatLinearLayout>();
     private ArrayList<Boolean> ShowFloat = new ArrayList<Boolean>();
     private WindowManager wm;
+	private String[] filtertext = new String[]{"NULL"};
+	private boolean textfilter;
 
     public DynamicWordUpdateMethod(Context ctx)
     {
@@ -36,6 +39,7 @@ public class DynamicWordUpdateMethod
 		String[] data = bundle.getStringArray("DATA");
 		int[] info = bundle.getIntArray("INFO");
         App utils = ((App)context.getApplicationContext());
+		textfilter = utils.TextFilter;
         wm = utils.getFloatwinmanager();
         floatview = utils.getFrameutil().getFloatview();
         floattext = utils.getFrameutil().getFloattext();
@@ -57,6 +61,10 @@ public class DynamicWordUpdateMethod
 			{
 				str = updatetext(str, list[a].toString(), data[a].toString(), info[a]);
 			}
+			if (filtertext.length == 2)
+			{
+				str = FilterText(str, filtertext[0], filtertext[1]);
+			}
 			if (floattext.get(i) != str && wm != null)
 			{
 				floatview.get(i).setText(str);
@@ -76,6 +84,10 @@ public class DynamicWordUpdateMethod
     {
         if (!change.equals("NULL"))
         {
+			if (textfilter && filtertext.length == 1)
+			{
+				filtertext = FilterTextCheck(str, "[" + tag + "]", change);
+			}
             String tag2 = tag;
             tag = "<" + tag + ">";
             str = search(str, tag, change, reg);
@@ -111,4 +123,63 @@ public class DynamicWordUpdateMethod
         }
         return str;
     }
+
+	private String[] FilterTextCheck(String str, String tag, String change)
+	{
+		try
+		{
+			if (str.toString().substring(0, tag.length()).equalsIgnoreCase(tag))
+			{
+				return new String[]{tag, change};
+			}
+			return new String[]{"NULL"};
+		}
+		catch (Exception e)
+		{
+			return new String[]{"NULL"};
+		}
+	}
+
+	private String FilterText(String str, String tag, String change)
+	{
+		try
+		{
+			str = str.substring(tag.length(), str.length());
+			String[] text;
+			if (str.contains(";"))
+			{
+				text = str.split(";");
+			}
+			else
+			{
+				text = new String[1];
+				text[0] = str;
+			}
+			String def = null;
+			boolean found = false;
+			for (String line : text)
+			{
+				String[] info = line.split("\\|");
+				if (!found && change.contains(info[0]))
+				{
+					str = info[1];
+					found = true;
+					break;
+				}
+				if (info[0].equalsIgnoreCase("Default"))
+				{
+					def = info[1];
+				}
+			}
+			if (!found && def != null)
+			{
+				str = def;
+			}
+			return str;
+		}
+		catch (Exception e)
+		{
+			return str;
+		}
+	}
 }

@@ -25,6 +25,7 @@
         <item>Clock</item>
         <item>Clock_24</item>
         <item>Date</item>
+		<item>Second</item>
         <item>CPURate</item>
         <item>NetSpeed</item>
         <item>MemRate</item>
@@ -52,6 +53,7 @@
         <item>时钟</item>
         <item>时钟(24小时制)</item>
         <item>日期</item>
+		<item>秒</item>
         <item>CPU使用率</item>
         <item>网络速度</item>
         <item>内存使用率</item>

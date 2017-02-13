@@ -24,6 +24,7 @@
         <item>Date &amp; Time(24 hours system)</item>
         <item>Clock</item>
         <item>Clock(24 hours system)</item>
+		<item>Seconds</item>
         <item>Date</item>
         <item>Cpu utilization</item>
         <item>Network speed</item>

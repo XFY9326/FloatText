@@ -22,10 +22,10 @@ public class LicenceActivity extends AppCompatActivity
 		Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(tb);
 		sethome();
-		String floattext_path = "FloatText_LICENCE.txt";
-		String icon_path = "Android-Material-Icons_LICENCE.txt";
-		String preference_path = "ColorPickerPreference_LICENSE.txt";
-		String and_path = "Android-Support-Library_LICENCE.txt";
+		String floattext_path = "LICENCES/FloatText_LICENCE.txt";
+		String icon_path = "LICENCES/Android-Material-Icons_LICENCE.txt";
+		String preference_path = "LICENCES/ColorPickerPreference_LICENSE.txt";
+		String and_path = "LICENCES/Android-Support-Library_LICENCE.txt";
 
         String ft_licence = IOMethod.readAssets(this, floattext_path);
 		String ic_licence = IOMethod.readAssets(this, icon_path);

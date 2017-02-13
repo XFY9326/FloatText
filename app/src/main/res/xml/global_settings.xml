@@ -76,6 +76,18 @@
             android:summary="@string/xml_global_text_clear_text_sum"
             android:defaultValue="false"
         />
+		<CheckBoxPreference 
+            android:key="TextFilter"
+            android:title="@string/xml_global_text_filter"
+			android:summary="@string/xml_global_text_filter_sum"
+            android:defaultValue="false"
+			android:dependency="DynamicNumService"
+        />
+		<Preference
+			android:key="TextFilterHelp"
+            android:title="@string/xml_global_text_filter_help"
+			android:dependency="DynamicNumService"
+        />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/xml_global_serviceset"> 
         <CheckBoxPreference 

@@ -25,6 +25,7 @@ public class App extends Application
     public boolean HtmlMode = false;
     public boolean ListTextHide = false;
     public boolean GetSave = false;
+	public boolean TextFilter = false;
 
     @Override
     public void onCreate()
@@ -43,6 +44,11 @@ public class App extends Application
         SafeGuard.isSignatureAvailable(this);
         SafeGuard.isPackageNameAvailable(this);
     }
+	
+	public void setTextFilter(boolean textFilter)
+	{
+		TextFilter = textFilter;
+	}
 
     public void setGetSave(boolean b)
     {
@@ -72,11 +78,6 @@ public class App extends Application
     public void setListTextHide(boolean listTextHide)
     {
         ListTextHide = listTextHide;
-    }
-
-    public boolean getListTextHide()
-    {
-        return ListTextHide;
     }
 
     public void setHtmlMode(boolean htmlMode)

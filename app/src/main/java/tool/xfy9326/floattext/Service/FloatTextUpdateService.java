@@ -26,11 +26,13 @@ public class FloatTextUpdateService extends Service
     private SimpleDateFormat sdf_clock_24 = null;
     private SimpleDateFormat sdf_date = null;
 	private SimpleDateFormat sdf_week = null;
+	private SimpleDateFormat sdf_sec = null;
 	private String time0;
 	private String time1;
 	private String time2;
 	private String time3;
 	private String time4;
+	private String time5;
     private Intent timeIntent = null;
     private boolean timer_run = false;
     private boolean high_cpu_use_dynamicword = false;
@@ -84,7 +86,7 @@ public class FloatTextUpdateService extends Service
 
 	private String[] SetPostKey()
 	{
-		String[] PostList = new String[22];
+		String[] PostList = new String[23];
 		PostList[0] = time0;
 		PostList[1] = time1;
 		PostList[2] = time2;
@@ -107,6 +109,7 @@ public class FloatTextUpdateService extends Service
 		PostList[19] = toasts;
 		PostList[20] = week;
 		PostList[21] = "None";
+		PostList[22] = time5;
 		return PostList;
 	}
 
@@ -130,7 +133,8 @@ public class FloatTextUpdateService extends Service
 			currentactivity =
 			notifymes = 
 			toasts =
-			week = str;
+			week = 
+			time5 = str;
 	}
 
     private void init()
@@ -145,6 +149,7 @@ public class FloatTextUpdateService extends Service
         sdf_clock_24 = new SimpleDateFormat("HH:mm:ss");
         sdf_date = new SimpleDateFormat("yyyy-MM-dd");
 		sdf_week = new SimpleDateFormat("E");
+		sdf_sec = new SimpleDateFormat("ss");
         timeIntent = new Intent();
 		timeIntent.setAction(StaticString.TEXT_UPDATE_ACTION);
 		if (Build.VERSION.SDK_INT >= 12)
@@ -198,12 +203,14 @@ public class FloatTextUpdateService extends Service
 
     private void getTime()
     {
-		time0 = sdf12.format(new Date());
-		time1 = sdf24.format(new Date());
-		time2 = sdf_clock_12.format(new Date());
-		time3 = sdf_clock_24.format(new Date());
-		time4 = sdf_date.format(new Date());
-		week = sdf_week.format(new Date());
+		Date d = new Date();
+		time0 = sdf12.format(d);
+		time1 = sdf24.format(d);
+		time2 = sdf_clock_12.format(d);
+		time3 = sdf_clock_24.format(d);
+		time4 = sdf_date.format(d);
+		week = sdf_week.format(d);
+		time5 = sdf_sec.format(d);
 	}
 
     private String getNetSpeed()
@@ -389,7 +396,7 @@ public class FloatTextUpdateService extends Service
 					dynamicnum = true;
 					if (!timedynamicset)
                     {
-                        if (FloatServiceMethod.hasWord(str, "SystemTime") || FloatServiceMethod.hasWord(str, "Date") || FloatServiceMethod.hasWord(str, "Clock") || FloatServiceMethod.hasWord(str, "Week"))
+                        if (FloatServiceMethod.hasWord(str, "SystemTime") || FloatServiceMethod.hasWord(str, "Date") || FloatServiceMethod.hasWord(str, "Clock") || FloatServiceMethod.hasWord(str, "Week") || FloatServiceMethod.hasWord(str, "Second"))
                         {
                             time_dynamicword = true;
                             timedynamicset = true;

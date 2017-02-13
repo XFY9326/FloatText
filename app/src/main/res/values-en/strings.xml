@@ -191,6 +191,9 @@
     <string name="xml_global_text_typeface_summary">Put .ttf file into /FloatText/TTFs to read\nNow Font:</string>
 	<string name="xml_global_text_clear_text">Auto clear input text</string>
 	<string name="xml_global_text_clear_text_sum">Clear input text when change text of float window</string>
+	<string name="xml_global_text_filter">Text Show Filter</string>
+	<string name="xml_global_text_filter_sum">Show different text while different Dynamic Words</string>
+	<string name="xml_global_text_filter_help">Text Show Filter help doc</string>
     <string name="xml_global_serviceset">Service settings</string>
     <string name="xml_global_service_stayalive">Float Window Guard Service</string>
     <string name="xml_global_service_stayalive_on">Open(May use more CPU)</string>

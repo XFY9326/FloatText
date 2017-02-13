@@ -70,6 +70,8 @@ public class FloatServiceMethod
 			InfoList.add(0);
 			KeyList.add("(DateCount_)(.*?)");
 			InfoList.add(1);
+			KeyList.add("Second");
+			InfoList.add(0);
 			list_editor.putInt("Version", StaticNum.DYNAMIC_LIST_VERSION);
 			list_editor.putString("LIST", KeyList.toString());
 			list_editor.putString("INFO", InfoList.toString());

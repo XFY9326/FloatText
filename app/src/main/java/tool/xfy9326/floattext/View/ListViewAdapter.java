@@ -86,7 +86,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 		//保持显示的文字和悬浮窗内样式一致
         TextReshow(index, utils, view, Show.get(index), listtext);
 		//单行显示
-        view.textView.setSingleLine(utils.getListTextHide());
+        view.textView.setSingleLine(utils.ListTextHide);
 		//锁定图标设置
 		LockViewSet(index, view);
 		//点击文字隐藏和显示悬浮窗
