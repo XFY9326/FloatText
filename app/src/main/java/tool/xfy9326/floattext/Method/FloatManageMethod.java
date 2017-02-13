@@ -470,69 +470,14 @@ public class FloatManageMethod
         Thread thread = new Thread() {
 			public void run()
             {
-                final App utils = ((App)ctx.getApplicationContext());
+                final App utils = (App)ctx.getApplicationContext();
 				final FloatTextUtils textutils = utils.getTextutil();
-                final ArrayList<String> Text = textutils.getTextShow();
-                final ArrayList<Float> Size = textutils.getSizeShow();
-                final ArrayList<Integer> Color = textutils.getColorShow();
-                final ArrayList<Boolean> Thick = textutils.getThickShow();
-                final ArrayList<Boolean> Show = textutils.getShowFloat();
-                final ArrayList<String> Position = textutils.getPosition();
-                final ArrayList<Boolean> Lock = textutils.getLockPosition();
-                final ArrayList<Boolean> Top = textutils.getTextTop();
-                final ArrayList<Boolean> AutoTop = textutils.getAutoTop();
-                final ArrayList<Boolean> Move = textutils.getTextMove();
-                final ArrayList<Integer> Speed = textutils.getTextSpeed();
-                final ArrayList<Boolean> Shadow = textutils.getTextShadow();
-                final ArrayList<Float> ShadowX = textutils.getTextShadowX();
-                final ArrayList<Float> ShadowY = textutils.getTextShadowY();
-                final ArrayList<Float> ShadowRadius = textutils.getTextShadowRadius();
-                final ArrayList<Integer> BackgroundColor = textutils.getBackgroundColor();
-                final ArrayList<Integer> ShadowColor = textutils.getTextShadowColor();
-				final ArrayList<Boolean> FloatSize = textutils.getFloatSize();
-				final ArrayList<Float> FloatLong = textutils.getFloatLong();
-				final ArrayList<Float> FloatWide = textutils.getFloatWide();
 				ctx.runOnUiThread(new Runnable(){
 						public void run()
 						{
-							if (Text.size() != 0 && Size.size() != 0 && Color.size() != 0 && Thick.size() != 0)
-							{
-								WindowManager wm = utils.getFloatwinmanager();
-								for (int i = 0;i < Text.size();i++)
-								{
-									FloatTextView fv = FloatTextSettingMethod.CreateFloatView(ctx, Text.get(i), Size.get(i), Color.get(i), Thick.get(i), Speed.get(i), i, Shadow.get(i), ShadowX.get(i), ShadowY.get(i), ShadowRadius.get(i), ShadowColor.get(i));
-									FloatLinearLayout fll = FloatTextSettingMethod.CreateLayout(ctx, i);
-									fll.changeShowState(Show.get(i));
-									String[] ptemp = new String[]{"100", "150"};
-									if (Lock.get(i))
-									{
-										ptemp = Position.get(i).toString().split("_");
-										fll.setAddPosition(Float.parseFloat(ptemp[0]), Float.parseFloat(ptemp[1]));
-									}
-									WindowManager.LayoutParams layout = FloatTextSettingMethod.CreateFloatLayout(ctx, wm, fv, fll, Show.get(i), Float.parseFloat(ptemp[0]), Float.parseFloat(ptemp[1]), Top.get(i), Move.get(i), BackgroundColor.get(i), FloatSize.get(i), FloatLong.get(i), FloatWide.get(i));
-									fll.setFloatLayoutParams(layout);
-									fll.setPositionLocked(Lock.get(i));
-									fll.setTop(AutoTop.get(i));
-									if (utils.getMovingMethod())
-									{
-										fv.setMoving(Move.get(i), 0);
-									}
-									else
-									{
-										fv.setMoving(Move.get(i), 1);
-										if (Move.get(i))
-										{
-											fll.setShowState(false);
-											fll.setShowState(true);
-										}
-									}
-									FloatTextSettingMethod.savedata(ctx, fv, fll, Text.get(i), layout);
-								}
-							}
-							utils.getListviewadapter().notifyDataSetChanged();
+							Reshow_Create(ctx, utils, textutils, textutils.getTextShow(), textutils.getShowFloat(), textutils.getLockPosition(), textutils.getPosition(), textutils.getTextMove());
 						}
-					}
-				);
+					});
                 if (han != null)
                 {
                     han.obtainMessage(1).sendToTarget();
@@ -541,6 +486,45 @@ public class FloatManageMethod
         };
         return thread;
     }
+
+	public static void Reshow_Create(Context ctx, App utils, FloatTextUtils textutils, ArrayList<String> Text, ArrayList<Boolean> Show, ArrayList<Boolean> Lock, ArrayList<String> Position, ArrayList<Boolean> Move)
+	{
+		if (Text.size() != 0)
+		{
+			WindowManager wm = utils.getFloatwinmanager();
+			for (int i = 0;i < Text.size();i++)
+			{
+				FloatTextView fv = FloatTextSettingMethod.CreateFloatView(ctx, textutils, i);
+				FloatLinearLayout fll = FloatTextSettingMethod.CreateLayout(ctx, i);
+				fll.changeShowState(Show.get(i));
+				String[] ptemp = new String[]{"100", "150"};
+				if (Lock.get(i))
+				{
+					ptemp = Position.get(i).toString().split("_");
+					fll.setAddPosition(Float.parseFloat(ptemp[0]), Float.parseFloat(ptemp[1]));
+				}
+				WindowManager.LayoutParams layout = FloatTextSettingMethod.CreateFloatLayout(ctx, wm, fv, fll, Float.parseFloat(ptemp[0]), Float.parseFloat(ptemp[1]), textutils, i);
+				fll.setFloatLayoutParams(layout);
+				fll.setPositionLocked(Lock.get(i));
+				fll.setTop(textutils.getAutoTop().get(i));
+				if (utils.getMovingMethod())
+				{
+					fv.setMoving(Move.get(i), 0);
+				}
+				else
+				{
+					fv.setMoving(Move.get(i), 1);
+					if (Move.get(i))
+					{
+						fll.setShowState(false);
+						fll.setShowState(true);
+					}
+				}
+				FloatTextSettingMethod.savedata(ctx, fv, fll, Text.get(i), layout);
+			}
+		}
+		utils.getListviewadapter().notifyDataSetChanged();
+	}
 
 	//字体文件检测
     public static void floattext_typeface_check(Context ctx, boolean alert)

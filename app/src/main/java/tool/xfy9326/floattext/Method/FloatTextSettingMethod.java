@@ -5,6 +5,7 @@ import android.content.*;
 import android.graphics.*;
 import android.os.*;
 import android.view.*;
+import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
 import android.net.Uri;
@@ -15,7 +16,6 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 import tool.xfy9326.floattext.R;
-import tool.xfy9326.floattext.Utils.App;
 
 public class FloatTextSettingMethod
 {
@@ -43,6 +43,11 @@ public class FloatTextSettingMethod
     }
 
 	//新建悬浮文字控件
+	public static FloatTextView CreateFloatView(Context ctx, FloatTextUtils textutils, int i)
+    {
+        return CreateFloatView(ctx, textutils.getTextShow().get(i), textutils.getSizeShow().get(i), textutils.getColorShow().get(i), textutils.getThickShow().get(i), textutils.getTextSpeed().get(i), i, textutils.getTextShadow().get(i), textutils.getTextShadowX().get(i), textutils.getTextShadowY().get(i), textutils.getTextShadowRadius().get(i), textutils.getTextShadowColor().get(i));
+    }
+
     public static FloatTextView CreateFloatView(final Context ctx, String Text, Float Size, int Paint, boolean Thick, int speed, int id, boolean shadow, float shadowx, float shadowy, float shadowradius, int shadowcolor)
     {
         FloatTextView floatview = new FloatTextView(ctx, ((App)ctx.getApplicationContext()).getHtmlMode());
@@ -101,6 +106,11 @@ public class FloatTextSettingMethod
     }
 
 	//新建悬浮窗布局
+	public static WindowManager.LayoutParams CreateFloatLayout(Context ctx, WindowManager wm, FloatTextView floatview, FloatLinearLayout layout, float px, float py, FloatTextUtils textutils, int i)
+    {
+		return CreateFloatLayout(ctx, wm, floatview, layout, textutils.getShowFloat().get(i), px, py, textutils.getTextTop().get(i), textutils.getTextMove().get(i), textutils.getBackgroundColor().get(i), textutils.getFloatSize().get(i), textutils.getFloatLong().get(i), textutils.getFloatWide().get(i));
+	}
+
     public static WindowManager.LayoutParams CreateFloatLayout(Context ctx, WindowManager wm, FloatTextView floatview, FloatLinearLayout layout, boolean show, float px, float py, boolean top, boolean move, int bac, boolean fs, float fl, float fw)
     {
         WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams();
