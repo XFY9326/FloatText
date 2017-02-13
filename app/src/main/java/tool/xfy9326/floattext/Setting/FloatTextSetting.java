@@ -1,25 +1,24 @@
 package tool.xfy9326.floattext.Setting;
 
-import android.app.*;
 import android.content.*;
 import android.os.*;
 import android.preference.*;
-import android.provider.*;
-import android.support.v7.app.*;
 import android.view.*;
-import android.view.WindowManager.*;
 import android.widget.*;
-import android.widget.SeekBar.*;
 import java.util.*;
-import net.margaritov.preference.colorpicker.*;
 import tool.xfy9326.floattext.*;
-import tool.xfy9326.floattext.Activity.*;
 import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
 import android.app.AlertDialog;
+import android.provider.Settings;
 import android.support.v7.app.ActionBar;
+import android.view.View.OnClickListener;
+import android.view.WindowManager.LayoutParams;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+import net.margaritov.preference.colorpicker.ColorPickerPreference;
+import tool.xfy9326.floattext.Activity.AppCompatPreferenceActivity;
 
 /*
  文字悬浮窗设置界面
@@ -313,7 +312,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                 }
             });
     }
-	
+
 	private void FloatWinViewSet(final LayoutInflater inflater)
 	{
 		//背景颜色设置
@@ -406,7 +405,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 				}
 			});
 	}
-	
+
 	private void TextSizeSet(LayoutInflater inflater)
 	{
 		View layout = inflater.inflate(R.layout.dialog_textsize_edit, null);
@@ -435,7 +434,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		dialog.setPositiveButton(R.string.close, null);
 		dialog.show();
 	}
-	
+
 	private void TextSpeedSet(LayoutInflater inflater)
 	{
 		View layout = inflater.inflate(R.layout.dialog_textspeed_edit, null);
@@ -465,7 +464,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		dialog.setPositiveButton(R.string.close, null);
 		dialog.show();
 	}
-	
+
 	private void FloatLongSet(LayoutInflater inflater)
 	{
 		View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
@@ -525,7 +524,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		dialog.setPositiveButton(R.string.close, null);
 		dialog.show();
 	}
-	
+
 	private void FloatWideSet(LayoutInflater inflater)
 	{
 		View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
@@ -585,8 +584,8 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		dialog.setPositiveButton(R.string.close, null);
 		dialog.show();
 	}
-	
-	private void FloatTextShowSet (LayoutInflater inflater)
+
+	private void FloatTextShowSet(LayoutInflater inflater)
 	{
 		View layout = inflater.inflate(R.layout.dialog_text_edit, null);
 		final EditText atv = (EditText) layout.findViewById(R.id.textview_addnewtext);
@@ -648,7 +647,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 			});
 		textedit.show();
 	}
-	
+
 	private void FloatMoveSet(LayoutInflater inflater)
 	{
 		View layout = inflater.inflate(R.layout.dialog_floatmove, null);
@@ -691,7 +690,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 			.setView(layout);
 		move.show();
 	}
-	
+
 	private void TextShadowSet(LayoutInflater inflater)
 	{
 		View layout = inflater.inflate(R.layout.dialog_textshadow_edit, null);
@@ -917,7 +916,12 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     {
         Position = linearlayout.getPosition();
         App utils = ((App)getApplicationContext());
-        utils.setDatas(i, floatview, linearlayout, wmParams, TextShow, TextColor, TextSize, TextThick, FloatShow, Position, LockPosition, TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide);
+		FloatTextUtils textutils = utils.getTextutil();
+		FloatFrameUtils frameutils = utils.getFrameutil();
+        frameutils.setDatas(i, floatview, linearlayout, wmParams, TextShow);
+		textutils.setDatas(i, TextShow, TextColor, TextSize, TextThick, FloatShow, Position, LockPosition, TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide);
+		utils.setTextutil(textutils);
+		utils.setFrameutil(frameutils);
     }
 
 	//返回消息

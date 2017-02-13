@@ -1,8 +1,8 @@
 package tool.xfy9326.floattext.FileSelector;
 
-import android.app.*;
-import android.content.*;
-import android.os.*;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Environment;
 
 public class SelectFile
 {
@@ -14,26 +14,26 @@ public class SelectFile
     private int type;
     private String FileType = null;
 
-    public SelectFile (int resultcode, int choosetype)
+    public SelectFile(int resultcode, int choosetype)
     {
         this.resultcode = resultcode;
         this.type = choosetype;
         this.DefaultPath = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
     }
 
-    public SelectFile (int resultcode, int choosetype, String path)
+    public SelectFile(int resultcode, int choosetype, String path)
     {
         this.resultcode = resultcode;
         this.type = choosetype;
         this.DefaultPath = path;
     }
 
-    public void setFileType (String ExtraName)
+    public void setFileType(String ExtraName)
     {
         this.FileType = ExtraName;
     }
 
-    public void start (Activity act)
+    public void start(Activity act)
     {
         Intent intent = new Intent(act, FileList.class);
         intent.putExtra("DefaultPath", DefaultPath);

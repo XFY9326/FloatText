@@ -1,9 +1,10 @@
 package tool.xfy9326.floattext.Tool;
 
-import android.content.*;
 import java.text.*;
-import java.util.*;
-import tool.xfy9326.floattext.*;
+
+import android.content.Context;
+import java.util.Date;
+import tool.xfy9326.floattext.R;
 
 public class DateCounter
 {
@@ -48,7 +49,7 @@ public class DateCounter
 			Date now = new Date();
 			Date set = format.parse(date);
 			long diff = set.getTime() - now.getTime();
-			if(diff < 0)
+			if (diff < 0)
 			{
 				diff = 0;
 			}

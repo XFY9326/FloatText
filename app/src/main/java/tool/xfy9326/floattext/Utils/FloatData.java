@@ -1,13 +1,14 @@
 package tool.xfy9326.floattext.Utils;
 
-import android.app.*;
 import android.content.*;
-import android.util.*;
-import java.io.*;
 import java.util.*;
 import org.json.*;
-import tool.xfy9326.floattext.Method.*;
-import tool.xfy9326.floattext.Tool.*;
+
+import android.app.Activity;
+import android.util.Base64;
+import java.io.File;
+import tool.xfy9326.floattext.Method.IOMethod;
+import tool.xfy9326.floattext.Tool.FormatArrayList;
 
 /*
  数据操作
@@ -140,25 +141,7 @@ public class FloatData
 		{
 			textobject.put("TextArray", spdatat.getString("TextArray", "[]"));
 
-			xmltojson(dataobject, "SizeArray");
-			xmltojson(dataobject, "ColorArray");
-			xmltojson(dataobject, "ThickArray");
-			xmltojson(dataobject, "ShowArray");
-			xmltojson(dataobject, "LockArray");
-			xmltojson(dataobject, "PositionArray");
-			xmltojson(dataobject, "TopArray");
-			xmltojson(dataobject, "AutoTopArray");
-			xmltojson(dataobject, "MoveArray");
-			xmltojson(dataobject, "SpeedArray");
-			xmltojson(dataobject, "ShadowArray");
-			xmltojson(dataobject, "ShadowXArray");
-			xmltojson(dataobject, "ShadowYArray");
-			xmltojson(dataobject, "ShadowRadiusArray");
-			xmltojson(dataobject, "BackgroundColorArray");
-			xmltojson(dataobject, "TextShadowColorArray");
-			xmltojson(dataobject, "FloatSizeArray");
-			xmltojson(dataobject, "FloatLongArray");
-			xmltojson(dataobject, "FloatWideArray");
+			SetTextData(dataobject);
 
 			mainobject.put("FloatText_Version", VersionCode);
 			mainobject.put("Data_Version", StaticNum.FloatDataVersion);
@@ -177,6 +160,30 @@ public class FloatData
 			return false;
 		}
 		return true;
+	}
+
+	private JSONObject SetTextData(JSONObject dataobject) throws JSONException
+	{
+		xmltojson(dataobject, "SizeArray");
+		xmltojson(dataobject, "ColorArray");
+		xmltojson(dataobject, "ThickArray");
+		xmltojson(dataobject, "ShowArray");
+		xmltojson(dataobject, "LockArray");
+		xmltojson(dataobject, "PositionArray");
+		xmltojson(dataobject, "TopArray");
+		xmltojson(dataobject, "AutoTopArray");
+		xmltojson(dataobject, "MoveArray");
+		xmltojson(dataobject, "SpeedArray");
+		xmltojson(dataobject, "ShadowArray");
+		xmltojson(dataobject, "ShadowXArray");
+		xmltojson(dataobject, "ShadowYArray");
+		xmltojson(dataobject, "ShadowRadiusArray");
+		xmltojson(dataobject, "BackgroundColorArray");
+		xmltojson(dataobject, "TextShadowColorArray");
+		xmltojson(dataobject, "FloatSizeArray");
+		xmltojson(dataobject, "FloatLongArray");
+		xmltojson(dataobject, "FloatWideArray");
+		return dataobject;
 	}
 
 	//导入
@@ -231,7 +238,7 @@ public class FloatData
 				speditt.putString("TextArray", oldtext);
 
 				savetofile(dataobject);
-				
+
 				spedit.commit();
 				speditt.commit();
 				return true;
@@ -247,7 +254,7 @@ public class FloatData
 			return false;
 		}
 	}
-	
+
 	private void savetofile(JSONObject dataobject) throws JSONException
 	{
 		Iterator it = dataobject.keys();
@@ -400,5 +407,5 @@ public class FloatData
         }
         return str;
     }
-    
+
 }

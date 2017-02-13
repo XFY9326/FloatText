@@ -1,11 +1,11 @@
 package tool.xfy9326.floattext;
 
-import android.content.*;
 import android.content.pm.*;
-import android.util.*;
 import java.security.*;
 
+import android.content.Context;
 import android.content.pm.Signature;
+import android.util.Base64;
 
 public class SafeGuard
 {

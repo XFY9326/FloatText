@@ -3,11 +3,12 @@ package tool.xfy9326.floattext.CrashReport;
 import android.content.*;
 import android.content.pm.*;
 import android.os.*;
-import android.widget.*;
 import java.io.*;
-import java.lang.reflect.*;
 import java.util.*;
-import tool.xfy9326.floattext.*;
+
+import android.widget.Toast;
+import java.lang.reflect.Field;
+import tool.xfy9326.floattext.R;
 
 public class CrashHandler implements Thread.UncaughtExceptionHandler
 {
@@ -21,15 +22,15 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
     private String mail;
     private String AppName;
 
-    private CrashHandler ()
+    private CrashHandler()
     {}
 
-    public static CrashHandler getInstance ()
+    public static CrashHandler getInstance()
     {
         return INSTANCE;
     }
 
-    public void init (Context context, String AppName, String mainclassname, String mail)
+    public void init(Context context, String AppName, String mainclassname, String mail)
     {
         mContext = context;
         this.mail = mail;
@@ -40,7 +41,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
     }
 
     @Override
-    public void uncaughtException (Thread thread, Throwable ex)
+    public void uncaughtException(Thread thread, Throwable ex)
     {
         if (!handleException(ex) && mDefaultHandler != null)
         {
@@ -69,7 +70,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
         }
     }
 
-    private boolean handleException (Throwable ex)
+    private boolean handleException(Throwable ex)
     {
         if (ex == null)
         {
@@ -77,7 +78,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
         }
         new Thread() {
             @Override
-            public void run ()
+            public void run()
             {
                 Looper.prepare();
                 Toast.makeText(mContext, R.string.crashreport_toast_info, Toast.LENGTH_LONG).show();
@@ -89,7 +90,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
         return true;
     }
 
-    public void collectDeviceInfo (Context ctx)
+    public void collectDeviceInfo(Context ctx)
     {
         try
         {
@@ -123,7 +124,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
         }
     }
 
-    private void saveCrashInfo (Throwable ex)
+    private void saveCrashInfo(Throwable ex)
     {
 
         String str = "";

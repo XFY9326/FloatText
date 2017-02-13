@@ -1,20 +1,17 @@
 package tool.xfy9326.floattext.FileSelector;
 
-import android.app.*;
 import android.content.*;
-import android.os.*;
 import android.support.v7.app.*;
-import android.support.v7.widget.*;
 import android.view.*;
 import android.widget.*;
-import java.io.*;
-import java.text.*;
 import java.util.*;
-import tool.xfy9326.floattext.*;
 
 import android.app.AlertDialog;
-import android.support.v7.app.ActionBar;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import tool.xfy9326.floattext.R;
 
 public class FileList extends AppCompatActivity
 {
@@ -30,7 +27,7 @@ public class FileList extends AppCompatActivity
     private boolean backtofront = false;
 
     @Override
-    protected void onCreate (Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fileselector_select_layout);
@@ -41,14 +38,14 @@ public class FileList extends AppCompatActivity
         ViewSet();
     }
 
-    private void actionbarset ()
+    private void actionbarset()
     {
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(tb);
 		sethome();
     }
 
-	private void sethome ()
+	private void sethome()
 	{
 		ActionBar actionBar = getSupportActionBar();
 		if (actionBar != null)
@@ -57,13 +54,13 @@ public class FileList extends AppCompatActivity
         }
 	}
 
-    private void adapterset ()
+    private void adapterset()
     {
         listadapter = new ListAdapter(this);
         listadapter.setListData(Path, Filename, Filedata);
     }
 
-    private void intentdataget ()
+    private void intentdataget()
     {
         Intent intent = this.getIntent();
         Path = intent.getStringExtra("DefaultPath");
@@ -72,12 +69,12 @@ public class FileList extends AppCompatActivity
         choosetype = intent.getIntExtra("ChooseType", SelectFile.TYPE_ChooseFile);
     }
 
-    private void ViewSet ()
+    private void ViewSet()
     {
         ListView filelist = (ListView) findViewById(R.id.fileselector_listview_file);
         filelist.setAdapter(listadapter);
         filelist.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-                public void onItemClick (AdapterView<?> adv, View v, int li, long l)
+                public void onItemClick(AdapterView<?> adv, View v, int li, long l)
                 {
                     LastPath = Path;
                     if (li == 0)
@@ -105,7 +102,7 @@ public class FileList extends AppCompatActivity
                 }
             });
         filelist.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
-                public boolean onItemLongClick (AdapterView<?> adv, View v, int li, long l)
+                public boolean onItemLongClick(AdapterView<?> adv, View v, int li, long l)
                 {
                     editfolder(Path + "/" + listadapter.getItem(li));
                     return true;
@@ -113,7 +110,7 @@ public class FileList extends AppCompatActivity
             });
     }
 
-    private void DataSet (String str)
+    private void DataSet(String str)
     {
         File file = new File(str);
         Path = file.getAbsolutePath().toString();
@@ -128,7 +125,7 @@ public class FileList extends AppCompatActivity
         }
     }
 
-    private void File_GetList (File file)
+    private void File_GetList(File file)
     {
         List<File> filelist = orderByName(file);
         ArrayList<String> name = new ArrayList<String>();
@@ -173,7 +170,7 @@ public class FileList extends AppCompatActivity
         Filedata = data;
     }
 
-    private String getExtraName (String filename)
+    private String getExtraName(String filename)
     { 
         if ((filename != null) && (filename.length() > 0))
         { 
@@ -186,7 +183,7 @@ public class FileList extends AppCompatActivity
         return "No_Name"; 
     }
 
-    private void File_Selected (final String str)
+    private void File_Selected(final String str)
     {
         File file = new File(str);
         if (!file.exists())
@@ -236,7 +233,7 @@ public class FileList extends AppCompatActivity
                         AlertDialog.Builder edit = new AlertDialog.Builder(this);
                         String[] choice = getResources().getStringArray(R.array.fileselect_folder_edit);
                         edit.setItems(choice, new DialogInterface.OnClickListener() {
-                                public void onClick (DialogInterface dialog, int which)
+                                public void onClick(DialogInterface dialog, int which)
                                 {
                                     switch (which)
                                     {
@@ -268,7 +265,7 @@ public class FileList extends AppCompatActivity
         }
     }
 
-    private void returnpath (String str)
+    private void returnpath(String str)
     {
         Intent intent = new Intent();
         intent.putExtra("FilePath", str);
@@ -276,12 +273,12 @@ public class FileList extends AppCompatActivity
         finish();
     }
 
-    private List<File> orderByName (File file)
+    private List<File> orderByName(File file)
     {
         List<File> filelist = Arrays.asList(file.listFiles());
         Collections.sort(filelist, new Comparator<File>() {
                 @Override
-                public int compare (File o1, File o2)
+                public int compare(File o1, File o2)
                 {
                     if (o1.isDirectory() && o2.isFile())
                     {
@@ -297,12 +294,12 @@ public class FileList extends AppCompatActivity
         return filelist;
     }
 
-    private void Show (int id)
+    private void Show(int id)
     {
         Toast.makeText(this, getString(id), Toast.LENGTH_SHORT).show();
     }
 
-    private void editfolder (final String path)
+    private void editfolder(final String path)
     {
         final File file = new File(path);
         AlertDialog.Builder edit = new AlertDialog.Builder(this);
@@ -310,7 +307,7 @@ public class FileList extends AppCompatActivity
         {
             String[] choice = getResources().getStringArray(R.array.fileselect_file_edit);
             edit.setItems(choice, new DialogInterface.OnClickListener() {
-                    public void onClick (DialogInterface dialog, int which)
+                    public void onClick(DialogInterface dialog, int which)
                     {
                         switch (which)
                         {
@@ -335,7 +332,7 @@ public class FileList extends AppCompatActivity
         }
     }
 
-    private void deletefile (File file)
+    private void deletefile(File file)
     {
         if (file.isFile())
         {
@@ -358,14 +355,14 @@ public class FileList extends AppCompatActivity
         }
     }
 
-    private void renamefile (final File oldFile)
+    private void renamefile(final File oldFile)
     {
         final EditText filename = new EditText(this);
         AlertDialog.Builder dialog = new AlertDialog.Builder(this)
             .setTitle(R.string.fileselect_rename)
             .setView(filename)
             .setPositiveButton(R.string.fileselect_save, new DialogInterface.OnClickListener(){
-                public void onClick (DialogInterface dialog, int i)
+                public void onClick(DialogInterface dialog, int i)
                 {
                     File newFile = new File(oldFile.getParent() + "/" + filename.getText().toString());
                     if (newFile.exists())
@@ -391,14 +388,14 @@ public class FileList extends AppCompatActivity
         dialog.show();
     }
 
-    private void addfolder ()
+    private void addfolder()
     {
         final EditText foldername = new EditText(this);
         AlertDialog.Builder dialog = new AlertDialog.Builder(this)
             .setTitle(R.string.fileselect_folder_new)
             .setView(foldername)
             .setPositiveButton(R.string.fileselect_save, new DialogInterface.OnClickListener(){
-                public void onClick (DialogInterface dialog, int i)
+                public void onClick(DialogInterface dialog, int i)
                 {
                     String path = Path + "/" + foldername.getText().toString();
                     File file = new File(path);
@@ -425,7 +422,7 @@ public class FileList extends AppCompatActivity
         dialog.show();
     }
 
-    private void updateview ()
+    private void updateview()
     {
         File_GetList(new File(Path));
         listadapter.setListData(Path, Filename, Filedata);
@@ -433,7 +430,7 @@ public class FileList extends AppCompatActivity
     }
 
     @Override 
-    public boolean onCreateOptionsMenu (Menu menu)
+    public boolean onCreateOptionsMenu(Menu menu)
     {  
         MenuInflater inflater = getMenuInflater();  
         inflater.inflate(R.menu.fileselector_actionbar_menu, menu);
@@ -441,7 +438,7 @@ public class FileList extends AppCompatActivity
     }
 
     @Override
-    public boolean onKeyDown (int keyCode, KeyEvent event)
+    public boolean onKeyDown(int keyCode, KeyEvent event)
     {
         if (keyCode == KeyEvent.KEYCODE_BACK)
         {
@@ -461,7 +458,7 @@ public class FileList extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected (MenuItem item)
+    public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
         if (id == android.R.id.home)

@@ -1,17 +1,16 @@
 package tool.xfy9326.floattext.API;
 
-import android.*;
-import android.content.*;
-import android.content.pm.*;
 import android.os.*;
-import android.support.v7.app.*;
-import android.view.*;
-import android.view.View.*;
 import android.widget.*;
-import java.io.*;
-import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Method.*;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import java.io.File;
 import tool.xfy9326.floattext.R;
 
 public class ImportTTF extends AppCompatActivity

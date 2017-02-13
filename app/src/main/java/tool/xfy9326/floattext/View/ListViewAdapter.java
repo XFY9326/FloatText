@@ -2,23 +2,24 @@ package tool.xfy9326.floattext.View;
 
 import android.app.*;
 import android.content.*;
-import android.graphics.*;
-import android.preference.*;
-import android.support.v7.widget.*;
 import android.text.*;
-import android.text.style.*;
 import android.view.*;
-import android.view.View.*;
 import android.widget.*;
-import java.util.*;
 import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Method.*;
-import tool.xfy9326.floattext.Setting.*;
 import tool.xfy9326.floattext.Utils.*;
 
+import android.graphics.Typeface;
+import android.preference.PreferenceManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.style.StrikethroughSpan;
+import android.view.View.OnClickListener;
+import java.util.ArrayList;
+import tool.xfy9326.floattext.Setting.FloatTextSetting;
+
 /*
-管理列表操作
-*/
+ 管理列表操作
+ */
 
 public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHolder>
 {
@@ -120,7 +121,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 				}
 			});
     }
-	
+
 	private void TextReshow(int index, App utils, ViewHolder view, boolean show, String listtext)
 	{
 		FloatTextUtils textutils = utils.getTextutil();
@@ -150,7 +151,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
         view.textView.setTextColor(utils.getTextutil().getColorShow().get(index));
         view.textView.setEllipsize(TextUtils.TruncateAt.END);
 	}
-	
+
 	private void LockViewSet(int index, ViewHolder view)
 	{
 		ArrayList<Boolean> lock = ((App) context.getApplicationContext()).getTextutil().getLockPosition();
@@ -163,7 +164,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
             view.lock_button.setBackgroundResource(R.drawable.ic_lock_unlocked);
         }
 	}
-	
+
 	private void EditViewSet(int index)
 	{
 		if (!sp.getBoolean("WinOnlyShowInHome", false))
@@ -179,7 +180,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 			FloatManage.snackshow((Activity) context, context.getString(R.string.float_can_not_edit));
 		}
 	}
-	
+
 	private void DelViewSet(final int index)
 	{
 		SharedPreferences spdata = PreferenceManager.getDefaultSharedPreferences(context);
@@ -203,7 +204,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 			delwin(index);
 		}
 	}
-	
+
 	private void TextViewSet(int index, App utils, ViewHolder view)
 	{
 		FloatTextUtils textutils = utils.getTextutil();
@@ -332,7 +333,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
     /*
 	 进入编辑窗口前需要保存数据
      */
-	
+
     private void FloatWinEdit(Activity act, int i)
 	{
         Intent intent = new Intent(context, FloatTextSetting.class);

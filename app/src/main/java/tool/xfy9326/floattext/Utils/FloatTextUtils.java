@@ -1,6 +1,6 @@
 package tool.xfy9326.floattext.Utils;
 
-import java.util.*;
+import java.util.ArrayList;
 
 public class FloatTextUtils
 {
@@ -224,8 +224,8 @@ public class FloatTextUtils
 	{
 		return TextShow;
 	}
-	
-	public void addDatas (String text, int color, float size, boolean thick, boolean show, String position, boolean lp, boolean tp, boolean ap, boolean tm, int sp, boolean sha, float shax, float shay, float shad, int bac, int tsc, boolean fs, float fl, float fw)
+
+	public void addDatas(String text, int color, float size, boolean thick, boolean show, String position, boolean lp, boolean tp, boolean ap, boolean tm, int sp, boolean sha, float shax, float shay, float shad, int bac, int tsc, boolean fs, float fl, float fw)
     {
         TextShow.add(text);
         ColorShow.add(color);
@@ -248,8 +248,8 @@ public class FloatTextUtils
 		FloatLong.add(fl);
 		FloatWide.add(fw);
     }
-	
-	public void replaceDatas (ArrayList<String> text, ArrayList<Integer> color, ArrayList<Float> size, ArrayList<Boolean> thick, ArrayList<Boolean> show, ArrayList<String> position, ArrayList<Boolean> lp, ArrayList<Boolean> tp, ArrayList<Boolean> ap, ArrayList<Boolean> tm, ArrayList<Integer> sp, ArrayList<Boolean> sha, ArrayList<Float> shax, ArrayList<Float> shay, ArrayList<Float> shad, ArrayList<Integer> bac, ArrayList<Integer> tsc, ArrayList<Boolean> fs, ArrayList<Float> fl, ArrayList<Float> fw)
+
+	public void replaceDatas(ArrayList<String> text, ArrayList<Integer> color, ArrayList<Float> size, ArrayList<Boolean> thick, ArrayList<Boolean> show, ArrayList<String> position, ArrayList<Boolean> lp, ArrayList<Boolean> tp, ArrayList<Boolean> ap, ArrayList<Boolean> tm, ArrayList<Integer> sp, ArrayList<Boolean> sha, ArrayList<Float> shax, ArrayList<Float> shay, ArrayList<Float> shad, ArrayList<Integer> bac, ArrayList<Integer> tsc, ArrayList<Boolean> fs, ArrayList<Float> fl, ArrayList<Float> fw)
     {
         TextShow = text;
         ColorShow = color;
@@ -273,7 +273,7 @@ public class FloatTextUtils
 		FloatWide = fw;
     }
 
-    public void removeDatas (int i)
+    public void removeDatas(int i)
     {
         TextShow.remove(i);
         ColorShow.remove(i);
@@ -296,8 +296,8 @@ public class FloatTextUtils
 		FloatLong.remove(i);
 		FloatWide.remove(i);
     }
-	
-	public void setDatas (int i, String text, int color, float size, boolean thick, boolean show, String position, boolean lp, boolean tp, boolean ap, boolean tm, int sp, boolean sha, float shax, float shay, float shad, int bac, int tsc, boolean fs, float fl, float fw)
+
+	public void setDatas(int i, String text, int color, float size, boolean thick, boolean show, String position, boolean lp, boolean tp, boolean ap, boolean tm, int sp, boolean sha, float shax, float shay, float shad, int bac, int tsc, boolean fs, float fl, float fw)
     {
         TextShow.set(i, text);
         ColorShow.set(i, color);

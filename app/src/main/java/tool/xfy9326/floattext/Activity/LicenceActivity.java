@@ -1,16 +1,15 @@
 package tool.xfy9326.floattext.Activity;
 
-import android.os.*;
 import android.support.v7.app.*;
-import android.support.v7.widget.*;
-import android.text.*;
-import android.text.method.*;
 import android.view.*;
 import android.widget.*;
-import tool.xfy9326.floattext.*;
-import tool.xfy9326.floattext.Method.*;
 
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import tool.xfy9326.floattext.Method.IOMethod;
+import tool.xfy9326.floattext.R;
 
 public class LicenceActivity extends AppCompatActivity
 {

@@ -1,14 +1,16 @@
 package tool.xfy9326.floattext.Service;
 
-import android.accessibilityservice.*;
 import android.content.*;
-import android.os.*;
-import android.view.accessibility.*;
-import java.util.*;
-import tool.xfy9326.floattext.*;
-import tool.xfy9326.floattext.Activity.*;
-import tool.xfy9326.floattext.Method.*;
-import android.preference.*;
+
+import android.accessibilityservice.AccessibilityService;
+import android.os.Build;
+import android.preference.PreferenceManager;
+import android.view.accessibility.AccessibilityEvent;
+import java.util.List;
+import tool.xfy9326.floattext.Activity.GlobalSetActivity;
+import tool.xfy9326.floattext.Method.FloatManageMethod;
+import tool.xfy9326.floattext.R;
+import tool.xfy9326.floattext.Utils.StaticString;
 
 public class FloatAdvanceTextUpdateService extends AccessibilityService
 {
@@ -90,7 +92,7 @@ public class FloatAdvanceTextUpdateService extends AccessibilityService
 	private void sendmes()
 	{
 		Intent intent = new Intent();
-		intent.setAction(FloatServiceMethod.TEXT_ADVANCE_UPDATE_ACTION);
+		intent.setAction(StaticString.TEXT_ADVANCE_UPDATE_ACTION);
 		intent.putExtra("CurrentActivity", currentactivity);
 		if (sentrule)
 		{
@@ -109,7 +111,7 @@ public class FloatAdvanceTextUpdateService extends AccessibilityService
 			if (!oldactivity.equalsIgnoreCase(currentactivity))
 			{
 				Intent intent = new Intent();
-				intent.setAction(FloatServiceMethod.ACTIVITY_CHANGE_ACTION);
+				intent.setAction(StaticString.ACTIVITY_CHANGE_ACTION);
 				intent.putExtra("CurrentActivity", currentactivity);
 				sendBroadcast(intent);
 				oldactivity = currentactivity;

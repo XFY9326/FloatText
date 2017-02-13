@@ -1,15 +1,16 @@
 package tool.xfy9326.floattext.Service;
 
-import android.app.*;
 import android.content.*;
 import android.hardware.*;
 import android.os.*;
-import java.text.*;
 import java.util.*;
 import java.util.regex.*;
-import tool.xfy9326.floattext.*;
-import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Utils.*;
+
+import android.app.Service;
+import java.text.SimpleDateFormat;
+import tool.xfy9326.floattext.Method.FloatServiceMethod;
+import tool.xfy9326.floattext.R;
 
 public class FloatTextUpdateService extends Service
 {
@@ -135,7 +136,7 @@ public class FloatTextUpdateService extends Service
     private void init()
     {
 		IntentFilter filter = new IntentFilter();
-		filter.addAction(FloatServiceMethod.TEXT_ADVANCE_UPDATE_ACTION);
+		filter.addAction(StaticString.TEXT_ADVANCE_UPDATE_ACTION);
 		registerReceiver(atr, filter);
         timer_a = new Timer();
         sdf12 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -145,7 +146,7 @@ public class FloatTextUpdateService extends Service
         sdf_date = new SimpleDateFormat("yyyy-MM-dd");
 		sdf_week = new SimpleDateFormat("E");
         timeIntent = new Intent();
-		timeIntent.setAction(FloatServiceMethod.TEXT_UPDATE_ACTION);
+		timeIntent.setAction(StaticString.TEXT_UPDATE_ACTION);
 		if (Build.VERSION.SDK_INT >= 12)
 		{
 			timeIntent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);

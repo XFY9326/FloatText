@@ -1,13 +1,14 @@
 package tool.xfy9326.floattext.Method;
 
 import android.content.*;
-import android.os.*;
-import android.view.*;
-import java.util.*;
 import java.util.regex.*;
-import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
-import tool.xfy9326.floattext.Tool.*;
+
+import android.os.Bundle;
+import android.view.WindowManager;
+import java.util.ArrayList;
+import tool.xfy9326.floattext.Tool.DateCounter;
+import tool.xfy9326.floattext.Utils.App;
 
 /*
  本方法用于动态变量的更新

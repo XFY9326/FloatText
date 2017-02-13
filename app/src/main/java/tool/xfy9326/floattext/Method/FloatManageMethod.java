@@ -1,31 +1,30 @@
 package tool.xfy9326.floattext.Method;
 
-import android.*;
 import android.app.*;
 import android.content.*;
-import android.content.pm.*;
 import android.content.res.*;
-import android.graphics.*;
-import android.net.*;
 import android.os.*;
-import android.preference.*;
-import android.provider.*;
 import android.support.design.widget.*;
 import android.view.*;
-import android.view.View.*;
-import android.widget.*;
-import java.io.*;
-import java.text.*;
 import java.util.*;
 import tool.xfy9326.floattext.*;
-import tool.xfy9326.floattext.Activity.*;
-import tool.xfy9326.floattext.FileSelector.*;
 import tool.xfy9326.floattext.Service.*;
 import tool.xfy9326.floattext.Setting.*;
 import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
-import tool.xfy9326.floattext.R;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.net.Uri;
+import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.view.View.OnClickListener;
+import android.widget.Toast;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import tool.xfy9326.floattext.Activity.GlobalSetActivity;
+import tool.xfy9326.floattext.FileSelector.SelectFile;
 
 public class FloatManageMethod
 {
@@ -223,7 +222,7 @@ public class FloatManageMethod
 			FloatManage.snackshow(ctx, ctx.getString(R.string.dynamicservice_no_open));
 		}
 	}
-	
+
 	//权限提示
 	public static void notifypermission(final Activity ctx)
 	{

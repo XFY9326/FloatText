@@ -1,11 +1,12 @@
 package tool.xfy9326.floattext.FileSelector;
 
-import android.content.*;
 import android.view.*;
 import android.widget.*;
-import java.io.*;
-import java.util.*;
-import tool.xfy9326.floattext.*;
+
+import android.content.Context;
+import java.io.File;
+import java.util.ArrayList;
+import tool.xfy9326.floattext.R;
 
 public class ListAdapter extends BaseAdapter
 {
@@ -16,13 +17,13 @@ public class ListAdapter extends BaseAdapter
     private String[] TypeList;
     private int[] IconList;
 
-    public ListAdapter (Context context)
+    public ListAdapter(Context context)
     {
         this.context = context;
         setFileIconData();
     }
 
-    public void setListData (String path, ArrayList<String> name, ArrayList<String> data)
+    public void setListData(String path, ArrayList<String> name, ArrayList<String> data)
     {
         this.Filename = name;
         this.Filedata = data;
@@ -30,7 +31,7 @@ public class ListAdapter extends BaseAdapter
     }
 
     @Override
-    public View getView (int p1, View p2, ViewGroup p3)
+    public View getView(int p1, View p2, ViewGroup p3)
     {
         final int index = p1;
         View view = p2;
@@ -48,17 +49,17 @@ public class ListAdapter extends BaseAdapter
         return view;
     }
 
-    private void iconset (ImageView icon, int index)
+    private void iconset(ImageView icon, int index)
     {
         File file = new File(Path + "/" + Filename.get(index));
         String name = Filename.get(index);
         if (file.isDirectory())
         {
-            if(name.equalsIgnoreCase("Download"))
+            if (name.equalsIgnoreCase("Download"))
             {
                 icon.setImageResource(R.drawable.ic_folder_download);
             }
-            else if(name.equalsIgnoreCase("DCIM") || name.equalsIgnoreCase("Pictures") || name.equalsIgnoreCase("Camera") || name.equalsIgnoreCase("ScreenShots"))
+            else if (name.equalsIgnoreCase("DCIM") || name.equalsIgnoreCase("Pictures") || name.equalsIgnoreCase("Camera") || name.equalsIgnoreCase("ScreenShots"))
             {
                 icon.setImageResource(R.drawable.ic_folder_image);
             }
@@ -106,24 +107,24 @@ public class ListAdapter extends BaseAdapter
     }
 
     @Override
-    public long getItemId (int p1)
+    public long getItemId(int p1)
     {
         return p1;
     }
 
     @Override
-    public Object getItem (int p1)
+    public Object getItem(int p1)
     {
         return Filename.get(p1);
     }
 
     @Override
-    public int getCount ()
+    public int getCount()
     {
         return Filename.size();
     }
 
-    private void setFileIconData ()
+    private void setFileIconData()
     {
         TypeList = context.getResources().getStringArray(R.array.fileselect_types);
         IconList = context.getResources().getIntArray(R.array.fileselect_icons);
@@ -169,7 +170,7 @@ public class ListAdapter extends BaseAdapter
         }
     }
 
-    private String getExtraName (String filename)
+    private String getExtraName(String filename)
     { 
         if ((filename != null) && (filename.length() > 0))
         { 

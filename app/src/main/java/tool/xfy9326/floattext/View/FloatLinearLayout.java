@@ -1,20 +1,21 @@
 package tool.xfy9326.floattext.View;
 
 import android.content.*;
-import android.graphics.*;
 import android.os.*;
-import android.preference.*;
 import android.view.*;
 import android.widget.*;
-import java.util.*;
-import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Utils.*;
 
+import android.graphics.Rect;
+import android.preference.PreferenceManager;
+import java.util.ArrayList;
+import tool.xfy9326.floattext.R;
+
 /*
-悬浮窗线性布局
-主要用于进行窗体操作
-比如锁定，移动，显示在通知栏等
-*/
+ 悬浮窗线性布局
+ 主要用于进行窗体操作
+ 比如锁定，移动，显示在通知栏等
+ */
 
 public class FloatLinearLayout extends LinearLayout
 {
@@ -43,7 +44,7 @@ public class FloatLinearLayout extends LinearLayout
     private boolean longclickmove = false;
 	//长按处理
     private Handler mHandler = new Handler() {
-        public void handleMessage (Message msg)
+        public void handleMessage(Message msg)
         {
             switch (msg.what)
             {
@@ -68,7 +69,7 @@ public class FloatLinearLayout extends LinearLayout
         }
 	};
 
-    public FloatLinearLayout (Context context, int ID)
+    public FloatLinearLayout(Context context, int ID)
     {
         super(context);
         this.ctx = context.getApplicationContext();
@@ -78,7 +79,7 @@ public class FloatLinearLayout extends LinearLayout
 
 	//窗体移动
     @Override
-    public boolean onTouchEvent (MotionEvent event)
+    public boolean onTouchEvent(MotionEvent event)
     {
         if (!lockposition)
         {
@@ -123,7 +124,7 @@ public class FloatLinearLayout extends LinearLayout
     }
 
 	//长按判断
-    private void setlongclick ()
+    private void setlongclick()
     {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
         if (sp.getBoolean("WinLongClickLock", true))
@@ -132,7 +133,7 @@ public class FloatLinearLayout extends LinearLayout
             startlongclicktime = System.currentTimeMillis();
             Thread longclick = new Thread(){
                 @Override
-                public void run ()
+                public void run()
                 {
                     super.run();
                     while (!longclickmove)
@@ -164,13 +165,13 @@ public class FloatLinearLayout extends LinearLayout
     }
 
 	//窗口在通知栏上显示
-    public void setTop (boolean bool)
+    public void setTop(boolean bool)
     {
         this.top = bool;
     }
 
 	//设置初始位置
-    public void setAddPosition (float sx, float sy)
+    public void setAddPosition(float sx, float sy)
     {
         this.px = sx;
         this.py = sy;
@@ -179,7 +180,7 @@ public class FloatLinearLayout extends LinearLayout
     }
 
 	//设置窗体状态
-    public void setShowState (boolean bool)
+    public void setShowState(boolean bool)
     {
         if (bool)
         {
@@ -200,19 +201,19 @@ public class FloatLinearLayout extends LinearLayout
     }
 
 	//修正改变窗体状态
-    public void changeShowState (boolean bool)
+    public void changeShowState(boolean bool)
     {
         this.ShowState = bool;
     }
 
 	//设置窗体布局
-    public void setFloatLayoutParams (WindowManager.LayoutParams wmLayoutParams)
+    public void setFloatLayoutParams(WindowManager.LayoutParams wmLayoutParams)
     {
         this.wmParams = wmLayoutParams;
     }
 
 	//设置可触摸
-    public void setTouchable (WindowManager.LayoutParams layout, boolean bool)
+    public void setTouchable(WindowManager.LayoutParams layout, boolean bool)
     {
         if (bool)
         {
@@ -229,26 +230,26 @@ public class FloatLinearLayout extends LinearLayout
     }
 
 	//设置默认Flag
-    public void setLayout_default_flags (int layout_default_flags)
+    public void setLayout_default_flags(int layout_default_flags)
     {
         this.layout_default_flags = layout_default_flags;
     }
 
 	//锁定窗口
-    public void setPositionLocked (boolean bool)
+    public void setPositionLocked(boolean bool)
     {
         this.lockposition = bool;
         setTouchable(wmParams, !bool);
     }
 
 	//获取锁定状态
-    public boolean getPositionLocked ()
+    public boolean getPositionLocked()
     {
         return lockposition;
     }
 
 	//更新位置
-    private void updateViewPosition ()
+    private void updateViewPosition()
     {
         LastX = x - mTouchX;
         LastY = y - mTouchY;
@@ -258,7 +259,7 @@ public class FloatLinearLayout extends LinearLayout
     }
 
 	//获取位置
-    public String getPosition ()
+    public String getPosition()
     {
         LastX = wmParams.x;
         LastY = wmParams.y;

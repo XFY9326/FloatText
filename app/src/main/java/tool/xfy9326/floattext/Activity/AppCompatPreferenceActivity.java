@@ -1,12 +1,13 @@
 package tool.xfy9326.floattext.Activity;
 
-import android.content.res.*;
-import android.os.*;
-import android.preference.*;
 import android.support.annotation.*;
 import android.support.v7.app.*;
-import android.support.v7.widget.*;
 import android.view.*;
+
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.preference.PreferenceActivity;
+import android.support.v7.widget.Toolbar;
 
 public abstract class AppCompatPreferenceActivity extends PreferenceActivity
 {

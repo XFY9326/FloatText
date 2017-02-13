@@ -3,10 +3,11 @@ package tool.xfy9326.floattext.Service;
 import android.app.*;
 import android.content.*;
 import android.os.*;
-import android.preference.*;
 import java.util.*;
 import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Utils.*;
+
+import android.preference.PreferenceManager;
 
 public class FloatWindowStayAliveService extends Service
 {
@@ -21,13 +22,13 @@ public class FloatWindowStayAliveService extends Service
     private boolean lastswitch = false;
 
     @Override
-    public IBinder onBind (Intent p1)
+    public IBinder onBind(Intent p1)
     {
         return null;
     }
 
     @Override
-    public void onCreate ()
+    public void onCreate()
     {
         super.onCreate();
         init();
@@ -36,7 +37,7 @@ public class FloatWindowStayAliveService extends Service
 		FloatManageMethod.setWinManager(this);
     }
 
-    private void init ()
+    private void init()
     {
         winIntent = new Intent();
 		bundle = new Bundle();
@@ -45,12 +46,12 @@ public class FloatWindowStayAliveService extends Service
         sp = PreferenceManager.getDefaultSharedPreferences(FloatWindowStayAliveService.this);
     }
 
-    private void timerset ()
+    private void timerset()
     {
         timer.schedule(new TimerTask()
             {
                 @Override
-                public void run ()
+                public void run()
                 {
                     if (hasFloatWin(FloatWindowStayAliveService.this))
                     {
@@ -70,19 +71,19 @@ public class FloatWindowStayAliveService extends Service
             }, 100, 1500);
     }
 
-    private void sendbroadcast ()
+    private void sendbroadcast()
     {
         if (lasthome != InHome)
         {
             bundle.putBoolean("Float_InHome", InHome);
             winIntent.putExtras(bundle);
-            winIntent.setAction(FloatServiceMethod.TEXT_STATE_UPDATE_ACTION);
+            winIntent.setAction(StaticString.TEXT_STATE_UPDATE_ACTION);
             sendBroadcast(winIntent);
             lasthome = InHome;
         }
     }
 
-    private boolean hasFloatWin (Context ctx)
+    private boolean hasFloatWin(Context ctx)
     {
         ArrayList<String> list = ((App)ctx.getApplicationContext()).getFloatText();
         boolean dynamicnum = false;
@@ -93,20 +94,20 @@ public class FloatWindowStayAliveService extends Service
         return dynamicnum;
     }
 
-    private void create_notification ()
+    private void create_notification()
     {
         Notification notification = new Notification();
         startForeground(1, notification);
     }
 
     @Override
-    public int onStartCommand (Intent intent, int flags, int startId)
+    public int onStartCommand(Intent intent, int flags, int startId)
     {
         return super.onStartCommand(intent, START_STICKY, startId);
     }
 
     @Override
-    public void onDestroy ()
+    public void onDestroy()
     {
         timer.cancel();
         stopForeground(true);

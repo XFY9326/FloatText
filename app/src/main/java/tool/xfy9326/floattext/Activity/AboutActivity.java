@@ -1,46 +1,44 @@
 package tool.xfy9326.floattext.Activity;
 
-import android.app.*;
-import android.content.*;
 import android.content.pm.*;
-import android.os.*;
-import android.preference.*;
-import android.support.v7.app.*;
-import android.view.*;
-import android.widget.*;
-import tool.xfy9326.floattext.*;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.os.Bundle;
+import android.preference.Preference;
 import android.support.v7.app.ActionBar;
+import android.view.MenuItem;
+import android.widget.Toast;
+import tool.xfy9326.floattext.R;
 
 public class AboutActivity extends AppCompatPreferenceActivity
 {
 
     @Override
-    protected void onCreate (Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.activity_about);
 		sethome();
         preset();
     }
-	
-	private void sethome ()
+
+	private void sethome()
 	{
 		ActionBar actionBar = getSupportActionBar();
-		if(actionBar != null)
+		if (actionBar != null)
 		{
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 	}
 
-    private void preset ()
+    private void preset()
     {
         Preference version = findPreference("Version");
         version.setSummary(getVersionName(this) + " (" + getVersionCode(this) + ")");
         version.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
             {
-                public boolean onPreferenceClick (Preference p)
+                public boolean onPreferenceClick(Preference p)
                 {
                     Toast.makeText(AboutActivity.this, "(ง •̀_•́)ง", Toast.LENGTH_SHORT).show();
                     return true;
@@ -48,7 +46,7 @@ public class AboutActivity extends AppCompatPreferenceActivity
             });
         Preference thanklist = findPreference("ThankList");
         thanklist.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick (Preference pre)
+                public boolean onPreferenceClick(Preference pre)
                 {
                     AlertDialog.Builder list = new AlertDialog.Builder(AboutActivity.this)
                         .setTitle(R.string.xml_about_thanklist)
@@ -59,17 +57,17 @@ public class AboutActivity extends AppCompatPreferenceActivity
             });
     }
 
-    public static String getVersionName (Context context)
+    public static String getVersionName(Context context)
     {
         return getPackageInfo(context).versionName;
     }
 
-    public static int getVersionCode (Context context) 
+    public static int getVersionCode(Context context) 
     { 
         return getPackageInfo(context).versionCode; 
     }
 
-    private static PackageInfo getPackageInfo (Context context)
+    private static PackageInfo getPackageInfo(Context context)
     { 
         PackageInfo pi = null;  
         try
@@ -81,9 +79,9 @@ public class AboutActivity extends AppCompatPreferenceActivity
         } 
         return pi; 
     }
-	
+
 	@Override
-	public boolean onOptionsItemSelected (MenuItem item)
+	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		if (item.getItemId() == android.R.id.home)
 		{
@@ -91,5 +89,5 @@ public class AboutActivity extends AppCompatPreferenceActivity
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 }

@@ -1,18 +1,17 @@
 package tool.xfy9326.floattext.CrashReport;
 
-import android.content.*;
 import android.content.pm.*;
-import android.net.*;
-import android.os.*;
-import android.support.v7.app.*;
-import android.support.v7.widget.*;
 import android.view.*;
-import android.view.View.*;
 import android.widget.*;
 import java.util.*;
-import tool.xfy9326.floattext.*;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View.OnClickListener;
+import tool.xfy9326.floattext.R;
 
 public class CrashHandlerUI extends AppCompatActivity
 {
@@ -67,7 +66,7 @@ public class CrashHandlerUI extends AppCompatActivity
         PackageManager pm = this.getPackageManager();
         List<ResolveInfo> resolveInfos = pm.queryIntentActivities(data, PackageManager.MATCH_DEFAULT_ONLY);
         Collections.sort(resolveInfos, new ResolveInfo.DisplayNameComparator(pm));
-        if(resolveInfos.size() == 0)
+        if (resolveInfos.size() == 0)
         {
             Toast.makeText(this, getString(R.string.crashreport_no_mail_app) + mail, Toast.LENGTH_LONG).show();
         }

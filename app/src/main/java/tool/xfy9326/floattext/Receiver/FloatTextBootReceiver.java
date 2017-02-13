@@ -1,22 +1,21 @@
 package tool.xfy9326.floattext.Receiver;
 
-import android.*;
-import android.app.*;
 import android.content.*;
-import android.content.pm.*;
-import android.os.*;
-import android.preference.*;
-import android.provider.*;
-import android.view.*;
-import android.widget.*;
-import java.util.*;
-import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.view.WindowManager;
+import android.widget.Toast;
+import java.util.ArrayList;
 import tool.xfy9326.floattext.R;
-import tool.xfy9326.floattext.Tool.*;
+import tool.xfy9326.floattext.Tool.FormatArrayList;
 
 public class FloatTextBootReceiver extends BroadcastReceiver
 {

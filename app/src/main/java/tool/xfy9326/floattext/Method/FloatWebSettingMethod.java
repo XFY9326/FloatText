@@ -1,21 +1,22 @@
 package tool.xfy9326.floattext.Method;
 
-import android.animation.*;
-import android.content.*;
 import android.graphics.*;
-import android.os.*;
 import android.view.*;
-import android.view.WindowManager.*;
 import android.webkit.*;
-import android.widget.*;
-import tool.xfy9326.floattext.*;
-import tool.xfy9326.floattext.View.*;
+
+import android.animation.LayoutTransition;
+import android.content.Context;
+import android.os.Environment;
+import android.view.WindowManager.LayoutParams;
+import android.widget.TableRow;
+import tool.xfy9326.floattext.R;
+import tool.xfy9326.floattext.View.FloatLinearLayout;
 
 public class FloatWebSettingMethod
 {
 
 	//URL修复
-	public static String urlfix (String str)
+	public static String urlfix(String str)
 	{
 		if (!str.contains("://"))
 		{
@@ -25,7 +26,7 @@ public class FloatWebSettingMethod
 	}
 
 	//新建Web悬浮窗
-    public static WebView CreateFloatWebView (Context ctx, String url)
+    public static WebView CreateFloatWebView(Context ctx, String url)
     {
         String cachePath = Environment.getExternalStorageDirectory().getAbsolutePath().toString() + "/FloatText/WebCache/";
         WebView webview = new WebView(ctx);
@@ -50,7 +51,7 @@ public class FloatWebSettingMethod
         return webview;
     }
 
-    public static WindowManager.LayoutParams CreateFloatLayout (final Context ctx, WindowManager wm, WebView fwv, View tview, FloatLinearLayout layout, float px, float py, boolean show, int width, int height)
+    public static WindowManager.LayoutParams CreateFloatLayout(final Context ctx, WindowManager wm, WebView fwv, View tview, FloatLinearLayout layout, float px, float py, boolean show, int width, int height)
     {
         WindowManager.LayoutParams wmParams = ParamsSet(px, py, fwv, width, height);
         layout.setLayoutTransition(new LayoutTransition());
@@ -71,7 +72,7 @@ public class FloatWebSettingMethod
         }
         return wmParams;
     }
-	
+
 	private static WindowManager.LayoutParams ParamsSet(float px, float py, WebView fwv, int width, int height)
 	{
 		WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams();

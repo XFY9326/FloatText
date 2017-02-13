@@ -1,30 +1,27 @@
 package tool.xfy9326.floattext.Activity;
 
-import android.*;
 import android.app.*;
 import android.content.*;
 import android.content.pm.*;
 import android.os.*;
 import android.preference.*;
-import android.provider.*;
-import android.support.v7.app.*;
-import android.text.*;
-import android.view.*;
-import android.widget.*;
-import java.io.*;
-import java.text.*;
 import java.util.*;
-import tool.xfy9326.floattext.*;
-import tool.xfy9326.floattext.FileSelector.*;
 import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Service.*;
 import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
-import android.app.AlertDialog;
+import android.Manifest;
+import android.provider.Settings;
 import android.support.v7.app.ActionBar;
+import android.text.TextUtils;
+import android.view.MenuItem;
+import android.widget.Toast;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import tool.xfy9326.floattext.FileSelector.SelectFile;
 import tool.xfy9326.floattext.R;
-import tool.xfy9326.floattext.Tool.*;
+import tool.xfy9326.floattext.Tool.FormatArrayList;
 
 public class GlobalSetActivity extends AppCompatPreferenceActivity
 {
@@ -160,7 +157,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 				public boolean onPreferenceClick(Preference p)
 				{
 					Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-					startActivityForResult(intent,StaticNum.ADVANCE_TEXT_SET);
+					startActivityForResult(intent, StaticNum.ADVANCE_TEXT_SET);
 					return true;
 				}
 			});

@@ -1,32 +1,29 @@
 package tool.xfy9326.floattext;
 
-import android.*;
 import android.app.*;
 import android.content.*;
-import android.content.pm.*;
-import android.content.res.*;
 import android.os.*;
-import android.preference.*;
-import android.provider.*;
 import android.support.design.widget.*;
-import android.support.v4.view.*;
-import android.support.v4.widget.*;
 import android.support.v7.app.*;
 import android.support.v7.widget.*;
 import android.view.*;
-import android.view.View.*;
-import android.widget.*;
-import java.util.*;
-import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Activity.*;
-import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
+import android.Manifest;
 import android.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.view.View.OnClickListener;
+import java.util.ArrayList;
+import tool.xfy9326.floattext.Method.FloatManageMethod;
 import tool.xfy9326.floattext.R;
-import tool.xfy9326.floattext.Tool.*;
+import tool.xfy9326.floattext.Tool.FormatArrayList;
 
 public class FloatManage extends AppCompatActivity
 {
@@ -97,8 +94,8 @@ public class FloatManage extends AppCompatActivity
 				});
 		}
 	}
-	
-	private void DrawerSet (DrawerLayout mDrawerLayout, int item)
+
+	private void DrawerSet(DrawerLayout mDrawerLayout, int item)
 	{
 		switch (item)
 		{
@@ -284,7 +281,7 @@ public class FloatManage extends AppCompatActivity
 		}
 		return true;
 	}
-	
+
 	private void  AlertTextShow(Intent data)
 	{
 		if (data != null)
@@ -333,7 +330,7 @@ public class FloatManage extends AppCompatActivity
 		FloatData dat = new FloatData(this);
 		dat.savedata();
 	}
-	
+
 	private void ReshowPermisdionGot()
 	{
 		if (Build.VERSION.SDK_INT >= 23)

@@ -1,29 +1,27 @@
 package tool.xfy9326.floattext.Receiver;
 
 import android.content.*;
-import android.os.*;
-import android.preference.*;
-import java.util.*;
-import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import java.util.ArrayList;
+import tool.xfy9326.floattext.Method.DynamicWordUpdateMethod;
+
 public class FloatTextUpdateReceiver extends BroadcastReceiver
 {
-    private static String TextAction = FloatServiceMethod.TEXT_UPDATE_ACTION;
-    private static String StateAction = FloatServiceMethod.TEXT_STATE_UPDATE_ACTION;
-	private static String ActivityAction = FloatServiceMethod.ACTIVITY_CHANGE_ACTION;
 
     @Override
     public void onReceive(Context p1, Intent p2)
     {
         String action = p2.getAction();
-        if (action == TextAction)
+        if (action == StaticString.TEXT_UPDATE_ACTION)
         {
             DynamicWordUpdateMethod updater = new DynamicWordUpdateMethod(p1);
             updater.UpdateText(p2);
         }
-		else if (action == ActivityAction)
+		else if (action == StaticString.ACTIVITY_CHANGE_ACTION)
 		{
 			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(p1);
             if (!sp.getBoolean("WinOnlyShowInHome", false))
@@ -37,7 +35,7 @@ public class FloatTextUpdateReceiver extends BroadcastReceiver
 				boolean findact = false;
 				for (int a = 0;a < fa.size();a++)
 				{
-					if(actname.contains(fa.get(a).toString()))
+					if (actname.contains(fa.get(a).toString()))
 					{
 						findact = true;
 						break;
@@ -65,7 +63,7 @@ public class FloatTextUpdateReceiver extends BroadcastReceiver
 				}
 			}
 		}
-        else if (action == StateAction)
+        else if (action == StaticString.TEXT_STATE_UPDATE_ACTION)
         {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(p1);
             if (sp.getBoolean("WinOnlyShowInHome", false))

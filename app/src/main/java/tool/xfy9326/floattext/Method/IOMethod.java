@@ -1,8 +1,9 @@
 package tool.xfy9326.floattext.Method;
 
 import java.io.*;
-import java.util.*;
-import android.content.*;
+
+import android.content.Context;
+import java.util.ArrayList;
 
 public class IOMethod
 {

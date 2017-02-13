@@ -1,8 +1,9 @@
 package tool.xfy9326.floattext.Utils;
 
-import android.view.*;
-import java.util.*;
 import tool.xfy9326.floattext.View.*;
+
+import android.view.WindowManager;
+import java.util.ArrayList;
 
 public class FloatFrameUtils
 {
@@ -61,7 +62,7 @@ public class FloatFrameUtils
 	{
 		return FilterApplication;
 	}
-	
+
 	public void setDatas(int i, FloatTextView fv, FloatLinearLayout fll, WindowManager.LayoutParams layout, String text)
 	{
 		floatview.set(i, fv);

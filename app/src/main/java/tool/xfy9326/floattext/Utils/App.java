@@ -1,11 +1,11 @@
 package tool.xfy9326.floattext.Utils;
 
-import android.app.*;
-import android.view.*;
-import java.util.*;
-import tool.xfy9326.floattext.*;
-import tool.xfy9326.floattext.CrashReport.*;
-import tool.xfy9326.floattext.View.*;
+import android.app.Application;
+import android.view.WindowManager;
+import java.util.ArrayList;
+import tool.xfy9326.floattext.CrashReport.CrashHandler;
+import tool.xfy9326.floattext.SafeGuard;
+import tool.xfy9326.floattext.View.ListViewAdapter;
 
 /*
  数据缓存
@@ -158,7 +158,7 @@ public class App extends Application
 	{
 		return textutil;
 	}
-	
+
 	public void setFrameutil(FloatFrameUtils frameutil)
 	{
 		this.frameutil = frameutil;
@@ -168,11 +168,5 @@ public class App extends Application
 	{
 		return frameutil;
 	}
-
-    public void setDatas(int i, FloatTextView fv, FloatLinearLayout fll, WindowManager.LayoutParams layout, String text, int color, float size, boolean thick, boolean show, String position, boolean lp, boolean tp, boolean ap, boolean tm, int sp, boolean sha, float shax, float shay, float shad, int bac, int tsc, boolean fs, float fl, float fw)
-    {
-        frameutil.setDatas(i, fv, fll, layout, text);
-		textutil.setDatas(i, text, color, size, thick, show, position, lp, tp, ap, tm, sp, sha, shax, shay, shad, bac, tsc, fs, fl, fw);
-    }
 
 }

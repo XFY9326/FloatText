@@ -1,16 +1,17 @@
 package tool.xfy9326.floattext.View;
 
-import android.content.*;
 import android.graphics.*;
 import android.text.*;
-import android.view.*;
-import android.widget.*;
-import tool.xfy9326.floattext.Utils.*;
+
+import android.content.Context;
+import android.view.WindowManager;
+import android.widget.TextView;
+import tool.xfy9326.floattext.Utils.App;
 
 /*
-悬浮窗文字控件
-主要用于对悬浮窗内文字进行修改
-*/
+ 悬浮窗文字控件
+ 主要用于对悬浮窗内文字进行修改
+ */
 
 public class FloatTextView extends TextView implements Runnable
 {
@@ -56,7 +57,7 @@ public class FloatTextView extends TextView implements Runnable
         }
         return text;
     }
-	
+
 	//跑马灯移动速度
     public void setMoveSpeed(int i)
     {

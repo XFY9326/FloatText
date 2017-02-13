@@ -1,26 +1,25 @@
 package tool.xfy9326.floattext.Setting;
 
 import android.content.*;
-import android.graphics.*;
 import android.os.*;
 import android.preference.*;
-import android.provider.*;
 import android.support.v7.app.*;
 import android.view.*;
-import android.view.View.*;
-import android.view.WindowManager.*;
-import android.view.inputmethod.*;
 import android.webkit.*;
 import android.widget.*;
-import android.widget.SeekBar.*;
-import android.widget.TextView.*;
 import tool.xfy9326.floattext.*;
-import tool.xfy9326.floattext.Activity.*;
 import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Utils.*;
-import tool.xfy9326.floattext.View.*;
 
+import android.graphics.Bitmap;
+import android.provider.Settings;
 import android.view.View.OnClickListener;
+import android.view.WindowManager.LayoutParams;
+import android.view.inputmethod.EditorInfo;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView.OnEditorActionListener;
+import tool.xfy9326.floattext.Activity.AppCompatPreferenceActivity;
+import tool.xfy9326.floattext.View.FloatLinearLayout;
 
 public class FloatWebSetting extends AppCompatPreferenceActivity
 {

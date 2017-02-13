@@ -3,23 +3,24 @@ package tool.xfy9326.floattext.Method;
 import android.app.*;
 import android.content.*;
 import android.graphics.*;
-import android.net.*;
 import android.os.*;
-import android.provider.*;
 import android.view.*;
-import android.view.View.*;
-import android.view.WindowManager.*;
-import android.widget.*;
-import java.io.*;
-import java.util.*;
-import tool.xfy9326.floattext.*;
-import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
+
+import android.net.Uri;
+import android.provider.Settings;
+import android.view.View.OnTouchListener;
+import android.view.WindowManager.LayoutParams;
+import android.widget.Toast;
+import java.io.File;
+import java.util.ArrayList;
+import tool.xfy9326.floattext.R;
+import tool.xfy9326.floattext.Utils.App;
 
 public class FloatTextSettingMethod
 {
     private boolean longClicked;
-	
+
 	//Int数值颜色转16进制
     public static String IntColortoHex(int color)
     {
@@ -55,7 +56,7 @@ public class FloatTextSettingMethod
         floatview.setTypefaceFile(typeface_fix(ctx));
         return floatview;
     }
-	
+
 	//修复字体不存在问题
     public static String typeface_fix(Context ctx)
     {
@@ -176,7 +177,7 @@ public class FloatTextSettingMethod
             .setCancelable(false);
         dialog.show();
     }
-	
+
 	//保存悬浮窗数据
     public static void savedata(Context ctx, FloatTextView fv, FloatLinearLayout fll, String text, WindowManager.LayoutParams layout)
     {
