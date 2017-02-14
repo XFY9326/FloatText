@@ -9,7 +9,6 @@ import android.view.WindowManager;
 import java.util.ArrayList;
 import tool.xfy9326.floattext.Tool.DateCounter;
 import tool.xfy9326.floattext.Utils.App;
-import android.util.Log;
 
 /*
  本方法用于动态变量的更新
@@ -26,30 +25,47 @@ public class DynamicWordUpdateMethod
     private WindowManager wm;
 	private String[] filtertext = new String[]{"NULL"};
 	private boolean textfilter;
+	private boolean addonmode = false;
 
-    public DynamicWordUpdateMethod(Context ctx)
+    public DynamicWordUpdateMethod(Context ctx, boolean addonmode)
     {
         this.context = ctx;
+		this.addonmode = addonmode;
     }
 
     public void UpdateText(Intent intent)
     {
-        Bundle bundle = intent.getExtras();
-		String[] list = bundle.getStringArray("LIST");
-		String[] data = bundle.getStringArray("DATA");
-		int[] info = bundle.getIntArray("INFO");
-        App utils = ((App)context.getApplicationContext());
+		App utils = ((App)context.getApplicationContext());
 		textfilter = utils.TextFilter;
-        wm = utils.getFloatwinmanager();
-        floatview = utils.getFrameutil().getFloatview();
-        floattext = utils.getFrameutil().getFloattext();
-        ShowFloat = utils.getTextutil().getShowFloat();
-        linearlayout = utils.getFrameutil().getFloatlinearlayout();
-        floatlayout = utils.getFrameutil().getFloatlayout();
-        for (int i = 0; i < floattext.size(); i++)
-        {
-            UpdateEachText(i, list, data, info);
-        }
+		wm = utils.getFloatwinmanager();
+		floatview = utils.getFrameutil().getFloatview();
+		floattext = utils.getFrameutil().getFloattext();
+		ShowFloat = utils.getTextutil().getShowFloat();
+		linearlayout = utils.getFrameutil().getFloatlinearlayout();
+		floatlayout = utils.getFrameutil().getFloatlayout();
+		if (addonmode)
+		{
+			String[] keys = intent.getStringArrayExtra("KEY");
+			String[] datas = intent.getStringArrayExtra("DATA");
+			if (keys != null && datas != null && keys.length == datas.length)
+			{
+				for (int i = 0; i < floattext.size(); i++)
+				{
+					UpdateEachText(i, keys, datas, null);
+				}
+			}
+		}
+		else
+		{
+			Bundle bundle = intent.getExtras();
+			String[] list = bundle.getStringArray("LIST");
+			String[] data = bundle.getStringArray("DATA");
+			int[] info = bundle.getIntArray("INFO");
+			for (int i = 0; i < floattext.size(); i++)
+			{
+				UpdateEachText(i, list, data, info);
+			}
+		}
     }
 
 	private void UpdateEachText(int i, String[] list, String[] data, int[] info)
@@ -57,9 +73,19 @@ public class DynamicWordUpdateMethod
 		if (ShowFloat.get(i))
 		{
 			String str = floattext.get(i);
-			for (int a = 0;a < list.length;a++)
+			if (info == null)
 			{
-				str = updatetext(str, list[a].toString(), data[a].toString(), info[a]);
+				for (int a = 0;a < list.length;a++)
+				{
+					str = updatetext(str, list[a].toString(), data[a].toString(), 0);
+				}
+			}
+			else
+			{
+				for (int a = 0;a < list.length;a++)
+				{
+					str = updatetext(str, list[a].toString(), data[a].toString(), info[a]);
+				}
 			}
 			if (filtertext.length == 2)
 			{
@@ -84,15 +110,14 @@ public class DynamicWordUpdateMethod
     {
         if (!change.equals("NULL"))
         {
+            String tag2 = "<" + tag + ">";
+            str = search(str, tag2, change, reg);
+            String tag3 = "#" + tag + "#";
+            str = search(str, tag3, change, reg);
 			if (textfilter && filtertext.length == 1)
 			{
 				filtertext = FilterTextCheck(str, "[" + tag + "]", change);
 			}
-            String tag2 = tag;
-            tag = "<" + tag + ">";
-            str = search(str, tag, change, reg);
-            tag2 = "#" + tag2 + "#";
-            str = search(str, tag2, change, reg);
         }
         return str;
     }

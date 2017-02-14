@@ -196,6 +196,14 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 					}
 				});
 		}
+		Preference dynamicwordaddon = findPreference("DynamicWordAddon");
+		dynamicwordaddon.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
+				public boolean onPreferenceClick(Preference p)
+				{
+					DynamicAddonHelpGet(GlobalSetActivity.this);
+					return true;
+				}
+			});
 	}
 
 	private void DataViewSet()
@@ -217,15 +225,49 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 				}
 			});
 	}
-	
+
+	private void DynamicAddonHelpGet(Context ctx)
+	{
+		String[] paths = new String[]{"HELPS/Dynamic_Words_Addon_cn.txt", "HELPS/Dynamic_Words_Addon_tw.txt", "HELPS/Dynamic_Words_Addon_en.txt"};
+		String path = MultiLanguageSet(ctx, paths);
+		String str = IOMethod.readAssets(ctx, path);
+		SetHelpDialog(ctx, R.string.xml_global_service_dynamicaddon, str);
+	}
+
 	private void TextFilterHelpGet(Context ctx)
 	{
-		String str = IOMethod.readAssets(ctx, "HELPS/TextFilter.txt");
+		String[] paths = new String[]{"HELPS/TextFilter_cn.txt", "HELPS/TextFilter_tw.txt", "HELPS/TextFilter_en.txt"};
+		String path = MultiLanguageSet(ctx, paths);
+		String str = IOMethod.readAssets(ctx, path);
+		SetHelpDialog(ctx, R.string.xml_global_text_filter, str);
+	}
+
+	private void SetHelpDialog(Context ctx, int title, String str)
+	{
 		AlertDialog.Builder help = new AlertDialog.Builder(ctx);
-		help.setTitle(R.string.xml_global_text_filter);
+		help.setTitle(title);
 		help.setMessage(str);
 		help.setPositiveButton(R.string.done, null);
 		help.show();
+	}
+
+	private String MultiLanguageSet(Context ctx, String[] arr)
+	{
+		String path = arr[2];
+		String locale = ctx.getResources().getConfiguration().locale.getCountry();
+		if (locale.equals(Locale.SIMPLIFIED_CHINESE.getCountry()))
+		{
+			path = arr[0];
+		}
+		else if (locale.equals(Locale.TAIWAN.getCountry()))
+		{
+			path = arr[1];
+		}
+		else if (locale.equals(Locale.ENGLISH.getCountry()))
+		{
+			path = arr[2];
+		}
+		return path;
 	}
 
 	private void DataAction(int type, Preference pre, int requestcode)

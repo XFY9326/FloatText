@@ -203,6 +203,7 @@
     <string name="xml_global_service_dynamicnum_off">Close(dynamic Word is unabled)</string>
 	<string name="xml_global_service_advancetext_sum">If advance dynamic word do not work, try to restart accessibility service.\nAttention:Sometimes System may close this service automatically.</string>
 	<string name="xml_global_service_notificationtext_sum">You must open this service on at least android 4.3 device to use the notification dynamic words.</string>
+	<string name="xml_global_service_dynamicaddon">Dynamic Word DIY help doc</string>
     <string name="xml_global_advanced">Advanced Functions</string>
     <string name="xml_global_htmlmode">Support HTML code</string>
     <string name="xml_global_htmlmode_on">Use #[HTML] as the head of the text to use HTML code</string>

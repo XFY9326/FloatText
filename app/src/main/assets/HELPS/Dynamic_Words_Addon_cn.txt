@@ -1,0 +1,17 @@
+实现此功能需要安卓和Java知识！
+如果不会，不要勉强使用！
+
+本功能通过广播实现
+
+广播的Action为：
+tool.xfy9326.floattext.DYNAMIC_WORD_ADDON_ACTION
+
+数据传递方式：
+对Intent直接用putStringArrayExtra方法添加两个String[]数组
+
+其中一个名为KEY 存放动态变量名
+另一个名为DATA 存档对应的替换数据
+
+注：
+1.请保证两个数组长度一致！
+2.每次发送广播都会对所有文本进行更新，因此减少发送频率有助于节省内存和电量。

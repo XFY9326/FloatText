@@ -203,6 +203,7 @@
     <string name="xml_global_service_dynamicnum_off">關閉(動態變量將不可用)</string>
 	<string name="xml_global_service_advancetext_sum">高級動態變量失效時請重啟輔助服務\n注：部分系統有時會自動關閉輔助服務</string>
 	<string name="xml_global_service_notificationtext_sum">在安卓4.3的設備上必須開啟本服務才能使用通知變量</string>
+	<string name="xml_global_service_dynamicaddon">自定義動態變量幫助文檔</string>
     <string name="xml_global_advanced">進階功能</string>
     <string name="xml_global_htmlmode">文字支援 HTML代碼</string>
     <string name="xml_global_htmlmode_on">輸入的文字使用#[HTML] 開頭可以用 HTML代碼</string>

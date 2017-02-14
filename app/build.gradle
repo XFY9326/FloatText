@@ -9,7 +9,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 24
         versionCode 50
-        versionName "3.0 InsiderPreview 02"
+        versionName "3.0"
     }
     buildTypes {
         release {

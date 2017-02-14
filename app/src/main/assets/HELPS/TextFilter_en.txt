@@ -1,0 +1,29 @@
+This function can be achieved in the case of different dynamic variables to display different text.
+
+Format:[dynamic variable name (without # or < > symbol) 1] filter 1 (regular expressions) | display text 1; filter 2 (regular expressions) | display text 2
+
+Example:[Second]05| text 1; 10| text 2; Default: text 3
+
+Example meaning: the number of seconds to 05 when the display text 1, when the text is displayed in the text of the text, by default, the text is displayed by 3, as shown in Figure 2
+
+When the detected value of dynamic variables [] regular expressions screening conditions, will display the text line segmentation conditions.
+
+When the filter conditions are the same, the top priority.
+
+Each condition is used with the corresponding text; separation; the last one does not need; separation. 
+
+Only one condition does not require separation.
+
+When all conditions are not met, the last state will be maintained. If a dynamic variable is included, the refresh will return to the input state.
+
+You can also use Default as a condition to set the text displayed in the default state.
+
+When the text is displayed as Empty, no text is displayed.
+
+With this feature, you must open the text display filter function in the global settings, and enable the corresponding dynamic variable service!
+
+Note:
+1 All grammatical symbols must be in english!
+2 The wrong format will result in no refresh!
+3 Suggested that the first experiment has been effective in regular reproduction.
+4 If sentence is too long , we suggest its good copy in other places.

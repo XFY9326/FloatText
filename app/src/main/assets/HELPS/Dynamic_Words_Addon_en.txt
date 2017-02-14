@@ -1,0 +1,17 @@
+This feature requires knowledge of Android and Java!
+If not, don't use it!
+
+This function is realized by broadcastingBroadcast 
+
+Action for:
+Tool.xfy9326.floattext.DYNAMIC_WORD_ADDON_ACTION
+
+Data transfer mode:
+Intent directly with the putStringArrayExtra method to add two String[] arrays
+
+One of them is called KEY to store the dynamic variable name
+Another name for the DATA file corresponds to the replacement data
+
+Note:
+1 please ensure that the two array length!
+2 each broadcast will be updated for all the text, so reduce the frequency of transmission will help save memory and electricity.

@@ -86,7 +86,7 @@
 		<Preference
 			android:key="TextFilterHelp"
             android:title="@string/xml_global_text_filter_help"
-			android:dependency="DynamicNumService"
+			android:dependency="TextFilter"
         />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/xml_global_serviceset"> 
@@ -114,6 +114,11 @@
 			android:key="NotificationListenerService"
             android:title="@string/floatnotification_service_label"
 			android:summary="@string/xml_global_service_notificationtext_sum"
+			android:dependency="DynamicNumService"
+        />
+		<Preference
+			android:key="DynamicWordAddon"
+            android:title="@string/xml_global_service_dynamicaddon"
 			android:dependency="DynamicNumService"
         />
     </PreferenceCategory>

@@ -120,6 +120,7 @@
         <receiver 
             android:name=".Receiver.FloatTextUpdateReceiver">
             <intent-filter>
+				<action android:name="tool.xfy9326.floattext.DYNAMIC_WORD_ADDON_ACTION"/>
                 <action android:name="tool.xfy9326.floattext.Service.FloatTextUpdateService.action.TEXT_UPDATE_ACTION"/>
                 <action android:name="tool.xfy9326.floattext.Service.FloatTextUpdateService.action.TEXT_STATE_UPDATE_ACTION"/>
 				<action android:name="tool.xfy9326.floattext.Service.FloatAdvanceTextUpdateService.action.ACTIVITY_CHANGE_ACTION"/>
