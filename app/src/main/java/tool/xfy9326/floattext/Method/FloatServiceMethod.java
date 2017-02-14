@@ -7,12 +7,12 @@ import java.io.*;
 import java.util.*;
 
 import android.app.ActivityManager;
+import android.content.res.Configuration;
 import android.net.TrafficStats;
 import android.os.PowerManager;
 import java.net.NetworkInterface;
 import tool.xfy9326.floattext.Tool.FormatArrayList;
 import tool.xfy9326.floattext.Utils.StaticNum;
-import android.content.res.Configuration;
 
 public class FloatServiceMethod
 {
@@ -82,7 +82,7 @@ public class FloatServiceMethod
 		}
 		return list;
 	}
-	
+
 	//屏幕横竖判断
 	public static String judgeOrigination(Context ctx)
 	{
@@ -95,7 +95,7 @@ public class FloatServiceMethod
 		{
 			return "LANDSCAPE";
 		}
-		else if(ori == Configuration.ORIENTATION_SQUARE)
+		else if (ori == Configuration.ORIENTATION_SQUARE)
 		{
 			return "SQUARE";
 		}

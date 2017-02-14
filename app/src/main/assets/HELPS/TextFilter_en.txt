@@ -2,7 +2,7 @@ This function can be achieved in the case of different dynamic variables to disp
 
 Format:[dynamic variable name (without # or < > symbol) 1] filter 1 (regular expressions) | display text 1; filter 2 (regular expressions) | display text 2
 
-Example:[Second]05| text 1; 10| text 2; Default: text 3
+Example:[Second]05| text 1; 10| text 2; Default| text 3
 
 Example meaning: the number of seconds to 05 when the display text 1, when the text is displayed in the text of the text, by default, the text is displayed by 3, as shown in Figure 2
 

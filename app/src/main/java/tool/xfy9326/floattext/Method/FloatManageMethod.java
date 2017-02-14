@@ -477,6 +477,7 @@ public class FloatManageMethod
 						public void run()
 						{
 							Reshow_Create(ctx, utils, textutils, textutils.getTextShow(), textutils.getShowFloat(), textutils.getLockPosition(), textutils.getPosition(), textutils.getTextMove());
+							utils.getListviewadapter().notifyDataSetChanged();
 						}
 					});
                 if (han != null)
@@ -524,7 +525,6 @@ public class FloatManageMethod
 				FloatTextSettingMethod.savedata(ctx, fv, fll, Text.get(i), layout);
 			}
 		}
-		utils.getListviewadapter().notifyDataSetChanged();
 	}
 
 	//字体文件检测
