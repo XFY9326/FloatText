@@ -6,6 +6,7 @@ import android.content.res.*;
 import android.os.*;
 import android.support.design.widget.*;
 import android.view.*;
+import android.widget.*;
 import java.util.*;
 import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Service.*;
@@ -19,8 +20,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.v7.app.NotificationCompat;
 import android.view.View.OnClickListener;
-import android.widget.Toast;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import tool.xfy9326.floattext.Activity.GlobalSetActivity;
@@ -31,6 +32,157 @@ public class FloatManageMethod
 	public static boolean waitdoubleclick = false;
 	public static Handler waithandle;
 	public static Runnable waitrun;
+
+	//通知栏更新
+	public static void UpdateNotificationCount(Context ctx)
+	{
+		NotificationCompat.Builder notification = ((App)ctx.getApplicationContext()).getNotification();
+		if (notification != null)
+		{
+			RemoteViews rv = ((App)ctx.getApplicationContext()).getRemoteview();
+			if (rv != null)
+			{
+				NotificationManager nm = (NotificationManager) ctx.getSystemService(ctx.NOTIFICATION_SERVICE);
+				rv.setTextViewText(R.id.textview_notification_win_count, ctx.getString(R.string.notification_win_count, FloatManageMethod.getWinCount(ctx)));
+				notification.setContent(rv);
+				nm.notify(StaticNum.ONGONING_NOTIFICATION_ID, notification.build());
+			}
+		}
+	}
+
+	//获取窗口数量
+	public static int getWinCount(Context ctx)
+	{
+		App utils = (App)ctx.getApplicationContext();
+		return utils.getTextutil().getTextShow().size();
+	}
+
+	//隐藏和显示全部
+	public static void ShoworHideAllWin(Context ctx, boolean showwin, boolean notifycontrolmode)
+	{
+		App utils = (App)ctx.getApplicationContext();
+		FloatTextUtils textutils = utils.getTextutil();
+		ArrayList<Boolean> showFloat = textutils.getShowFloat();
+		if (showFloat.size() > 0)
+		{
+			for (int i = 0;i < showFloat.size();i++)
+			{
+				if (!notifycontrolmode || textutils.getNotifyControl().get(i))
+				{
+					showFloat.set(i, showwin);
+					FloatLinearLayout floatLinearLayout = utils.getFrameutil().getFloatlinearlayout().get(i);
+					floatLinearLayout.setShowState(showwin);
+				}
+			}
+
+			ListViewAdapter adapter = utils.getListviewadapter();
+			FloatData dat = new FloatData(ctx);
+			dat.savedata();
+			if (adapter != null)
+			{
+				adapter.notifyDataSetChanged();
+			}
+		}
+	}
+
+	//隐藏和显示单个窗口
+	//显示返回true
+	public static boolean ShoworHideWin(Context ctx, int index)
+	{
+		boolean result = true;
+		App utils = (App)ctx.getApplicationContext();
+		FloatTextUtils textutils = utils.getTextutil();
+		ArrayList<Boolean> showFloat = textutils.getShowFloat();
+		if (index >= 0)
+		{
+			boolean iShowFloat = showFloat.get(index);
+			iShowFloat = !showFloat.set(index, !iShowFloat);
+			FloatLinearLayout floatLinearLayout = utils.getFrameutil().getFloatlinearlayout().get(index);
+			floatLinearLayout.setShowState(iShowFloat);
+
+			result = iShowFloat;
+
+			ListViewAdapter adapter = utils.getListviewadapter();
+			FloatData dat = new FloatData(ctx);
+			dat.savedata();
+			if (adapter != null)
+			{
+				adapter.notifyItemChanged(index);
+			}
+		}
+		return result;
+	}
+
+	//锁定和解锁全部
+	public static void LockorUnlockAllWin(Context ctx, boolean lockwin, boolean notifycontrolmode)
+	{
+		App utils = (App) ctx.getApplicationContext();
+		FloatTextUtils textutils = utils.getTextutil();
+        ArrayList<Boolean> lock = textutils.getLockPosition();
+		if (lock.size() > 0)
+		{
+			ArrayList<String> position = textutils.getPosition();
+			for (int i = 0;i < lock.size();i++)
+			{
+				if (!notifycontrolmode || textutils.getNotifyControl().get(i))
+				{
+					FloatLinearLayout fll = utils.getFrameutil().getFloatlinearlayout().get(i);
+					fll.setPositionLocked(lockwin);
+					lock.set(i, lockwin);
+					if (lockwin)
+					{
+						position.set(i, fll.getPosition());
+					}
+				}
+			}
+
+			ListViewAdapter adapter = utils.getListviewadapter();
+			FloatData dat = new FloatData(ctx);
+			dat.savedata();
+			if (adapter != null)
+			{
+				adapter.notifyDataSetChanged();
+			}
+		}
+	}
+
+	//锁定或解锁单个窗口
+	//锁定返回true
+	public static boolean LockorUnlockWin(Context ctx, int index)
+	{
+		boolean result = false;
+		if (index >= 0)
+		{
+			App utils = (App) ctx.getApplicationContext();
+			FloatTextUtils textutils = utils.getTextutil();
+			ArrayList<Boolean> lock = textutils.getLockPosition();
+			ArrayList<String> position = textutils.getPosition();
+
+			FloatLinearLayout fll = utils.getFrameutil().getFloatlinearlayout().get(index);
+			if (fll.getPositionLocked())
+			{
+				fll.setPositionLocked(false);
+				lock.set(index, false);
+				result = false;
+			}
+			else
+			{
+				fll.setPositionLocked(true);
+				lock.set(index, true);
+				position.set(index, fll.getPosition());
+				result = true;
+			}
+
+			FloatData dat = new FloatData(ctx);
+			dat.savedata();
+			ListViewAdapter adapter = utils.getListviewadapter();
+			if (adapter != null)
+			{
+				adapter.notifyItemChanged(index);
+			}
+		}
+		return result;
+	}
 
 	//导入或导出的权限检查
 	public static void TextFileSolve(Activity ctx, int type, int requestcode)
@@ -288,14 +440,13 @@ public class FloatManageMethod
     }
 
 	//关闭应用
-	public static void ShutSown(Activity ctx)
+	public static void ShutDown(Context ctx)
 	{
 		FloatManageMethod.stopservice(ctx);
 		App utils = (App)ctx.getApplicationContext();
 		utils.setGetSave(false);
 		utils.setFloatReshow(true);
 		FloatManageMethod.closeAllWin(ctx);
-		ctx.finish();
 		System.gc();
 		new Handler().postDelayed(new Runnable(){  
                 public void run()
@@ -322,12 +473,13 @@ public class FloatManageMethod
 		}
 	}
 
-	//关闭应用控制(双击)
-    public static void CloseApp(final Activity ctx)
+	//关闭应用控制(SnackBar)
+    public static void SnackShow_CloseApp(final Activity ctx)
     {
 		if (waitdoubleclick)
 		{
-			ShutSown(ctx);
+			ctx.finish();
+			ShutDown(ctx);
 		}
 		else
 		{
@@ -614,7 +766,7 @@ public class FloatManageMethod
     }
 
 	//关闭服务
-    public static void stopservice(Activity ctx)
+    public static void stopservice(Context ctx)
     {
         Intent service = new Intent(ctx, FloatWindowStayAliveService.class);
         ctx.stopService(service);

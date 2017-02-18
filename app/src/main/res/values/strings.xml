@@ -90,6 +90,7 @@
 	<string name="recover_failed">数据恢复失败</string>
 	<string name="dynamicservice_no_open">动态变量服务没有开启！</string>
 	<string name="permission_error">权限获取失败！</string>
+	<string name="notification_win_count">共%1$s个悬浮窗</string>
     <!-- Color Picker -->
     <string name="dialog_color_picker">颜色选择器</string>
     <string name="press_color_to_apply">选择颜色以应用更改</string>
@@ -130,6 +131,8 @@
     <string name="xml_set_textmove_speed">文字跑马灯速度</string>
     <string name="xml_set_textmove_speed_sum">调整跑马灯显示的速度</string>
     <string name="xml_set_win">窗口设置</string>
+	<string name="xml_set_win_notifycontrol">允许通知栏面板控制此悬浮窗</string>
+	<string name="xml_set_win_notifycontrol_sum">需要在全局设置打开通知栏控制功能</string>
     <string name="xml_set_win_color">窗口背景颜色设置</string>
     <string name="xml_set_win_color_sum">让窗口背景显示不同的颜色</string>
 	<string name="xml_set_win_size">窗口大小调整</string>
@@ -164,6 +167,9 @@
     <string name="xml_web_win_height">窗口高度</string>
     <string name="xml_web_win_height_sum">更改当前窗口的高度</string>
     <string name="xml_web_win_height_title">高度设置</string>
+	<string name="xml_global_notify">通知设置</string>
+	<string name="xml_global_notify_manage">通知栏管理悬浮窗</string>
+	<string name="xml_global_notify_manage_sum">通知栏对悬浮窗进行管理，会显示图标\n需要开启进程守护服务</string>
 	<string name="xml_global_system">系统设置</string>
 	<string name="xml_global_system_boot">开机时自动启动悬浮窗</string>
 	<string name="xml_global_system_boot_sum">请在系统管理中允许本软件开机自启\n注：服务启动可能会比较缓慢</string>
@@ -182,7 +188,7 @@
     <string name="xml_global_win_onlyshowinhome_sum">开启后无法编辑悬浮窗\n需要开启进程守护服务</string>
 	<string name="xml_global_win_filter_switch">悬浮窗显示过滤</string>
 	<string name="xml_global_win_filter">悬浮窗显示过滤列表</string>
-    <string name="xml_global_win_filter_sum">在指定的应用不显示悬浮窗\n需要开启FloatText高级服务</string>
+    <string name="xml_global_win_filter_sum">自动在指定的应用不显示悬浮窗\n会和手动设定产生冲突\n需要开启FloatText高级服务</string>
     <string name="xml_global_text_type">跑马灯显示模式</string>
     <string name="xml_global_text_common">传统模式\n(速度恒定但是更加稳定)</string>
     <string name="xml_global_text_advanced">高级模式\n(可以设置速度但对硬件要求高)</string>

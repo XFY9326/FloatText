@@ -94,7 +94,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 				@Override
 				public void onClick(View v)
 				{
-					TextViewSet(index, utils, view);
+					FloatManageMethod.ShoworHideWin(context, index);
 				}
 			});
 
@@ -102,8 +102,14 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
         view.lock_button.setOnClickListener(new OnClickListener() {
 				public void onClick(View v)
 				{
-					FloatWinLock(context, index, view.lock_button);
-					System.out.println("ListViewAdapter: " + context);
+					if (FloatManageMethod.LockorUnlockWin(context, index))
+					{
+						FloatManage.snackshow((Activity) context, context.getString(R.string.text_lock));
+					}
+					else
+					{
+						FloatManage.snackshow((Activity) context, context.getString(R.string.text_unlock));
+					}
 				}
 			});
 		//删除按钮监听
@@ -205,38 +211,6 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 		}
 	}
 
-	private void TextViewSet(int index, App utils, ViewHolder view)
-	{
-		FloatTextUtils textutils = utils.getTextutil();
-		ArrayList<Boolean> showFloat = textutils.getShowFloat();
-		ArrayList<String> TextShow = textutils.getTextShow();
-		boolean iShowFloat = showFloat.get(index);
-		String iTextShow = TextShow.get(index);
-
-		iShowFloat = !showFloat.set(index, !iShowFloat);
-		FloatData dat = new FloatData(context);
-		dat.savedata();
-
-		FloatLinearLayout floatLinearLayout = utils.getFrameutil().getFloatlinearlayout().get(index);
-		floatLinearLayout.setShowState(iShowFloat);
-
-		WindowManager.LayoutParams wmParams = utils.getFrameutil().getFloatlayout().get(index);
-		WindowManager wm = utils.getFloatwinmanager();
-
-		if (!iShowFloat)
-		{
-			SpannableString str = new SpannableString(iTextShow);
-			str.setSpan(new StrikethroughSpan(), 0, str.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-			view.textView.setText(str);
-		}
-		else
-		{
-			view.textView.setText(iTextShow);
-		}
-
-		wm.updateViewLayout(floatLinearLayout, wmParams);
-	}
-
 	//控件获取
     public static class ViewHolder extends RecyclerView.ViewHolder
 	{
@@ -266,34 +240,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 		{
             FloatManage.snackshow((Activity) context, context.getString(R.string.float_list_del_err));
         }
-    }
-
-	//锁定悬浮窗
-    private void FloatWinLock(Context context, final int index, Button lock_button)
-	{
-		App utils = ((App) context.getApplicationContext());
-		FloatTextUtils textutils = utils.getTextutil();
-        ArrayList<Boolean> lock = textutils.getLockPosition();
-        ArrayList<String> position = textutils.getPosition();
-        linearlayout = utils.getFrameutil().getFloatlinearlayout();
-        FloatLinearLayout fll = linearlayout.get(index);
-        if (fll.getPositionLocked())
-		{
-            fll.setPositionLocked(false);
-            lock.set(index, false);
-            lock_button.setBackgroundResource(R.drawable.ic_lock_unlocked);
-            FloatManage.snackshow((Activity) context, context.getString(R.string.text_unlock));
-        }
-		else
-		{
-            fll.setPositionLocked(true);
-            lock.set(index, true);
-            position.set(index, fll.getPosition());
-            lock_button.setBackgroundResource(R.drawable.ic_lock);
-            FloatManage.snackshow((Activity) context, context.getString(R.string.text_lock));
-        }
-        FloatData dat = new FloatData(context);
-        dat.savedata();
+		FloatManageMethod.UpdateNotificationCount(context);
     }
 
 	//删除悬浮窗

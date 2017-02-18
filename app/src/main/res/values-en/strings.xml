@@ -90,6 +90,7 @@
 	<string name="recover_failed">Data recover failed</string>
 	<string name="dynamicservice_no_open">Dynamic Service does not open!</string>
 	<string name="permission_error">Permission Denied!</string>
+	<string name="notification_win_count">%1$s Float Window in total</string>
     <!-- Color Picker -->
     <string name="dialog_color_picker">Color Picker</string>
     <string name="press_color_to_apply">Choose color to apply changes</string>
@@ -130,6 +131,8 @@
     <string name="xml_set_textmove_speed">Text Move Speed</string>
     <string name="xml_set_textmove_speed_sum">Set The Move Display Speed</string>
     <string name="xml_set_win">Float Set</string>
+	<string name="xml_set_win_notifycontrol">Allow Notification Control this Float Window</string>
+	<string name="xml_set_win_notifycontrol_sum">Need to open Notification Control function</string>
     <string name="xml_set_win_color">Window background color set</string>
     <string name="xml_set_win_color_sum">Display the color in different colors</string>
 	<string name="xml_set_win_size">Adjust the Float Size</string>
@@ -164,6 +167,9 @@
     <string name="xml_web_win_height">The height of this window</string>
     <string name="xml_web_win_height_sum">Change the height of this window</string>
     <string name="xml_web_win_height_title">Height Set</string>
+	<string name="xml_global_notify">Notification Settings</string>
+	<string name="xml_global_notify_manage">Notification Control</string>
+	<string name="xml_global_notify_manage_sum">Use Notification Bar manage Float Windows and show Icon.\nNeed to open Float Window Guard Service.</string>
 	<string name="xml_global_system">System Settings</string>
 	<string name="xml_global_system_boot">Show Float Window automatically after boot</string>
 	<string name="xml_global_system_boot_sum">Please allow this application boot in System Manage\nAttention:The Services may start slow!</string>
@@ -182,7 +188,7 @@
     <string name="xml_global_win_onlyshowinhome_sum">Can not edit Float window \nNeed to open Float Window Guard service</string>
 	<string name="xml_global_win_filter_switch">Float Window Show Filter</string>
 	<string name="xml_global_win_filter">Float Window Show Filter List</string>
-    <string name="xml_global_win_filter_sum">Not Show Float Window in Specified Application\nNeed to open FloatText Advance Service</string>
+    <string name="xml_global_win_filter_sum">Not show Float Window in specified application automatically\nMay have arguments with custom setting\nNeed to open FloatText Advance Service</string>
     <string name="xml_global_text_type">Moving text show model</string>
     <string name="xml_global_text_common">‍Traditional model\n(‍The speed is  ‍unchangebale but more steady)</string>
     <string name="xml_global_text_advanced">Advanced model\n(Can change speed but use more CPU)</string>

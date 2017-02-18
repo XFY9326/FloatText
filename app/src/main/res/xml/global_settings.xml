@@ -9,6 +9,15 @@
             android:defaultValue="false"
         />
 	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/xml_global_notify"> 
+        <CheckBoxPreference 
+            android:key="FloatNotification"
+            android:title="@string/xml_global_notify_manage"
+            android:summary="@string/xml_global_notify_manage_sum"
+            android:defaultValue="true"
+			android:dependency="StayAliveService"
+        />
+	</PreferenceCategory>
     <PreferenceCategory android:title="@string/xml_global_manageset"> 
         <Preference 
             android:key="Language"

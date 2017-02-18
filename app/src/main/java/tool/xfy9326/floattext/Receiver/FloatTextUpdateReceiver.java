@@ -1,13 +1,12 @@
 package tool.xfy9326.floattext.Receiver;
 
 import android.content.*;
+import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Utils.*;
-import tool.xfy9326.floattext.View.*;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import java.util.ArrayList;
-import tool.xfy9326.floattext.Method.DynamicWordUpdateMethod;
 
 public class FloatTextUpdateReceiver extends BroadcastReceiver
 {
@@ -45,29 +44,13 @@ public class FloatTextUpdateReceiver extends BroadcastReceiver
 		if (sp.getBoolean("WinOnlyShowInHome", false))
 		{
 			Bundle bundle = p2.getExtras();
-			App utils = ((App)p1.getApplicationContext());
-			ArrayList<FloatLinearLayout> layout = utils.getFrameutil().getFloatlinearlayout();
-			ArrayList<Boolean> show = utils.getTextutil().getShowFloat();
-			ListViewAdapter adp = utils.getListviewadapter();
 			if (bundle.getBoolean("Float_InHome"))
 			{
-				for (int i = 0;i < layout.size(); i++)
-				{
-					layout.get(i).setShowState(true);
-					show.set(i, true);
-				}
+				FloatManageMethod.ShoworHideAllWin(p1, true, false);
 			}
 			else
 			{
-				for (int i = 0;i < layout.size(); i++)
-				{
-					layout.get(i).setShowState(false);
-					show.set(i, false);
-				}
-			}
-			if (adp != null)
-			{
-				adp.notifyDataSetChanged();
+				FloatManageMethod.ShoworHideAllWin(p1, false, false);
 			}
 		}
 	}
@@ -80,9 +63,6 @@ public class FloatTextUpdateReceiver extends BroadcastReceiver
 			String actname = p2.getStringExtra("CurrentActivity");
 			App utils = ((App)p1.getApplicationContext());
 			ArrayList<String> fa = utils.getFrameutil().getFilterApplication();
-			ArrayList<FloatLinearLayout> layout = utils.getFrameutil().getFloatlinearlayout();
-			ArrayList<Boolean> show = utils.getTextutil().getShowFloat();
-			ListViewAdapter adp = utils.getListviewadapter();
 			boolean findact = false;
 			for (int a = 0;a < fa.size();a++)
 			{
@@ -92,25 +72,13 @@ public class FloatTextUpdateReceiver extends BroadcastReceiver
 					break;
 				}
 			}
-			if (!findact)
+			if (findact)
 			{
-				for (int i = 0;i < layout.size(); i++)
-				{
-					layout.get(i).setShowState(true);
-					show.set(i, true);
-				}
+				FloatManageMethod.ShoworHideAllWin(p1, false, false);
 			}
 			else
 			{
-				for (int i = 0;i < layout.size(); i++)
-				{
-					layout.get(i).setShowState(false);
-					show.set(i, false);
-				}
-			}
-			if (adp != null)
-			{
-				adp.notifyDataSetChanged();
+				FloatManageMethod.ShoworHideAllWin(p1, true, false);
 			}
 		}
 	}

@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.preference.PreferenceManager;
 import java.util.ArrayList;
 import tool.xfy9326.floattext.R;
+import tool.xfy9326.floattext.Method.FloatManageMethod;
 
 /*
  悬浮窗线性布局
@@ -51,18 +52,10 @@ public class FloatLinearLayout extends LinearLayout
                 case 0:
                     if (FLOAT_ID != -1)
                     {
-                        ArrayList<Boolean> lock = ((App)ctx.getApplicationContext()).getTextutil().getLockPosition();
-                        ArrayList<String> position = ((App)ctx.getApplicationContext()).getTextutil().getPosition();
-                        if (FLOAT_ID < lock.size() && lockposition == false)
-                        {
-                            setPositionLocked(true);
-                            lock.set(FLOAT_ID, true);
-                            position.set(FLOAT_ID, getPosition());
-                            FloatData dat = new FloatData(ctx);
-                            dat.savedata();
-                            ((App)ctx.getApplicationContext()).getListviewadapter().notifyDataSetChanged();
-                            Toast.makeText(ctx, R.string.text_lock, Toast.LENGTH_SHORT).show();
-                        }
+						if(FloatManageMethod.LockorUnlockWin(ctx, FLOAT_ID))
+						{
+                        	Toast.makeText(ctx, R.string.text_lock, Toast.LENGTH_SHORT).show();
+						}
                     }
                     break;
             }

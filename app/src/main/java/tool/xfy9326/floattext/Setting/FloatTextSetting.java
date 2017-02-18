@@ -58,6 +58,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 	private boolean FloatSize;
 	private float FloatLong;
 	private float FloatWide;
+	private boolean NotifyControl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -160,6 +161,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		FloatSize = textutils.getFloatSize().get(i);
 		FloatLong = textutils.getFloatLong().get(i);
 		FloatWide = textutils.getFloatWide().get(i);
+		NotifyControl = textutils.getNotifyControl().get(i);
     }
 
 	//设置编辑悬浮窗的数据为默认数据
@@ -183,6 +185,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		spedit.putBoolean("FloatSize", FloatSize);
 		spedit.putFloat("FloatLong", FloatLong);
 		spedit.putFloat("FloatWide", FloatWide);
+		spedit.putBoolean("NotifyControl", NotifyControl);
         spedit.commit();
     }
 
@@ -210,6 +213,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		FloatSize = spdata.getBoolean("FloatSize", false);
 		FloatLong = spdata.getFloat("FloatLong", 100);
 		FloatWide = spdata.getFloat("FloatWide", 100);
+		NotifyControl = spdata.getBoolean("NotifyControl", true);
 		LockPosition = false;
     }
 
@@ -315,6 +319,15 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 
 	private void FloatWinViewSet(final LayoutInflater inflater)
 	{
+		//通知栏控制
+		CheckBoxPreference notifycontrol = (CheckBoxPreference) findPreference("NotifyControl");
+        notifycontrol.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
+                public boolean onPreferenceChange(Preference p, Object v)
+                {
+                    NotifyControl = v;
+                    return true;
+                }
+            });
 		//背景颜色设置
         ColorPickerPreference baccolor = (ColorPickerPreference) findPreference("BackgroundColor");
         baccolor.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
@@ -906,7 +919,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         if (savedetails)
         {
             FloatTextUtils textutils = utils.getTextutil();
-			textutils.addDatas(TextShow, TextColor, TextSize, TextThick, FloatShow, Position, false, TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide);
+			textutils.addDatas(TextShow, TextColor, TextSize, TextThick, FloatShow, Position, false, TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide, NotifyControl);
 			utils.setTextutil(textutils);
         }
     }
@@ -919,7 +932,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		FloatTextUtils textutils = utils.getTextutil();
 		FloatFrameUtils frameutils = utils.getFrameutil();
         frameutils.setDatas(i, floatview, linearlayout, wmParams, TextShow);
-		textutils.setDatas(i, TextShow, TextColor, TextSize, TextThick, FloatShow, Position, LockPosition, TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide);
+		textutils.setDatas(i, TextShow, TextColor, TextSize, TextThick, FloatShow, Position, LockPosition, TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide, NotifyControl);
 		utils.setTextutil(textutils);
 		utils.setFrameutil(frameutils);
     }

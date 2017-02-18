@@ -24,6 +24,17 @@ public class FloatTextUtils
 	private ArrayList<Boolean> FloatSize = new ArrayList<Boolean>();
 	private ArrayList<Float> FloatLong = new ArrayList<Float>();
 	private ArrayList<Float> FloatWide = new ArrayList<Float>();
+	private ArrayList<Boolean> NotifyControl = new ArrayList<Boolean>();
+
+	public void setNotifyControl(ArrayList<Boolean> notifyControl)
+	{
+		NotifyControl = notifyControl;
+	}
+
+	public ArrayList<Boolean> getNotifyControl()
+	{
+		return NotifyControl;
+	}
 
 	public void setTextShadowRadius(ArrayList<Float> textShadowRadius)
 	{
@@ -225,7 +236,7 @@ public class FloatTextUtils
 		return TextShow;
 	}
 
-	public void addDatas(String text, int color, float size, boolean thick, boolean show, String position, boolean lp, boolean tp, boolean ap, boolean tm, int sp, boolean sha, float shax, float shay, float shad, int bac, int tsc, boolean fs, float fl, float fw)
+	public void addDatas(String text, int color, float size, boolean thick, boolean show, String position, boolean lp, boolean tp, boolean ap, boolean tm, int sp, boolean sha, float shax, float shay, float shad, int bac, int tsc, boolean fs, float fl, float fw, boolean nc)
     {
         TextShow.add(text);
         ColorShow.add(color);
@@ -247,9 +258,10 @@ public class FloatTextUtils
 		FloatSize.add(fs);
 		FloatLong.add(fl);
 		FloatWide.add(fw);
+		NotifyControl.add(nc);
     }
 
-	public void replaceDatas(ArrayList<String> text, ArrayList<Integer> color, ArrayList<Float> size, ArrayList<Boolean> thick, ArrayList<Boolean> show, ArrayList<String> position, ArrayList<Boolean> lp, ArrayList<Boolean> tp, ArrayList<Boolean> ap, ArrayList<Boolean> tm, ArrayList<Integer> sp, ArrayList<Boolean> sha, ArrayList<Float> shax, ArrayList<Float> shay, ArrayList<Float> shad, ArrayList<Integer> bac, ArrayList<Integer> tsc, ArrayList<Boolean> fs, ArrayList<Float> fl, ArrayList<Float> fw)
+	public void replaceDatas(ArrayList<String> text, ArrayList<Integer> color, ArrayList<Float> size, ArrayList<Boolean> thick, ArrayList<Boolean> show, ArrayList<String> position, ArrayList<Boolean> lp, ArrayList<Boolean> tp, ArrayList<Boolean> ap, ArrayList<Boolean> tm, ArrayList<Integer> sp, ArrayList<Boolean> sha, ArrayList<Float> shax, ArrayList<Float> shay, ArrayList<Float> shad, ArrayList<Integer> bac, ArrayList<Integer> tsc, ArrayList<Boolean> fs, ArrayList<Float> fl, ArrayList<Float> fw, ArrayList<Boolean> nc)
     {
         TextShow = text;
         ColorShow = color;
@@ -271,6 +283,7 @@ public class FloatTextUtils
 		FloatSize = fs;
 		FloatLong = fl;
 		FloatWide = fw;
+		NotifyControl = nc;
     }
 
     public void removeDatas(int i)
@@ -295,9 +308,10 @@ public class FloatTextUtils
 		FloatSize.remove(i);
 		FloatLong.remove(i);
 		FloatWide.remove(i);
+		NotifyControl.remove(i);
     }
 
-	public void setDatas(int i, String text, int color, float size, boolean thick, boolean show, String position, boolean lp, boolean tp, boolean ap, boolean tm, int sp, boolean sha, float shax, float shay, float shad, int bac, int tsc, boolean fs, float fl, float fw)
+	public void setDatas(int i, String text, int color, float size, boolean thick, boolean show, String position, boolean lp, boolean tp, boolean ap, boolean tm, int sp, boolean sha, float shax, float shay, float shad, int bac, int tsc, boolean fs, float fl, float fw, boolean nc)
     {
         TextShow.set(i, text);
         ColorShow.set(i, color);
@@ -319,5 +333,6 @@ public class FloatTextUtils
 		FloatSize.set(i, fs);
 		FloatLong.set(i, fl);
 		FloatWide.set(i, fw);
+		NotifyControl.set(i, nc);
     }
 }

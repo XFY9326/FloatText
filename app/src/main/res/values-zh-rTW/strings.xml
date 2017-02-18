@@ -90,6 +90,7 @@
 	<string name="recover_failed">數據恢復失敗</string>
 	<string name="dynamicservice_no_open">動態變量服務沒有開啟！</string>
 	<string name="permission_error">權限獲取失敗！</string>
+	<string name="notification_win_count">共%1$s個懸浮視窗</string>
     <!-- Color Picker -->
     <string name="dialog_color_picker">顏色選擇器</string>
     <string name="press_color_to_apply">選擇顏色以套用變更</string>
@@ -130,6 +131,8 @@
     <string name="xml_set_textmove_speed">文字跑馬燈速度</string>
     <string name="xml_set_textmove_speed_sum">調整跑馬燈顯示的速度</string>
     <string name="xml_set_win">視窗設定</string>
+	<string name="xml_set_win_notifycontrol">允許通知欄面板控制此懸浮視窗</string>
+	<string name="xml_set_win_notifycontrol_sum">需要在整體設定打開通知欄控制功能</string>
     <string name="xml_set_win_color">視窗顏色設定</string>
     <string name="xml_set_win_color_sum">讓視窗顯示不同的顏色</string>
 	<string name="xml_set_win_size">設定視窗大小</string>
@@ -164,6 +167,9 @@
     <string name="xml_web_win_height">視窗高度</string>
     <string name="xml_web_win_height_sum">變更目前視窗的高度</string>
     <string name="xml_web_win_height_title">高度設定</string>
+	<string name="xml_global_notify">通知管理</string>
+	<string name="xml_global_notify_manage">通知欄管理懸浮視窗</string>
+	<string name="xml_global_notify_manage_sum">通知欄對懸浮視窗進行管理，會顯示圖標\n需要開啟進程守護服務</string>
 	<string name="xml_global_system">系統設置</string>
 	<string name="xml_global_system_boot">開機時自動啟動懸浮視窗</string>
 	<string name="xml_global_system_boot_sum">請在系統管理中允許本應用程式開機自啟\n注：服務啟動可能會比較緩慢</string>
@@ -182,7 +188,7 @@
     <string name="xml_global_win_onlyshowinhome_sum">開啟後無法編輯懸浮視窗\n需要開啟懸浮視窗程式守護服務</string>
 	<string name="xml_global_win_filter_switch">懸浮視窗顯示過濾</string>
 	<string name="xml_global_win_filter">懸浮視窗顯示過濾列表</string>
-    <string name="xml_global_win_filter_sum">在指定的應用程式不顯示懸浮視窗\n需要開啟FloatText高級服務</string>
+    <string name="xml_global_win_filter_sum">自動在指定的應用程式不顯示懸浮視窗\n會和手動設定產生衝突\n需要開啟FloatText高級服務</string>
     <string name="xml_global_text_type">跑馬燈顯示模式</string>
     <string name="xml_global_text_common">傳統模式\n(速度固定但是更加穩定)</string>
     <string name="xml_global_text_advanced">高級模式\n(可以設定速度但對硬體要求高)</string>

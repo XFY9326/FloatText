@@ -124,7 +124,8 @@ public class FloatManage extends AppCompatActivity
 				FloatManageMethod.RunInBack(FloatManage.this);
 				break;
 			case R.id.menu_exit:
-				FloatManageMethod.ShutSown(FloatManage.this);
+				finish();
+				FloatManageMethod.ShutDown(FloatManage.this);
 				break;
 		}
 	}
@@ -255,6 +256,8 @@ public class FloatManage extends AppCompatActivity
 		FloatManageMethod.startservice(ctx);
 		FloatManageMethod.first_ask_for_premission(ctx);
 		ListViewSet();
+		utils.setStartShowWin(true);
+		FloatManageMethod.UpdateNotificationCount(this);
 		if (!close_ag)
 		{
 			closeag();
@@ -393,6 +396,7 @@ public class FloatManage extends AppCompatActivity
         if (requestCode == StaticNum.FLOATTEXT_RESULT_CODE)
         {
 			AlertTextShow(data);
+			FloatManageMethod.UpdateNotificationCount(this);
         }
         else if (requestCode == StaticNum.RESHOW_PERMISSION_RESULT_CODE)
         {
@@ -404,6 +408,7 @@ public class FloatManage extends AppCompatActivity
             {
                 importtxt(data);
 				listadapter.notifyDataSetChanged();
+				FloatManageMethod.UpdateNotificationCount(this);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -421,7 +426,7 @@ public class FloatManage extends AppCompatActivity
 			}
 			else
 			{
-				FloatManageMethod.CloseApp(this);
+				FloatManageMethod.SnackShow_CloseApp(this);
 			}
         }
 		else if (keyCode == KeyEvent.KEYCODE_MENU)

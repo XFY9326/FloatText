@@ -6,5 +6,7 @@
     <color name="colorListView">#D7F3FF</color>
 	<color name="colorFloatingActionButtonBackGround">#40c4ff</color>
 	<color name="colorCodeBackGround">#D7D7D7</color>
+	<color name="colorNotificationTitle">#828282</color>
+	<color name="colorNotificationData">#ABABAB</color>
     <color name="white">#FFFFFF</color>
 </resources>

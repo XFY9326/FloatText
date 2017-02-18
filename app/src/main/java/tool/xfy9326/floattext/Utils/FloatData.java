@@ -59,6 +59,7 @@ public class FloatData
 		spedit.putString("FloatSizeArray", textutils.getFloatSize().toString());
 		spedit.putString("FloatLongArray", textutils.getFloatLong().toString());
 		spedit.putString("FloatWideArray", textutils.getFloatWide().toString());
+		spedit.putString("NotifyControlArray", textutils.getNotifyControl().toString());
         spedit.apply();
 		speditt.apply();
     }
@@ -92,6 +93,7 @@ public class FloatData
 		textutils.setFloatSize(NewBooleanKey(spdata.getString("FloatSizeArray", "[]"), "false"));
 		textutils.setFloatLong(NewFloatKey(spdata.getString("FloatLongArray", "[]"), "100"));
 		textutils.setFloatWide(NewFloatKey(spdata.getString("FloatWideArray", "[]"), "100"));
+		textutils.setNotifyControl(NewBooleanKey(spdata.getString("NotifyControlArray", "[]"), "true"));
         utils.setTextutil(textutils);
     }
 
@@ -129,7 +131,7 @@ public class FloatData
 			updateVersion(2);
 		}
 	}
-
+	
 	//输出
 	public boolean OutputData(String path, int VersionCode)
 	{
@@ -183,6 +185,7 @@ public class FloatData
 		xmltojson(dataobject, "FloatSizeArray");
 		xmltojson(dataobject, "FloatLongArray");
 		xmltojson(dataobject, "FloatWideArray");
+		xmltojson(dataobject, "NotifyControlArray");
 		return dataobject;
 	}
 

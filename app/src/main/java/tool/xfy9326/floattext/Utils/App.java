@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import tool.xfy9326.floattext.CrashReport.CrashHandler;
 import tool.xfy9326.floattext.SafeGuard;
 import tool.xfy9326.floattext.View.ListViewAdapter;
+import android.support.v7.app.NotificationCompat;
+import android.widget.RemoteViews;
 
 /*
  数据缓存
@@ -17,6 +19,8 @@ public class App extends Application
 	private FloatFrameUtils frameutil;
     private ListViewAdapter listviewadapter = null;
     private WindowManager floatwinmanager = null;
+	private NotificationCompat.Builder notification = null;
+	private RemoteViews remoteview = null;
     public boolean MovingMethod = false;
     public boolean FloatWinReshow = true;
     public boolean StayAliveService = true;
@@ -26,6 +30,7 @@ public class App extends Application
     public boolean ListTextHide = false;
     public boolean GetSave = false;
 	public boolean TextFilter = false;
+	public boolean StartShowWin = false;
 
     @Override
     public void onCreate()
@@ -44,6 +49,31 @@ public class App extends Application
         SafeGuard.isSignatureAvailable(this);
         SafeGuard.isPackageNameAvailable(this);
     }
+	
+	public void setRemoteview(RemoteViews remoteview)
+	{
+		this.remoteview = remoteview;
+	}
+
+	public RemoteViews getRemoteview()
+	{
+		return remoteview;
+	}
+	
+	public void setNotification(NotificationCompat.Builder notification)
+	{
+		this.notification = notification;
+	}
+
+	public NotificationCompat.Builder getNotification()
+	{
+		return notification;
+	}
+	
+	public void setStartShowWin(boolean startShowWin)
+	{
+		StartShowWin = startShowWin;
+	}
 	
 	public void setTextFilter(boolean textFilter)
 	{

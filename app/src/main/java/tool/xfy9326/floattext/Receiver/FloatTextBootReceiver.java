@@ -16,40 +16,48 @@ import tool.xfy9326.floattext.Tool.FormatArrayList;
 
 public class FloatTextBootReceiver extends BroadcastReceiver
 {
-	private SharedPreferences spdata;
 
 	@Override
 	public void onReceive(Context ctx, Intent p2)
 	{
 		String action = p2.getAction();
+		SharedPreferences spdata = PreferenceManager.getDefaultSharedPreferences(ctx);
 		if (Intent.ACTION_BOOT_COMPLETED.equals(action))
 		{
-			spdata = PreferenceManager.getDefaultSharedPreferences(ctx);
 			if (spdata.getBoolean("FloatAutoBoot", false))
 			{
-				if (Build.VERSION.SDK_INT >= 23)
-				{
-					if (Settings.canDrawOverlays(ctx) && ctx.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-					{
-						FloatStart(ctx);
-					}
-					else
-					{
-						Toast.makeText(ctx, ctx.getString(R.string.app_name) + ctx.getString(R.string.permission_error), Toast.LENGTH_SHORT).show();
-					}
-				}
-				else
-				{
-					FloatStart(ctx);
-				}
+				PrepareShow(ctx);
 			}
 		}
 	}
 
-	private void FloatStart(final Context ctx)
+	public static boolean PrepareShow(Context ctx)
 	{
-		final App utils = (App)ctx.getApplicationContext();
-		final SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
+		if (Build.VERSION.SDK_INT >= 23)
+		{
+			if (Settings.canDrawOverlays(ctx) && ctx.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+			{
+				FloatStart(ctx);
+				return true;
+			}
+			else
+			{
+				Toast.makeText(ctx, ctx.getString(R.string.app_name) + ctx.getString(R.string.permission_error), Toast.LENGTH_SHORT).show();
+				return false;
+			}
+		}
+		else
+		{
+			FloatStart(ctx);
+			return true;
+		}
+	}
+
+	public static void FloatStart(Context ctx)
+	{
+		App utils = (App)ctx.getApplicationContext();
+		SharedPreferences spdata = PreferenceManager.getDefaultSharedPreferences(ctx);
+		SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
 		FloatData dat = new FloatData(ctx);
 		dat.getSaveArrayData();
 		utils.setMovingMethod(spdata.getBoolean("TextMovingMethod", false));
@@ -59,21 +67,13 @@ public class FloatTextBootReceiver extends BroadcastReceiver
 		utils.setHtmlMode(spdata.getBoolean("HtmlMode", true));
 		utils.setListTextHide(spdata.getBoolean("ListTextHide", false));
 		utils.getFrameutil().setFilterApplication(FormatArrayList.StringToStringArrayList(setdata.getString("Filter_Application", "[]")));
-		if (((App)ctx.getApplicationContext()).getTextData().size() > 0)
-		{
-			FloatManageMethod.startservice(ctx);
-			FloatManageMethod.preparefolder();
-			FloatManageMethod.setWinManager(ctx);
-			Reshow(ctx);
-			utils.setGetSave(true);
-		}
-	}
-
-	private void Reshow(Context ctx)
-	{
-		App utils = ((App)ctx.getApplicationContext());
+		FloatManageMethod.startservice(ctx);
+		FloatManageMethod.preparefolder();
+		FloatManageMethod.setWinManager(ctx);
 		FloatTextUtils textutils = utils.getTextutil();
 		FloatManageMethod.Reshow_Create(ctx, utils, textutils, textutils.getTextShow(), textutils.getShowFloat(), textutils.getLockPosition(), textutils.getPosition(), textutils.getTextMove());
+		utils.setGetSave(true);
+		utils.setStartShowWin(true);
 	}
 
 }

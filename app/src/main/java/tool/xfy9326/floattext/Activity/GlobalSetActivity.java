@@ -54,6 +54,15 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 
     private void ViewSet()
     {
+		CheckBoxPreference notify = (CheckBoxPreference) findPreference("FloatNotification");
+        notify.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
+                public boolean onPreferenceChange(Preference p1, Object p2)
+                {
+                    StayAliveSet(false);
+					StayAliveSet(true);
+                    return true;
+                }
+            });
         CheckBoxPreference movemethod = (CheckBoxPreference) findPreference("TextMovingMethod");
         movemethod.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p1, Object p2)
