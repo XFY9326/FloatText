@@ -8,6 +8,8 @@ import java.util.*;
 
 import android.widget.Toast;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import tool.xfy9326.floattext.Method.IOMethod;
 import tool.xfy9326.floattext.R;
 
 public class CrashHandler implements Thread.UncaughtExceptionHandler
@@ -21,6 +23,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
     private String mainclassname;
     private String mail;
     private String AppName;
+	private boolean outputerror;
+	private String outputpath;
 
     private CrashHandler()
     {}
@@ -36,9 +40,16 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
         this.mail = mail;
         this.AppName = AppName;
         this.mainclassname = mainclassname;
+		this.outputerror = false;
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(this);
     }
+
+	public void setOutPutError(boolean output, String path)
+	{
+		outputerror = output;
+		outputpath = path;
+	}
 
     @Override
     public void uncaughtException(Thread thread, Throwable ex)
@@ -49,6 +60,12 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
         }
         else
         {
+			if (outputerror)
+			{
+				ErrorOutPut(ex);
+				android.os.Process.killProcess(android.os.Process.myPid());
+				System.exit(0);
+			}
             try
             {
                 Thread.sleep(1500);
@@ -57,18 +74,28 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
             {
                 e.printStackTrace();
             }
-            Intent ui = new Intent(mContext, CrashHandlerUI.class);
-            ui.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            ui.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            ui.putExtra("CrashLog", Log);
-            ui.putExtra("DeviceInfo", Info);
-            ui.putExtra("ClassName", mainclassname);
-            ui.putExtra("Mail", mail);
-            ui.putExtra("AppName", AppName);
-            mContext.startActivity(ui);
-            android.os.Process.killProcess(android.os.Process.myPid());
-        }
+			if (!outputerror)
+			{
+				Intent ui = new Intent(mContext, CrashHandlerUI.class);
+				ui.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				ui.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+				ui.putExtra("CrashLog", Log);
+				ui.putExtra("DeviceInfo", Info);
+				ui.putExtra("ClassName", mainclassname);
+				ui.putExtra("Mail", mail);
+				ui.putExtra("AppName", AppName);
+				mContext.startActivity(ui);
+				android.os.Process.killProcess(android.os.Process.myPid());
+			}
+		}
     }
+
+	private void ErrorOutPut(final Throwable ex)
+	{
+		String FileName = AppName + "-CrashLog_" + stampToDate(new Date().getTime() + "");
+		String error = ExToString(ex);
+		IOMethod.writefile(outputpath + FileName + ".txt", error);
+	}
 
     private boolean handleException(Throwable ex)
     {
@@ -86,36 +113,43 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
             }
         }.start();
         collectDeviceInfo(mContext);
-        saveCrashInfo(ex);
+        saveCrashInfo(mContext, ex);
         return true;
     }
 
-    public void collectDeviceInfo(Context ctx)
-    {
-        try
+	private String getAppInfo(Context ctx)
+	{
+		try
         {
             PackageManager pm = ctx.getPackageManager();
             PackageInfo pi = pm.getPackageInfo(ctx.getPackageName(), PackageManager.GET_ACTIVITIES);
             if (pi != null)
             {
-                String versionName = pi.versionName == null ? "null"
-                    : pi.versionName;
+                String versionName = pi.versionName == null ? "null" : pi.versionName;
                 String versionCode = pi.versionCode + "";
-                infos.put("versionName", versionName);
-                infos.put("versionCode", versionCode);
+				String installTime = stampToDate(pi.firstInstallTime + "");
+				String lastupdatetime = stampToDate(pi.lastUpdateTime + "");
+				String errortime = stampToDate(new Date().getTime() + "");
+                String result = "VersionName = " + versionName + "\n" + "VersionCode = " + versionCode + "\n" + "ErrorTime = " + errortime + "\n" + "InstallTime = " + installTime + "\n" + "LastUpdateTime = " + lastupdatetime;
+				return result;
             }
         }
         catch (PackageManager.NameNotFoundException e)
         {
             e.printStackTrace();
         }
+		return "Unknown Application Version";
+	}
+
+    private void collectDeviceInfo(Context ctx)
+    {
         Field[] fields = Build.class.getDeclaredFields();
         for (Field field : fields)
         {
             try
             {
                 field.setAccessible(true);
-                infos.put(field.getName(), field.get(null).toString());
+                infos.put(field.getName().toString(), field.get(null).toString());
             }
             catch (Exception e)
             {
@@ -124,18 +158,41 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
         }
     }
 
-    private void saveCrashInfo(Throwable ex)
-    {
+	private String stampToDate(String s)
+	{
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long lt = new Long(s);
+        Date date = new Date(lt);
+        res = simpleDateFormat.format(date);
+        return res;
+    }
 
+    private void saveCrashInfo(Context ctx, Throwable ex)
+    {
         String str = "";
         for (Map.Entry<String, String> entry : infos.entrySet())
         {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            str += key + "=" + value + "\n";
+            String key = entry.getKey().toString();
+            String value = entry.getValue().toString();
+			if (key.contains("@") || value.contains("@"))
+			{
+				continue;
+			}
+			else
+			{
+            	str += key + " = " + value + " \n";
+			}
         }
+		str = getAppInfo(ctx) + "\n\n" + str;
+        String result = ExToString(ex);
+        Info = str;
+        Log = result;
+    }
 
-        Writer writer = new StringWriter();
+	private String ExToString(Throwable ex)
+	{
+		Writer writer = new StringWriter();
         PrintWriter printWriter = new PrintWriter(writer);
         ex.printStackTrace(printWriter);
         Throwable cause = ex.getCause();
@@ -145,9 +202,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
             cause = cause.getCause();
         }
         printWriter.close();
-        String result = writer.toString();
-        Info = str;
-        Log = result;
-    }
+        return writer.toString();
+	}
 
 }

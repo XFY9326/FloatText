@@ -269,6 +269,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
             textshow.remove(index);
 			textutils.removeDatas(index);
 			utils.setTextutil(textutils);
+			FloatIDChange(index);
             FloatData dat = new FloatData(context);
             dat.savedata();
             notifyItemRemoved(index);
@@ -276,6 +277,21 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
             return true;
         }
     }
+	
+	//改变悬浮窗内置序号(删除后调用)
+	private void FloatIDChange(int delid)
+	{
+		App utils = (App) context.getApplicationContext();
+		ArrayList<FloatLinearLayout> fll = utils.getFrameutil().getFloatlinearlayout();
+		if (delid < fll.size())
+		{
+			for (int i = delid; i < fll.size(); i++)
+			{
+				int id = fll.get(i).getFloatID();
+				fll.get(i).setFloatID(id - 1);
+			}
+		}
+	}
 
     /*
 	 进入编辑窗口前需要保存数据

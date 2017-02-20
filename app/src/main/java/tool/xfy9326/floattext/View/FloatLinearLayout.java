@@ -69,6 +69,16 @@ public class FloatLinearLayout extends LinearLayout
         this.FLOAT_ID = ID;
         this.wm = ((App)context.getApplicationContext()).getFloatwinmanager();
     }
+	
+	public void setFloatID(int id)
+	{
+		FLOAT_ID = id;
+	}
+	
+	public int getFloatID()
+	{
+		return FLOAT_ID;
+	}
 
 	//窗体移动
     @Override

@@ -12,6 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View.OnClickListener;
 import tool.xfy9326.floattext.R;
+import tool.xfy9326.floattext.SafeGuard;
+import android.content.pm.PackageManager.NameNotFoundException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.io.ByteArrayInputStream;
+import java.security.cert.CertificateException;
 
 public class CrashHandlerUI extends AppCompatActivity
 {
@@ -36,6 +42,18 @@ public class CrashHandlerUI extends AppCompatActivity
         buttonset();
     }
 
+	private boolean isOfficialVersion()
+	{
+		if (SafeGuard.isSignatureAvailable(this, false) && SafeGuard.isPackageNameAvailable(this, false))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
     private void buttonset()
     {
         TextView logshow = (TextView) findViewById(R.id.textview_crashlog);
@@ -58,12 +76,31 @@ public class CrashHandlerUI extends AppCompatActivity
 
     private void sendmail()
     {
+		PackageManager pm = getPackageManager();
         String MailSend = AppName + getString(R.string.crashreport_mail_main) + "\n\n" + getString(R.string.crashreport_mail_report) + ":\n" + Device + "\n\n" + Log;
+		if (!isOfficialVersion())
+		{
+			MailSend += "\n\nNot Official Release!";
+			try
+			{
+				PackageInfo info = pm.getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+				Signature[] sg = info.signatures;
+				String sgdata = "";
+				for (Signature sginfo : sg)
+				{
+					sgdata += parseSignature(sginfo.toByteArray()) + "\n";
+				}
+				MailSend += "\n\n" + "SignatureInfo:" + "\n" + sgdata;
+			}
+			catch (PackageManager.NameNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+		}
         Intent data=new Intent(Intent.ACTION_SENDTO);
         data.setData(Uri.parse("mailto:" + mail));
         data.putExtra(Intent.EXTRA_SUBJECT, AppName + getString(R.string.crashreport_mail_title));
-        data.putExtra(Intent.EXTRA_TEXT, MailSend.replace("\n", "<br>"));
-        PackageManager pm = this.getPackageManager();
+        data.putExtra(Intent.EXTRA_TEXT, MailSend);
         List<ResolveInfo> resolveInfos = pm.queryIntentActivities(data, PackageManager.MATCH_DEFAULT_ONLY);
         Collections.sort(resolveInfos, new ResolveInfo.DisplayNameComparator(pm));
         if (resolveInfos.size() == 0)
@@ -76,6 +113,22 @@ public class CrashHandlerUI extends AppCompatActivity
         }
     }
 
+	private String parseSignature(byte[] signature)
+	{
+		try
+		{
+			CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+			X509Certificate cert = (X509Certificate) certFactory.generateCertificate(new ByteArrayInputStream(signature));
+			String pubkey = cert.getPublicKey().toString();
+			String signNumber = cert.getSerialNumber().toString();
+			return "PublicKey: " + pubkey + "\n" + "SerialNumber: " + signNumber;
+		}
+		catch (CertificateException e)
+		{
+			e.printStackTrace();
+		}
+		return "";
+	}
 
     private void exit()
     {

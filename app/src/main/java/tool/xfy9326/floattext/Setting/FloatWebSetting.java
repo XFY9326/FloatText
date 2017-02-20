@@ -51,8 +51,8 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
         preferenceset();
         defaultkeyget();
         prepareshow();
-		SafeGuard.isSignatureAvailable(this);
-        SafeGuard.isPackageNameAvailable(this);
+		SafeGuard.isSignatureAvailable(this, true);
+        SafeGuard.isPackageNameAvailable(this, true);
     }
 
 	private void sethome()

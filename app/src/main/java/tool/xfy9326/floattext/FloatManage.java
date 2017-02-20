@@ -305,7 +305,7 @@ public class FloatManage extends AppCompatActivity
 				case 2:
 					new Handler().postDelayed(new Runnable(){   
 							public void run()
-							{   
+							{
 								snackshow(FloatManage.this, getString(R.string.delete_text_ok));
 							}   
 						}, 300);   
@@ -326,8 +326,15 @@ public class FloatManage extends AppCompatActivity
 			}
 			else
 			{
-				listadapter.notifyItemInserted(p);
-				listadapter.notifyItemRangeChanged(p, listadapter.getItemCount());
+				if (p == 0)
+				{
+					listadapter.notifyDataSetChanged();
+				}
+				else
+				{
+					listadapter.notifyItemInserted(p);
+					listadapter.notifyItemRangeChanged(p, listadapter.getItemCount());
+				}
 			}
 		}
 		FloatData dat = new FloatData(this);

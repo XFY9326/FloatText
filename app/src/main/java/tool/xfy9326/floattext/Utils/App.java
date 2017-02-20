@@ -8,6 +8,7 @@ import tool.xfy9326.floattext.SafeGuard;
 import tool.xfy9326.floattext.View.ListViewAdapter;
 import android.support.v7.app.NotificationCompat;
 import android.widget.RemoteViews;
+import android.os.Environment;
 
 /*
  数据缓存
@@ -31,25 +32,32 @@ public class App extends Application
     public boolean GetSave = false;
 	public boolean TextFilter = false;
 	public boolean StartShowWin = false;
+	public boolean OutPutCrashReport = false;
 
     @Override
     public void onCreate()
     {
         super.onCreate();
-        init();
+		CrashCatch();
+		init();
+    }
+
+	private void CrashCatch()
+	{
 		//错误报告
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(this, "FloatText", "tool.xfy9326.floattext.FloatManage", "1069665464@qq.com");
-    }
+		crashHandler.setOutPutError(OutPutCrashReport, Environment.getExternalStorageDirectory().getAbsolutePath() + "/FloatText/CrashLog/");
+	}
 
     private void init()
     {
 		textutil = new FloatTextUtils();
 		frameutil = new FloatFrameUtils();
-        SafeGuard.isSignatureAvailable(this);
-        SafeGuard.isPackageNameAvailable(this);
+        SafeGuard.isSignatureAvailable(this, true);
+        SafeGuard.isPackageNameAvailable(this, true);
     }
-	
+
 	public void setRemoteview(RemoteViews remoteview)
 	{
 		this.remoteview = remoteview;
@@ -59,7 +67,7 @@ public class App extends Application
 	{
 		return remoteview;
 	}
-	
+
 	public void setNotification(NotificationCompat.Builder notification)
 	{
 		this.notification = notification;
@@ -69,12 +77,12 @@ public class App extends Application
 	{
 		return notification;
 	}
-	
+
 	public void setStartShowWin(boolean startShowWin)
 	{
 		StartShowWin = startShowWin;
 	}
-	
+
 	public void setTextFilter(boolean textFilter)
 	{
 		TextFilter = textFilter;

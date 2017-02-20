@@ -82,8 +82,8 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         {
             setTitle(R.string.float_edit_title);
         }
-		SafeGuard.isSignatureAvailable(this);
-        SafeGuard.isPackageNameAvailable(this);
+		SafeGuard.isSignatureAvailable(this, true);
+        SafeGuard.isPackageNameAvailable(this, true);
     }
 
 	//ToolBar设置

@@ -257,5 +257,4 @@
     <string name="crashreport_nosend_report">不了</string>
     <string name="crashreport_no_mail_app">你没有安装可以发送邮件的应用，请用截图直接和作者反馈错误！\n邮箱:</string>
 	
-	<string name="thirdcode_use">1.ColorPickerPreference\n2.Android-Material-Icons</string>
 </resources>
