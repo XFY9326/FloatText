@@ -1,0 +1,8 @@
+title: FloatText
+description: FloatText 安卓文字悬浮窗应用
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-architect
+
+gems:
+  - jekyll-mentions
