@@ -1,3 +1,4 @@
+{{ page.excerpt | 
 ####本软件为个人开发者开发
 
 ##应用简介
@@ -34,4 +35,4 @@ FloatText支持在不同的应用显示或者不显示悬浮窗，同时也支�
 * 开源项目地址: [Github](https://github.com/XFY9326/FloatText)
 * 官方QQ群: 542664202
 * 作者Email: 1069665464@qq.com
-
+}}
