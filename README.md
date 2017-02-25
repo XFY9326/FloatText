@@ -1,10 +1,19 @@
 # FloatText
 FloatText APK Source Code
 
-We release the latest version only on coolmarket now.
+We release the latest version only on CoolAPK now.
 
-License Attention:
-VersionName <  3.0 Apache License
-VersionName >= 3.0 GNU License
+Download here : [FloatText CoolAPK](http://www.coolapk.com/apk/tool.xfy9326.floattext "Title")
 
-Made By XFY9326
+----------
+
+####License Attention:
+
+| VersionName | VersionCode | Open Source License |
+| ------------ | ------------- | ------------- |
+| < 3.0 | < 50 | Apache License |
+| >= 3.0 | >= 50 | GNU License |
+
+----------
+
+**Made By XFY9326**

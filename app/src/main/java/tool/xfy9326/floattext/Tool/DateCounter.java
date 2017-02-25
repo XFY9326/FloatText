@@ -9,7 +9,7 @@ import tool.xfy9326.floattext.R;
 public class DateCounter
 {
 	//日期倒计时计算
-    public static String Count(Context ctx, String date)
+    public final static String Count(Context ctx, String date)
     {
         DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         DateFormat format2 = new SimpleDateFormat("yyyy-MM-dd-HH-mm");

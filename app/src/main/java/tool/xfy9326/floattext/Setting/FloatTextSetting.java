@@ -3,6 +3,7 @@ package tool.xfy9326.floattext.Setting;
 import android.content.*;
 import android.os.*;
 import android.preference.*;
+import android.support.v7.app.*;
 import android.view.*;
 import android.widget.*;
 import java.util.*;
@@ -11,9 +12,8 @@ import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
-import android.app.AlertDialog;
 import android.provider.Settings;
-import android.support.v7.app.ActionBar;
+import android.util.DisplayMetrics;
 import android.view.View.OnClickListener;
 import android.view.WindowManager.LayoutParams;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -40,7 +40,6 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     private SharedPreferences spdata;
     private SharedPreferences.Editor spedit;
     private String Position = "";
-    private boolean LockPosition;
     private boolean FloatWinSaved = false;
     private boolean TextTop;
     private boolean AutoTop;
@@ -142,7 +141,6 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         wmParams = frameutils.getFloatlayout().get(i);
         floatview = frameutils.getFloatview().get(i);
         linearlayout = frameutils.getFloatlinearlayout().get(i);
-        LockPosition = textutils.getLockPosition().get(i);
         TextShow = textutils.getTextShow().get(i);
         AutoTop = textutils.getAutoTop().get(i);
         TextMove = textutils.getTextMove().get(i);
@@ -183,8 +181,8 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         spedit.putInt("BackgroundColor", BackgroundColor);
         spedit.putInt("TextShadowColor", TextShadowColor);
 		spedit.putBoolean("FloatSize", FloatSize);
-		spedit.putFloat("FloatLong", FloatLong);
-		spedit.putFloat("FloatWide", FloatWide);
+		spedit.putFloat("FloatTextLong", FloatLong);
+		spedit.putFloat("FloatTextWide", FloatWide);
 		spedit.putBoolean("NotifyControl", NotifyControl);
         spedit.commit();
     }
@@ -211,10 +209,9 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         BackgroundColor = spdata.getInt("BackgroundColor", 0x00ffffff);
         TextShadowColor = spdata.getInt("TextShadowColor", 0x99000000);
 		FloatSize = spdata.getBoolean("FloatSize", false);
-		FloatLong = spdata.getFloat("FloatLong", 100);
-		FloatWide = spdata.getFloat("FloatWide", 100);
+		FloatLong = spdata.getFloat("FloatTextLong", FloatWebSettingMethod.getWinDefaultHeight(wm));
+		FloatWide = spdata.getFloat("FloatTextWide", FloatWebSettingMethod.getWinDefaultWidth(wm));
 		NotifyControl = spdata.getBoolean("NotifyControl", true);
-		LockPosition = false;
     }
 
 	//界面所有操作设置，操作后必须更新视图
@@ -399,7 +396,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 					return true;
 				}
 			});
-		//悬浮窗Y轴设置
+		//悬浮窗X轴设置
 		Preference floatwide = findPreference("FloatWide");
         floatwide.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p)
@@ -408,7 +405,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 					return true;
 				}
 			});
-		//悬浮窗X轴设置
+		//悬浮窗Y轴设置
 		Preference floatlong = findPreference("FloatLong");
         floatlong.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference p)
@@ -427,7 +424,9 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		final TextView text = (TextView) layout.findViewById(R.id.textview_textsize_now);
 		SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_textsize);
 		text.setText(getString(R.string.text_size_now) + "：" + TextSize.intValue());
-		bar.setMax(100);
+		DisplayMetrics dm = new DisplayMetrics();
+		wm.getDefaultDisplay().getMetrics(dm);
+		bar.setMax((int)(dm.widthPixels/dm.scaledDensity + 0.5f));
 		bar.setProgress(TextSize.intValue());
 		bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
 				public void onStartTrackingTouch(SeekBar bar)
@@ -480,6 +479,8 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 
 	private void FloatLongSet(LayoutInflater inflater)
 	{
+		final DisplayMetrics dm = new DisplayMetrics();
+		wm.getDefaultDisplay().getMetrics(dm);
 		View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
 		AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
 		dialog.setTitle(R.string.xml_set_win_long);
@@ -494,7 +495,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 					if (FloatLong > 0)
 					{
 						FloatLong--;
-						spedit.putFloat("FloatLong", FloatLong);
+						spedit.putFloat("FloatTextLong", FloatLong);
 						spedit.commit();
 						bar.setProgress((int)FloatLong);
 						text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
@@ -505,10 +506,10 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		plus.setOnClickListener(new OnClickListener(){
 				public void onClick(View v)
 				{
-					if (FloatLong < wm.getDefaultDisplay().getWidth())
+					if (FloatLong < dm.heightPixels)
 					{
 						FloatLong++;
-						spedit.putFloat("FloatLong", FloatLong);
+						spedit.putFloat("FloatTextLong", FloatLong);
 						spedit.commit();
 						bar.setProgress((int)FloatLong);
 						text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
@@ -516,14 +517,14 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 					}
 				}
 			});
-		bar.setMax(wm.getDefaultDisplay().getWidth());
+		bar.setMax((int)dm.heightPixels);
 		bar.setProgress((int)FloatLong);
 		bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
 				public void onStartTrackingTouch(SeekBar bar)
 				{}
 				public void onStopTrackingTouch(SeekBar bar)
 				{
-					spedit.putFloat("FloatLong", FloatLong);
+					spedit.putFloat("FloatTextLong", FloatLong);
 					spedit.commit();
 				}
 				public void onProgressChanged(SeekBar bar , int i , boolean state)
@@ -540,6 +541,8 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 
 	private void FloatWideSet(LayoutInflater inflater)
 	{
+		final DisplayMetrics dm = new DisplayMetrics();
+		wm.getDefaultDisplay().getMetrics(dm);
 		View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
 		AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
 		dialog.setTitle(R.string.xml_set_win_wide);
@@ -554,7 +557,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 					if (FloatWide > 0)
 					{
 						FloatWide--;
-						spedit.putFloat("FloatWide", FloatWide);
+						spedit.putFloat("FloatTextWide", FloatWide);
 						spedit.commit();
 						bar.setProgress((int)FloatWide);
 						text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
@@ -565,10 +568,10 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		plus.setOnClickListener(new OnClickListener(){
 				public void onClick(View v)
 				{
-					if (FloatWide < wm.getDefaultDisplay().getHeight())
+					if (FloatWide < dm.widthPixels)
 					{
 						FloatWide++;
-						spedit.putFloat("FloatWide", FloatWide);
+						spedit.putFloat("FloatTextWide", FloatWide);
 						spedit.commit();
 						bar.setProgress((int)FloatWide);
 						text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
@@ -576,14 +579,14 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 					}
 				}
 			});
-		bar.setMax(wm.getDefaultDisplay().getHeight());
+		bar.setMax((int)dm.widthPixels);
 		bar.setProgress((int)FloatWide);
 		bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
 				public void onStartTrackingTouch(SeekBar bar)
 				{}
 				public void onStopTrackingTouch(SeekBar bar)
 				{
-					spedit.putFloat("FloatWide", FloatWide);
+					spedit.putFloat("FloatTextWide", FloatWide);
 					spedit.commit();
 				}
 				public void onProgressChanged(SeekBar bar , int i , boolean state)
@@ -851,7 +854,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             floatview.setTextColor(TextColor);
             floatview.setShadow(TextShadow, TextShadowX, TextShadowY, TextShadowRadius, TextShadowColor);
             linearlayout.setFloatLayoutParams(wmParams);
-            if (((App)getApplicationContext()).getMovingMethod())
+            if (utils.getMovingMethod())
             {
                 floatview.setMoving(TextMove, 0);
             }
@@ -888,8 +891,8 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             linearlayout.setBackgroundColor(BackgroundColor);
 			if (FloatSize)
 			{
-				wmParams.width = (int)FloatLong;
-				wmParams.height = (int)FloatWide;
+				wmParams.width = (int)FloatWide;
+				wmParams.height = (int)FloatLong;
 			}
 			else
 			{
@@ -898,7 +901,6 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 			}
             if (EditMode)
             {
-				linearlayout.setTouchable(wmParams, !LockPosition);
                 ArrayList<Boolean> sf = utils.getTextutil().getShowFloat();
                 sf.set(EditID, FloatShow);
                 utils.getTextutil().setShowFloat(sf);
@@ -919,7 +921,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         if (savedetails)
         {
             FloatTextUtils textutils = utils.getTextutil();
-			textutils.addDatas(TextShow, TextColor, TextSize, TextThick, FloatShow, Position, false, TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide, NotifyControl);
+			textutils.addDatas(TextShow, TextColor, TextSize, TextThick, FloatShow, Position, linearlayout.getPositionLocked(), TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide, NotifyControl);
 			utils.setTextutil(textutils);
         }
     }
@@ -932,7 +934,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		FloatTextUtils textutils = utils.getTextutil();
 		FloatFrameUtils frameutils = utils.getFrameutil();
         frameutils.setDatas(i, floatview, linearlayout, wmParams, TextShow);
-		textutils.setDatas(i, TextShow, TextColor, TextSize, TextThick, FloatShow, Position, LockPosition, TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide, NotifyControl);
+		textutils.setDatas(i, TextShow, TextColor, TextSize, TextThick, FloatShow, Position, linearlayout.getPositionLocked(), TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide, NotifyControl);
 		utils.setTextutil(textutils);
 		utils.setFrameutil(frameutils);
     }

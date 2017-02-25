@@ -11,6 +11,7 @@ import tool.xfy9326.floattext.Activity.GlobalSetActivity;
 import tool.xfy9326.floattext.Method.FloatManageMethod;
 import tool.xfy9326.floattext.R;
 import tool.xfy9326.floattext.Utils.StaticString;
+import tool.xfy9326.floattext.Method.ActivityMethod;
 
 public class FloatAdvanceTextUpdateService extends AccessibilityService
 {
@@ -82,7 +83,7 @@ public class FloatAdvanceTextUpdateService extends AccessibilityService
 
 	private boolean getRule()
 	{
-		if (Build.VERSION.SDK_INT < 18 || !GlobalSetActivity.isNotificationListenerEnabled(this))
+		if (Build.VERSION.SDK_INT < 18 || !ActivityMethod.isNotificationListenerEnabled(this))
 		{
 			return true;
 		}

@@ -89,8 +89,10 @@
 	<string name="recover_success">数据恢复成功</string>
 	<string name="recover_failed">数据恢复失败</string>
 	<string name="dynamicservice_no_open">动态变量服务没有开启！</string>
-	<string name="permission_error">权限获取失败！</string>
+	<string name="premission_error">权限获取失败！</string>
 	<string name="notification_win_count">共%1$s个悬浮窗</string>
+	<string name="open_application_set">打开应用设置界面</string>
+	<string name="textsize_edit_attention">如果文字调整得太大\n长按锁定悬浮窗后重新操作即可</string>
     <!-- Color Picker -->
     <string name="dialog_color_picker">颜色选择器</string>
     <string name="press_color_to_apply">选择颜色以应用更改</string>
@@ -100,9 +102,13 @@
     <string name="xml_about_thanklist_sum">在此列出名单感谢所有对本应用有所帮助的人</string>
     <string name="xml_about_feedback">交流反馈</string>
     <string name="xml_about_author">关于作者</string>
-	<string name="xml_about_donate">捐赠(支付宝)</string>
-	<string name="xml_about_donate_sum">如果你觉得这款软件不错，就去捐赠一下吧！\n注:若打不开链接，可换浏览器尝试</string>
+	<string name="xml_about_donate">捐赠</string>
+	<string name="xml_about_donate_sum">如果你觉得这款软件不错，就去捐赠一下吧！</string>
     <string name="xml_about_version">版本号</string>
+	<string name="xml_about_update">更新设置</string>
+	<string name="xml_about_update_checknow">手动检测更新</string>
+	<string name="xml_about_update_autocheck">自动检测更新</string>
+	<string name="xml_about_update_autocheck_sum">每次启动应用时自动检测更新</string>
     <string name="xml_set_tip">小提示</string>
     <string name="xml_set_defaulttip">请将本应用在后台锁定防止被清除!</string>
     <string name="xml_set_globalset">通用设置</string>
@@ -138,10 +144,10 @@
 	<string name="xml_set_win_size">窗口大小调整</string>
 	<string name="xml_set_win_size_sum_on">手动调整窗口大小</string>
 	<string name="xml_set_win_size_sum_off">自动调整窗口大小</string>
-	<string name="xml_set_win_long">窗口宽度</string>
-	<string name="xml_set_win_wide">窗口高度</string>
-	<string name="xml_set_win_long_sum">手动设置窗口宽度(Y)</string>
-	<string name="xml_set_win_wide_sum">手动设置窗口高度(X)</string>
+	<string name="xml_set_win_long">窗口高度</string>
+	<string name="xml_set_win_wide">窗口宽度</string>
+	<string name="xml_set_win_long_sum">手动设置窗口高度(X)</string>
+	<string name="xml_set_win_wide_sum">手动设置窗口宽度(Y)</string>
     <string name="xml_set_top">悬浮窗可以移到通知栏上</string>
     <string name="xml_set_top_on">可移至通知栏上</string>
     <string name="xml_set_top_off">不可移到通知栏上</string>
@@ -151,14 +157,13 @@
     <string name="xml_set_move">窗口位置微调</string>
     <string name="xml_set_move_sum">微调窗口的显示位置</string>
     <string name="xml_set_dynamiclist">动态变量列表</string>
-    <string name="xml_web_defaulttip">Web悬浮窗联网失败时，多刷新就好了</string>
-    <string name="xml_web_defaulttip_sum">本功能仅供测试</string>
+    <string name="xml_web_defaulttip_sum">Web悬浮窗联网失败时，多刷新就好了</string>
+    <string name="xml_web_defaulttip">本功能仅供测试</string>
 	<string name="xml_web_usetip">使用注意事项</string>
 	<string name="xml_web_usetip_sum">Web悬浮窗最小化后才能正常使用返回键和编辑功能！</string>
     <string name="xml_web_webset">Web设置</string>
-    <string name="xml_web_url">URL地址</string>
-    <string name="xml_web_url_sum">更改当前显示的网页\n(本地网页地址示例file:///sdcrad/index.html)</string>
-    <string name="xml_web_url_title">URL设置</string>
+	<string name="xml_web_fileload">加载本地文件</string>
+    <string name="xml_web_fileload_sum">加载本地的图片或者文字文件到Web悬浮窗中</string>
     <string name="xml_web_reload">刷新Web悬浮窗</string>
     <string name="xml_web_reload_sum">第一次加载时，遇到网络连接失败可以尝试</string>
     <string name="xml_web_win_width">窗口宽度</string>
@@ -257,4 +262,16 @@
     <string name="crashreport_nosend_report">不了</string>
     <string name="crashreport_no_mail_app">你没有安装可以发送邮件的应用，请用截图直接和作者反馈错误！\n邮箱:</string>
 	
+	<string name="updater_loadupdate">正在获取更新信息...</string>
+	<string name="updater_download">正在下载中...</string>
+	<string name="updater_failed">更新下载失败！</string>
+	<string name="updater_success">更新下载成功！</string>
+	<string name="updater_findupdate">发现新版本！</string>
+	<string name="updater_version">版本：</string>
+	<string name="updater_time">更新时间： </string>
+	<string name="updater_size">文件大小：</string>
+	<string name="updater_data">更新日志：</string>
+	<string name="updater_getupdate">获取更新</string>
+	<string name="updater_noupdate">已经是最新版本</string>
+	<string name="updater_nointernet">当前没有网络连接！</string>
 </resources>

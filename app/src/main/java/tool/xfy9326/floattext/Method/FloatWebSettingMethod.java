@@ -7,6 +7,7 @@ import android.webkit.*;
 import android.animation.LayoutTransition;
 import android.content.Context;
 import android.os.Environment;
+import android.util.DisplayMetrics;
 import android.view.WindowManager.LayoutParams;
 import android.widget.TableRow;
 import tool.xfy9326.floattext.R;
@@ -14,7 +15,20 @@ import tool.xfy9326.floattext.View.FloatLinearLayout;
 
 public class FloatWebSettingMethod
 {
+	public static int getWinDefaultHeight(WindowManager wm)
+	{
+		DisplayMetrics dm = new DisplayMetrics();
+		wm.getDefaultDisplay().getMetrics(dm);
+		return Integer.valueOf(dm.heightPixels/3);
+	}
 
+	public static int getWinDefaultWidth(WindowManager wm)
+	{
+		DisplayMetrics dm = new DisplayMetrics();
+		wm.getDefaultDisplay().getMetrics(dm);
+		return Integer.valueOf(dm.widthPixels/2);
+	}
+	
 	//URL修复
 	public static String urlfix(String str)
 	{
@@ -62,6 +76,7 @@ public class FloatWebSettingMethod
         layout.setTop(true);
         layout.setAddPosition(px, py);
         layout.setFloatLayoutParams(wmParams);
+		layout.setAllowlongclick(false);
         layout.changeShowState(show);
         layout.addView(tview);
         layout.addView(fwv);

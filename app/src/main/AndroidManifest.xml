@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.GET_TASKS" />
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 	<uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
@@ -85,6 +86,10 @@
 			android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/crashreport_lib_name" >
 		</activity>
+		<service
+            android:name=".Service.FloatUpdateService"
+            android:persistent="true">
+        </service>
         <service
             android:name=".Service.FloatWindowStayAliveService"
             android:persistent="true">
@@ -137,6 +142,15 @@
 				<action android:name="tool.xfy9326.floattext.Service.FloatAdvanceTextUpdateService.action.ACTIVITY_CHANGE_ACTION"/>
             </intent-filter>
         </receiver>
+		<provider
+			android:name="android.support.v4.content.FileProvider"
+			android:authorities="tool.xfy9326.floattext.fileprovider"
+			android:grantUriPermissions="true"
+			android:exported="false">
+			<meta-data
+				android:name="android.support.FILE_PROVIDER_PATHS"
+				android:resource="@xml/fileprovider_config" />
+		</provider>
     </application>
 
 </manifest>

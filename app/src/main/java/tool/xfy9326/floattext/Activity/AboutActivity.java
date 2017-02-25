@@ -1,15 +1,16 @@
 package tool.xfy9326.floattext.Activity;
 
-import android.content.pm.*;
+import android.content.*;
+import android.support.v7.app.*;
 
-import android.app.AlertDialog;
-import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
-import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.widget.Toast;
+import tool.xfy9326.floattext.Method.ActivityMethod;
 import tool.xfy9326.floattext.R;
+import tool.xfy9326.floattext.Tool.GithubUpdateCheck;
 
 public class AboutActivity extends AppCompatPreferenceActivity
 {
@@ -35,12 +36,38 @@ public class AboutActivity extends AppCompatPreferenceActivity
     private void preset()
     {
         Preference version = findPreference("Version");
-        version.setSummary(getVersionName(this) + " (" + getVersionCode(this) + ")");
+        version.setSummary(ActivityMethod.getVersionName(this) + " (" + ActivityMethod.getVersionCode(this) + ")");
         version.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
             {
                 public boolean onPreferenceClick(Preference p)
                 {
                     Toast.makeText(AboutActivity.this, "(ง •̀_•́)ง", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            });
+		Preference checkupdate = findPreference("CheckUpdate");
+		checkupdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
+                public boolean onPreferenceClick(Preference pre)
+                {
+					if (ActivityMethod.isNetworkAvailable(AboutActivity.this))
+					{
+						GithubUpdateCheck gu = new GithubUpdateCheck(AboutActivity.this);
+						gu.setProjectData("XFY9326", "FloatText");
+						gu.prepare();
+						gu.showDialog(true);
+					}
+					else
+					{
+						Toast.makeText(AboutActivity.this, R.string.updater_nointernet, Toast.LENGTH_SHORT).show();
+					}
+                    return true;
+                }
+            });
+		Preference donate = findPreference("Donate");
+        donate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
+                public boolean onPreferenceClick(Preference pre)
+                {
+                    DonateDialogShow();
                     return true;
                 }
             });
@@ -57,28 +84,31 @@ public class AboutActivity extends AppCompatPreferenceActivity
             });
     }
 
-    public static String getVersionName(Context context)
-    {
-        return getPackageInfo(context).versionName;
-    }
+	private void DonateDialogShow()
+	{
+		AlertDialog.Builder dialog = new AlertDialog.Builder(AboutActivity.this)
+			.setTitle(R.string.xml_about_donate)
+			.setItems(R.array.donate_list, new DialogInterface.OnClickListener(){
+				public void onClick(DialogInterface d, int i)
+				{
+					String[] urls = getPurchaseURL();
+					Uri url = Uri.parse(urls[i].toString().trim());
+					Intent intent = new Intent(Intent.ACTION_VIEW, url);
+					startActivity(intent);
+				}
+			})
+			.setNegativeButton(R.string.cancel, null);
+		dialog.show();
+	}
 
-    public static int getVersionCode(Context context) 
-    { 
-        return getPackageInfo(context).versionCode; 
-    }
-
-    private static PackageInfo getPackageInfo(Context context)
-    { 
-        PackageInfo pi = null;  
-        try
-        {
-            PackageManager pm = context.getPackageManager(); pi = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_CONFIGURATIONS);  return pi; }
-        catch (Exception e)
-        { 
-            e.printStackTrace();
-        } 
-        return pi; 
-    }
+	private String[] getPurchaseURL()
+	{
+		String[] url = new String[3];
+		url[0] = "https://raw.githubusercontent.com/XFY9326/FloatText/gh-pages/Datas/DONATE/AliPay.png";
+		url[1] = "https://raw.githubusercontent.com/XFY9326/FloatText/gh-pages/Datas/DONATE/WeChat.png";
+		url[2] = "https://raw.githubusercontent.com/XFY9326/FloatText/gh-pages/Datas/DONATE/QQ.png";
+		return url;
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)

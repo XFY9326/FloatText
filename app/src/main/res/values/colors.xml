@@ -8,5 +8,7 @@
 	<color name="colorCodeBackGround">#D7D7D7</color>
 	<color name="colorNotificationTitle">#828282</color>
 	<color name="colorNotificationData">#ABABAB</color>
+	<color name="colorWebBackground">#731BBB</color>
+	<color name="colorWebUrlBackground">#EDF3FA</color>
     <color name="white">#FFFFFF</color>
 </resources>

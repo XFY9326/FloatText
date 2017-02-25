@@ -12,6 +12,7 @@ import tool.xfy9326.floattext.Tool.FormatArrayList;
 
 /*
  数据操作
+ 带有VersionFix的方法均为数据版本升级的适配
  */
 
 public class FloatData
@@ -94,6 +95,7 @@ public class FloatData
 		textutils.setFloatLong(NewFloatKey(spdata.getString("FloatLongArray", "[]"), "100"));
 		textutils.setFloatWide(NewFloatKey(spdata.getString("FloatWideArray", "[]"), "100"));
 		textutils.setNotifyControl(NewBooleanKey(spdata.getString("NotifyControlArray", "[]"), "true"));
+		VersionFix_3(version, textutils);
         utils.setTextutil(textutils);
     }
 
@@ -129,6 +131,21 @@ public class FloatData
 			spedit.commit();
 			speditt.commit();
 			updateVersion(2);
+		}
+	}
+	
+	private void VersionFix_3(int version, FloatTextUtils textutils)
+	{
+		if (version < 3)
+		{
+			ArrayList<Float> longtemp = new ArrayList<Float>();
+			longtemp.addAll(textutils.getFloatLong());
+			ArrayList<Float> widetemp = new ArrayList<Float>();
+			widetemp.addAll(textutils.getFloatWide());
+			textutils.getFloatLong().clear();
+			textutils.getFloatLong().addAll(widetemp);
+			textutils.getFloatWide().clear();
+			textutils.getFloatWide().addAll(longtemp);
 		}
 	}
 	
@@ -224,7 +241,7 @@ public class FloatData
 			{
 				JSONObject mainobject = new JSONObject(str);
 				//int FloatText_Version = mainobject.getInt("FloatText_Version");
-				//int Data_Version = mainobject.getInt("Data_Version");
+				int Data_Version = mainobject.getInt("Data_Version");
 				JSONObject dataobject = mainobject.getJSONObject("Data");
 				JSONObject textobject = mainobject.getJSONObject("Text");
 
@@ -241,6 +258,8 @@ public class FloatData
 				speditt.putString("TextArray", oldtext);
 
 				savetofile(dataobject);
+				
+				JsonVersionFix_1(Data_Version);
 
 				spedit.commit();
 				speditt.commit();
@@ -258,6 +277,7 @@ public class FloatData
 		}
 	}
 
+	//导入数据保存
 	private void savetofile(JSONObject dataobject) throws JSONException
 	{
 		Iterator it = dataobject.keys();
@@ -281,6 +301,7 @@ public class FloatData
 		}
 	}
 
+	//导入数据合并
 	private String CombineArrayString(String a1, String a2)
 	{
 		if (a1.length() == 2)
@@ -289,6 +310,14 @@ public class FloatData
 		}
 		String str = a1.substring(0, a1.length() - 1) + ", " + a2.substring(1, a2.length());
 		return str;
+	}
+	
+	private void JsonVersionFix_1(int version)
+	{
+		if (version < 3)
+		{
+			updateVersion(2);
+		}
 	}
 
 	private JSONObject xmltojson(JSONObject obj, String name) throws JSONException
@@ -303,6 +332,7 @@ public class FloatData
 		spedit.commit();
 	}
 
+	//Base64转换
     private static ArrayList<String> TextArr_decode(ArrayList<String> str)
     {
         ArrayList<String> output = new ArrayList<String>();
@@ -333,6 +363,7 @@ public class FloatData
         return output;
     }
 
+	//新的数据值适配
     private ArrayList<String> NewStringKey(String fix, String def)
     {
         fix = NewKey(fix, def);

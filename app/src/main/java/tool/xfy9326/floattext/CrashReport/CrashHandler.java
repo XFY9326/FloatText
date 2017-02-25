@@ -174,13 +174,14 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
         for (Map.Entry<String, String> entry : infos.entrySet())
         {
             String key = entry.getKey().toString();
-            String value = entry.getValue().toString();
-			if (key.contains("@") || value.contains("@"))
+			String value = entry.getValue().toString();
+			if (key.contains("java.lang.String") || value.contains("java.lang.String") || key.equalsIgnoreCase("UNKNOWN") || value.equalsIgnoreCase("unknown"))
 			{
 				continue;
 			}
 			else
 			{
+				
             	str += key + " = " + value + " \n";
 			}
         }

@@ -5,6 +5,7 @@ import android.content.*;
 import android.content.res.*;
 import android.os.*;
 import android.support.design.widget.*;
+import android.support.v7.app.*;
 import android.view.*;
 import android.widget.*;
 import java.util.*;
@@ -20,18 +21,35 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.v7.app.NotificationCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.View.OnClickListener;
 import java.io.File;
 import java.text.SimpleDateFormat;
-import tool.xfy9326.floattext.Activity.GlobalSetActivity;
 import tool.xfy9326.floattext.FileSelector.SelectFile;
+import tool.xfy9326.floattext.Method.FloatManageMethod;
+import tool.xfy9326.floattext.Tool.GithubUpdateCheck;
 
 public class FloatManageMethod
 {
 	public static boolean waitdoubleclick = false;
 	public static Handler waithandle;
 	public static Runnable waitrun;
+
+	//自动检测更新
+	public static void AutoCheckUpdate(Context ctx)
+	{
+		if (ActivityMethod.isNetworkAvailable(ctx))
+		{
+			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
+			if (sp.getBoolean("AutoCheckUpdate", true))
+			{
+				GithubUpdateCheck gu = new GithubUpdateCheck(ctx);
+				gu.setProjectData("XFY9326", "FloatText");
+				gu.prepare();
+				gu.showDialog(false);
+			}
+		}
+	}
 
 	//通知栏更新
 	public static void UpdateNotificationCount(Context ctx)
@@ -93,7 +111,7 @@ public class FloatManageMethod
 		App utils = (App)ctx.getApplicationContext();
 		FloatTextUtils textutils = utils.getTextutil();
 		ArrayList<Boolean> showFloat = textutils.getShowFloat();
-		if (index >= 0)
+		if (index >= 0 && index < showFloat.size() && showFloat.size() != 0)
 		{
 			boolean iShowFloat = showFloat.get(index);
 			iShowFloat = !showFloat.set(index, !iShowFloat);
@@ -151,13 +169,12 @@ public class FloatManageMethod
 	public static boolean LockorUnlockWin(Context ctx, int index)
 	{
 		boolean result = false;
-		if (index >= 0)
+		App utils = (App) ctx.getApplicationContext();
+		FloatTextUtils textutils = utils.getTextutil();
+		ArrayList<Boolean> lock = textutils.getLockPosition();
+		ArrayList<String> position = textutils.getPosition();
+		if (index >= 0  && index < lock.size() && lock.size() != 0)
 		{
-			App utils = (App) ctx.getApplicationContext();
-			FloatTextUtils textutils = utils.getTextutil();
-			ArrayList<Boolean> lock = textutils.getLockPosition();
-			ArrayList<String> position = textutils.getPosition();
-
 			FloatLinearLayout fll = utils.getFrameutil().getFloatlinearlayout().get(index);
 			if (fll.getPositionLocked())
 			{
@@ -533,14 +550,15 @@ public class FloatManageMethod
             AlertDialog.Builder asp = new AlertDialog.Builder(ctx)
                 .setTitle(R.string.ask_for_premission)
                 .setMessage(R.string.ask_for_premission_alert)
-                .setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface d, int i)
-                    {
-                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        intent.setData(Uri.parse("package:" + ctx.getPackageName()));
-                        ctx.startActivity(intent);
-                    }
-                });
+				.setNeutralButton(R.string.open_application_set, new DialogInterface.OnClickListener(){
+					public void onClick(DialogInterface d, int i)
+					{
+						Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+						intent.setData(Uri.parse("package:" + ctx.getPackageName()));
+						ctx.startActivity(intent);
+					}
+				})
+                .setPositiveButton(R.string.done, null);
             asp.show();
             setedit.putBoolean("FirstUse_AskForPremission", true);
             setedit.commit();
@@ -749,14 +767,14 @@ public class FloatManageMethod
         {
             Intent service = new Intent(ctx, FloatWindowStayAliveService.class);
             ctx.startService(service);
-			if (GlobalSetActivity.isAccessibilitySettingsOn(ctx))
+			if (ActivityMethod.isAccessibilitySettingsOn(ctx))
 			{
 				Intent asservice = new Intent(ctx, FloatAdvanceTextUpdateService.class);
 				ctx.startService(asservice);
 			}
 			if (Build.VERSION.SDK_INT > 18)
 			{
-				if (GlobalSetActivity.isNotificationListenerEnabled(ctx))
+				if (ActivityMethod.isNotificationListenerEnabled(ctx))
 				{
 					Intent notifyservice = new Intent(ctx, FloatNotificationListenerService.class);
 					ctx.startService(notifyservice);
@@ -776,6 +794,8 @@ public class FloatManageMethod
 		ctx.stopService(asservice);
 		Intent notifyservice = new Intent(ctx, FloatNotificationListenerService.class);
 		ctx.stopService(notifyservice);
+		Intent downloadservice = new Intent(ctx, FloatUpdateService.class);
+		ctx.stopService(downloadservice);
     }
 
 	//用户新建悬浮窗时的提示

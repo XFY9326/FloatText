@@ -18,6 +18,7 @@
         <item>不使用動態變量時可以在整體設定裡關閉它的服務</item>
         <item>進入整體設定可以為懸浮的文字設定定義的字體</item>
         <item>長按文字懸浮窗也可以鎖定它！</item>
+		<item>更多功能可以在整體設定中查看相應的幫助文檔</item>
     </string-array>
     <string-array name="floatsetting_dynamic_name">
         <item>日期與時間</item>
@@ -57,5 +58,10 @@
         <item>简体中文</item>
         <item>繁體中文(孟武.尼德霍格.龍 官方繁體中文化)</item>
         <item>English</item>
+    </string-array>
+	<string-array name="donate_list">
+        <item>支付寶</item>
+        <item>微信錢包</item>
+        <item>QQ錢包</item>
     </string-array>
 </resources>

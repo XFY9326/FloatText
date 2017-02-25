@@ -19,7 +19,7 @@
 
 		<TextView
 			android:layout_height="wrap_content"
-			android:layout_width="match_parent"
+			android:layout_width="wrap_content"
 			android:layout_below="@id/fileselector_filelist_filename"
 			android:layout_marginLeft="55dp"
 			android:id="@+id/fileselector_filelist_filedata"
@@ -31,6 +31,15 @@
 			android:src="@drawable/ic_file"
 			android:id="@+id/fileselector_filelist_icon"
 			android:layout_centerVertical="true"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/fileselector_filelist_filename"
+			android:layout_alignParentRight="true"
+			android:layout_marginRight="15dp"
+			android:textSize="13sp"
+			android:id="@+id/fileselector_filelist_filesize"/>
 
 	</RelativeLayout>
 

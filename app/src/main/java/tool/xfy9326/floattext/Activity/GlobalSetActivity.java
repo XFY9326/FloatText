@@ -1,10 +1,10 @@
 package tool.xfy9326.floattext.Activity;
 
-import android.app.*;
 import android.content.*;
 import android.content.pm.*;
 import android.os.*;
 import android.preference.*;
+import android.support.v7.app.*;
 import java.util.*;
 import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Service.*;
@@ -12,9 +12,8 @@ import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
 import android.Manifest;
+import android.app.Activity;
 import android.provider.Settings;
-import android.support.v7.app.ActionBar;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.Toast;
 import java.io.File;
@@ -43,6 +42,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 		DataViewSet();
     }
 
+	//工具栏和返回按键设置
 	private void sethome()
 	{
 		ActionBar actionBar = getSupportActionBar();
@@ -54,6 +54,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 
     private void ViewSet()
     {
+		//通知栏控制
 		CheckBoxPreference notify = (CheckBoxPreference) findPreference("FloatNotification");
         notify.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p1, Object p2)
@@ -63,6 +64,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//跑马灯模式
         CheckBoxPreference movemethod = (CheckBoxPreference) findPreference("TextMovingMethod");
         movemethod.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p1, Object p2)
@@ -72,6 +74,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//字体
         Preference typeface = findPreference("TextTypeface");
         final SharedPreferences setdata = getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
         default_typeface = setdata.getString("DefaultTTFName", "Default");
@@ -87,6 +90,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//语言
         Preference language = findPreference("Language");
         final String[] lan_list = getResources().getStringArray(R.array.language_list);
         language_choice = setdata.getInt("Language", 0);
@@ -98,6 +102,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//实验性功能
         CheckBoxPreference develop = (CheckBoxPreference) findPreference("DevelopMode");
         develop.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p1, Object p2)
@@ -106,6 +111,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//HTML代码功能
         CheckBoxPreference html = (CheckBoxPreference) findPreference("HtmlMode");
         html.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p1, Object p2)
@@ -115,6 +121,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//管理列表单行文字
         CheckBoxPreference hidetext = (CheckBoxPreference) findPreference("ListTextHide");
         hidetext.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p1, Object p2)
@@ -123,6 +130,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//只在桌面显示
         CheckBoxPreference onlyshowinhome = (CheckBoxPreference)findPreference("WinOnlyShowInHome");
         onlyshowinhome.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p1, Object p2)
@@ -131,6 +139,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//窗口过滤器
 		Preference filter = findPreference("WinFilter");
 		filter.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
 				public boolean onPreferenceClick(Preference p)
@@ -139,6 +148,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 					return true;
 				}
 			});
+		//文字过滤器
 		CheckBoxPreference textfilter = (CheckBoxPreference) findPreference("TextFilter");
         textfilter.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p1, Object p2)
@@ -147,6 +157,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//文字过滤器帮助
 		Preference textfilterhelp = findPreference("TextFilterHelp");
 		textfilterhelp.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
 				public boolean onPreferenceClick(Preference p)
@@ -158,6 +169,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
     }
 	private void ServiceViewSet()
 	{
+		//进程守护服务
 		CheckBoxPreference stayalive = (CheckBoxPreference) findPreference("StayAliveService");
         stayalive.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p1, Object p2)
@@ -166,6 +178,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//动态变量服务
         CheckBoxPreference dynamicnum = (CheckBoxPreference) findPreference("DynamicNumService");
         dynamicnum.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
                 public boolean onPreferenceChange(Preference p1, Object p2)
@@ -174,6 +187,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//高级功能服务
 		Preference adts = findPreference("AdvanceTextService");
 		setADTsum(adts);
 		adts.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
@@ -470,7 +484,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 			String path = Environment.getExternalStorageDirectory().toString() + "/FloatText/Backup/FloatText>" + sdf.format(new Date()) + ".ftbak";
 			FloatData fd = new FloatData(GlobalSetActivity.this);
-			if (fd.OutputData(path, AboutActivity.getVersionCode(GlobalSetActivity.this)))
+			if (fd.OutputData(path, ActivityMethod.getVersionCode(GlobalSetActivity.this)))
 			{
 				Toast.makeText(GlobalSetActivity.this, getString(R.string.backup_success) + path, Toast.LENGTH_SHORT).show();
 			}
@@ -494,7 +508,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 		for (int i = 0; i < files.length;i++)
 		{
 			String str = files[i].getName().toString();
-			String extra = getExtraName(str);
+			String extra = ActivityMethod.getExtraName(str);
 			if (extra.equalsIgnoreCase("ttf"))
 			{
 				String realname = str.substring(0, str.length() - 4);
@@ -543,67 +557,10 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 		pathselect.show();
 	}
 
-	public static boolean isAccessibilitySettingsOn(Context context)
-	{
-        int accessibilityEnabled = 0;
-        try
-		{
-            accessibilityEnabled = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED);
-        }
-		catch (Settings.SettingNotFoundException e)
-		{
-			e.printStackTrace();
-        }
-        if (accessibilityEnabled == 1)
-		{
-            String services = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
-            if (services != null)
-			{
-                return services.toLowerCase().contains(context.getPackageName().toLowerCase());
-            }
-        }
-        return false;
-    }
-
-	public static boolean isNotificationListenerEnabled(Context ctx)
-	{  
-		String pkgName = ctx.getPackageName();  
-		final String flat = Settings.Secure.getString(ctx.getContentResolver(), "enabled_notification_listeners");  
-		if (!TextUtils.isEmpty(flat))
-		{  
-			final String[] names = flat.split(":");  
-			for (int i = 0; i < names.length; i++)
-			{  
-				final ComponentName cn = ComponentName.unflattenFromString(names[i]);  
-				if (cn != null)
-				{  
-					if (TextUtils.equals(pkgName, cn.getPackageName()))
-					{  
-						return true;  
-					}  
-				}  
-			}  
-		}  
-		return false;  
-	}  
-
-    private static String getExtraName(String filename)
-    { 
-        if ((filename != null) && (filename.length() > 0))
-        { 
-            int dot = filename.lastIndexOf('.'); 
-            if ((dot > -1) && (dot < (filename.length() - 1)))
-            { 
-                return filename.substring(dot + 1); 
-            } 
-        } 
-        return "No_Name"; 
-    }
-
 	private void setADTsum(Preference p)
 	{
 		Preference filter = findPreference("WinFilterSwitch");
-		if (isAccessibilitySettingsOn(this))
+		if (ActivityMethod.isAccessibilitySettingsOn(this))
 		{
 			filter.setEnabled(true);
 			p.setSummary(getString(R.string.status) + getString(R.string.on) + "\n" + getString(R.string.xml_global_service_advancetext_sum));
@@ -618,7 +575,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 
 	private void setNOSsum(Preference p)
 	{
-		if (isNotificationListenerEnabled(this))
+		if (ActivityMethod.isNotificationListenerEnabled(this))
 		{
 			p.setSummary(getString(R.string.status) + getString(R.string.on) + "\n" + getString(R.string.xml_global_service_notificationtext_sum));
 		}
@@ -634,7 +591,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 		PackageManager pm = ctx.getPackageManager();
 		List<PackageInfo> info = pm.getInstalledPackages(0);
 		String FloatTextPkgName = ctx.getPackageName();
-		orderList(ctx, info);
+		ActivityMethod.orderPackageList(ctx, info);
 		int num = info.size() - homes.size() - 1;
 		AppNames = new String[num];
 		PkgNames = new String[num];
@@ -660,20 +617,6 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 		}
 	}
 
-	private static List<PackageInfo> orderList(final Context ctx, List<PackageInfo> list)
-	{
-		Collections.sort(list, new Comparator<PackageInfo>() {
-                @Override
-                public int compare(PackageInfo o1, PackageInfo o2)
-                {
-					String str1 = o1.applicationInfo.loadLabel(ctx.getPackageManager()).toString();
-					String str2 = o2.applicationInfo.loadLabel(ctx.getPackageManager()).toString();
-                    return str1.compareTo(str2);
-                }
-            });
-		return list;
-	}
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
@@ -693,6 +636,10 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 			{
 				getTypeFace(findPreference("TextTypeface"));
 			}
+			else
+			{
+				Toast.makeText(this, R.string.premission_error, Toast.LENGTH_SHORT).show();
+			}
 		}
 		else if (requestCode == StaticNum.FLOAT_TEXT_GET_BACKUP_PERMISSION)
 		{
@@ -700,12 +647,20 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 			{
 				backupdata();
 			}
+			else
+			{
+				Toast.makeText(this, R.string.premission_error, Toast.LENGTH_SHORT).show();
+			}
 		}
 		else if (requestCode == StaticNum.FLOAT_TEXT_GET_RECOVER_PERMISSION)
 		{
 			if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
 			{
 				recoverdata(null);
+			}
+			else
+			{
+				Toast.makeText(this, R.string.premission_error, Toast.LENGTH_SHORT).show();
 			}
 		}
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);

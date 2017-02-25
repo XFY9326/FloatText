@@ -4,13 +4,12 @@ import android.content.*;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
-import tool.xfy9326.floattext.Utils.*;
 
 import android.graphics.Rect;
 import android.preference.PreferenceManager;
-import java.util.ArrayList;
-import tool.xfy9326.floattext.R;
 import tool.xfy9326.floattext.Method.FloatManageMethod;
+import tool.xfy9326.floattext.R;
+import tool.xfy9326.floattext.Utils.App;
 
 /*
  悬浮窗线性布局
@@ -43,6 +42,7 @@ public class FloatLinearLayout extends LinearLayout
     private long nowlongclicktime = 0;
     private double longclicksecond = 1;
     private boolean longclickmove = false;
+	private boolean allowlongclick = true;
 	//长按处理
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg)
@@ -52,9 +52,14 @@ public class FloatLinearLayout extends LinearLayout
                 case 0:
                     if (FLOAT_ID != -1)
                     {
-						if(FloatManageMethod.LockorUnlockWin(ctx, FLOAT_ID))
+						if (FloatManageMethod.LockorUnlockWin(ctx, FLOAT_ID))
 						{
                         	Toast.makeText(ctx, R.string.text_lock, Toast.LENGTH_SHORT).show();
+						}
+						else if (FLOAT_ID == FloatManageMethod.getWinCount(ctx))
+						{
+							setPositionLocked(true);
+							Toast.makeText(ctx, R.string.text_lock, Toast.LENGTH_SHORT).show();
 						}
                     }
                     break;
@@ -69,12 +74,22 @@ public class FloatLinearLayout extends LinearLayout
         this.FLOAT_ID = ID;
         this.wm = ((App)context.getApplicationContext()).getFloatwinmanager();
     }
-	
+
+	public void setAllowlongclick(boolean allowlongclick)
+	{
+		this.allowlongclick = allowlongclick;
+	}
+
+	public boolean getAllowlongclick()
+	{
+		return allowlongclick;
+	}
+
 	public void setFloatID(int id)
 	{
 		FLOAT_ID = id;
 	}
-	
+
 	public int getFloatID()
 	{
 		return FLOAT_ID;
@@ -130,7 +145,7 @@ public class FloatLinearLayout extends LinearLayout
     private void setlongclick()
     {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
-        if (sp.getBoolean("WinLongClickLock", true))
+        if (sp.getBoolean("WinLongClickLock", true) && allowlongclick)
         {
             longclickmove = false;
             startlongclicktime = System.currentTimeMillis();
@@ -216,7 +231,7 @@ public class FloatLinearLayout extends LinearLayout
     }
 
 	//设置可触摸
-    public void setTouchable(WindowManager.LayoutParams layout, boolean bool)
+    private void setTouchable(WindowManager.LayoutParams layout, boolean bool)
     {
         if (bool)
         {

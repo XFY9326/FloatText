@@ -1,6 +1,5 @@
 package tool.xfy9326.floattext.View;
 
-import android.app.*;
 import android.content.*;
 import android.text.*;
 import android.view.*;
@@ -9,8 +8,10 @@ import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Utils.*;
 
+import android.app.Activity;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.style.StrikethroughSpan;
 import android.view.View.OnClickListener;

@@ -13,6 +13,7 @@ public class ListAdapter extends BaseAdapter
     private Context context;
     private ArrayList<String> Filename = new ArrayList<String>();
     private ArrayList<String> Filedata = new ArrayList<String>();
+	private ArrayList<String> Filesize = new ArrayList<String>();
     private String Path;
     private String[] TypeList;
     private int[] IconList;
@@ -23,10 +24,11 @@ public class ListAdapter extends BaseAdapter
         setFileIconData();
     }
 
-    public void setListData(String path, ArrayList<String> name, ArrayList<String> data)
+    public void setListData(String path, ArrayList<String> name, ArrayList<String> data, ArrayList<String> size)
     {
         this.Filename = name;
         this.Filedata = data;
+		this.Filesize = size;
         this.Path = path;
     }
 
@@ -44,6 +46,8 @@ public class ListAdapter extends BaseAdapter
         name.setText(Filename.get(index));
         final TextView data = (TextView) view.findViewById(R.id.fileselector_filelist_filedata);
         data.setText(Filedata.get(index));
+		final TextView size = (TextView) view.findViewById(R.id.fileselector_filelist_filesize);
+		size.setText(Filesize.get(index));
         final ImageView icon = (ImageView) view.findViewById(R.id.fileselector_filelist_icon);
         iconset(icon, index);
         return view;

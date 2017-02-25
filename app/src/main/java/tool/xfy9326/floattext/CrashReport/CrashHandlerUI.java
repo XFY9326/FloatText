@@ -90,7 +90,7 @@ public class CrashHandlerUI extends AppCompatActivity
 				{
 					sgdata += parseSignature(sginfo.toByteArray()) + "\n";
 				}
-				MailSend += "\n\n" + "SignatureInfo:" + "\n" + sgdata;
+				MailSend += "\n\n" + "SignatureInfo:" + "\n\n" + sgdata;
 			}
 			catch (PackageManager.NameNotFoundException e)
 			{
@@ -120,8 +120,17 @@ public class CrashHandlerUI extends AppCompatActivity
 			CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
 			X509Certificate cert = (X509Certificate) certFactory.generateCertificate(new ByteArrayInputStream(signature));
 			String pubkey = cert.getPublicKey().toString();
-			String signNumber = cert.getSerialNumber().toString();
-			return "PublicKey: " + pubkey + "\n" + "SerialNumber: " + signNumber;
+			String info = cert.getSubjectX500Principal().getName().toString();
+			if (info.contains(","))
+			{
+				String[] infolist = info.split(",");
+				info = "";
+				for (String listitem : infolist)
+				{
+					info += listitem + "\n";
+				}
+			}
+			return "PublicKey:" + "\n" + pubkey + "\n\n" + "Information:" + "\n" + info;
 		}
 		catch (CertificateException e)
 		{

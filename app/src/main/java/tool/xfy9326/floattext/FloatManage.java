@@ -1,6 +1,5 @@
 package tool.xfy9326.floattext;
 
-import android.app.*;
 import android.content.*;
 import android.os.*;
 import android.support.design.widget.*;
@@ -12,7 +11,7 @@ import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
 import android.Manifest;
-import android.app.AlertDialog;
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
@@ -253,6 +252,12 @@ public class FloatManage extends AppCompatActivity
 				utils.setFloatReshow(false);
 			}
 		}
+		FloatOthersSet(ctx, close_ag);
+	}
+	
+	private void FloatOthersSet(Activity ctx, boolean close_ag)
+	{
+		App utils = ((App)ctx.getApplicationContext());
 		FloatManageMethod.startservice(ctx);
 		FloatManageMethod.first_ask_for_premission(ctx);
 		ListViewSet();
@@ -262,6 +267,7 @@ public class FloatManage extends AppCompatActivity
 		{
 			closeag();
 		}
+		FloatManageMethod.AutoCheckUpdate(this);
 	}
 
 	private boolean PermissionCheck(boolean request)
@@ -341,7 +347,7 @@ public class FloatManage extends AppCompatActivity
 		dat.savedata();
 	}
 
-	private void ReshowPermisdionGot()
+	private void ReshowPermissionGot()
 	{
 		if (Build.VERSION.SDK_INT >= 23)
 		{
@@ -375,6 +381,10 @@ public class FloatManage extends AppCompatActivity
 			{
 				FloatRecover(this);
 			}
+			else
+			{
+				FloatOthersSet(this, false);
+			}
 		}
 		else if (requestCode == StaticNum.FLOAT_TEXT_IMPORT_PERMISSION)
 		{
@@ -382,12 +392,20 @@ public class FloatManage extends AppCompatActivity
 			{
 				FloatManageMethod.selectFile(this);
 			}
+			else
+			{
+				snackshow(this, getString(R.string.premission_error));
+			}
 		}
 		else if (requestCode == StaticNum.FLOAT_TEXT_EXPORT_PERMISSION)
 		{
 			if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
 			{
 				FloatManageMethod.exporttxt(this);
+			}
+			else
+			{
+				snackshow(this, getString(R.string.premission_error));
 			}
 		}
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -403,11 +421,16 @@ public class FloatManage extends AppCompatActivity
         if (requestCode == StaticNum.FLOATTEXT_RESULT_CODE)
         {
 			AlertTextShow(data);
+			if (data != null)
+			{
+				int p = data.getIntExtra("POSITION", 0);
+				
+			}
 			FloatManageMethod.UpdateNotificationCount(this);
         }
         else if (requestCode == StaticNum.RESHOW_PERMISSION_RESULT_CODE)
         {
-            ReshowPermisdionGot();
+            ReshowPermissionGot();
         }
         else if (requestCode == StaticNum.FLOAT_TEXT_IMPORT_CODE)
         {

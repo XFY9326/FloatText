@@ -129,8 +129,8 @@ public class FloatTextSettingMethod
         wmParams.format = PixelFormat.TRANSLUCENT;
 		if (fs)
 		{
-			wmParams.width = (int)fl;
-			wmParams.height = (int)fw;
+			wmParams.width = (int)fw;
+			wmParams.height = (int)fl;
 		}
 		else
 		{
@@ -144,7 +144,6 @@ public class FloatTextSettingMethod
         layout.setBackgroundColor(bac);
         layout.setFloatLayoutParams(wmParams);
         layout.changeShowState(show);
-        layout.setPadding(3, 3, 3, 3);
         layout.addView(floatview);
         if (show)
         {

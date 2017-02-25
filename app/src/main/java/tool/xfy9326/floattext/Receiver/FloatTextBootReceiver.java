@@ -42,7 +42,7 @@ public class FloatTextBootReceiver extends BroadcastReceiver
 			}
 			else
 			{
-				Toast.makeText(ctx, ctx.getString(R.string.app_name) + ctx.getString(R.string.permission_error), Toast.LENGTH_SHORT).show();
+				Toast.makeText(ctx, ctx.getString(R.string.app_name) + ctx.getString(R.string.premission_error), Toast.LENGTH_SHORT).show();
 				return false;
 			}
 		}

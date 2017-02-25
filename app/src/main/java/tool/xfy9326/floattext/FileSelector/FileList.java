@@ -6,11 +6,11 @@ import android.view.*;
 import android.widget.*;
 import java.util.*;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import java.io.File;
 import java.text.SimpleDateFormat;
+import tool.xfy9326.floattext.Method.ActivityMethod;
 import tool.xfy9326.floattext.R;
 
 public class FileList extends AppCompatActivity
@@ -23,6 +23,7 @@ public class FileList extends AppCompatActivity
     private int choosetype;
     private ArrayList<String> Filename;
     private ArrayList<String> Filedata;
+	private ArrayList<String> Filesize;
     private ListAdapter listadapter;
     private boolean backtofront = false;
 
@@ -57,7 +58,7 @@ public class FileList extends AppCompatActivity
     private void adapterset()
     {
         listadapter = new ListAdapter(this);
-        listadapter.setListData(Path, Filename, Filedata);
+        listadapter.setListData(Path, Filename, Filedata, Filesize);
     }
 
     private void intentdataget()
@@ -130,10 +131,12 @@ public class FileList extends AppCompatActivity
         List<File> filelist = orderByName(file);
         ArrayList<String> name = new ArrayList<String>();
         ArrayList<String> data = new ArrayList<String>();
+		ArrayList<String> size = new ArrayList<String>();
         if (filelist == null)
         {
             if (!Path.equalsIgnoreCase("/"))
             {
+				size.add("");
                 name.add("/...");
                 data.add(file.getAbsolutePath().toString());
             }
@@ -144,6 +147,7 @@ public class FileList extends AppCompatActivity
             {
                 if (FileType == null)
                 {
+					size.add(filelist.get(i).isDirectory() ? "" : ActivityMethod.formatSize(this, String.valueOf(filelist.get(i).length())));
                     name.add(filelist.get(i).getName().toString());
                     long time = filelist.get(i).lastModified();
                     String currenttime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date(time));
@@ -153,6 +157,7 @@ public class FileList extends AppCompatActivity
                 {
                     if (filelist.get(i).isDirectory() || getExtraName(filelist.get(i).getName().toString()).equalsIgnoreCase(FileType))
                     {
+						size.add(filelist.get(i).isDirectory() ? "" : ActivityMethod.formatSize(this, String.valueOf(filelist.get(i).length())));
                         name.add(filelist.get(i).getName().toString());
                         long time = filelist.get(i).lastModified();
                         String currenttime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date(time));
@@ -162,10 +167,12 @@ public class FileList extends AppCompatActivity
             }
             if (!Path.equalsIgnoreCase("/"))
             {
+				size.add(0, "");
                 name.add(0, "/...");
                 data.add(0, file.getAbsolutePath().toString());
             }
         }
+		Filesize = size;
         Filename = name;
         Filedata = data;
     }
@@ -183,7 +190,7 @@ public class FileList extends AppCompatActivity
         return "No_Name"; 
     }
 
-    private void File_Selected(final String str)
+    private void File_Selected(String str)
     {
         File file = new File(str);
         if (!file.exists())
@@ -193,77 +200,87 @@ public class FileList extends AppCompatActivity
         }
         if (choosetype == SelectFile.TYPE_ChooseFile)
         {
-            if (file.isDirectory())
-            {
-                if (file.canRead())
-                {
-                    updateview();
-                }
-                else
-                {
-                    if (backtofront)
-                    {
-                        Path = LastPath;
-                    }
-                    else
-                    {
-                        Path = file.getParent();
-                    }
-                    Show(R.string.fileselect_file_nopremission);
-                }
-            }
-            else if (file.isFile())
-            {
-                Path = file.getParent();
-                returnpath(file.getAbsolutePath().toString());
-            }
+            filechoose(file);
         }
         else if (choosetype == SelectFile.TYPE_ChooseFolder)
         {
-            if (file.isDirectory())
-            {
-                if (file.canRead())
-                {
-                    if (backtofront)
-                    {
-                        updateview();
-                    }
-                    else
-                    {
-                        AlertDialog.Builder edit = new AlertDialog.Builder(this);
-                        String[] choice = getResources().getStringArray(R.array.fileselect_folder_edit);
-                        edit.setItems(choice, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which)
-                                {
-                                    switch (which)
-                                    {
-                                        case 0:
-                                            updateview();
-                                            break;
-                                        case 1:
-                                            returnpath(str);
-                                            break;
-                                    }
-                                }
-                            });
-                        edit.show();
-                    }
-                }
-                else
-                {
-                    if (backtofront)
-                    {
-                        Path = LastPath;
-                    }
-                    else
-                    {
-                        Path = file.getParent();
-                    }
-                    Show(R.string.fileselect_file_nopremission);
-                }
-            }
+            folderchoose(file);
         }
     }
+
+	private void filechoose(File file)
+	{
+		if (file.isDirectory())
+		{
+			if (file.canRead())
+			{
+				updateview();
+			}
+			else
+			{
+				if (backtofront)
+				{
+					Path = LastPath;
+				}
+				else
+				{
+					Path = file.getParent();
+				}
+				Show(R.string.fileselect_file_nopremission);
+			}
+		}
+		else if (file.isFile())
+		{
+			Path = file.getParent();
+			returnpath(file.getAbsolutePath().toString());
+		}
+	}
+
+	private void folderchoose(final File file)
+	{
+		if (file.isDirectory())
+		{
+			if (file.canRead())
+			{
+				if (backtofront)
+				{
+					updateview();
+				}
+				else
+				{
+					AlertDialog.Builder edit = new AlertDialog.Builder(this);
+					String[] choice = getResources().getStringArray(R.array.fileselect_folder_edit);
+					edit.setItems(choice, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which)
+							{
+								switch (which)
+								{
+									case 0:
+										updateview();
+										break;
+									case 1:
+										returnpath(file.getAbsolutePath());
+										break;
+								}
+							}
+						});
+					edit.show();
+				}
+			}
+			else
+			{
+				if (backtofront)
+				{
+					Path = LastPath;
+				}
+				else
+				{
+					Path = file.getParent();
+				}
+				Show(R.string.fileselect_file_nopremission);
+			}
+		}
+	}
 
     private void returnpath(String str)
     {
@@ -305,26 +322,53 @@ public class FileList extends AppCompatActivity
         AlertDialog.Builder edit = new AlertDialog.Builder(this);
         if (file.canRead())
         {
-            String[] choice = getResources().getStringArray(R.array.fileselect_file_edit);
-            edit.setItems(choice, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        switch (which)
-                        {
-                            case 0:
-                                File_Selected(path);
-                                break;
-                            case 1:
-                                deletefile(file);
-                                updateview();
-                                break;
-                            case 2:
-                                renamefile(file);
-                                break;
-                        }
-                    }
-                });
-            edit.show();
+			String[] choice = getResources().getStringArray(R.array.fileselect_file_edit);
+			if (choosetype == SelectFile.TYPE_ChooseFile)
+			{
+				String[] choice_tmp = new String[choice.length - 1];
+				for (int i = 1;i < choice.length;i++)
+				{
+					choice_tmp[i - 1] = choice[i];
+				}
+				edit.setItems(choice_tmp, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which)
+						{
+							switch (which)
+							{
+								case 0:
+									deletefile(file);
+									updateview();
+									break;
+								case 1:
+									renamefile(file);
+									break;
+							}
+						}
+					});
+				edit.show();
+			}
+			else if (choosetype == SelectFile.TYPE_ChooseFolder)
+			{
+				edit.setItems(choice, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which)
+						{
+							switch (which)
+							{
+								case 0:
+									File_Selected(path);
+									break;
+								case 1:
+									deletefile(file);
+									updateview();
+									break;
+								case 2:
+									renamefile(file);
+									break;
+							}
+						}
+					});
+				edit.show();
+			}
         }
         else
         {
@@ -425,7 +469,7 @@ public class FileList extends AppCompatActivity
     private void updateview()
     {
         File_GetList(new File(Path));
-        listadapter.setListData(Path, Filename, Filedata);
+        listadapter.setListData(Path, Filename, Filedata, Filesize);
         listadapter.notifyDataSetChanged();
     }
 

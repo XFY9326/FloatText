@@ -18,6 +18,7 @@
         <item>If you do not use Dynamic Word, you can close its service in Global Settings</item>
         <item>You can set your own font in Global Settings.</item>
         <item>You can also lock the float text by long click at it</item>
+		<item>To use more function, you can see help doc in Global setting.</item>
     </string-array>
     <string-array name="floatsetting_dynamic_name">
         <item>Date &amp; Time</item>
@@ -57,5 +58,10 @@
         <item>简体中文</item>
         <item>繁體中文</item>
         <item>English (Unknown Group translate)</item>
+    </string-array>
+	<string-array name="donate_list">
+        <item>AliPay</item>
+        <item>WeChat Purse</item>
+        <item>QQ Purse</item>
     </string-array>
 </resources>

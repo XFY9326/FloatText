@@ -6,11 +6,11 @@ import java.security.*;
 import android.content.Context;
 import android.content.pm.Signature;
 import android.util.Base64;
+import tool.xfy9326.floattext.Utils.StaticString;
 
 public class SafeGuard
 {
     private static String SIGNATURE = "WcoDGef5LGYXLd";
-    private static String PACKAGE_NAME = "tool.xfy9326.floattext";
 	public static boolean SAFE_GUARD = true;
 
     public static boolean isPackageNameAvailable(Context ctx, boolean exit)
@@ -18,7 +18,7 @@ public class SafeGuard
 		if (SAFE_GUARD)
 		{
 			String name = ctx.getPackageName();
-			if (!name.equals(PACKAGE_NAME))
+			if (!name.equals(StaticString.DEFAULT_PACKAGE_NAME))
 			{
 				if (exit)
 				{

@@ -8,7 +8,7 @@
 	<RelativeLayout
 		android:layout_height="wrap_content"
 		android:layout_width="match_parent"
-		android:background="#731BBB">
+		android:background="@color/colorWebBackground">
 
 		<Button
 			android:layout_height="25dp"
@@ -57,36 +57,40 @@
 
 	<RelativeLayout
 		android:layout_height="wrap_content"
-		android:layout_width="wrap_content">
+		android:layout_width="wrap_content"
+		android:orientation="horizontal"
+		android:background="@color/colorWebUrlBackground">
 
 		<EditText
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:ems="18"
+			android:layout_alignParentLeft="true"
+			android:layout_alignParentRight="true"
 			android:id="@+id/webviewtoolbar_url"
-			android:padding="8dp"
-			android:textSize="13sp"
-			android:background="#EDF3FA"
+			android:background="@color/colorWebUrlBackground"
 			android:imeOptions="actionDone"
 			android:singleLine="true"
-			android:layout_alignParentRight="true"
-			android:layout_alignParentLeft="true"/>
+			android:gravity="left|center"
+			android:layout_marginRight="25dp"
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			android:ellipsize="end"
+			android:maxLines="1"
+			android:padding="5dp"/>
 
 		<ProgressBar
 			android:layout_height="20dp"
 			android:layout_width="20dp"
-			android:layout_alignParentRight="false"
 			android:id="@+id/webviewtoolbar_loading"
-			android:layout_alignParentLeft="true"
-			android:layout_centerInParent="true"/>
+			android:layout_centerVertical="true"
+			android:layout_marginLeft="5dp"/>
 
 		<Button
 			android:layout_height="25dp"
 			android:layout_width="25dp"
-			android:layout_alignParentRight="true"
-			android:layout_centerInParent="true"
 			android:background="@drawable/ic_keyboard_return"
-			android:id="@+id/webviewtoolbar_enter"/>
+			android:id="@+id/webviewtoolbar_enter"
+			android:layout_alignParentRight="true"
+			android:layout_centerVertical="true"/>
 
 	</RelativeLayout>
 

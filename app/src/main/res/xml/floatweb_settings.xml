@@ -13,13 +13,11 @@
         /> 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/xml_web_webset"> 
-        <EditTextPreference 
-            android:key="WebUrl"
-            android:title="@string/xml_web_url"
-            android:summary="@string/xml_web_url_sum"
-            android:dialogTitle="@string/xml_web_url_title"
-            android:defaultValue="https://xfy9326.github.io/FloatText/"
-        />
+		<Preference
+            android:key="WebFileLoad"
+            android:title="@string/xml_web_fileload"
+            android:summary="@string/xml_web_fileload_sum"
+        /> 
         <Preference
             android:key="WebReload"
             android:title="@string/xml_web_reload"

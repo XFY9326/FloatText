@@ -383,7 +383,7 @@ public class FloatTextUpdateService extends Service
 		boolean timedynamicset = false;
         Pattern pat = Pattern.compile("<(.*?)>");
         Pattern pat2 = Pattern.compile("#(.*?)#");
-		Pattern pat3 = Pattern.compile("\\[(.*?)\\]");
+		Pattern pat3 = Pattern.compile("^\\[(.*?)\\]");
         ArrayList<String> list = ((App)ctx.getApplicationContext()).getFloatText();
         boolean dynamicnum = false;
         if (list.size() > 0)

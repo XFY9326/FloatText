@@ -89,8 +89,10 @@
 	<string name="recover_success">Data recover success</string>
 	<string name="recover_failed">Data recover failed</string>
 	<string name="dynamicservice_no_open">Dynamic Service does not open!</string>
-	<string name="permission_error">Permission Denied!</string>
+	<string name="premission_error">Permission Denied!</string>
 	<string name="notification_win_count">%1$s Float Window in total</string>
+	<string name="open_application_set">Open Application Setting Page</string>
+	<string name="textsize_edit_attention">If text size is too large,\nlong click Float Window and lock it!</string>
     <!-- Color Picker -->
     <string name="dialog_color_picker">Color Picker</string>
     <string name="press_color_to_apply">Choose color to apply changes</string>
@@ -100,9 +102,13 @@
     <string name="xml_about_thanklist_sum">We thank for all the people contributing to the appliance and make a list here</string>
     <string name="xml_about_feedback">Communication Feedback</string>
     <string name="xml_about_author">About Author</string>
-	<string name="xml_about_donate">Donate(Alipay)</string>
-	<string name="xml_about_donate_sum">If you think this application is great, donate me！\nIf you can not open the link, you can change the Browser</string>
+	<string name="xml_about_donate">Donate</string>
+	<string name="xml_about_donate_sum">If you think this application is great, donate me！</string>
     <string name="xml_about_version">Version</string>
+	<string name="xml_about_update">Update Settings</string>
+	<string name="xml_about_update_checknow">Check Update Now</string>
+	<string name="xml_about_update_autocheck">Auto check update</string>
+	<string name="xml_about_update_autocheck_sum">Check update automatically while start this application</string>
     <string name="xml_set_tip">Tips</string>
     <string name="xml_set_defaulttip">Please lock the appliance in the background</string>
     <string name="xml_set_globalset">Global Set</string>
@@ -138,10 +144,10 @@
 	<string name="xml_set_win_size">Adjust the Float Size</string>
 	<string name="xml_set_win_size_sum_on">Adjust it by hand</string>
 	<string name="xml_set_win_size_sum_off">Auto Adjust</string>
-	<string name="xml_set_win_long">Float Width</string>
-	<string name="xml_set_win_wide">Float Height</string>
-	<string name="xml_set_win_long_sum">Set Float Width(Y)</string>
-	<string name="xml_set_win_wide_sum">Set Float Height(X)</string>
+	<string name="xml_set_win_long">Float Height</string>
+	<string name="xml_set_win_wide">Float Width</string>
+	<string name="xml_set_win_long_sum">Set Float Height(X)</string>
+	<string name="xml_set_win_wide_sum">Set Float Width(Y)</string>
     <string name="xml_set_top">Float can be moved to notification bar</string>
     <string name="xml_set_top_on">Can be moved to notification bar</string>
     <string name="xml_set_top_off">Can not be moved to notification bar</string>
@@ -151,14 +157,13 @@
     <string name="xml_set_move">Float position fine tuning</string>
     <string name="xml_set_move_sum">Fine tuning the position</string>
     <string name="xml_set_dynamiclist">Dynamic Words List</string>
-    <string name="xml_web_defaulttip">Reload if Web Float Window failed to connect.</string>
-    <string name="xml_web_defaulttip_sum">This function is only for test</string>
+    <string name="xml_web_defaulttip_sum">Reload if Web Float Window failed to connect.</string>
+    <string name="xml_web_defaulttip">This function is only for test</string>
 	<string name="xml_web_usetip">Note</string>
 	<string name="xml_web_usetip_sum">Web window must be minimized before use the originalreturn button and edit function!</string>
     <string name="xml_web_webset">Web Settings</string>
-    <string name="xml_web_url">URL Address</string>
-    <string name="xml_web_url_sum">Change the showing address\n(Local file example file:///sdcrad/index.html)</string>
-    <string name="xml_web_url_title">URL Set</string>
+	<string name="xml_web_fileload">Load local file</string>
+    <string name="xml_web_fileload_sum">Load local picture or text file in Web Float Window</string>
     <string name="xml_web_reload">Reload Web Float Window</string>
     <string name="xml_web_reload_sum">When load failed for the first time, try it</string>
     <string name="xml_web_win_width">The width of this window</string>
@@ -253,4 +258,17 @@
     <string name="crashreport_send_report">Send error report</string>
     <string name="crashreport_nosend_report">No.</string>
     <string name="crashreport_no_mail_app">You have not installed the mail application, please directly contact the author to feedback error!\nMailbox:</string>
+	
+	<string name="updater_loadupdate">Getting upgrade information...</string>
+	<string name="updater_download">Downloading...</string>
+	<string name="updater_failed">Update download failed!</string>
+	<string name="updater_success">Update download success!</string>
+	<string name="updater_findupdate">Get latest update !</string>
+	<string name="updater_version">Version: </string>
+	<string name="updater_time">Update Time:  </string>
+	<string name="updater_size">File Size: </string>
+	<string name="updater_data">Notice: </string>
+	<string name="updater_getupdate">Get Upgrade</string>
+	<string name="updater_noupdate">Is the latest version now!</string>
+	<string name="updater_nointernet">No Internet connection now!</string>
 </resources>

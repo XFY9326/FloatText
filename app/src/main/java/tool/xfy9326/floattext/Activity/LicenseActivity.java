@@ -22,6 +22,11 @@ public class LicenseActivity extends AppCompatActivity
 		Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(tb);
 		sethome();
+		setlicense();
+    }
+	
+	private void setlicense()
+	{
 		String floattext_path = "LICENSES/FloatText_LICENSE.txt";
 		String icon_path = "LICENSES/Android-Material-Icons_LICENSE.txt";
 		String preference_path = "LICENSES/ColorPickerPreference_LICENSE.txt";
@@ -39,13 +44,13 @@ public class LicenseActivity extends AppCompatActivity
 
         LinearLayout ll = (LinearLayout) findViewById(R.id.layout_license);
 
-		addlicence("FloatText", ft_url, ft_licence, ll);
-		addlicence("Android-Material-Icons", ic_url, ic_licence, ll);
-		addlicence("ColorPickerPreference", pre_url, pre_licence, ll);
-		addlicence("Android-Support-Library", and_url, and_licence, ll);
-    }
+		addlicense("FloatText", ft_url, ft_licence, ll);
+		addlicense("Android-Material-Icons", ic_url, ic_licence, ll);
+		addlicense("ColorPickerPreference", pre_url, pre_licence, ll);
+		addlicense("Android-Support-Library", and_url, and_licence, ll);
+	}
 
-	private void addlicence(String title, String html, String data, LinearLayout ll)
+	private void addlicense(String title, String html, String data, LinearLayout ll)
 	{
 		LayoutInflater inflater = LayoutInflater.from(LicenseActivity.this);  
 		View layout = inflater.inflate(R.layout.layout_each_licence, null);

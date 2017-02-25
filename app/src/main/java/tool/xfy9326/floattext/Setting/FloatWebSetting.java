@@ -11,19 +11,26 @@ import tool.xfy9326.floattext.*;
 import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Utils.*;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.view.View.OnClickListener;
 import android.view.WindowManager.LayoutParams;
 import android.view.inputmethod.EditorInfo;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView.OnEditorActionListener;
 import tool.xfy9326.floattext.Activity.AppCompatPreferenceActivity;
+import tool.xfy9326.floattext.FileSelector.SelectFile;
+import tool.xfy9326.floattext.Setting.FloatWebSetting;
 import tool.xfy9326.floattext.View.FloatLinearLayout;
 
 public class FloatWebSetting extends AppCompatPreferenceActivity
 {
     private static final int REQUEST_CODE = 1;
+	private static final int FILE_SELECT_REQUEST_CODE = 2;
+	private static final int FILE_SELECT_PREMISSION_GOT = 3;
     private String WebUrl;
     private View toolbar;
     private WebView webview;
@@ -42,8 +49,6 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        spdata = PreferenceManager.getDefaultSharedPreferences(this);
-        spedit = spdata.edit();
         wm = ((App)getApplicationContext()).getFloatwinmanager();
         wmcheck();
         addPreferencesFromResource(R.xml.floatweb_settings);
@@ -79,19 +84,20 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
 
     private void defaultkeyget()
     {
-        FloatWide = Integer.parseInt(spdata.getString("WebWidth", "600"));
-        FloatLong = Integer.parseInt(spdata.getString("WebHeight", "800"));
+        FloatWide = spdata.getFloat("FloatWebWide", FloatWebSettingMethod.getWinDefaultWidth(wm));
+        FloatLong = spdata.getFloat("FloatWebLong", FloatWebSettingMethod.getWinDefaultHeight(wm));
         WebUrl = spdata.getString("WebUrl", "https://xfy9326.github.io/FloatText/");
     }
-
+	
     private void preferenceset()
     {
-        EditTextPreference url = (EditTextPreference) findPreference("WebUrl");
-        url.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange(Preference p1, Object p2)
+		spdata = PreferenceManager.getDefaultSharedPreferences(this);
+        spedit = spdata.edit();
+		Preference fileload = findPreference("WebFileLoad");
+		fileload.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
+                public boolean onPreferenceClick(Preference p1)
                 {
-                    WebUrl = (String)p2;
-                    updateview();
+					importfiles();
                     return true;
                 }
             });
@@ -121,8 +127,12 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
             });
     }
 
+	//长宽有部分混淆了，请以实用为准
+	//宽度更改
 	private void WidthViewSet()
 	{
+		final DisplayMetrics dm = new DisplayMetrics();
+		wm.getDefaultDisplay().getMetrics(dm);
 		LayoutInflater inflater = LayoutInflater.from(FloatWebSetting.this);  
 		View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
 		AlertDialog.Builder dialog = new AlertDialog.Builder(FloatWebSetting.this);
@@ -138,7 +148,7 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
 					if (FloatWide > 0)
 					{
 						FloatWide--;
-						spedit.putFloat("FloatWide", FloatWide);
+						spedit.putFloat("FloatWebWide", FloatWide);
 						spedit.commit();
 						bar.setProgress((int)FloatWide);
 						text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
@@ -149,10 +159,10 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
 		plus.setOnClickListener(new OnClickListener(){
 				public void onClick(View v)
 				{
-					if (FloatWide < wm.getDefaultDisplay().getHeight())
+					if (FloatWide < dm.widthPixels)
 					{
 						FloatWide++;
-						spedit.putFloat("FloatWide", FloatWide);
+						spedit.putFloat("FloatWebWide", FloatWide);
 						spedit.commit();
 						bar.setProgress((int)FloatWide);
 						text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
@@ -160,13 +170,16 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
 					}
 				}
 			});
-		bar.setMax(wm.getDefaultDisplay().getHeight());
+		bar.setMax((int)dm.widthPixels);
 		bar.setProgress((int)FloatWide);
 		bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
 				public void onStartTrackingTouch(SeekBar bar)
 				{}
 				public void onStopTrackingTouch(SeekBar bar)
-				{}
+				{
+					spedit.putFloat("FloatWebWide", FloatWide);
+					spedit.commit();
+				}
 				public void onProgressChanged(SeekBar bar , int i , boolean state)
 				{
 					FloatWide = i;
@@ -179,8 +192,11 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
 		dialog.show();
 	}
 
+	//高度更改
 	private void HeightViewSet()
 	{
+		final DisplayMetrics dm = new DisplayMetrics();
+		wm.getDefaultDisplay().getMetrics(dm);
 		LayoutInflater inflater = LayoutInflater.from(FloatWebSetting.this);  
 		View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
 		AlertDialog.Builder dialog = new AlertDialog.Builder(FloatWebSetting.this);
@@ -196,7 +212,7 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
 					if (FloatLong > 0)
 					{
 						FloatLong--;
-						spedit.putFloat("FloatLong", FloatLong);
+						spedit.putFloat("FloatWebLong", FloatLong);
 						spedit.commit();
 						bar.setProgress((int)FloatLong);
 						text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
@@ -207,10 +223,10 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
 		plus.setOnClickListener(new OnClickListener(){
 				public void onClick(View v)
 				{
-					if (FloatLong < wm.getDefaultDisplay().getWidth())
+					if (FloatLong < dm.heightPixels)
 					{
 						FloatLong++;
-						spedit.putFloat("FloatLong", FloatLong);
+						spedit.putFloat("FloatWebLong", FloatLong);
 						spedit.commit();
 						bar.setProgress((int)FloatLong);
 						text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
@@ -218,13 +234,16 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
 					}
 				}
 			});
-		bar.setMax(wm.getDefaultDisplay().getWidth());
+		bar.setMax((int)dm.heightPixels);
 		bar.setProgress((int)FloatLong);
 		bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
 				public void onStartTrackingTouch(SeekBar bar)
 				{}
 				public void onStopTrackingTouch(SeekBar bar)
-				{}
+				{
+					spedit.putFloat("FloatWebLong", FloatLong);
+					spedit.commit();
+				}
 				public void onProgressChanged(SeekBar bar , int i , boolean state)
 				{
 					FloatLong = i;
@@ -235,6 +254,27 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
 		dialog.setView(layout);
 		dialog.setPositiveButton(R.string.close, null);
 		dialog.show();
+	}
+
+	private void importfiles()
+	{
+		if (Build.VERSION.SDK_INT > 22)
+		{
+			if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+			{
+				requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, FILE_SELECT_PREMISSION_GOT);
+			}
+			else
+			{
+				SelectFile sf = new SelectFile(FILE_SELECT_REQUEST_CODE, SelectFile.TYPE_ChooseFile);
+				sf.start(FloatWebSetting.this);
+			}
+		}
+		else
+		{
+			SelectFile sf = new SelectFile(FILE_SELECT_REQUEST_CODE, SelectFile.TYPE_ChooseFile);
+			sf.start(FloatWebSetting.this);
+		}
 	}
 
     private void prepareshow()
@@ -305,7 +345,10 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
 				{
 					if (actionId == EditorInfo.IME_ACTION_SEND || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) || actionId == EditorInfo.IME_ACTION_DONE)
 					{
-						webview.loadUrl(FloatWebSettingMethod.urlfix(v.getText().toString()));
+						WebUrl = FloatWebSettingMethod.urlfix(v.getText().toString());
+						webview.loadUrl(WebUrl);
+						spedit.putString("WebUrl", WebUrl);
+						spedit.commit();
 					}
 					return true;
 				}
@@ -344,7 +387,10 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
 		urlenter.setOnClickListener(new OnClickListener(){
                 public void onClick(View v)
                 {
-                    webview.loadUrl(FloatWebSettingMethod.urlfix(urltext.getText().toString()));
+					WebUrl = FloatWebSettingMethod.urlfix(urltext.getText().toString());
+                    webview.loadUrl(WebUrl);
+					spedit.putString("WebUrl", WebUrl);
+					spedit.commit();
                 }
             });
     }
@@ -442,6 +488,24 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
 	}
 
 	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+	{
+		if (requestCode == FILE_SELECT_PREMISSION_GOT)
+		{
+			if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+			{
+				SelectFile sf = new SelectFile(FILE_SELECT_REQUEST_CODE, SelectFile.TYPE_ChooseFile);
+				sf.start(FloatWebSetting.this);
+			}
+			else
+			{
+				Toast.makeText(this, R.string.premission_error, Toast.LENGTH_SHORT).show();
+			}
+		}
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+	}
+
+	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event)
 	{
 		if (keyCode == KeyEvent.KEYCODE_BACK)
@@ -470,6 +534,17 @@ public class FloatWebSetting extends AppCompatPreferenceActivity
                 }
             }
         }
+		else if (requestCode == FILE_SELECT_REQUEST_CODE)
+		{
+			if (data != null)
+			{
+				String str = "file://" + data.getStringExtra("FilePath");
+				WebUrl = str;
+				spedit.putString("WebUrl", WebUrl);
+				spedit.commit();
+				updateview();
+			}
+		}
     }
 
     @Override 
