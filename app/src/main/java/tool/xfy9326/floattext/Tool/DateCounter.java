@@ -9,32 +9,32 @@ import tool.xfy9326.floattext.R;
 public class DateCounter
 {
 	//日期倒计时计算
-    public final static String Count(Context ctx, String date)
+    public final static String Count(Context ctx, String date, boolean usedays)
     {
         DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         DateFormat format2 = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
         DateFormat format3 = new SimpleDateFormat("yyyy-MM-dd-HH");
         DateFormat format4 = new SimpleDateFormat("yyyy-MM-dd");
 		long diff = 0;
-		diff = FormatCount(format1, date);
+		diff = FormatCount(format1, date, usedays);
 		if (diff >= 0)
 		{
-			return DateCount_1(ctx, diff);
+			return DateCount_1(ctx, diff, usedays);
 		}
-		diff = FormatCount(format2, date);
+		diff = FormatCount(format2, date, usedays);
 		if (diff >= 0)
 		{
-			return DateCount_2(ctx, diff);
+			return DateCount_2(ctx, diff, usedays);
 		}
-		diff = FormatCount(format3, date);
+		diff = FormatCount(format3, date, usedays);
 		if (diff >= 0)
 		{
-			return DateCount_3(ctx, diff);
+			return DateCount_3(ctx, diff, usedays);
 		}
-		diff = FormatCount(format4, date);
+		diff = FormatCount(format4, date, usedays);
 		if (diff >= 0)
 		{
-			return DateCount_4(ctx, diff);
+			return DateCount_4(ctx, diff, usedays);
 		}
 		else
 		{
@@ -42,13 +42,21 @@ public class DateCounter
 		}
     }
 
-	private static long FormatCount(DateFormat format, String date)
+	private static long FormatCount(DateFormat format, String date, boolean usedays)
 	{
 		try
 		{
 			Date now = new Date();
 			Date set = format.parse(date);
-			long diff = set.getTime() - now.getTime();
+			long diff = 0;
+			if (usedays)
+			{
+				diff = now.getTime() - set.getTime();
+			}
+			else
+			{
+				diff = set.getTime() - now.getTime();
+			}
 			if (diff < 0)
 			{
 				diff = 0;
@@ -62,7 +70,7 @@ public class DateCounter
 		}
 	}
 
-	private static String DateCount_1(Context ctx, long diff)
+	private static String DateCount_1(Context ctx, long diff, boolean usedays)
 	{
 		long days = diff / (1000 * 60 * 60 * 24);
 		long hours = (diff - days * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
@@ -95,11 +103,18 @@ public class DateCounter
 		}
 		else
 		{
-			return ctx.getString(R.string.dynamic_date_reach);
+			if (usedays)
+			{
+				return ctx.getString(R.string.dynamic_date_notstart);
+			}
+			else
+			{
+				return ctx.getString(R.string.dynamic_date_reach);
+			}
 		}
 	}
 
-	private static String DateCount_2(Context ctx, long diff)
+	private static String DateCount_2(Context ctx, long diff, boolean usedays)
 	{
         long seconds = 0;
 		long days = diff / (1000 * 60 * 60 * 24);
@@ -126,11 +141,18 @@ public class DateCounter
 		}
 		else
 		{
-			return ctx.getString(R.string.dynamic_date_reach);
+			if (usedays)
+			{
+				return ctx.getString(R.string.dynamic_date_notstart);
+			}
+			else
+			{
+				return ctx.getString(R.string.dynamic_date_reach);
+			}
 		}
 	}
 
-	private static String DateCount_3(Context ctx, long diff)
+	private static String DateCount_3(Context ctx, long diff, boolean usedays)
 	{
         long minutes = 0;
         long seconds = 0;
@@ -150,11 +172,18 @@ public class DateCounter
 		}
 		else
 		{
-			return ctx.getString(R.string.dynamic_date_reach);
+			if (usedays)
+			{
+				return ctx.getString(R.string.dynamic_date_notstart);
+			}
+			else
+			{
+				return ctx.getString(R.string.dynamic_date_reach);
+			}
 		}
 	}
 
-	private static String DateCount_4(Context ctx, long diff)
+	private static String DateCount_4(Context ctx, long diff, boolean usedays)
 	{
         long hours = 0;
         long minutes = 0;
@@ -167,7 +196,14 @@ public class DateCounter
 		}
 		else
 		{
-			return ctx.getString(R.string.dynamic_date_reach);
+			if (usedays)
+			{
+				return ctx.getString(R.string.dynamic_date_notstart);
+			}
+			else
+			{
+				return ctx.getString(R.string.dynamic_date_reach);
+			}
 		}
 	}
 }

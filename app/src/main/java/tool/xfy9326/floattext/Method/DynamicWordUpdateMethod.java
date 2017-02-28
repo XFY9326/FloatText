@@ -136,15 +136,26 @@ public class DynamicWordUpdateMethod
             Pattern pat = Pattern.compile(tag);
             Matcher mat = pat.matcher(str);
 			String replaceString = "";
-            while (mat.find())
-            {
-                String get = mat.group(0).toString();
-				if (reg == 1)
+			try
+			{
+				while (mat.find())
 				{
-					replaceString = DateCounter.Count(context, (get.substring(11, get.length() - 1)));
+					String get = mat.group(0).toString();
+					if (reg == 1)
+					{
+						replaceString = DateCounter.Count(context, (get.substring(11, get.length() - 1)), false);
+					}
+					else if (reg == 2)
+					{
+						replaceString = DateCounter.Count(context, (get.substring(14, get.length() - 1)), true);
+					}
+					str = str.replace(get, replaceString);
 				}
-				str = str.replace(get, replaceString);
-            }
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
         }
         return str;
     }
@@ -184,17 +195,22 @@ public class DynamicWordUpdateMethod
 			boolean found = false;
 			for (String line : text)
 			{
-				String[] info = line.split("\\|");
-				if (info[0].equalsIgnoreCase("Default"))
+				int split = line.lastIndexOf("|");
+				if (split >= 0)
 				{
-					def = info[1].toString();
-					continue;
-				}
-				if (!found && change.matches(info[0].toString()))
-				{
-					str_def = info[1].toString();
-					found = true;
-					break;
+					String regstr = line.substring(0, split);
+					String textstr = line.substring(split + 1);
+					if (regstr.equalsIgnoreCase("Default"))
+					{
+						def = textstr.toString();
+						continue;
+					}
+					if (!found && change.matches(regstr.toString()))
+					{
+						str_def = textstr.toString();
+						found = true;
+						break;
+					}
 				}
 			}
 			if (!found && def != null)

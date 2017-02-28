@@ -2,6 +2,11 @@
 <PreferenceScreen 
     xmlns:android="http://schemas.android.com/apk/res/android">
 	<PreferenceCategory android:title="@string/xml_global_system"> 
+		<Preference 
+            android:key="Language"
+            android:title="@string/xml_global_language"
+            android:summary="@string/xml_global_language_sum"
+        />
         <CheckBoxPreference 
             android:key="FloatAutoBoot"
             android:title="@string/xml_global_system_boot"
@@ -19,11 +24,6 @@
         />
 	</PreferenceCategory>
     <PreferenceCategory android:title="@string/xml_global_manageset"> 
-        <Preference 
-            android:key="Language"
-            android:title="@string/xml_global_language"
-            android:summary="@string/xml_global_language_sum"
-        />
         <CheckBoxPreference 
             android:key="FloatDeleteAlert"
             android:title="@string/xml_global_deletealert"

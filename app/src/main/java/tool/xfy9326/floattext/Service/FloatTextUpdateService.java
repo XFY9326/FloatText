@@ -11,6 +11,7 @@ import android.app.Service;
 import java.text.SimpleDateFormat;
 import tool.xfy9326.floattext.Method.FloatServiceMethod;
 import tool.xfy9326.floattext.R;
+import java.text.DecimalFormat;
 
 public class FloatTextUpdateService extends Service
 {
@@ -69,6 +70,7 @@ public class FloatTextUpdateService extends Service
 	private String notifymes;
 	private String toasts;
 	private String week;
+	private String notifypkg;
 
     @Override
     public IBinder onBind(Intent p1)
@@ -86,8 +88,8 @@ public class FloatTextUpdateService extends Service
 
 	private String[] SetPostKey()
 	{
-		String[] PostList = new String[24];
-		PostList[0] = time0;
+		String[] PostList = new String[27];
+		PostList[0] = FloatServiceMethod.getWifiSignal(this);
 		PostList[1] = time1;
 		PostList[2] = time2;
 		PostList[3] = time3;
@@ -111,6 +113,9 @@ public class FloatTextUpdateService extends Service
 		PostList[21] = "None";
 		PostList[22] = time5;
 		PostList[23] = FloatServiceMethod.judgeOrigination(this);
+		PostList[24] = "None";
+		PostList[25] = notifypkg;
+		PostList[26] = FloatServiceMethod.getWifiSignal(this);
 		return PostList;
 	}
 
@@ -135,7 +140,8 @@ public class FloatTextUpdateService extends Service
 			notifymes = 
 			toasts =
 			week = 
-			time5 = str;
+			time5 =
+			notifypkg = str;
 	}
 
     private void init()
@@ -450,6 +456,7 @@ public class FloatTextUpdateService extends Service
 			currentactivity = FloatServiceMethod.fixnull(p2.getStringExtra("CurrentActivity"), currentactivity);
 			toasts = FloatServiceMethod.fixnull(p2.getStringExtra("Toasts"), toasts);
 			notifymes = FloatServiceMethod.fixnull(p2.getStringExtra("NotifyMes"), notifymes);
+			notifypkg = FloatServiceMethod.fixnull(p2.getStringExtra("NotifyPkg"), notifypkg);
 		}
 	}
 
@@ -466,28 +473,30 @@ public class FloatTextUpdateService extends Service
 
     private class SensorReceiver implements SensorEventListener
     {
+		private DecimalFormat df = new DecimalFormat("#0.00");
+		
         @Override
         public void onSensorChanged(SensorEvent p1)
         {
             if (p1.sensor.getType() == Sensor.TYPE_TEMPERATURE)
             {
-                cputemperature = (float)Math.round(p1.values[0] * 100) / 100 + "℃";
+                cputemperature = df.format((float)Math.round(p1.values[0] * 100) / 100) + "℃";
             }
             else if (p1.sensor.getType() == Sensor.TYPE_LIGHT)
             {
-                sensorlight = (float)Math.round(p1.values[0] * 100) / 100 + "lux";
+                sensorlight = df.format((float)Math.round(p1.values[0] * 100) / 100) + "lux";
             }
             else if (p1.sensor.getType() == Sensor.TYPE_GRAVITY)
             {
-                sensorgravity = "X:" + (float)Math.round(p1.values[0] * 100) / 100 + "m/s² Y:" + (float)Math.round(p1.values[1] * 100) / 100 + "m/s² Z:" + (float)Math.round(p1.values[2] * 100) / 100 + "m/s²";
+                sensorgravity = "X:" + df.format((float)Math.round(p1.values[0] * 100) / 100) + "m/s² Y:" + df.format((float)Math.round(p1.values[1] * 100) / 100) + "m/s² Z:" + df.format((float)Math.round(p1.values[2] * 100) / 100) + "m/s²";
             }
             else if (p1.sensor.getType() == Sensor.TYPE_PRESSURE)
             {
-                sensorpressure = (float)Math.round(p1.values[0] * 10000) / 100 + "Pa";
+                sensorpressure = df.format((float)Math.round(p1.values[0] * 10000) / 100) + "Pa";
             }
             else if (p1.sensor.getType() == Sensor.TYPE_PROXIMITY)
             {
-                sensorproximity = (float)Math.round(p1.values[0] * 100) / 100 + "cm";
+                sensorproximity = df.format((float)Math.round(p1.values[0] * 100) / 100) + "cm";
             }
             else if (p1.sensor.getType() == Sensor.TYPE_STEP_DETECTOR)
             {

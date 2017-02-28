@@ -66,6 +66,7 @@
     <string name="dynamic_num_tip">注：\n1.创建悬浮窗后必须保存一次才可以应用动态变量！\n2.HTML模式下可使用#代替&lt;与&gt;符号\n3.(*)符号说明必须在全局设置中开启辅助服务才能使用该变量</string>
     <string name="dynamic_date_err">日期倒计时格式设置错误！</string>
     <string name="dynamic_date_reach">计时结束</string>
+	<string name="dynamic_date_notstart">计时未开始</string>
     <string name="text_default_typeface">默认字体</string>
     <string name="text_typeface_err">字体不存在！</string>
     <string name="text_choose_typeface">选择字体</string>
@@ -92,7 +93,7 @@
 	<string name="premission_error">权限获取失败！</string>
 	<string name="notification_win_count">共%1$s个悬浮窗</string>
 	<string name="open_application_set">打开应用设置界面</string>
-	<string name="textsize_edit_attention">如果文字调整得太大\n长按锁定悬浮窗后重新操作即可</string>
+	<string name="textsize_edit_attention">如果文字调整得太大\n长按悬浮窗锁定后重新操作即可</string>
     <!-- Color Picker -->
     <string name="dialog_color_picker">颜色选择器</string>
     <string name="press_color_to_apply">选择颜色以应用更改</string>

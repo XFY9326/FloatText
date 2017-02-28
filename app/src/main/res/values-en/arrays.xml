@@ -34,8 +34,13 @@
         <item>The date of the countdown(custom date)</item>
         <item>The date of the countdown(custom date)</item>
         <item>The date of the countdown(custom date)</item>
+		<item>The date of the count(custom date)</item>
+        <item>The date of the count(custom date)</item>
+        <item>The date of the count(custom date)</item>
+        <item>The date of the count(custom date)</item>
 		<item>Week</item>
         <item>Local IP Address</item>
+		<item>Wifi Signal</item>
         <item>Battery Percent</item>
         <item>Light Sensor</item>
         <item>Gravity Sensor</item>
@@ -47,6 +52,7 @@
         <item>ClipBoard</item>
 		<item>Current Activity(*)</item>
 		<item>The latest notification(*)\n[Android 4.3 and above must open Notification Listener Service]</item>
+		<item>The Package Name of latest notification(*)\n[Android 4.3 and above must open Notification Listener Service]</item>
 		<item>The latest toast(*)</item>
     </string-array>
     <string-array name="floatmanage_choose">

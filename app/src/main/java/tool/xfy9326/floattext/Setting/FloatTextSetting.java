@@ -902,6 +902,8 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             if (EditMode)
             {
                 ArrayList<Boolean> sf = utils.getTextutil().getShowFloat();
+				//Flag更新覆盖后重设
+				linearlayout.setTouchable(wmParams, !linearlayout.getPositionLocked());
                 sf.set(EditID, FloatShow);
                 utils.getTextutil().setShowFloat(sf);
             }

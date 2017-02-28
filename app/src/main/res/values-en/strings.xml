@@ -66,6 +66,7 @@
     <string name="dynamic_num_tip">Attention：\n1.Add float and save to apply dynamic variables！\n2.In HTMLMode can use # instead of &lt; and &gt;\n3.Symbol (*) means that you must open the Accessibility Service in Global Settings to use it.</string>
     <string name="dynamic_date_err">Date counting down setting error</string>
     <string name="dynamic_date_reach">Finished Counting</string>
+	<string name="dynamic_date_notstart">Counting has not start yet</string>
     <string name="text_default_typeface">Default font</string>
     <string name="text_typeface_err">Font error</string>
     <string name="text_choose_typeface">Choose Font</string>

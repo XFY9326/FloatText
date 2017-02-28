@@ -34,8 +34,13 @@
         <item>日期倒數計時(自訂日期)</item>
         <item>日期倒數計時(自訂日期)</item>
         <item>日期倒數計時(自訂日期)</item>
+		<item>日期正數計時(自訂日期)</item>
+        <item>日期正數計時(自訂日期)</item>
+        <item>日期正數計時(自訂日期)</item>
+        <item>日期正數計時(自訂日期)</item>
 		<item>星期</item>
         <item>區域網路的 IP地址</item>
+		<item>Wifi信號</item>
         <item>電量</item>
         <item>傳感器_光線強度</item>
         <item>傳感器_重力加速度</item>
@@ -47,6 +52,7 @@
         <item>剪切板</item>
 		<item>當前運行的Activity(*)</item>
 		<item>最新的通知消息(*)\n[4.3以上系統需開啟通知監聽服務]</item>
+		<item>最新的通知消息包名(*)\n[4.3以上系統需開啟通知監聽服務]</item>
 		<item>最新的Toast(*)</item>
     </string-array>
     <string-array name="floatmanage_choose">

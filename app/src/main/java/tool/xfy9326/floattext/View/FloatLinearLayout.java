@@ -231,7 +231,7 @@ public class FloatLinearLayout extends LinearLayout
     }
 
 	//设置可触摸
-    private void setTouchable(WindowManager.LayoutParams layout, boolean bool)
+    public void setTouchable(WindowManager.LayoutParams layout, boolean bool)
     {
         if (bool)
         {

@@ -16,6 +16,7 @@ import tool.xfy9326.floattext.Method.ActivityMethod;
 public class FloatAdvanceTextUpdateService extends AccessibilityService
 {
 	private String currentactivity;
+	private String notifypkg;
 	private String notifymes;
 	private String toasts;
 	private String oldactivity = "";
@@ -53,6 +54,7 @@ public class FloatAdvanceTextUpdateService extends AccessibilityService
 							else
 							{
 								notifymes = str;
+								notifypkg = event.getClassName().toString();
 							}
 						}
 						else
@@ -87,7 +89,10 @@ public class FloatAdvanceTextUpdateService extends AccessibilityService
 		{
 			return true;
 		}
-		return false;
+		else
+		{
+			return false;
+		}
 	}
 
 	private void sendmes()
@@ -98,6 +103,7 @@ public class FloatAdvanceTextUpdateService extends AccessibilityService
 		if (sentrule)
 		{
 			intent.putExtra("NotifyMes", notifymes);
+			intent.putExtra("NotifyPkg", notifypkg);
 		}
 		intent.putExtra("Toasts", toasts);
 		sendBroadcast(intent);

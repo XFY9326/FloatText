@@ -10,6 +10,7 @@ import tool.xfy9326.floattext.Utils.StaticString;
 public class FloatNotificationListenerService extends NotificationListenerService
 {
 	private String notify;
+	private String pkg;
 
 	@Override
 	public void onCreate()
@@ -22,10 +23,17 @@ public class FloatNotificationListenerService extends NotificationListenerServic
 	{
 		Bundle extras = sbn.getNotification().extras;
 		String title = extras.getString(Notification.EXTRA_TITLE);
-		CharSequence text = extras.getCharSequence(Notification.EXTRA_TEXT);
-		if (text != null)
+		String text = extras.getString(Notification.EXTRA_TEXT);
+		String sum_text = extras.getString(Notification.EXTRA_SUMMARY_TEXT);
+		String sub_text = extras.getString(Notification.EXTRA_SUB_TEXT);
+		if (title != null)
 		{
-			notify = title  + ":" + text.toString();
+			notify = title  + (text == null ? "" : ":" + text) + (sum_text == null ? "" : " " + sum_text) + (sub_text == null ? "" : " " + sub_text);
+			String pkgtmp = sbn.getPackageName().toString();
+			if (!pkgtmp.equalsIgnoreCase("Android"))
+			{
+				pkg = pkgtmp;
+			}
 			sendmes();
 		}
 		super.onNotificationPosted(sbn);
@@ -36,6 +44,7 @@ public class FloatNotificationListenerService extends NotificationListenerServic
 		Intent intent = new Intent();
 		intent.setAction(StaticString.TEXT_ADVANCE_UPDATE_ACTION);
 		intent.putExtra("NotifyMes", notify);
+		intent.putExtra("NotifyPkg", pkg);
 		sendBroadcast(intent);
 	}
 

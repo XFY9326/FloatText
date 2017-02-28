@@ -171,7 +171,7 @@ public class FloatWindowStayAliveService extends Service
         super.onDestroy();
     }
 
-	public static void collapseStatusBar(Context context)
+	private static void collapseStatusBar(Context context)
 	{
 		try
 		{
@@ -193,7 +193,7 @@ public class FloatWindowStayAliveService extends Service
 		}
 	}
 
-	public class ButtonBroadcastReceiver extends BroadcastReceiver
+	private class ButtonBroadcastReceiver extends BroadcastReceiver
 	{
 		private boolean WinLock = false;
 		private boolean WinShow = true;

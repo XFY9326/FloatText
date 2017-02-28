@@ -11,6 +11,7 @@ import android.content.res.Configuration;
 import android.net.TrafficStats;
 import android.os.PowerManager;
 import java.net.NetworkInterface;
+import java.text.DecimalFormat;
 import tool.xfy9326.floattext.Tool.FormatArrayList;
 import tool.xfy9326.floattext.Utils.StaticNum;
 
@@ -75,12 +76,25 @@ public class FloatServiceMethod
 			InfoList.add(0);
 			KeyList.add("Origination");
 			InfoList.add(0);
+			KeyList.add("(DateUseCount_)(.*?)");
+			InfoList.add(2);
+			KeyList.add("NotificationPkg");
+			InfoList.add(0);
+			KeyList.add("WifiSignal");
+			InfoList.add(0);
 			list_editor.putInt("Version", StaticNum.DYNAMIC_LIST_VERSION);
 			list_editor.putString("LIST", KeyList.toString());
 			list_editor.putString("INFO", InfoList.toString());
 			list_editor.commit();
 		}
 		return list;
+	}
+	
+	//获取Wifi信号
+	public static String getWifiSignal(Context ctx)
+	{
+		WifiManager wm = (WifiManager) ctx.getSystemService(ctx.WIFI_SERVICE);
+		return wm.getConnectionInfo().getRssi() + "db";
 	}
 
 	//屏幕横竖判断
@@ -226,7 +240,7 @@ public class FloatServiceMethod
                 speed = speed / 1024;
             }
         }
-        return Math.round(speed * 100) / 100.00 + NS;
+        return new DecimalFormat("#0.00").format(speed * 100 / 100.00) + NS;
     }
 
 	//获取CPU运行率
