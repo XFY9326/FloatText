@@ -14,6 +14,7 @@ import java.net.NetworkInterface;
 import java.text.DecimalFormat;
 import tool.xfy9326.floattext.Tool.FormatArrayList;
 import tool.xfy9326.floattext.Utils.StaticNum;
+import android.util.Log;
 
 public class FloatServiceMethod
 {
@@ -140,7 +141,8 @@ public class FloatServiceMethod
         ActivityManager mActivityManager = (ActivityManager)ctx.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> rti = mActivityManager.getRunningTasks(1);
         String Top = rti.get(0).topActivity.getPackageName();
-        if (Top.equalsIgnoreCase("tool.xfy9326.floattext"))
+		Log.d("H", Top);
+        if (Top.trim().equalsIgnoreCase("tool.xfy9326.floattext"))
         {
             return false;
         }
@@ -150,7 +152,7 @@ public class FloatServiceMethod
         }
     }
 
-	//布尔值对象转换
+	//Integer值对象转换
 	public static int[] Itoi(Integer[] B)
 	{
 		int[] b = new int[B.length];

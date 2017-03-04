@@ -19,16 +19,16 @@
 			android:layout_centerInParent="true"/>
 
 		<Button
-			android:layout_height="28dp"
-			android:layout_width="28dp"
+			android:layout_height="30dp"
+			android:layout_width="30dp"
 			android:background="@drawable/ic_minus"
 			android:layout_alignParentLeft="true"
 			android:layout_marginLeft="23dp"
 			android:id="@+id/floatsize_button_minus"/>
 
 		<Button
-			android:layout_height="28dp"
-			android:layout_width="28dp"
+			android:layout_height="30dp"
+			android:layout_width="30dp"
 			android:background="@drawable/ic_plus_black"
 			android:layout_alignParentRight="true"
 			android:layout_marginRight="23dp"

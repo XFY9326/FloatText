@@ -7,6 +7,7 @@ import tool.xfy9326.floattext.View.*;
 import android.os.Bundle;
 import android.view.WindowManager;
 import java.util.ArrayList;
+import tool.xfy9326.floattext.R;
 import tool.xfy9326.floattext.Tool.DateCounter;
 import tool.xfy9326.floattext.Utils.App;
 
@@ -91,7 +92,7 @@ public class DynamicWordUpdateMethod
 			{
 				str = FilterText(str, filtertext[0], filtertext[1]);
 			}
-			if (floattext.get(i) != str && wm != null)
+			if (!str.equalsIgnoreCase("FilterText_No_Found") && floattext.get(i) != str && wm != null)
 			{
 				floatview.get(i).setText(str);
 				try
@@ -180,6 +181,10 @@ public class DynamicWordUpdateMethod
 	{
 		try
 		{
+			if (change.equals(context.getString(R.string.dynamic_word_empty)))
+			{
+				return change;
+			}
 			String str = str_def.substring(tag.length());
 			String[] text;
 			if (str.contains(";"))
@@ -205,6 +210,12 @@ public class DynamicWordUpdateMethod
 						def = textstr.toString();
 						continue;
 					}
+					else if (change.equals(regstr))
+					{
+						str_def = textstr.toString();
+						found = true;
+						break;
+					}
 					if (!found && change.matches(regstr.toString()))
 					{
 						str_def = textstr.toString();
@@ -213,11 +224,18 @@ public class DynamicWordUpdateMethod
 					}
 				}
 			}
-			if (!found && def != null)
+			if (!found)
 			{
-				str_def = def;
+				if (def != null)
+				{
+					str_def = def;
+				}
+				else
+				{
+					str_def = "FilterText_No_Found";
+				}
 			}
-			if (str_def.equalsIgnoreCase("Empty"))
+			if (str_def.trim().equalsIgnoreCase("Empty"))
 			{
 				str_def = "";
 			}

@@ -81,6 +81,7 @@
     <string name="text_export_error">沒有文字可以匯出！</string>
     <string name="text_import_notice">選擇文字檔案，按行匯入文字</string>
     <string name="loading">正在加載中...</string>
+	<string name="dynamic_word_empty">當前獲取數值為空</string>
 	<string name="advancetext_service_label">FloatText高級服務</string>
 	<string name="advancetext_service_description">FloatText高級動態變量服務\n開啟本服務，允許使用高級的動態變量。\n本服務會監聽使用者介面操作，但絕不會上傳任何數據，請放心使用。</string>
 	<string name="floatnotification_service_label">FloatText通知監聽服務</string>

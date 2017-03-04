@@ -81,6 +81,7 @@
     <string name="text_export_error">没有文本可以导出！</string>
     <string name="text_import_notice">选择文本文件，按行导入文字</string>
     <string name="loading">正在加载中...</string>
+	<string name="dynamic_word_empty">当前获取数值为空</string>
 	<string name="advancetext_service_label">FloatText高级服务</string>
 	<string name="advancetext_service_description">FloatText高级动态变量服务\n开启本服务，允许使用高级的动态变量。\n本服务会监听用户界面操作，但绝不会上传任何数据，请放心使用。</string>
 	<string name="floatnotification_service_label">FloatText通知监听服务</string>

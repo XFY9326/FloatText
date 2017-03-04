@@ -34,6 +34,24 @@ public class FloatManageMethod
 	public static boolean waitdoubleclick = false;
 	public static Handler waithandle;
 	public static Runnable waitrun;
+	
+	//删除下载的文件(一天前)
+	public static void DeleteDownloadFile ()
+	{
+		long time = System.currentTimeMillis();
+		File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/FloatText/Download/");
+		if (file.isDirectory() && file.exists())
+		{
+			File[] apks = file.listFiles();
+			for (File apk : apks)
+			{
+				if (time - apk.lastModified() > 1000*60*60*24)
+				{
+					apk.delete();
+				}
+			}
+		}
+	}
 
 	//自动检测更新
 	public static void AutoCheckUpdate(Context ctx)
@@ -45,8 +63,8 @@ public class FloatManageMethod
 			{
 				GithubUpdateCheck gu = new GithubUpdateCheck(ctx);
 				gu.setProjectData("XFY9326", "FloatText");
-				gu.prepare();
-				gu.showDialog(false);
+				gu.setMarketDownload(true, "http://www.coolapk.com/apk/tool.xfy9326.floattext");
+				gu.showUpdateInfoDialog(false);
 			}
 		}
 	}

@@ -105,6 +105,10 @@
         <item>微信钱包</item>
         <item>QQ钱包</item>
     </string-array>
+	<string-array name="update_list">
+        <item>从应用市场获取更新</item>
+        <item>从Github获取更新</item>
+    </string-array>
     <string-array name="fileselect_types">
         <item>pdf</item>
         <item>doc</item>

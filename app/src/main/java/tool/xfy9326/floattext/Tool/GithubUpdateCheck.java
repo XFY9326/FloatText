@@ -7,8 +7,8 @@ import java.io.*;
 import java.net.*;
 import org.json.*;
 
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
-import android.text.format.Formatter;
 import android.widget.Toast;
 import tool.xfy9326.floattext.Method.ActivityMethod;
 import tool.xfy9326.floattext.R;
@@ -24,7 +24,9 @@ public class GithubUpdateCheck
 	private String Release_URL = null;
 	private JSONObject Release_Data = null;
 	private Thread getData = null;
+	private String Release_Market_URL= null;
 	private boolean showLoadingDialog = true;
+	private boolean showMarketDownload = false;
 
 	private AlertDialog loading = null;
 	private AlertDialog message = null;
@@ -75,6 +77,12 @@ public class GithubUpdateCheck
 		this.ctx = ctx;
 	}
 
+	public void setMarketDownload(boolean showMarketDownload, String url)
+	{
+		this.showMarketDownload = showMarketDownload;
+		this.Release_Market_URL = url;
+	}
+
 	public void setProjectData(String UserName, String ProjectName)
 	{
 		this.UserName = UserName;
@@ -82,7 +90,7 @@ public class GithubUpdateCheck
 		DataPrepared = false;
 	}
 
-	public void prepare()
+	private void PrepareData()
 	{
 		if (ProjectName != null && UserName != null)
 		{
@@ -94,8 +102,9 @@ public class GithubUpdateCheck
 		}
 	}
 
-	public void showDialog(boolean showLoadingDialog)
+	public void showUpdateInfoDialog(boolean showLoadingDialog)
 	{
+		PrepareData();
 		this.showLoadingDialog = showLoadingDialog;
 		if (DataPrepared)
 		{
@@ -150,16 +159,57 @@ public class GithubUpdateCheck
 		msg.setPositiveButton(R.string.updater_getupdate, new DialogInterface.OnClickListener(){
 				public void onClick(DialogInterface d, int i)
 				{
-					Intent intent = new Intent();
-					intent.setClass(ctx, FloatUpdateService.class);
-					intent.putExtra("URL", JSON_DownloadURL);
-					intent.putExtra("TYPE", StaticNum.FLOATUPDATE_START_DOWNLOAD);
-					Toast.makeText(ctx, R.string.updater_download, Toast.LENGTH_SHORT).show();
-					ctx.startService(intent);
+					if (showMarketDownload)
+					{
+						DownloadChoose();
+					}
+					else
+					{
+						GithubDownload();
+					}
 				}
 			});
 		msg.setNegativeButton(R.string.cancel, null);
 		message = msg.show();
+	}
+
+	private void DownloadChoose()
+	{
+		AlertDialog.Builder downloadchoose = new AlertDialog.Builder(ctx);
+		downloadchoose.setItems(ctx.getResources().getStringArray(R.array.update_list), new DialogInterface.OnClickListener(){
+				public void onClick(DialogInterface d, int i)
+				{
+					if (i == 0)
+					{
+						MarketDownload();
+					}
+					else if (i == 1)
+					{
+						GithubDownload();
+					}
+				}
+			});
+		downloadchoose.show();
+	}
+
+	private void GithubDownload()
+	{
+		Intent intent = new Intent();
+		intent.setClass(ctx, FloatUpdateService.class);
+		intent.putExtra("URL", JSON_DownloadURL);
+		intent.putExtra("TYPE", StaticNum.FLOATUPDATE_START_DOWNLOAD);
+		Toast.makeText(ctx, R.string.updater_download, Toast.LENGTH_SHORT).show();
+		ctx.startService(intent);
+	}
+
+	private void MarketDownload()
+	{
+		if (Release_Market_URL != null)
+		{
+			Uri url = Uri.parse(Release_Market_URL.toString().trim());
+			Intent intent = new Intent(Intent.ACTION_VIEW, url);
+			ctx.startActivity(intent);
+		}
 	}
 
 	private String MsgBuild()

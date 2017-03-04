@@ -62,18 +62,20 @@ public class FloatUpdateService extends Service
 		File existfile = new File(downloadPath);
 		if (existfile.exists())
 		{
-			existfile.delete();
+			installAPK(existfile, true);
 		}
-
-		DownloadManager.Request request = new DownloadManager.Request(uri);
-		MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        String mimeString = mimeTypeMap.getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(url));
-        request.setMimeType(mimeString);
-		request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-        request.setVisibleInDownloadsUi(true);
-		request.setDestinationInExternalPublicDir("/FloatText/Download/", DownloadFileName);
-		DownloadTaskId = downloadManager.enqueue(request);
-		registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+		else
+		{
+			DownloadManager.Request request = new DownloadManager.Request(uri);
+			MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+			String mimeString = mimeTypeMap.getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(url));
+			request.setMimeType(mimeString);
+			request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+			request.setVisibleInDownloadsUi(true);
+			request.setDestinationInExternalPublicDir("/FloatText/Download/", DownloadFileName);
+			DownloadTaskId = downloadManager.enqueue(request);
+			registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+		}
 	}
 
 	private void checkDownloadStatus()
@@ -88,7 +90,7 @@ public class FloatUpdateService extends Service
 			{                
 				case DownloadManager.STATUS_SUCCESSFUL:
 					Toast.makeText(this, R.string.updater_success, Toast.LENGTH_SHORT).show();
-					installAPK(new File(downloadPath));
+					installAPK(new File(downloadPath), false);
 					break;
 				case DownloadManager.STATUS_FAILED:
 					Toast.makeText(this, R.string.updater_failed, Toast.LENGTH_SHORT).show();
@@ -99,7 +101,7 @@ public class FloatUpdateService extends Service
 		}
     }
 
-	private void installAPK(File file)
+	private void installAPK(File file, boolean existInstall)
 	{
 		if (file.exists()) 
 		{
@@ -113,7 +115,10 @@ public class FloatUpdateService extends Service
 			}
 			intent.setDataAndType(uri, "application/vnd.android.package-archive");        
 			startActivity(intent);
-			unregisterReceiver(receiver);
+			if (!existInstall)
+			{
+				unregisterReceiver(receiver);
+			}
 			stopSelf();
 		}
     }

@@ -29,11 +29,7 @@ public class FloatNotificationListenerService extends NotificationListenerServic
 		if (title != null)
 		{
 			notify = title  + (text == null ? "" : ":" + text) + (sum_text == null ? "" : " " + sum_text) + (sub_text == null ? "" : " " + sub_text);
-			String pkgtmp = sbn.getPackageName().toString();
-			if (!pkgtmp.equalsIgnoreCase("Android"))
-			{
-				pkg = pkgtmp;
-			}
+			pkg = sbn.getPackageName().toString();
 			sendmes();
 		}
 		super.onNotificationPosted(sbn);

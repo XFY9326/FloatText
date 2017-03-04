@@ -70,4 +70,8 @@
         <item>WeChat Purse</item>
         <item>QQ Purse</item>
     </string-array>
+	<string-array name="update_list">
+        <item>Update from app market</item>
+        <item>Update from Github</item>
+    </string-array>
 </resources>

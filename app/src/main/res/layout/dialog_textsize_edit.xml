@@ -7,11 +7,34 @@
 	android:gravity="center"
 	android:padding="8dp">
 
-	<TextView
+	<RelativeLayout
 		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:textSize="20sp"
-		android:id="@+id/textview_textsize_now"/>
+		android:layout_width="match_parent">
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:textSize="20sp"
+			android:id="@+id/textview_textsize_now"
+			android:layout_centerInParent="true"/>
+
+		<Button
+			android:layout_height="30dp"
+			android:layout_width="30dp"
+			android:background="@drawable/ic_minus"
+			android:layout_alignParentLeft="true"
+			android:layout_marginLeft="23dp"
+			android:id="@+id/textsize_button_minus"/>
+
+		<Button
+			android:layout_height="30dp"
+			android:layout_width="30dp"
+			android:background="@drawable/ic_plus_black"
+			android:layout_alignParentRight="true"
+			android:layout_marginRight="23dp"
+			android:id="@+id/textsize_button_plus"/>
+
+	</RelativeLayout>
 
 	<TextView
 		android:layout_width="wrap_content"

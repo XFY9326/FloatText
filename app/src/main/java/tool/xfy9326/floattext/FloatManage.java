@@ -267,6 +267,7 @@ public class FloatManage extends AppCompatActivity
 		{
 			closeag();
 		}
+		FloatManageMethod.DeleteDownloadFile();
 		FloatManageMethod.AutoCheckUpdate(this);
 	}
 

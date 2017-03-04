@@ -422,10 +422,40 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
 		dialog.setTitle(R.string.text_size_set);
 		final TextView text = (TextView) layout.findViewById(R.id.textview_textsize_now);
-		SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_textsize);
+		final SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_textsize);
 		text.setText(getString(R.string.text_size_now) + "：" + TextSize.intValue());
-		DisplayMetrics dm = new DisplayMetrics();
+		final DisplayMetrics dm = new DisplayMetrics();
 		wm.getDefaultDisplay().getMetrics(dm);
+		Button minus = (Button) layout.findViewById(R.id.textsize_button_minus);
+		Button plus = (Button) layout.findViewById(R.id.textsize_button_plus);
+		minus.setOnClickListener(new OnClickListener(){
+				public void onClick(View v)
+				{
+					if (TextSize > 0)
+					{
+						TextSize--;
+						spedit.putFloat("TextSize", TextSize);
+						spedit.commit();
+						bar.setProgress(TextSize.intValue());
+						text.setText(getString(R.string.text_size_now) + "：" + TextSize.intValue());
+						updateview();
+					}
+				}
+			});
+		plus.setOnClickListener(new OnClickListener(){
+				public void onClick(View v)
+				{
+					if (TextSize < (int)(dm.widthPixels/dm.scaledDensity + 0.5f))
+					{
+						TextSize++;
+						spedit.putFloat("TextSize", TextSize);
+						spedit.commit();
+						bar.setProgress(TextSize.intValue());
+						text.setText(getString(R.string.text_size_now) + "：" + TextSize.intValue());
+						updateview();
+					}
+				}
+			});
 		bar.setMax((int)(dm.widthPixels/dm.scaledDensity + 0.5f));
 		bar.setProgress(TextSize.intValue());
 		bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){

@@ -121,7 +121,7 @@ public class FloatTextUpdateService extends Service
 
 	private void setDefaultKey()
 	{
-		String str = getString(R.string.loading);
+		String str = getString(R.string.dynamic_word_empty);
 		time0 = 
 			time1 = 
 			time2 = 

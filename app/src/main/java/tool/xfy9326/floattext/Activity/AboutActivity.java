@@ -1,16 +1,14 @@
 package tool.xfy9326.floattext.Activity;
 
-import android.content.*;
 import android.support.v7.app.*;
+import tool.xfy9326.floattext.Tool.*;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.view.MenuItem;
 import android.widget.Toast;
 import tool.xfy9326.floattext.Method.ActivityMethod;
 import tool.xfy9326.floattext.R;
-import tool.xfy9326.floattext.Tool.GithubUpdateCheck;
 
 public class AboutActivity extends AppCompatPreferenceActivity
 {
@@ -53,8 +51,8 @@ public class AboutActivity extends AppCompatPreferenceActivity
 					{
 						GithubUpdateCheck gu = new GithubUpdateCheck(AboutActivity.this);
 						gu.setProjectData("XFY9326", "FloatText");
-						gu.prepare();
-						gu.showDialog(true);
+						gu.setMarketDownload(true, "http://www.coolapk.com/apk/tool.xfy9326.floattext");
+						gu.showUpdateInfoDialog(true);
 					}
 					else
 					{
@@ -67,7 +65,8 @@ public class AboutActivity extends AppCompatPreferenceActivity
         donate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference pre)
                 {
-                    DonateDialogShow();
+                    DonateList dl = new DonateList(AboutActivity.this);
+					dl.show();
                     return true;
                 }
             });
@@ -83,32 +82,6 @@ public class AboutActivity extends AppCompatPreferenceActivity
                 }
             });
     }
-
-	private void DonateDialogShow()
-	{
-		AlertDialog.Builder dialog = new AlertDialog.Builder(AboutActivity.this)
-			.setTitle(R.string.xml_about_donate)
-			.setItems(R.array.donate_list, new DialogInterface.OnClickListener(){
-				public void onClick(DialogInterface d, int i)
-				{
-					String[] urls = getPurchaseURL();
-					Uri url = Uri.parse(urls[i].toString().trim());
-					Intent intent = new Intent(Intent.ACTION_VIEW, url);
-					startActivity(intent);
-				}
-			})
-			.setNegativeButton(R.string.cancel, null);
-		dialog.show();
-	}
-
-	private String[] getPurchaseURL()
-	{
-		String[] url = new String[3];
-		url[0] = "https://raw.githubusercontent.com/XFY9326/FloatText/gh-pages/Datas/DONATE/AliPay.png";
-		url[1] = "https://raw.githubusercontent.com/XFY9326/FloatText/gh-pages/Datas/DONATE/WeChat.png";
-		url[2] = "https://raw.githubusercontent.com/XFY9326/FloatText/gh-pages/Datas/DONATE/QQ.png";
-		return url;
-	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
