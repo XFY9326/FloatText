@@ -1,10 +1,11 @@
 package tool.xfy9326.floattext.Method;
 
 import android.content.*;
-import android.content.pm.*;
 import android.net.wifi.*;
 import java.io.*;
 import java.util.*;
+import java.util.regex.*;
+import tool.xfy9326.floattext.Utils.*;
 
 import android.app.ActivityManager;
 import android.content.res.Configuration;
@@ -12,9 +13,8 @@ import android.net.TrafficStats;
 import android.os.PowerManager;
 import java.net.NetworkInterface;
 import java.text.DecimalFormat;
+import tool.xfy9326.floattext.Service.FloatTextUpdateService;
 import tool.xfy9326.floattext.Tool.FormatArrayList;
-import tool.xfy9326.floattext.Utils.StaticNum;
-import android.util.Log;
 
 public class FloatServiceMethod
 {
@@ -75,7 +75,7 @@ public class FloatServiceMethod
 			InfoList.add(1);
 			KeyList.add("Second");
 			InfoList.add(0);
-			KeyList.add("Origination");
+			KeyList.add("Orientation");
 			InfoList.add(0);
 			KeyList.add("(DateUseCount_)(.*?)");
 			InfoList.add(2);
@@ -90,16 +90,54 @@ public class FloatServiceMethod
 		}
 		return list;
 	}
-	
-	//获取Wifi信号
-	public static String getWifiSignal(Context ctx)
+
+	//刷新动态变量状态
+	public static void ReloadDynamicUse(Context ctx)
 	{
-		WifiManager wm = (WifiManager) ctx.getSystemService(ctx.WIFI_SERVICE);
-		return wm.getConnectionInfo().getRssi() + "db";
+		App utils = ((App)ctx.getApplicationContext());
+		if (utils.DynamicNumService)
+		{
+			if (utils.getDynamicNumService())
+			{
+				if (HasDynamicWord(ctx))
+				{
+					Intent intent = new Intent(ctx, FloatTextUpdateService.class);
+					intent.putExtra("RELOAD", true);
+					ctx.startService(intent);
+				}
+				else
+				{
+					Intent intent = new Intent(ctx, FloatTextUpdateService.class);
+					ctx.stopService(intent);
+				}
+			}
+		}
+	}
+
+	//确认是否存在动态变量
+	public static boolean HasDynamicWord(Context ctx)
+	{
+		Pattern pat = Pattern.compile("<(.*?)>");
+        Pattern pat2 = Pattern.compile("#(.*?)#");
+		Pattern pat3 = Pattern.compile("\\[(.*?)\\]");
+		ArrayList<String> list = ((App)ctx.getApplicationContext()).getFloatText();
+        if (list.size() > 0)
+        {
+			String str = list.toString();
+			str = str.substring(1, str.length() - 1).trim();
+			Matcher mat = pat.matcher(str);
+			Matcher mat2 = pat2.matcher(str);
+			Matcher mat3 = pat3.matcher(str);
+			if (mat.find() || mat2.find() || mat3.find())
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	//屏幕横竖判断
-	public static String judgeOrigination(Context ctx)
+	public static String judgeOrientation(Context ctx)
 	{
 		int ori = ctx.getResources().getConfiguration().orientation;
 		if (ori == Configuration.ORIENTATION_PORTRAIT)
@@ -118,9 +156,16 @@ public class FloatServiceMethod
 	}
 
 	//判断是否有字符
-	public static boolean hasWord(String all, String part)
+	public static boolean hasWord(String all, String[] part)
     {
-        return all.contains(part);
+		for (String str : part)
+		{
+			if (all.contains(str))
+			{
+				return true;
+			}
+		}
+        return false;
     }
 
 	public static String[] StringtoStringArray(String str)
@@ -135,23 +180,6 @@ public class FloatServiceMethod
         return Itoi(arr.toArray(new Integer[arr.size()]));
 	}
 
-	//判断是否在启动器界面
-    public static boolean isHome(Context ctx, List<String> homes)
-    {
-        ActivityManager mActivityManager = (ActivityManager)ctx.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningTaskInfo> rti = mActivityManager.getRunningTasks(1);
-        String Top = rti.get(0).topActivity.getPackageName();
-		Log.d("H", Top);
-        if (Top.trim().equalsIgnoreCase("tool.xfy9326.floattext"))
-        {
-            return false;
-        }
-        else
-        {
-            return homes.contains(Top);
-        }
-    }
-
 	//Integer值对象转换
 	public static int[] Itoi(Integer[] B)
 	{
@@ -162,22 +190,6 @@ public class FloatServiceMethod
 		}
 		return b;
 	}
-
-	//获取启动器包名
-    public static List<String> getHomes(Context ctx)
-    {
-        List<String> names = new ArrayList<String>();
-        PackageManager packageManager = ctx.getPackageManager();
-        Intent intent =new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        List<ResolveInfo> resolveInfo = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-        for (int i = 0; i < resolveInfo.size() ; i++)
-        {
-            String str = resolveInfo.get(i).activityInfo.packageName.toString();
-            names.add(str);
-        }
-        return names;
-    }
 
 	//修复null
 	public static String fixnull(String str, String def)
@@ -295,6 +307,13 @@ public class FloatServiceMethod
         PowerManager pm = (PowerManager)ctx.getSystemService(Context.POWER_SERVICE);
         return pm.isScreenOn();
     }
+
+	//获取Wifi信号
+	public static String getWifiSignal(Context ctx)
+	{
+		WifiManager wm = (WifiManager) ctx.getSystemService(ctx.WIFI_SERVICE);
+		return wm.getConnectionInfo().getRssi() + "db";
+	}
 
 	//获取IP
     public static String getIP(Context ctx)

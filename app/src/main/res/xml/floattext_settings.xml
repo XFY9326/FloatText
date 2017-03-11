@@ -16,6 +16,12 @@
             android:summaryOff="@string/noshow" 
             android:defaultValue="true" 
         />
+		<CheckBoxPreference 
+            android:key="NotifyControl" 
+            android:title="@string/xml_set_win_notifycontrol" 
+            android:summary="@string/xml_set_win_notifycontrol_sum" 
+            android:defaultValue="true"
+        /> 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/xml_set_textset"> 
         <Preference 
@@ -75,12 +81,6 @@
             android:defaultValue="0x99000000" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/xml_set_win"> 
-        <CheckBoxPreference 
-            android:key="NotifyControl" 
-            android:title="@string/xml_set_win_notifycontrol" 
-            android:summary="@string/xml_set_win_notifycontrol_sum" 
-            android:defaultValue="true"
-        /> 
 		<Preference 
             android:key="FloatMove"
             android:title="@string/xml_set_move"

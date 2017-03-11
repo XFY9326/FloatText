@@ -21,6 +21,11 @@ import java.text.SimpleDateFormat;
 import tool.xfy9326.floattext.FileSelector.SelectFile;
 import tool.xfy9326.floattext.R;
 import tool.xfy9326.floattext.Tool.FormatArrayList;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
+import android.text.InputType;
+import android.text.method.DigitsKeyListener;
 
 public class GlobalSetActivity extends AppCompatPreferenceActivity
 {
@@ -102,6 +107,15 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//动态变量刷新时间
+		Preference dynamictime = findPreference("DynamicTime");
+		dynamictime.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
+				public boolean onPreferenceClick(Preference p)
+				{
+					DynamicTimeSet(setdata);
+					return true;
+				}
+			});
 		//实验性功能
         CheckBoxPreference develop = (CheckBoxPreference) findPreference("DevelopMode");
         develop.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
@@ -127,15 +141,6 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
                 public boolean onPreferenceChange(Preference p1, Object p2)
                 {
                     ((App)getApplicationContext()).setListTextHide((boolean)p2);
-                    return true;
-                }
-            });
-		//只在桌面显示
-        CheckBoxPreference onlyshowinhome = (CheckBoxPreference)findPreference("WinOnlyShowInHome");
-        onlyshowinhome.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange(Preference p1, Object p2)
-                {
-                    HomeSet((boolean)p2);
                     return true;
                 }
             });
@@ -199,6 +204,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 					return true;
 				}
 			});
+		//通知监听服务
 		Preference nous = findPreference("NotificationListenerService");
 		if (Build.VERSION.SDK_INT < 18)
 		{
@@ -219,6 +225,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 					}
 				});
 		}
+		//自定义动态变量
 		Preference dynamicwordaddon = findPreference("DynamicWordAddon");
 		dynamicwordaddon.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
 				public boolean onPreferenceClick(Preference p)
@@ -227,6 +234,41 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 					return true;
 				}
 			});
+	}
+	
+	private void DynamicTimeSet(final SharedPreferences sp)
+	{
+		int num = sp.getInt("DynamicReloadTime", 1000);
+		LayoutInflater inflater = LayoutInflater.from(GlobalSetActivity.this);
+		View view = inflater.inflate(R.layout.dialog_text, null);
+		AlertDialog.Builder set = new AlertDialog.Builder(this);
+		set.setTitle(R.string.xml_global_dynamicword_reload_time);
+		final EditText et = (EditText) view.findViewById(R.id.dialog_text_edittext);
+		et.setText(String.valueOf(num));
+		et.setKeyListener(new DigitsKeyListener(false, true));
+		set.setPositiveButton(R.string.done, new DialogInterface.OnClickListener()
+		{
+			public void onClick(DialogInterface d, int i)
+			{
+				String str = et.getText().toString();
+				if (!str.isEmpty())
+				{
+					int get = Integer.valueOf(str);
+					if (get < 500)
+					{
+						Toast.makeText(GlobalSetActivity.this, R.string.num_err, Toast.LENGTH_SHORT).show();
+					}
+					else
+					{
+						sp.edit().putInt("DynamicReloadTime", get).commit();
+						Toast.makeText(GlobalSetActivity.this, R.string.restart_to_apply, Toast.LENGTH_LONG).show();
+					}
+				}
+			}
+		});
+		set.setNegativeButton(R.string.cancel, null);
+		set.setView(view);
+		set.show();
 	}
 
 	private void DataViewSet()
@@ -274,6 +316,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 		help.show();
 	}
 
+	//语言设置
 	private String MultiLanguageSet(Context ctx, String[] arr)
 	{
 		String path = arr[2];
@@ -331,23 +374,6 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 			{
 				backupdata();
 			}
-		}
-	}
-
-	private void HomeSet(boolean b)
-	{
-		if (!b)
-		{
-			App utils = ((App)getApplicationContext());
-			ArrayList<FloatLinearLayout> layout = utils.getFrameutil().getFloatlinearlayout();
-			ArrayList<Boolean> show = utils.getTextutil().getShowFloat();
-			ListViewAdapter adp = utils.getListviewadapter();
-			for (int i = 0;i < layout.size(); i++)
-			{
-				layout.get(i).setShowState(true);
-				show.set(i, true);
-			}
-			adp.notifyDataSetChanged();
 		}
 	}
 
@@ -587,20 +613,18 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity
 
 	private void getAppInfo(Context ctx, ArrayList<String> PkgHave)
 	{
-		List<String> homes = FloatServiceMethod.getHomes(ctx);
 		PackageManager pm = ctx.getPackageManager();
 		List<PackageInfo> info = pm.getInstalledPackages(0);
 		String FloatTextPkgName = ctx.getPackageName();
 		ActivityMethod.orderPackageList(ctx, info);
-		int num = info.size() - homes.size() - 1;
-		AppNames = new String[num];
-		PkgNames = new String[num];
-		AppState = new boolean[num];
+		AppNames = new String[info.size() - 1];
+		PkgNames = new String[info.size() - 1];
+		AppState = new boolean[info.size() - 1];
 		int countnum = 0;
 		for (int i = 0; i < info.size();i++)
 		{
 			String pkgname = info.get(i).packageName;
-			if (!homes.contains(pkgname) && !pkgname.equalsIgnoreCase(FloatTextPkgName))
+			if (!pkgname.equalsIgnoreCase(FloatTextPkgName))
 			{
 				AppNames[countnum] = info.get(i).applicationInfo.loadLabel(ctx.getPackageManager()).toString();
 				PkgNames[countnum] = pkgname;

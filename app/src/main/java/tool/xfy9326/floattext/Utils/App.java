@@ -1,14 +1,14 @@
 package tool.xfy9326.floattext.Utils;
 
 import android.app.Application;
+import android.os.Environment;
+import android.support.v7.app.NotificationCompat;
 import android.view.WindowManager;
+import android.widget.RemoteViews;
 import java.util.ArrayList;
 import tool.xfy9326.floattext.CrashReport.CrashHandler;
 import tool.xfy9326.floattext.SafeGuard;
 import tool.xfy9326.floattext.View.ListViewAdapter;
-import android.support.v7.app.NotificationCompat;
-import android.widget.RemoteViews;
-import android.os.Environment;
 
 /*
  数据缓存

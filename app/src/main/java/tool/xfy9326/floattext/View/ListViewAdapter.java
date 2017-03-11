@@ -174,18 +174,11 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 
 	private void EditViewSet(int index)
 	{
-		if (!sp.getBoolean("WinOnlyShowInHome", false))
-		{
-			App utils = ((App) context.getApplicationContext());
-			floatdata = utils.getFrameutil().getFloatview();
-			floatlayout = utils.getFrameutil().getFloatlayout();
-			FloatWinEdit(activity, index);
-			notifyItemChanged(index);
-		}
-		else
-		{
-			FloatManage.snackshow((Activity) context, context.getString(R.string.float_can_not_edit));
-		}
+		App utils = ((App) context.getApplicationContext());
+		floatdata = utils.getFrameutil().getFloatview();
+		floatlayout = utils.getFrameutil().getFloatlayout();
+		FloatWinEdit(activity, index);
+		notifyItemChanged(index);
 	}
 
 	private void DelViewSet(final int index)
@@ -275,10 +268,11 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
             dat.savedata();
             notifyItemRemoved(index);
             notifyItemRangeChanged(index, getItemCount());
+			FloatServiceMethod.ReloadDynamicUse(context);
             return true;
         }
     }
-	
+
 	//改变悬浮窗内置序号(删除后调用)
 	private void FloatIDChange(int delid)
 	{

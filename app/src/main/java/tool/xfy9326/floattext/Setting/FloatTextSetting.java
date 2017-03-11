@@ -369,14 +369,6 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
                     return true;
                 }
             });
-		if (!spdata.getBoolean("WinOnlyShowInHome", false) || !EditMode)
-        {
-            floatshow.setEnabled(true);
-        }
-        else
-        {
-            floatshow.setEnabled(false);
-        }
 		//悬浮窗微调
         Preference floatmove = findPreference("FloatMove");
         floatmove.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
@@ -445,7 +437,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		plus.setOnClickListener(new OnClickListener(){
 				public void onClick(View v)
 				{
-					if (TextSize < (int)(dm.widthPixels/dm.scaledDensity + 0.5f))
+					if (TextSize < (int)(dm.widthPixels / dm.scaledDensity + 0.5f))
 					{
 						TextSize++;
 						spedit.putFloat("TextSize", TextSize);
@@ -456,7 +448,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 					}
 				}
 			});
-		bar.setMax((int)(dm.widthPixels/dm.scaledDensity + 0.5f));
+		bar.setMax((int)(dm.widthPixels / dm.scaledDensity + 0.5f));
 		bar.setProgress(TextSize.intValue());
 		bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
 				public void onStartTrackingTouch(SeekBar bar)
@@ -689,6 +681,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 						spedit.commit();
 						updateview();
 					}
+					FloatServiceMethod.ReloadDynamicUse(FloatTextSetting.this);
 				}
 			});
 		textedit.show();

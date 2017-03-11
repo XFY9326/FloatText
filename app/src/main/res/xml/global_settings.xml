@@ -47,18 +47,17 @@
             android:summaryOff="@string/xml_global_win_longclicklock_off"
             android:defaultValue="true"
         />
-        <CheckBoxPreference 
-            android:key="WinOnlyShowInHome"
-            android:title="@string/xml_global_win_onlyshowinhome"
-            android:summary="@string/xml_global_win_onlyshowinhome_sum"
-            android:defaultValue="false"
-            android:dependency="StayAliveService"
-        />
 		<CheckBoxPreference 
             android:key="WinFilterSwitch"
             android:title="@string/xml_global_win_filter_switch"
 			android:summary="@string/xml_global_win_filter_sum"
             android:defaultValue="false"
+        />
+		<CheckBoxPreference 
+            android:key="WinFilterMode"
+            android:title="@string/xml_global_win_filter_mode"
+            android:defaultValue="false"
+			android:dependency="WinFilterSwitch"
         />
 		<Preference 
             android:key="WinFilter"
@@ -143,7 +142,12 @@
 			android:summary="@string/xml_global_data_recover_sum"
         />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/xml_global_advanced"> 
+    <PreferenceCategory android:title="@string/xml_global_advanced">
+		<Preference
+			android:key="DynamicTime"
+            android:title="@string/xml_global_dynamicword_reload_time"
+			android:summary="@string/xml_global_dynamicword_reload_time_sum"
+        />
         <CheckBoxPreference 
             android:key="HtmlMode"
             android:title="@string/xml_global_htmlmode"

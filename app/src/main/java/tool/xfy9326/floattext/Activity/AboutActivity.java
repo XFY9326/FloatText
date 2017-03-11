@@ -33,16 +33,18 @@ public class AboutActivity extends AppCompatPreferenceActivity
 
     private void preset()
     {
+		//版本号
         Preference version = findPreference("Version");
         version.setSummary(ActivityMethod.getVersionName(this) + " (" + ActivityMethod.getVersionCode(this) + ")");
         version.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
             {
                 public boolean onPreferenceClick(Preference p)
                 {
-                    Toast.makeText(AboutActivity.this, "(ง •̀_•́)ง", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AboutActivity.this, "(ノ=Д=)ノ┻━┻", Toast.LENGTH_SHORT).show();
                     return true;
                 }
             });
+		//更新检测
 		Preference checkupdate = findPreference("CheckUpdate");
 		checkupdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference pre)
@@ -61,6 +63,7 @@ public class AboutActivity extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//捐赠
 		Preference donate = findPreference("Donate");
         donate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference pre)
@@ -70,13 +73,15 @@ public class AboutActivity extends AppCompatPreferenceActivity
                     return true;
                 }
             });
+		//感谢列表
         Preference thanklist = findPreference("ThankList");
         thanklist.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
                 public boolean onPreferenceClick(Preference pre)
                 {
                     AlertDialog.Builder list = new AlertDialog.Builder(AboutActivity.this)
                         .setTitle(R.string.xml_about_thanklist)
-                        .setMessage(R.string.thanklist);
+                        .setMessage(R.string.thanklist)
+						.setPositiveButton(R.string.done, null);
                     list.show();
                     return true;
                 }

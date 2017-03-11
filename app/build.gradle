@@ -8,8 +8,8 @@ android {
         applicationId "tool.xfy9326.floattext"
         minSdkVersion 14
         targetSdkVersion 24
-        versionCode 56
-        versionName "3.2.2"
+        versionCode 57
+        versionName "3.3"
     }
 	
     buildTypes {

@@ -71,7 +71,6 @@
     <string name="text_typeface_err">Font error</string>
     <string name="text_choose_typeface">Choose Font</string>
     <string name="set_save">Please save your changes</string>
-    <string name="float_can_not_edit">Can not edit now！\nPlease close Only show float in home ！</string>
     <string name="float_list_del_err">Failed！Please restart the appliance or empty appliance data to try again！</string>
     <string name="import_txt">Import Txt</string>
     <string name="export_txt">Export Txt</string>
@@ -95,7 +94,12 @@
 	<string name="notification_win_count">%1$s Float Window in total</string>
 	<string name="open_application_set">Open Application Setting Page</string>
 	<string name="textsize_edit_attention">If text size is too large,\nlong click Float Window and lock it!</string>
-    <!-- Color Picker -->
+	<string name="num_err">Number set error</string>
+	<!-- ShortCuts -->
+	<string name="shortcuts_disabled">This ShortCut is disabled!</string>
+	<string name="shortcuts_launchwin_long">Launch all Float Win</string>
+	<string name="shortcuts_launchwin_short">Launch Win</string>
+	<!-- Color Picker -->
     <string name="dialog_color_picker">Color Picker</string>
     <string name="press_color_to_apply">Choose color to apply changes</string>
     <!-- XML -->
@@ -139,8 +143,8 @@
     <string name="xml_set_textmove_speed">Text Move Speed</string>
     <string name="xml_set_textmove_speed_sum">Set The Move Display Speed</string>
     <string name="xml_set_win">Float Set</string>
-	<string name="xml_set_win_notifycontrol">Allow Notification Control this Float Window</string>
-	<string name="xml_set_win_notifycontrol_sum">Need to open Notification Control function</string>
+	<string name="xml_set_win_notifycontrol">Allow Whole Control this Float Window</string>
+	<string name="xml_set_win_notifycontrol_sum">Just like Notification Control function</string>
     <string name="xml_set_win_color">Window background color set</string>
     <string name="xml_set_win_color_sum">Display the color in different colors</string>
 	<string name="xml_set_win_size">Adjust the Float Size</string>
@@ -191,9 +195,8 @@
     <string name="xml_global_win_longclicklock">Long click to lock the float window</string>
     <string name="xml_global_win_longclicklock_on">Long click will lock the window</string>
     <string name="xml_global_win_longclicklock_off">Long click will not lock the window</string>
-    <string name="xml_global_win_onlyshowinhome">Only Show Float in home</string>
-    <string name="xml_global_win_onlyshowinhome_sum">Can not edit Float window \nNeed to open Float Window Guard service</string>
 	<string name="xml_global_win_filter_switch">Float Window Show Filter</string>
+	<string name="xml_global_win_filter_mode">Only show Float Window in these application(Default will not show)</string>
 	<string name="xml_global_win_filter">Float Window Show Filter List</string>
     <string name="xml_global_win_filter_sum">Not show Float Window in specified application automatically\nMay have arguments with custom setting\nNeed to open FloatText Advance Service</string>
     <string name="xml_global_text_type">Moving text show model</string>
@@ -231,6 +234,8 @@
 	<string name="xml_global_data_backup_sum">Backup all current Float window into the SD card</string>
 	<string name="xml_global_data_recover">Data Recover</string>
 	<string name="xml_global_data_recover_sum">Recover Float window data from the backup file</string>
+	<string name="xml_global_dynamicword_reload_time">Set Dynamic Word reload time</string>
+	<string name="xml_global_dynamicword_reload_time_sum">Default 1000 ms, at least 500 ms. Not suggest to change it!</string>
 	
     <string name="fileselect_activity_title">File Selector</string>
     <string name="fileselect_defaultpath_error">Default File Path Error！</string>

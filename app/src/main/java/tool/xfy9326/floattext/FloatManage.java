@@ -7,6 +7,7 @@ import android.support.v7.app.*;
 import android.support.v7.widget.*;
 import android.view.*;
 import tool.xfy9326.floattext.Activity.*;
+import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
@@ -20,7 +21,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View.OnClickListener;
 import java.util.ArrayList;
-import tool.xfy9326.floattext.Method.FloatManageMethod;
 import tool.xfy9326.floattext.R;
 import tool.xfy9326.floattext.Tool.FormatArrayList;
 
@@ -47,6 +47,7 @@ public class FloatManage extends AppCompatActivity
         SetAll(this);
     }
 
+	//列表设置
 	private void ListViewSet()
     {
         App utils = (App)getApplicationContext();
@@ -62,6 +63,7 @@ public class FloatManage extends AppCompatActivity
         utils.setListviewadapter(listadapter);
     }
 
+	//整体设置
 	private void contentset()
 	{
 		Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
@@ -94,6 +96,7 @@ public class FloatManage extends AppCompatActivity
 		}
 	}
 
+	//抽屉设置
 	private void DrawerSet(DrawerLayout mDrawerLayout, int item)
 	{
 		switch (item)
@@ -120,7 +123,7 @@ public class FloatManage extends AppCompatActivity
 				{
 					mDrawerLayout.closeDrawer(GravityCompat.START);
 				}
-				FloatManageMethod.RunInBack(FloatManage.this);
+				moveTaskToBack(true);
 				break;
 			case R.id.menu_exit:
 				finish();
@@ -129,6 +132,7 @@ public class FloatManage extends AppCompatActivity
 		}
 	}
 
+	//数据设置
     private void SetAll(final Activity ctx)
     {
         FloatStart(ctx);
@@ -149,6 +153,7 @@ public class FloatManage extends AppCompatActivity
 		}
     }
 
+	//开始显示窗口
 	private void FloatStart(final Activity ctx)
 	{
 		App utils = (App)getApplicationContext();
@@ -177,6 +182,7 @@ public class FloatManage extends AppCompatActivity
         }
 	}
 
+	//关闭加载窗口
     private void closeag()
     {
         FloatManage.this.runOnUiThread(new Runnable(){
@@ -187,6 +193,7 @@ public class FloatManage extends AppCompatActivity
             });
     }
 
+	//导入文本
     private void importtxt(Intent data)
     {
         final String Path = data.getStringExtra("FilePath");
@@ -217,6 +224,7 @@ public class FloatManage extends AppCompatActivity
 		FloatManageMethod.restartApplication(this, intent);
     }
 
+	//按序处理
 	private void setHandle()
 	{
 		mHandler = new Handler() {
@@ -232,11 +240,13 @@ public class FloatManage extends AppCompatActivity
 						break;
 					case 1:
 						closeag();
+						FloatServiceMethod.ReloadDynamicUse(FloatManage.this);
 						break;
 				}
 			}};
 	}
 
+	//悬浮窗恢复
 	private void FloatRecover(Activity ctx)
 	{
 		boolean close_ag = false;
@@ -254,7 +264,7 @@ public class FloatManage extends AppCompatActivity
 		}
 		FloatOthersSet(ctx, close_ag);
 	}
-	
+
 	private void FloatOthersSet(Activity ctx, boolean close_ag)
 	{
 		App utils = ((App)ctx.getApplicationContext());
@@ -271,6 +281,7 @@ public class FloatManage extends AppCompatActivity
 		FloatManageMethod.AutoCheckUpdate(this);
 	}
 
+	//权限检测
 	private boolean PermissionCheck(boolean request)
 	{
 		if (Build.VERSION.SDK_INT >= 23)
@@ -292,6 +303,7 @@ public class FloatManage extends AppCompatActivity
 		return true;
 	}
 
+	//提示文字
 	private void  AlertTextShow(Intent data)
 	{
 		if (data != null)
@@ -365,6 +377,7 @@ public class FloatManage extends AppCompatActivity
 		listadapter.notifyDataSetChanged();
 	}
 
+	//显示SnackBar
 	public static void snackshow(Activity ctx, String str)
 	{
 		CoordinatorLayout cl = (CoordinatorLayout) ctx.findViewById(R.id.FloatManage_MainLayout);
@@ -422,11 +435,7 @@ public class FloatManage extends AppCompatActivity
         if (requestCode == StaticNum.FLOATTEXT_RESULT_CODE)
         {
 			AlertTextShow(data);
-			if (data != null)
-			{
-				int p = data.getIntExtra("POSITION", 0);
-				
-			}
+			FloatServiceMethod.ReloadDynamicUse(this);
 			FloatManageMethod.UpdateNotificationCount(this);
         }
         else if (requestCode == StaticNum.RESHOW_PERMISSION_RESULT_CODE)

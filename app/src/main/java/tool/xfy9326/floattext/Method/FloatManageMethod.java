@@ -2,6 +2,7 @@ package tool.xfy9326.floattext.Method;
 
 import android.app.*;
 import android.content.*;
+import android.content.pm.*;
 import android.content.res.*;
 import android.os.*;
 import android.support.design.widget.*;
@@ -16,8 +17,8 @@ import tool.xfy9326.floattext.Utils.*;
 import tool.xfy9326.floattext.View.*;
 
 import android.Manifest;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -34,9 +35,9 @@ public class FloatManageMethod
 	public static boolean waitdoubleclick = false;
 	public static Handler waithandle;
 	public static Runnable waitrun;
-	
+
 	//删除下载的文件(一天前)
-	public static void DeleteDownloadFile ()
+	public static void DeleteDownloadFile()
 	{
 		long time = System.currentTimeMillis();
 		File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/FloatText/Download/");
@@ -45,7 +46,7 @@ public class FloatManageMethod
 			File[] apks = file.listFiles();
 			for (File apk : apks)
 			{
-				if (time - apk.lastModified() > 1000*60*60*24)
+				if (time - apk.lastModified() > 1000 * 60 * 60 * 24)
 				{
 					apk.delete();
 				}
@@ -481,6 +482,7 @@ public class FloatManageMethod
 		App utils = (App)ctx.getApplicationContext();
 		utils.setGetSave(false);
 		utils.setFloatReshow(true);
+		utils.setStartShowWin(false);
 		FloatManageMethod.closeAllWin(ctx);
 		System.gc();
 		new Handler().postDelayed(new Runnable(){  
@@ -489,23 +491,6 @@ public class FloatManageMethod
                     System.exit(0);
                 }  
             }, 100); 
-	}
-
-	//后台运行应用
-	public static void RunInBack(Activity ctx)
-	{
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
-		if (sp.getBoolean("WinOnlyShowInHome", false))
-		{
-			Intent intent = new Intent(Intent.ACTION_MAIN);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			intent.addCategory(Intent.CATEGORY_HOME);
-			ctx.startActivity(intent);
-		}
-		else
-		{
-			ctx.moveTaskToBack(true);
-		}
 	}
 
 	//关闭应用控制(SnackBar)
@@ -522,7 +507,7 @@ public class FloatManageMethod
 			Snackbar.make(cl, R.string.exit_title, Snackbar.LENGTH_LONG).setAction(R.string.back_to_launcher, new OnClickListener(){
 					public void onClick(View v)
 					{
-						RunInBack(ctx);
+						ctx.moveTaskToBack(true);
 					}
 				}).setCallback(new Snackbar.Callback(){
 					@Override
@@ -642,7 +627,7 @@ public class FloatManageMethod
                 FloatData dat = new FloatData(ctx);
                 dat.getSaveArrayData();
                 utils.setMovingMethod(spdata.getBoolean("TextMovingMethod", false));
-                utils.setStayAliveService(spdata.getBoolean("StayAliveService", false));
+                utils.setStayAliveService(spdata.getBoolean("StayAliveService", true));
                 utils.setDynamicNumService(spdata.getBoolean("DynamicNumService", false));
                 utils.setDevelopMode(spdata.getBoolean("DevelopMode", false));
                 utils.setHtmlMode(spdata.getBoolean("HtmlMode", true));
@@ -776,11 +761,6 @@ public class FloatManageMethod
 	//启动服务
     public static void startservice(Context ctx)
     {
-        if (((App)ctx.getApplicationContext()).getDynamicNumService())
-        {
-            Intent floatservice = new Intent(ctx, FloatTextUpdateService.class);
-            ctx.startService(floatservice);
-        }
         if (((App)ctx.getApplicationContext()).getStayAliveService())
         {
             Intent service = new Intent(ctx, FloatWindowStayAliveService.class);

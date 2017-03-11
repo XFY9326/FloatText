@@ -15,6 +15,8 @@ import tool.xfy9326.floattext.R;
 import tool.xfy9326.floattext.Service.FloatUpdateService;
 import tool.xfy9326.floattext.Utils.StaticNum;
 
+//Github更新检测
+
 public class GithubUpdateCheck
 {
 	private Context ctx;

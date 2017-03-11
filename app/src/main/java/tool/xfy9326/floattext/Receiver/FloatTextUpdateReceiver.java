@@ -4,7 +4,6 @@ import android.content.*;
 import tool.xfy9326.floattext.Method.*;
 import tool.xfy9326.floattext.Utils.*;
 
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 import java.util.ArrayList;
 
@@ -24,10 +23,6 @@ public class FloatTextUpdateReceiver extends BroadcastReceiver
 		{
 			ActivityChange(p1, p2);
 		}
-        else if (action == StaticString.TEXT_STATE_UPDATE_ACTION)
-        {
-            StateChange(p1, p2);
-        }
 		else if (action == StaticString.DYNAMIC_WORD_ADDON_ACTION)
 		{
 			if (p2 != null)
@@ -38,30 +33,17 @@ public class FloatTextUpdateReceiver extends BroadcastReceiver
 		}
     }
 
-	private void StateChange(Context p1, Intent p2)
-	{
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(p1);
-		if (sp.getBoolean("WinOnlyShowInHome", false))
-		{
-			Bundle bundle = p2.getExtras();
-			if (bundle.getBoolean("Float_InHome"))
-			{
-				FloatManageMethod.ShoworHideAllWin(p1, true, false);
-			}
-			else
-			{
-				FloatManageMethod.ShoworHideAllWin(p1, false, false);
-			}
-		}
-	}
-
+	//应用显示过滤
 	private void ActivityChange(Context p1, Intent p2)
 	{
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(p1);
-		if (!sp.getBoolean("WinOnlyShowInHome", false))
+		String actname = p2.getStringExtra("CurrentActivity");
+		if (actname.substring(0, 7).equalsIgnoreCase("android") || actname.contains(p1.getPackageName()))
 		{
-			String actname = p2.getStringExtra("CurrentActivity");
-			App utils = ((App)p1.getApplicationContext());
+			return;
+		}
+		App utils = ((App)p1.getApplicationContext());
+		if (utils.StartShowWin)
+		{
 			ArrayList<String> fa = utils.getFrameutil().getFilterApplication();
 			boolean findact = false;
 			for (int a = 0;a < fa.size();a++)
@@ -72,13 +54,17 @@ public class FloatTextUpdateReceiver extends BroadcastReceiver
 					break;
 				}
 			}
+			if (PreferenceManager.getDefaultSharedPreferences(p1).getBoolean("WinFilterMode", false))
+			{
+				findact = !findact;
+			}
 			if (findact)
 			{
-				FloatManageMethod.ShoworHideAllWin(p1, false, false);
+				FloatManageMethod.ShoworHideAllWin(p1, false, true);
 			}
 			else
 			{
-				FloatManageMethod.ShoworHideAllWin(p1, true, false);
+				FloatManageMethod.ShoworHideAllWin(p1, true, true);
 			}
 		}
 	}

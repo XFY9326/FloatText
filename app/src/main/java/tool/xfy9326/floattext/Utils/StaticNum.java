@@ -2,8 +2,8 @@ package tool.xfy9326.floattext.Utils;
 
 public class StaticNum
 {
-	public static int FloatDataVersion = 3;
-	public static int DYNAMIC_LIST_VERSION = 11;
+	public static int FloatDataVersion = 4;
+	public static int DYNAMIC_LIST_VERSION = 12;
 
 	public static int ONGONING_NOTIFICATION_ID = 13;
 	

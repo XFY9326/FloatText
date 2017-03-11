@@ -1,36 +1,41 @@
 package tool.xfy9326.floattext.Service;
 
 import android.service.notification.*;
+import tool.xfy9326.floattext.Utils.*;
 
 import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
-import tool.xfy9326.floattext.Utils.StaticString;
 
 public class FloatNotificationListenerService extends NotificationListenerService
 {
 	private String notify;
 	private String pkg;
+	private App utils;
 
 	@Override
 	public void onCreate()
 	{
+		utils = ((App)getApplicationContext());
 		super.onCreate();
 	}
 
 	@Override
 	public void onNotificationPosted(StatusBarNotification sbn)
 	{
-		Bundle extras = sbn.getNotification().extras;
-		String title = extras.getString(Notification.EXTRA_TITLE);
-		String text = extras.getString(Notification.EXTRA_TEXT);
-		String sum_text = extras.getString(Notification.EXTRA_SUMMARY_TEXT);
-		String sub_text = extras.getString(Notification.EXTRA_SUB_TEXT);
-		if (title != null)
+		if (utils.StartShowWin)
 		{
-			notify = title  + (text == null ? "" : ":" + text) + (sum_text == null ? "" : " " + sum_text) + (sub_text == null ? "" : " " + sub_text);
-			pkg = sbn.getPackageName().toString();
-			sendmes();
+			Bundle extras = sbn.getNotification().extras;
+			String title = extras.getString(Notification.EXTRA_TITLE);
+			String text = extras.getString(Notification.EXTRA_TEXT);
+			String sum_text = extras.getString(Notification.EXTRA_SUMMARY_TEXT);
+			String sub_text = extras.getString(Notification.EXTRA_SUB_TEXT);
+			if (title != null)
+			{
+				notify = title  + (text == null ? "" : ":" + text) + (sum_text == null ? "" : " " + sum_text) + (sub_text == null ? "" : " " + sub_text);
+				pkg = sbn.getPackageName().toString();
+				sendmes();
+			}
 		}
 		super.onNotificationPosted(sbn);
 	}

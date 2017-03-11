@@ -67,6 +67,7 @@ public class DynamicWordUpdateMethod
 				UpdateEachText(i, list, data, info);
 			}
 		}
+		System.gc();
     }
 
 	private void UpdateEachText(int i, String[] list, String[] data, int[] info)
@@ -111,10 +112,8 @@ public class DynamicWordUpdateMethod
     {
         if (!change.equals("NULL"))
         {
-            String tag2 = "<" + tag + ">";
-            str = search(str, tag2, change, reg);
-            String tag3 = "#" + tag + "#";
-            str = search(str, tag3, change, reg);
+            str = search(str, "<" + tag + ">", change, reg);
+            str = search(str, "#" + tag + "#", change, reg);
 			if (textfilter && filtertext.length == 1)
 			{
 				filtertext = FilterTextCheck(str, "[" + tag + "]", change);

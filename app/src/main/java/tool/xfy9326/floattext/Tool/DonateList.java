@@ -7,6 +7,8 @@ import android.support.v7.app.AlertDialog;
 import tool.xfy9326.floattext.Activity.AboutActivity;
 import tool.xfy9326.floattext.R;
 
+//捐赠选择
+
 public class DonateList
 {
 	private Context mContext;

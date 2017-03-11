@@ -1,9 +1,8 @@
 package tool.xfy9326.floattext.Service;
 
 import android.service.quicksettings.*;
+import tool.xfy9326.floattext.Method.*;
 
-import tool.xfy9326.floattext.Method.FloatManageMethod;
-import tool.xfy9326.floattext.Receiver.FloatTextBootReceiver;
 import tool.xfy9326.floattext.Utils.App;
 
 public class QuickSettingService extends TileService
@@ -41,7 +40,7 @@ public class QuickSettingService extends TileService
 			}
 			else
 			{
-				if (FloatTextBootReceiver.PrepareShow(this))
+				if (QuickStartMethod.Launch(this))
 				{
 					tile.setState(Tile.STATE_ACTIVE);
 				}

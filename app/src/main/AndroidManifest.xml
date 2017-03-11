@@ -20,7 +20,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name="FloatManage"
+            android:name=".FloatManage"
             android:label="@string/app_name"
 			android:theme="@style/AppTheme.DrawerUse"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -29,6 +29,9 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+			<meta-data 
+				android:name="android.app.shortcuts"
+				android:resource="@xml/shortcuts_config" />
         </activity>
         <activity
             android:name=".Setting.FloatTextSetting"
@@ -37,6 +40,10 @@
         <activity
             android:name=".Setting.FloatWebSetting"
             android:label="@string/web_add_title">
+        </activity>
+		<activity
+            android:name=".Activity.GlobalSetActivity"
+            android:label="@string/settings">
         </activity>
         <activity
             android:name=".Activity.AboutActivity"
@@ -47,10 +54,13 @@
             android:label="@string/license"
 			android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity
-            android:name=".Activity.GlobalSetActivity"
-            android:label="@string/settings">
-        </activity>
+		<activity
+			android:name=".Activity.ShortCutActivity"
+			android:theme="@android:style/Theme.Translucent"
+			android:taskAffinity=""
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask">
+		</activity>
         <activity
             android:name=".API.ImportTTF"
             android:label="@string/ttf_import_title"
@@ -135,10 +145,10 @@
 		</receiver>
         <receiver 
             android:name=".Receiver.FloatTextUpdateReceiver">
+			android:exported="true"
             <intent-filter>
 				<action android:name="tool.xfy9326.floattext.DYNAMIC_WORD_ADDON_ACTION"/>
                 <action android:name="tool.xfy9326.floattext.Service.FloatTextUpdateService.action.TEXT_UPDATE_ACTION"/>
-                <action android:name="tool.xfy9326.floattext.Service.FloatTextUpdateService.action.TEXT_STATE_UPDATE_ACTION"/>
 				<action android:name="tool.xfy9326.floattext.Service.FloatAdvanceTextUpdateService.action.ACTIVITY_CHANGE_ACTION"/>
             </intent-filter>
         </receiver>

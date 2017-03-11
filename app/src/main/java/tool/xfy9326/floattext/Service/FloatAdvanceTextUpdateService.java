@@ -1,17 +1,15 @@
 package tool.xfy9326.floattext.Service;
 
 import android.content.*;
+import tool.xfy9326.floattext.Method.*;
+import tool.xfy9326.floattext.Utils.*;
 
 import android.accessibilityservice.AccessibilityService;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.view.accessibility.AccessibilityEvent;
 import java.util.List;
-import tool.xfy9326.floattext.Activity.GlobalSetActivity;
-import tool.xfy9326.floattext.Method.FloatManageMethod;
 import tool.xfy9326.floattext.R;
-import tool.xfy9326.floattext.Utils.StaticString;
-import tool.xfy9326.floattext.Method.ActivityMethod;
 
 public class FloatAdvanceTextUpdateService extends AccessibilityService
 {
@@ -21,10 +19,12 @@ public class FloatAdvanceTextUpdateService extends AccessibilityService
 	private String toasts;
 	private String oldactivity = "";
 	private boolean sentrule = false;
+	private App utils;
 
 	@Override
 	public void onCreate()
 	{
+		utils = ((App)getApplicationContext());
 		currentactivity = toasts = notifymes = getString(R.string.loading);
 		FloatManageMethod.setWinManager(this);
 		super.onCreate();
@@ -33,48 +33,54 @@ public class FloatAdvanceTextUpdateService extends AccessibilityService
 	@Override
 	public void onAccessibilityEvent(AccessibilityEvent event)
 	{
-		int eventType = event.getEventType();
-        switch (eventType)
+		if (utils.StartShowWin)
 		{
-			case AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED:
-				List<CharSequence> text = event.getText();
-				if (!text.isEmpty())
-				{
-					String str = text.toString();
-					if (str != "[]")
+			int eventType = event.getEventType();
+			switch (eventType)
+			{
+				case AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED:
+					List<CharSequence> text = event.getText();
+					if (!text.isEmpty())
 					{
-						str = str.substring(1, str.length() - 1);
-						sentrule = getRule();
-						if (sentrule)
+						String str = text.toString();
+						if (str != "[]")
 						{
-							if (event.getClassName().toString().contains("Toast"))
+							str = str.substring(1, str.length() - 1);
+							sentrule = getRule();
+							if (sentrule)
 							{
-								toasts = str;
+								if (event.getClassName().toString().contains("Toast"))
+								{
+									toasts = str;
+								}
+								else
+								{
+									notifymes = str;
+									notifypkg = event.getClassName().toString();
+								}
 							}
 							else
 							{
-								notifymes = str;
-								notifypkg = event.getClassName().toString();
+								if (event.getClassName().toString().contains("Toast"))
+								{
+									toasts = str;
+								}
 							}
+							sendmes();
 						}
-						else
-						{
-							if (event.getClassName().toString().contains("Toast"))
-							{
-								toasts = str;
-							}
-						}
-						sendmes();
 					}
-				}
-				break;
-			case AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED:
-				if (event.getClassName() != null)
-				{
-					currentactivity = event.getClassName().toString();
-					sendmes();
-				}
-				break;
+					break;
+				case AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED:
+					if (event.getClassName() != null)
+					{
+						currentactivity = event.getClassName().toString();
+						if (!currentactivity.substring(0, 7).equalsIgnoreCase("android"))
+						{
+							sendmes();
+						}
+					}
+					break;
+			}
 		}
 	}
 

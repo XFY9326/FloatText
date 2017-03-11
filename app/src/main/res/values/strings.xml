@@ -71,7 +71,6 @@
     <string name="text_typeface_err">字体不存在！</string>
     <string name="text_choose_typeface">选择字体</string>
     <string name="set_save">请保存当前更改！</string>
-    <string name="float_can_not_edit">当前无法编辑悬浮窗！\n请关闭 只在桌面显示悬浮窗 功能后再编辑！</string>
     <string name="float_list_del_err">删除失败！请重启应用或清空应用数据重试！</string>
     <string name="import_txt">导入文本</string>
     <string name="export_txt">导出文本</string>
@@ -95,6 +94,11 @@
 	<string name="notification_win_count">共%1$s个悬浮窗</string>
 	<string name="open_application_set">打开应用设置界面</string>
 	<string name="textsize_edit_attention">如果文字调整得太大\n长按悬浮窗锁定后重新操作即可</string>
+	<string name="num_err">数值设定错误</string>
+	<!-- ShortCuts -->
+	<string name="shortcuts_disabled">该ShortCut目前不可用！</string>
+	<string name="shortcuts_launchwin_long">启动所有悬浮窗</string>
+	<string name="shortcuts_launchwin_short">启动窗口</string>
     <!-- Color Picker -->
     <string name="dialog_color_picker">颜色选择器</string>
     <string name="press_color_to_apply">选择颜色以应用更改</string>
@@ -139,8 +143,8 @@
     <string name="xml_set_textmove_speed">文字跑马灯速度</string>
     <string name="xml_set_textmove_speed_sum">调整跑马灯显示的速度</string>
     <string name="xml_set_win">窗口设置</string>
-	<string name="xml_set_win_notifycontrol">允许通知栏面板控制此悬浮窗</string>
-	<string name="xml_set_win_notifycontrol_sum">需要在全局设置打开通知栏控制功能</string>
+	<string name="xml_set_win_notifycontrol">允许全局更改控制此悬浮窗</string>
+	<string name="xml_set_win_notifycontrol_sum">如通知栏控制功能等</string>
     <string name="xml_set_win_color">窗口背景颜色设置</string>
     <string name="xml_set_win_color_sum">让窗口背景显示不同的颜色</string>
 	<string name="xml_set_win_size">窗口大小调整</string>
@@ -191,9 +195,8 @@
     <string name="xml_global_win_longclicklock">长按悬浮窗锁定</string>
     <string name="xml_global_win_longclicklock_on">长按悬浮窗可以锁定其位置</string>
     <string name="xml_global_win_longclicklock_off">长按悬浮窗不会锁定其位置</string>
-    <string name="xml_global_win_onlyshowinhome">只在桌面显示悬浮窗</string>
-    <string name="xml_global_win_onlyshowinhome_sum">开启后无法编辑悬浮窗\n需要开启进程守护服务</string>
 	<string name="xml_global_win_filter_switch">悬浮窗显示过滤</string>
+	<string name="xml_global_win_filter_mode">仅在选中的应用显示悬浮窗(默认不显示)</string>
 	<string name="xml_global_win_filter">悬浮窗显示过滤列表</string>
     <string name="xml_global_win_filter_sum">自动在指定的应用不显示悬浮窗\n会和手动设定产生冲突\n需要开启FloatText高级服务</string>
     <string name="xml_global_text_type">跑马灯显示模式</string>
@@ -231,7 +234,8 @@
 	<string name="xml_global_data_backup_sum">备份当前所有悬浮窗数据到储存卡</string>
 	<string name="xml_global_data_recover">数据恢复</string>
 	<string name="xml_global_data_recover_sum">从备份文件中恢复悬浮窗数据</string>
-	
+	<string name="xml_global_dynamicword_reload_time">动态变量刷新时间</string>
+	<string name="xml_global_dynamicword_reload_time_sum">默认为1000毫秒，最低500毫秒，不建议调整！</string>
     <!--List-->
     <string name="thanklist">在此感谢所有对本应用付出过努力的人！\n(以下排名不分先后)\n\n小明ming (图标制作)\n孟武．尼德霍格．龍 (反馈群组建，繁体中文翻译)\nyzq, jm, sb (英文翻译)\n酷安市场的诸位 (提供建议并反馈错误)</string>
 

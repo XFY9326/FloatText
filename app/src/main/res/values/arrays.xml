@@ -48,7 +48,7 @@
         <item>Sensor_CPUTemperature</item>
         <item>Sensor_Proximity</item>
         <item>Sensor_Step</item>
-		<item>Origination</item>
+		<item>Orientation</item>
         <item>ClipBoard</item>
 		<item>CurrentActivity</item>
 		<item>Notifications</item>

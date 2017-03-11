@@ -12,6 +12,7 @@ import java.io.File;
 
 public class ActivityMethod
 {
+	//文件夹大小获取
 	public static long getFolderSize(File file)
 	{  
         long size = 0;  
@@ -37,6 +38,7 @@ public class ActivityMethod
         return size;  
     }  
 	
+	//文件大小格式
 	public static String formatSize(Context ctx, String target_size)
 	{
 		if (target_size != null)
@@ -49,6 +51,7 @@ public class ActivityMethod
 		}
     }
 	
+	//获取后缀名
 	public static String getExtraName(String filename)
     { 
         if ((filename != null) && (filename.length() > 0))
@@ -62,6 +65,7 @@ public class ActivityMethod
         return "No_Name"; 
     }
 	
+	//包名排序
 	public static List<PackageInfo> orderPackageList(final Context ctx, List<PackageInfo> list)
 	{
 		Collections.sort(list, new Comparator<PackageInfo>() {
@@ -76,6 +80,7 @@ public class ActivityMethod
 		return list;
 	}
 	
+	//辅助服务是否打开
 	public static boolean isAccessibilitySettingsOn(Context context)
 	{
         int accessibilityEnabled = 0;
@@ -98,6 +103,7 @@ public class ActivityMethod
         return false;
     }
 
+	//通知监听是否打开
 	public static boolean isNotificationListenerEnabled(Context ctx)
 	{  
 		String pkgName = ctx.getPackageName();  
@@ -120,6 +126,7 @@ public class ActivityMethod
 		return false;  
 	}
 
+	//网络是否可用
 	public static boolean isNetworkAvailable(Context ctx)
 	{
 		ConnectivityManager cm = (ConnectivityManager) ctx.getSystemService(ctx.CONNECTIVITY_SERVICE);
@@ -134,11 +141,13 @@ public class ActivityMethod
 		}
 	}
 
+	//获取版本名
     public static String getVersionName(Context context)
     {
         return getPackageInfo(context).versionName;
     }
 
+	//获取版本号
     public static int getVersionCode(Context context) 
     { 
         return getPackageInfo(context).versionCode; 

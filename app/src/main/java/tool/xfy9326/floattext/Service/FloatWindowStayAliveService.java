@@ -15,15 +15,6 @@ import java.lang.reflect.Method;
 
 public class FloatWindowStayAliveService extends Service
 {
-    private Bundle bundle = null;
-    private Intent winIntent = null;
-    private Timer timer = null;
-    private boolean InHome = false;
-    private List<String> home_app = new ArrayList<String>();
-    private SharedPreferences sp = null;
-    private boolean homeswitch = true;
-    private boolean lasthome = true;
-    private boolean lastswitch = false;
 	private ButtonBroadcastReceiver bbr = null;
 	private RemoteViews contentview = null;
 	private NotificationCompat.Builder notification;
@@ -38,67 +29,8 @@ public class FloatWindowStayAliveService extends Service
     public void onCreate()
     {
         super.onCreate();
-        init();
-        timerset();
         create_notification();
 		FloatManageMethod.setWinManager(this);
-    }
-
-    private void init()
-    {
-        winIntent = new Intent();
-		bundle = new Bundle();
-        timer = new Timer();
-        home_app = FloatServiceMethod.getHomes(this);
-        sp = PreferenceManager.getDefaultSharedPreferences(FloatWindowStayAliveService.this);
-    }
-
-    private void timerset()
-    {
-        timer.schedule(new TimerTask()
-            {
-                @Override
-                public void run()
-                {
-                    if (hasFloatWin(FloatWindowStayAliveService.this))
-                    {
-                        homeswitch = sp.getBoolean("WinOnlyShowInHome", false);
-                        if (homeswitch != lastswitch)
-                        {
-                            lasthome = true;
-                        }
-                        lastswitch = homeswitch;
-                        if (homeswitch)
-                        {
-                            InHome = FloatServiceMethod.isHome(FloatWindowStayAliveService.this, home_app);
-                        }
-                        sendbroadcast();
-                    }
-                }
-            }, 100, 1500);
-    }
-
-    private void sendbroadcast()
-    {
-        if (lasthome != InHome)
-        {
-            bundle.putBoolean("Float_InHome", InHome);
-            winIntent.putExtras(bundle);
-            winIntent.setAction(StaticString.TEXT_STATE_UPDATE_ACTION);
-            sendBroadcast(winIntent);
-            lasthome = InHome;
-        }
-    }
-
-    private boolean hasFloatWin(Context ctx)
-    {
-        ArrayList<String> list = ((App)ctx.getApplicationContext()).getFloatText();
-        boolean dynamicnum = false;
-        if (list.size() > 0 && FloatServiceMethod.isScreenOn(FloatWindowStayAliveService.this))
-        {
-            dynamicnum = true;
-        }
-        return dynamicnum;
     }
 
     private void create_notification()
@@ -139,7 +71,7 @@ public class FloatWindowStayAliveService extends Service
 
 		contentview.setTextViewText(R.id.textview_notification_win_count, getString(R.string.notification_win_count, FloatManageMethod.getWinCount(this)));
 
-		contentview.setImageViewResource(R.id.button_notification_show, R.drawable.ic_notification_layers_off);
+		contentview.setImageViewResource(R.id.button_notification_show, R.drawable.ic_eye_off);
 		Intent buttonintent_show = new Intent();
 		buttonintent_show.setAction(StaticString.NOTIFICATION_BUTTON_ACTION);
 		buttonintent_show.putExtra("BUTTON_ID", 0);
@@ -162,7 +94,6 @@ public class FloatWindowStayAliveService extends Service
     @Override
     public void onDestroy()
     {
-        timer.cancel();
 		if (bbr != null)
 		{
 			unregisterReceiver(bbr);
@@ -210,11 +141,11 @@ public class FloatWindowStayAliveService extends Service
 					WinShow = !WinShow;
 					if (WinShow)
 					{
-						contentview.setImageViewResource(R.id.button_notification_show, R.drawable.ic_notification_layers_off);
+						contentview.setImageViewResource(R.id.button_notification_show, R.drawable.ic_eye_off);
 					}
 					else
 					{
-						contentview.setImageViewResource(R.id.button_notification_show, R.drawable.ic_notification_layers);
+						contentview.setImageViewResource(R.id.button_notification_show, R.drawable.ic_eye);
 					}
 				}
 				else if (buttonid == 1)

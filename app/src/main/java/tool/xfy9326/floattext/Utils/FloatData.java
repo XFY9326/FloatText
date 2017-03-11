@@ -72,6 +72,7 @@ public class FloatData
         ArrayList<String> textarr = new ArrayList<String>();
         VersionFix_1(version, textarr);
 		VersionFix_2(version, textarr);
+		VersionFix_4(version, textarr);
         DataNum = textarr.size();
 		FloatTextUtils textutils = utils.getTextutil();
 		textutils.setTextShow(textarr);
@@ -146,6 +147,24 @@ public class FloatData
 			textutils.getFloatLong().addAll(widetemp);
 			textutils.getFloatWide().clear();
 			textutils.getFloatWide().addAll(longtemp);
+			updateVersion(3);
+		}
+	}
+	
+	private void VersionFix_4(int version, ArrayList<String> textarr)
+	{
+		if (version < 4)
+		{
+			for (int i = 0;i < textarr.size();i++)
+			{
+				if (textarr.get(i).contains("Origination"))
+				{
+					textarr.set(i, textarr.get(i).replace("Origination", "Orientation"));
+				}
+			}
+			speditt.putString("TextArray", TextArr_encode(textarr).toString());
+			speditt.commit();
+			updateVersion(4);
 		}
 	}
 	

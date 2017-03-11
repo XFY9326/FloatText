@@ -11,6 +11,8 @@ import android.text.method.LinkMovementMethod;
 import tool.xfy9326.floattext.Method.IOMethod;
 import tool.xfy9326.floattext.R;
 
+//开源协议页面
+
 public class LicenseActivity extends AppCompatActivity
 {
 
