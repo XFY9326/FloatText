@@ -1,12 +1,14 @@
 package tool.xfy9326.floattext.Utils;
 
-import android.content.*;
-import java.util.*;
-import org.json.*;
-
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Base64;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
+import org.json.JSONException;
+import org.json.JSONObject;
 import tool.xfy9326.floattext.Method.IOMethod;
 import tool.xfy9326.floattext.Tool.FormatArrayList;
 
@@ -15,8 +17,7 @@ import tool.xfy9326.floattext.Tool.FormatArrayList;
  带有VersionFix的方法均为数据版本升级的适配
  */
 
-public class FloatData
-{
+public class FloatData {
 	private Context ctx;
     private int DataNum = 0;
 	private SharedPreferences spdatat;
@@ -25,8 +26,7 @@ public class FloatData
 	private SharedPreferences.Editor spedit;
 	private App utils;
 
-	public FloatData(Context ctx)
-	{
+	public FloatData(Context ctx) {
 		this.ctx = ctx;
 		utils = ((App)ctx.getApplicationContext());
 		spdatat = ctx.getSharedPreferences("FloatTextList", Activity.MODE_PRIVATE);
@@ -36,8 +36,7 @@ public class FloatData
 	}
 
 	//保存
-    public void savedata()
-    {
+    public void savedata() {
 		FloatTextUtils textutils = utils.getTextutil();
         spedit.putInt("Version", StaticNum.FloatDataVersion);
         speditt.putString("TextArray", TextArr_encode(textutils.getTextShow()).toString());
@@ -66,8 +65,7 @@ public class FloatData
     }
 
 	//获取
-    public void getSaveArrayData()
-    {
+    public void getSaveArrayData() {
         int version = spdata.getInt("Version", 0);
         ArrayList<String> textarr = new ArrayList<String>();
         VersionFix_1(version, textarr);
@@ -100,30 +98,23 @@ public class FloatData
         utils.setTextutil(textutils);
     }
 
-	private void VersionFix_1(int version, ArrayList<String> textarr)
-	{
+	private void VersionFix_1(int version, ArrayList<String> textarr) {
 		String text = spdatat.getString("TextArray", "[]");
-		if (version < 1)
-        {
+		if (version < 1) {
             textarr.addAll(FormatArrayList.StringToStringArrayList(text));
 			speditt.putString("TextArray", TextArr_encode(textarr).toString());
 			speditt.commit();
             updateVersion(1);
-        }
-		else
-		{
+        } else {
 			textarr.addAll(TextArr_decode(FormatArrayList.StringToStringArrayList(text)));
 		}
 	}
 
-	private void VersionFix_2(int version, ArrayList<String> textarr)
-	{
-		if (version < 2)
-		{
+	private void VersionFix_2(int version, ArrayList<String> textarr) {
+		if (version < 2) {
 			String text_v = spdata.getString("TextArray", "[]");
 			textarr.clear();
-			if (version < 1)
-			{
+			if (version < 1) {
 				textarr.addAll(FormatArrayList.StringToStringArrayList(text_v));
 			}
 			textarr.addAll(TextArr_decode(FormatArrayList.StringToStringArrayList(text_v)));
@@ -134,11 +125,9 @@ public class FloatData
 			updateVersion(2);
 		}
 	}
-	
-	private void VersionFix_3(int version, FloatTextUtils textutils)
-	{
-		if (version < 3)
-		{
+
+	private void VersionFix_3(int version, FloatTextUtils textutils) {
+		if (version < 3) {
 			ArrayList<Float> longtemp = new ArrayList<Float>();
 			longtemp.addAll(textutils.getFloatLong());
 			ArrayList<Float> widetemp = new ArrayList<Float>();
@@ -150,15 +139,11 @@ public class FloatData
 			updateVersion(3);
 		}
 	}
-	
-	private void VersionFix_4(int version, ArrayList<String> textarr)
-	{
-		if (version < 4)
-		{
-			for (int i = 0;i < textarr.size();i++)
-			{
-				if (textarr.get(i).contains("Origination"))
-				{
+
+	private void VersionFix_4(int version, ArrayList<String> textarr) {
+		if (version < 4) {
+			for (int i = 0;i < textarr.size();i++) {
+				if (textarr.get(i).contains("Origination")) {
 					textarr.set(i, textarr.get(i).replace("Origination", "Orientation"));
 				}
 			}
@@ -167,16 +152,14 @@ public class FloatData
 			updateVersion(4);
 		}
 	}
-	
+
 	//输出
-	public boolean OutputData(String path, int VersionCode)
-	{
+	public boolean OutputData(String path, int VersionCode) {
 		String jsonresult = "";
 		JSONObject mainobject = new JSONObject();
 		JSONObject dataobject = new JSONObject();
 		JSONObject textobject = new JSONObject();
-		try
-		{
+		try {
 			textobject.put("TextArray", spdatat.getString("TextArray", "[]"));
 
 			SetTextData(dataobject);
@@ -187,21 +170,17 @@ public class FloatData
 			mainobject.put("Data", dataobject);
 
 			jsonresult = mainobject.toString();
-		}
-		catch (JSONException e)
-		{
+		} catch (JSONException e) {
 			e.printStackTrace();
 			return false;
 		}
-		if (!IOMethod.writefile(path, jsonresult))
-		{
+		if (!IOMethod.writefile(path, jsonresult)) {
 			return false;
 		}
 		return true;
 	}
 
-	private JSONObject SetTextData(JSONObject dataobject) throws JSONException
-	{
+	private JSONObject SetTextData(JSONObject dataobject) throws JSONException {
 		xmltojson(dataobject, "SizeArray");
 		xmltojson(dataobject, "ColorArray");
 		xmltojson(dataobject, "ThickArray");
@@ -226,38 +205,27 @@ public class FloatData
 	}
 
 	//导入
-	public boolean InputData(String path)
-	{
+	public boolean InputData(String path) {
 		File bak = new File(path);
-		if (!bak.exists() && bak.isDirectory())
-		{
+		if (!bak.exists() && bak.isDirectory()) {
 			return false;
-		}
-		else
-		{
+		} else {
 			String[] data = IOMethod.readfile(bak);
 			String str = "";
-			for (int i = 0;i < data.length;i++)
-			{
+			for (int i = 0;i < data.length;i++) {
 				str += data[i];
 			}
-			if (!str.equalsIgnoreCase("Failed"))
-			{
+			if (!str.equalsIgnoreCase("Failed")) {
 				return InputDataAction(str);
-			}
-			else
-			{
+			} else {
 				return false;
 			}
 		}
 	}
 
-	private boolean InputDataAction(String str)
-	{
-		if (str != "" && !str.startsWith("error"))
-		{
-			try
-			{
+	private boolean InputDataAction(String str) {
+		if (str != "" && !str.startsWith("error")) {
+			try {
 				JSONObject mainobject = new JSONObject(str);
 				//int FloatText_Version = mainobject.getInt("FloatText_Version");
 				int Data_Version = mainobject.getInt("Data_Version");
@@ -266,53 +234,40 @@ public class FloatData
 
 				String text = textobject.getString("TextArray");
 				String oldtext = spdatat.getString("TextArray", "[]");
-				if (oldtext.equalsIgnoreCase("[]"))
-				{
+				if (oldtext.equalsIgnoreCase("[]")) {
 					oldtext = text;
-				}
-				else
-				{
+				} else {
 					oldtext = CombineArrayString(oldtext, text);
 				}
 				speditt.putString("TextArray", oldtext);
 
 				savetofile(dataobject);
-				
+
 				JsonVersionFix_1(Data_Version);
 
 				spedit.commit();
 				speditt.commit();
 				return true;
-			}
-			catch (JSONException e)
-			{
+			} catch (JSONException e) {
 				e.printStackTrace();
 				return false;
 			}
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}
 
 	//导入数据保存
-	private void savetofile(JSONObject dataobject) throws JSONException
-	{
+	private void savetofile(JSONObject dataobject) throws JSONException {
 		Iterator it = dataobject.keys();
-		while (it.hasNext())
-		{
+		while (it.hasNext()) {
 			String key = it.next().toString();
-			if (spdata.contains(key))
-			{
+			if (spdata.contains(key)) {
 				String old = spdata.getString(key, "[]");
 				String get = dataobject.getString(key);
-				if (old.equalsIgnoreCase("[]"))
-				{
+				if (old.equalsIgnoreCase("[]")) {
 					old = get;
-				}
-				else
-				{
+				} else {
 					old = CombineArrayString(old, get);
 				}
 				spedit.putString(key, old);
@@ -321,45 +276,36 @@ public class FloatData
 	}
 
 	//导入数据合并
-	private String CombineArrayString(String a1, String a2)
-	{
-		if (a1.length() == 2)
-		{
+	private String CombineArrayString(String a1, String a2) {
+		if (a1.length() == 2) {
 			return a2;
 		}
 		String str = a1.substring(0, a1.length() - 1) + ", " + a2.substring(1, a2.length());
 		return str;
 	}
-	
-	private void JsonVersionFix_1(int version)
-	{
-		if (version < 3)
-		{
+
+	private void JsonVersionFix_1(int version) {
+		if (version < 3) {
 			updateVersion(2);
 		}
 	}
 
-	private JSONObject xmltojson(JSONObject obj, String name) throws JSONException
-	{
+	private JSONObject xmltojson(JSONObject obj, String name) throws JSONException {
 		obj.put(name, spdata.getString(name, "[]"));
 		return obj;
 	}
 
-	private void updateVersion(int i)
-	{
+	private void updateVersion(int i) {
 		spedit.putInt("Version", i);
 		spedit.commit();
 	}
 
 	//Base64转换
-    private static ArrayList<String> TextArr_decode(ArrayList<String> str)
-    {
+    private static ArrayList<String> TextArr_decode(ArrayList<String> str) {
         ArrayList<String> output = new ArrayList<String>();
         output.addAll(str);
-        if (str.size() > 0)
-        {
-            for (int i = 0;i < str.size();i++)
-            {
+        if (str.size() > 0) {
+            for (int i = 0;i < str.size();i++) {
                 String result = new String(Base64.decode(str.get(i).getBytes(), Base64.NO_WRAP));
                 output.set(i, result);
             }
@@ -367,14 +313,11 @@ public class FloatData
         return output;
     }
 
-    private static ArrayList<String> TextArr_encode(ArrayList<String> str)
-    {
+    private static ArrayList<String> TextArr_encode(ArrayList<String> str) {
         ArrayList<String> output = new ArrayList<String>();
         output.addAll(str);
-        if (str.size() > 0)
-        {
-            for (int i = 0;i < str.size();i++)
-            {
+        if (str.size() > 0) {
+            for (int i = 0;i < str.size();i++) {
                 String result = Base64.encodeToString(str.get(i).getBytes(), Base64.NO_WRAP);
                 output.set(i, result);
             }
@@ -383,41 +326,34 @@ public class FloatData
     }
 
 	//新的数据值适配
-    private ArrayList<String> NewStringKey(String fix, String def)
-    {
+    private ArrayList<String> NewStringKey(String fix, String def) {
         fix = NewKey(fix, def);
         ArrayList<String> res = FormatArrayList.StringToStringArrayList(fix);
         return FixKey(res, def);
     }
 
-    private ArrayList<Integer> NewIntegerKey(String fix, String def)
-    {
+    private ArrayList<Integer> NewIntegerKey(String fix, String def) {
         fix = NewKey(fix, def);
         ArrayList<Integer> res = FormatArrayList.StringToIntegerArrayList(fix);
         return FixKey(res, Integer.valueOf(def));
     }
 
-    private ArrayList<Float> NewFloatKey(String fix, String def)
-    {
+    private ArrayList<Float> NewFloatKey(String fix, String def) {
         fix = NewKey(fix, def);
         ArrayList<Float> res = FormatArrayList.StringToFloatArrayList(fix);
         return FixKey(res, Float.valueOf(def));
     }
 
-    private ArrayList<Boolean> NewBooleanKey(String fix, String def)
-    {
+    private ArrayList<Boolean> NewBooleanKey(String fix, String def) {
         fix = NewKey(fix, def);
         ArrayList<Boolean> res = FormatArrayList.StringToBooleanArrayList(fix);
         return FixKey(res, Boolean.valueOf(def));
     }
 
-    private String NewKey(String fix, String def)
-    {
-        if (fix.equalsIgnoreCase("[]") && DataNum != 0)
-        {
+    private String NewKey(String fix, String def) {
+        if (fix.equalsIgnoreCase("[]") && DataNum != 0) {
             ArrayList<String> str = new ArrayList<String>();
-            for (int i = 0;i < DataNum;i++)
-            {
+            for (int i = 0;i < DataNum;i++) {
                 str.add(def);
             }
             fix = str.toString();
@@ -425,37 +361,29 @@ public class FloatData
         return fix;
     }
 
-    private ArrayList<String> FixKey(ArrayList<String> str, String def)
-    {
-        while (str.size() < DataNum)
-        {
+    private ArrayList<String> FixKey(ArrayList<String> str, String def) {
+        while (str.size() < DataNum) {
             str.add(def);
         }
         return str;
     }
 
-    private ArrayList<Float> FixKey(ArrayList<Float> str, Float def)
-    {
-        while (str.size() < DataNum)
-        {
+    private ArrayList<Float> FixKey(ArrayList<Float> str, Float def) {
+        while (str.size() < DataNum) {
             str.add(def);
         }
         return str;
     }
 
-    private ArrayList<Integer> FixKey(ArrayList<Integer> str, Integer def)
-    {
-        while (str.size() < DataNum)
-        {
+    private ArrayList<Integer> FixKey(ArrayList<Integer> str, Integer def) {
+        while (str.size() < DataNum) {
             str.add(def);
         }
         return str;
     }
 
-    private ArrayList<Boolean> FixKey(ArrayList<Boolean> str, Boolean def)
-    {
-        while (str.size() < DataNum)
-        {
+    private ArrayList<Boolean> FixKey(ArrayList<Boolean> str, Boolean def) {
+        while (str.size() < DataNum) {
             str.add(def);
         }
         return str;

@@ -1,31 +1,54 @@
 package tool.xfy9326.floattext.Setting;
 
-import android.content.*;
-import android.os.*;
-import android.preference.*;
-import android.support.v7.app.*;
-import android.view.*;
 import android.widget.*;
-import java.util.*;
-import tool.xfy9326.floattext.*;
-import tool.xfy9326.floattext.Method.*;
-import tool.xfy9326.floattext.Utils.*;
-import tool.xfy9326.floattext.View.*;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.preference.CheckBoxPreference;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import java.util.ArrayList;
+import java.util.Random;
 import net.margaritov.preference.colorpicker.ColorPickerPreference;
 import tool.xfy9326.floattext.Activity.AppCompatPreferenceActivity;
+import tool.xfy9326.floattext.Method.FloatManageMethod;
+import tool.xfy9326.floattext.Method.FloatServiceMethod;
+import tool.xfy9326.floattext.Method.FloatTextSettingMethod;
+import tool.xfy9326.floattext.Method.FloatWebSettingMethod;
+import tool.xfy9326.floattext.R;
+import tool.xfy9326.floattext.SafeGuard;
+import tool.xfy9326.floattext.Utils.App;
+import tool.xfy9326.floattext.Utils.FloatFrameUtils;
+import tool.xfy9326.floattext.Utils.FloatTextUtils;
+import tool.xfy9326.floattext.Utils.StaticNum;
+import tool.xfy9326.floattext.View.FloatLinearLayout;
+import tool.xfy9326.floattext.View.FloatTextView;
 
 /*
  文字悬浮窗设置界面
  */
 
-public class FloatTextSetting extends AppCompatPreferenceActivity
-{
+public class FloatTextSetting extends AppCompatPreferenceActivity {
     private static final int REQUEST_CODE = 1;
     private boolean EditMode;
     private int EditID;
@@ -41,27 +64,13 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     private SharedPreferences.Editor spedit;
     private String Position = "";
     private boolean FloatWinSaved = false;
-    private boolean TextTop;
-    private boolean AutoTop;
-    private boolean TextMove;
-    private int TextSpeed;
-    private boolean FloatShow;
-    private TextView move_x;
-    private TextView move_y;
-    private boolean TextShadow;
-    private float TextShadowX;
-    private float TextShadowY;
-    private float TextShadowRadius;
-    private int BackgroundColor;
-    private int TextShadowColor;
-	private boolean FloatSize;
-	private float FloatLong;
-	private float FloatWide;
-	private boolean NotifyControl;
+    private boolean TextTop, AutoTop, TextMove, FloatShow, TextShadow, FloatSize, NotifyControl;
+    private TextView move_x, move_y;
+    private float TextShadowX, TextShadowY, TextShadowRadius, FloatLong, FloatWide;
+    private int BackgroundColor, TextShadowColor, TextSpeed;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		LayoutInflater inflater = LayoutInflater.from(FloatTextSetting.this);
         spdata = PreferenceManager.getDefaultSharedPreferences(this);
@@ -73,12 +82,9 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         sethome();
 		FloatTextViewSet(inflater);
 		FloatWinViewSet(inflater);
-        if (!EditMode)
-        {
+        if (!EditMode) {
             prepareshow();
-        }
-        else
-        {
+        } else {
             setTitle(R.string.float_edit_title);
         }
 		SafeGuard.isSignatureAvailable(this, true);
@@ -86,55 +92,44 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     }
 
 	//ToolBar设置
-	private void sethome()
-	{
+	private void sethome() {
 		ActionBar actionBar = getSupportActionBar();
-		if (actionBar != null)
-		{
+		if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 	}
 
 	//WindowManager为null错误检测
-    private void wmcheck()
-    {
-        if (wm == null)
-        {
+    private void wmcheck() {
+        if (wm == null) {
             wm = (WindowManager)getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
             ((App)getApplicationContext()).setFloatwinmanager(wm);
         }
-        if (wm == null)
-        {
+        if (wm == null) {
             throw new Error(new NullPointerException("Window Manager No Found"));
         }
     }
 
 	//设置所有可用数据
-    private void setkeys()
-    {
+    private void setkeys() {
         Intent intent = getIntent();
 		//编辑模式
         EditMode = intent.getBooleanExtra("EditMode", false);
 		//编辑代号
         EditID = intent.getIntExtra("EditID", 0);
-        if (EditMode)
-        {
+        if (EditMode) {
             editkeyget(EditID);
             editkeyset();
-        }
-        else
-        {
+        } else {
             defaultkeyget();
         }
     }
 
 	//获取编辑悬浮窗的数据，进行覆盖
-    private void editkeyget(int i)
-    {
+    private void editkeyget(int i) {
         App utils = ((App)getApplicationContext());
 		FloatFrameUtils frameutils = utils.getFrameutil();
-		if (frameutils.getFloatview().size() < i + 1)
-		{
+		if (frameutils.getFloatview().size() < i + 1) {
 			FloatManageMethod.restartApplication(this, getPackageManager().getLaunchIntentForPackage(getPackageName()));
 		}
 		FloatTextUtils textutils = utils.getTextutil();
@@ -163,8 +158,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     }
 
 	//设置编辑悬浮窗的数据为默认数据
-    private void editkeyset()
-    {
+    private void editkeyset() {
         spedit.putString("TextShow", TextShow);
         spedit.putBoolean("TextAutoTop", AutoTop);
         spedit.putBoolean("TextMove", TextMove);
@@ -188,8 +182,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     }
 
 	//默认数据获取
-    private void defaultkeyget()
-    {
+    private void defaultkeyget() {
         TextShow = spdata.getString("TextShow", getString(R.string.default_text));
         AutoTop = spdata.getBoolean("TextAutoTop", false);
         TextMove = spdata.getBoolean("TextMove", false);
@@ -215,8 +208,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     }
 
 	//界面所有操作设置，操作后必须更新视图
-    private void FloatTextViewSet(final LayoutInflater inflater)
-    {
+    private void FloatTextViewSet(final LayoutInflater inflater) {
 		//小提示
         Preference tips = findPreference("tips");
         String[] tiparr = getResources().getStringArray(R.array.floatsetting_tips);
@@ -226,8 +218,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		//悬浮窗文字设置
         Preference textshow = findPreference("TextShow");
         textshow.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick(Preference p)
-                {  
+                public boolean onPreferenceClick(Preference p) {  
                     FloatTextShowSet(inflater);
                     return true;
                 }
@@ -235,8 +226,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		//文字大小设置
         Preference textsize = findPreference("TextSize");
         textsize.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick(Preference p1)
-                {  
+                public boolean onPreferenceClick(Preference p1) {  
                     TextSizeSet(inflater);
                     return true;
                 }
@@ -244,8 +234,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		//文字颜色设置
         ColorPickerPreference textcolor = (ColorPickerPreference) findPreference("ColorPicker");
         textcolor.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange(Preference p1, Object p2)
-                {
+                public boolean onPreferenceChange(Preference p1, Object p2) {
                     TextColor = p2;
                     spedit.putInt("ColorPicker", p2);
                     spedit.commit();
@@ -258,8 +247,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		//粗体设置
         CheckBoxPreference textthick = (CheckBoxPreference) findPreference("TextThick");
         textthick.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange(Preference p1, Object p2)
-                {
+                public boolean onPreferenceChange(Preference p1, Object p2) {
                     TextThick = (Boolean)p2;
                     updateview();
                     return true;
@@ -268,8 +256,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		//文字阴影设置
         Preference shadow = findPreference("TextShadow");
         shadow.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick(Preference p1)
-                {  
+                public boolean onPreferenceClick(Preference p1) {  
                     TextShadowSet(inflater);
                     return true;
                 }
@@ -277,8 +264,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		//文字阴影颜色设置
         ColorPickerPreference textshadowcolor = (ColorPickerPreference) findPreference("TextShadowColor");
         textshadowcolor.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange(Preference p1, Object p2)
-                {
+                public boolean onPreferenceChange(Preference p1, Object p2) {
                     TextShadowColor = p2;
                     spedit.putInt("TextShadowColor", p2);
                     spedit.commit();
@@ -290,13 +276,11 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		textshadowcolor.setAlphaSliderEnabled(true);
 		//跑马灯开关
         CheckBoxPreference textmove = (CheckBoxPreference) findPreference("TextMove");
-        if (((App)getApplicationContext()).getMovingMethod())
-        {
+        if (((App)getApplicationContext()).getMovingMethod()) {
             textmove.setSummaryOn(R.string.text_move_on_sum);
         }
         textmove.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange(Preference p1, Object p2)
-                {
+                public boolean onPreferenceChange(Preference p1, Object p2) {
                     TextMove = (Boolean)p2;
                     updateview();
                     return true;
@@ -306,21 +290,18 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
         Preference textspeed = findPreference("TextSpeed");
         textspeed.setEnabled(((App)getApplicationContext()).getMovingMethod());
         textspeed.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick(Preference p1)
-                {
+                public boolean onPreferenceClick(Preference p1) {
                     TextSpeedSet(inflater);
                     return true;
                 }
             });
     }
 
-	private void FloatWinViewSet(final LayoutInflater inflater)
-	{
+	private void FloatWinViewSet(final LayoutInflater inflater) {
 		//通知栏控制
 		CheckBoxPreference notifycontrol = (CheckBoxPreference) findPreference("NotifyControl");
         notifycontrol.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange(Preference p, Object v)
-                {
+                public boolean onPreferenceChange(Preference p, Object v) {
                     NotifyControl = v;
                     return true;
                 }
@@ -328,8 +309,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		//背景颜色设置
         ColorPickerPreference baccolor = (ColorPickerPreference) findPreference("BackgroundColor");
         baccolor.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange(Preference p1, Object p2)
-                {
+                public boolean onPreferenceChange(Preference p1, Object p2) {
                     BackgroundColor = p2;
                     spedit.putInt("BackgroundColor", p2);
                     spedit.commit();
@@ -342,8 +322,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		//自动吸顶
         CheckBoxPreference autotop = (CheckBoxPreference) findPreference("TextAutoTop");
         autotop.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange(Preference p, Object v)
-                {
+                public boolean onPreferenceChange(Preference p, Object v) {
                     AutoTop = (Boolean)v;
                     updateview();
                     return true;
@@ -352,8 +331,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		//悬浮窗可以显示在通知栏
         CheckBoxPreference texttop = (CheckBoxPreference) findPreference("TextTop");
         texttop.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange(Preference p1, Object p2)
-                {
+                public boolean onPreferenceChange(Preference p1, Object p2) {
                     TextTop = (Boolean)p2;
                     updateview();
                     return true;
@@ -362,8 +340,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		//是否显示悬浮窗后
         Preference floatshow = findPreference("FloatShow");
         floatshow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-                public boolean onPreferenceChange(Preference p1, Object p2)
-                {
+                public boolean onPreferenceChange(Preference p1, Object p2) {
                     FloatShow = (Boolean)p2;
                     updateview();
                     return true;
@@ -372,8 +349,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		//悬浮窗微调
         Preference floatmove = findPreference("FloatMove");
         floatmove.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick(Preference p)
-                {  
+                public boolean onPreferenceClick(Preference p) {  
                     FloatMoveSet(inflater);
                     return true;
                 }
@@ -381,8 +357,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		//悬浮窗大小自定义开关
 		CheckBoxPreference floatsize = (CheckBoxPreference) findPreference("FloatSize");
 		floatsize.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
-				public boolean onPreferenceChange(Preference p, Object o)
-				{
+				public boolean onPreferenceChange(Preference p, Object o) {
 					FloatSize = o;
 					updateview();
 					return true;
@@ -391,8 +366,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		//悬浮窗X轴设置
 		Preference floatwide = findPreference("FloatWide");
         floatwide.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick(Preference p)
-                {  
+                public boolean onPreferenceClick(Preference p) {  
                     FloatWideSet(inflater);
 					return true;
 				}
@@ -400,16 +374,14 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		//悬浮窗Y轴设置
 		Preference floatlong = findPreference("FloatLong");
         floatlong.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
-                public boolean onPreferenceClick(Preference p)
-                {  
+                public boolean onPreferenceClick(Preference p) {  
                     FloatLongSet(inflater);
 					return true;
 				}
 			});
 	}
 
-	private void TextSizeSet(LayoutInflater inflater)
-	{
+	private void TextSizeSet(LayoutInflater inflater) {
 		View layout = inflater.inflate(R.layout.dialog_textsize_edit, null);
 		AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
 		dialog.setTitle(R.string.text_size_set);
@@ -421,10 +393,8 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		Button minus = (Button) layout.findViewById(R.id.textsize_button_minus);
 		Button plus = (Button) layout.findViewById(R.id.textsize_button_plus);
 		minus.setOnClickListener(new OnClickListener(){
-				public void onClick(View v)
-				{
-					if (TextSize > 0)
-					{
+				public void onClick(View v) {
+					if (TextSize > 0) {
 						TextSize--;
 						spedit.putFloat("TextSize", TextSize);
 						spedit.commit();
@@ -435,10 +405,8 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 				}
 			});
 		plus.setOnClickListener(new OnClickListener(){
-				public void onClick(View v)
-				{
-					if (TextSize < (int)(dm.widthPixels / dm.scaledDensity + 0.5f))
-					{
+				public void onClick(View v) {
+					if (TextSize < (int)(dm.widthPixels / dm.scaledDensity + 0.5f)) {
 						TextSize++;
 						spedit.putFloat("TextSize", TextSize);
 						spedit.commit();
@@ -451,12 +419,9 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		bar.setMax((int)(dm.widthPixels / dm.scaledDensity + 0.5f));
 		bar.setProgress(TextSize.intValue());
 		bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-				public void onStartTrackingTouch(SeekBar bar)
-				{}
-				public void onStopTrackingTouch(SeekBar bar)
-				{}
-				public void onProgressChanged(SeekBar bar , int i , boolean state)
-				{
+				public void onStartTrackingTouch(SeekBar bar) {}
+				public void onStopTrackingTouch(SeekBar bar) {}
+				public void onProgressChanged(SeekBar bar , int i , boolean state) {
 					TextSize = Float.parseFloat(String.valueOf(i));
 					text.setText(getString(R.string.text_size_now) + "：" + TextSize.intValue());
 					spedit.putFloat("TextSize", TextSize);
@@ -469,8 +434,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		dialog.show();
 	}
 
-	private void TextSpeedSet(LayoutInflater inflater)
-	{
+	private void TextSpeedSet(LayoutInflater inflater) {
 		View layout = inflater.inflate(R.layout.dialog_textspeed_edit, null);
 		AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
 		dialog.setTitle(R.string.text_speed_set);
@@ -480,15 +444,12 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		bar.setMax(10);
 		bar.setProgress(TextSpeed);
 		bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-				public void onStartTrackingTouch(SeekBar bar)
-				{}
-				public void onStopTrackingTouch(SeekBar bar)
-				{
+				public void onStartTrackingTouch(SeekBar bar) {}
+				public void onStopTrackingTouch(SeekBar bar) {
 					spedit.putInt("TextSpeed", TextSpeed);
 					spedit.commit();
 				}
-				public void onProgressChanged(SeekBar bar , int i , boolean state)
-				{
+				public void onProgressChanged(SeekBar bar , int i , boolean state) {
 					TextSpeed = i;
 					text.setText(getString(R.string.text_speed_now) + "：" + TextSpeed);
 					updateview();
@@ -499,8 +460,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		dialog.show();
 	}
 
-	private void FloatLongSet(LayoutInflater inflater)
-	{
+	private void FloatLongSet(LayoutInflater inflater) {
 		final DisplayMetrics dm = new DisplayMetrics();
 		wm.getDefaultDisplay().getMetrics(dm);
 		View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
@@ -512,10 +472,8 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		Button minus = (Button) layout.findViewById(R.id.floatsize_button_minus);
 		Button plus = (Button) layout.findViewById(R.id.floatsize_button_plus);
 		minus.setOnClickListener(new OnClickListener(){
-				public void onClick(View v)
-				{
-					if (FloatLong > 0)
-					{
+				public void onClick(View v) {
+					if (FloatLong > 0) {
 						FloatLong--;
 						spedit.putFloat("FloatTextLong", FloatLong);
 						spedit.commit();
@@ -526,10 +484,8 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 				}
 			});
 		plus.setOnClickListener(new OnClickListener(){
-				public void onClick(View v)
-				{
-					if (FloatLong < dm.heightPixels)
-					{
+				public void onClick(View v) {
+					if (FloatLong < dm.heightPixels) {
 						FloatLong++;
 						spedit.putFloat("FloatTextLong", FloatLong);
 						spedit.commit();
@@ -542,15 +498,12 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		bar.setMax((int)dm.heightPixels);
 		bar.setProgress((int)FloatLong);
 		bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-				public void onStartTrackingTouch(SeekBar bar)
-				{}
-				public void onStopTrackingTouch(SeekBar bar)
-				{
+				public void onStartTrackingTouch(SeekBar bar) {}
+				public void onStopTrackingTouch(SeekBar bar) {
 					spedit.putFloat("FloatTextLong", FloatLong);
 					spedit.commit();
 				}
-				public void onProgressChanged(SeekBar bar , int i , boolean state)
-				{
+				public void onProgressChanged(SeekBar bar , int i , boolean state) {
 					FloatLong = i;
 					text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
 					updateview();
@@ -561,8 +514,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		dialog.show();
 	}
 
-	private void FloatWideSet(LayoutInflater inflater)
-	{
+	private void FloatWideSet(LayoutInflater inflater) {
 		final DisplayMetrics dm = new DisplayMetrics();
 		wm.getDefaultDisplay().getMetrics(dm);
 		View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
@@ -574,10 +526,8 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		Button minus = (Button) layout.findViewById(R.id.floatsize_button_minus);
 		Button plus = (Button) layout.findViewById(R.id.floatsize_button_plus);
 		minus.setOnClickListener(new OnClickListener(){
-				public void onClick(View v)
-				{
-					if (FloatWide > 0)
-					{
+				public void onClick(View v) {
+					if (FloatWide > 0) {
 						FloatWide--;
 						spedit.putFloat("FloatTextWide", FloatWide);
 						spedit.commit();
@@ -588,10 +538,8 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 				}
 			});
 		plus.setOnClickListener(new OnClickListener(){
-				public void onClick(View v)
-				{
-					if (FloatWide < dm.widthPixels)
-					{
+				public void onClick(View v) {
+					if (FloatWide < dm.widthPixels) {
 						FloatWide++;
 						spedit.putFloat("FloatTextWide", FloatWide);
 						spedit.commit();
@@ -604,15 +552,12 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		bar.setMax((int)dm.widthPixels);
 		bar.setProgress((int)FloatWide);
 		bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-				public void onStartTrackingTouch(SeekBar bar)
-				{}
-				public void onStopTrackingTouch(SeekBar bar)
-				{
+				public void onStartTrackingTouch(SeekBar bar) {}
+				public void onStopTrackingTouch(SeekBar bar) {
 					spedit.putFloat("FloatTextWide", FloatWide);
 					spedit.commit();
 				}
-				public void onProgressChanged(SeekBar bar , int i , boolean state)
-				{
+				public void onProgressChanged(SeekBar bar , int i , boolean state) {
 					FloatWide = i;
 					text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
 					updateview();
@@ -623,42 +568,33 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		dialog.show();
 	}
 
-	private void FloatTextShowSet(LayoutInflater inflater)
-	{
+	private void FloatTextShowSet(LayoutInflater inflater) {
 		View layout = inflater.inflate(R.layout.dialog_text_edit, null);
 		final EditText atv = (EditText) layout.findViewById(R.id.textview_addnewtext);
 		//自动清空输入
-		if (spdata.getBoolean("TextAutoClear", false))
-		{
+		if (spdata.getBoolean("TextAutoClear", false)) {
 			atv.setText("");
-		}
-		else
-		{
+		} else {
 			atv.setText(spdata.getString("TextShow", getString(R.string.default_text)));
 		}
 		//动态变量列表显示
 		final ListView lv = (ListView) layout.findViewById(R.id.listview_textedit);
 		final LinearLayout ll = (LinearLayout) layout.findViewById(R.id.layout_textedit);
-		if (((App)getApplicationContext()).DynamicNumService)
-		{
+		if (((App)getApplicationContext()).DynamicNumService) {
 			final String[] dynamiclist = getResources().getStringArray(R.array.floatsetting_dynamic_list);
 			String[] dynamicname = getResources().getStringArray(R.array.floatsetting_dynamic_name);
 			String[] result = new String[dynamiclist.length];
-			for (int i = 0;i < dynamiclist.length;i++)
-			{
+			for (int i = 0;i < dynamiclist.length;i++) {
 				result[i] = "<" + dynamiclist[i] + ">" + "\n" + dynamicname[i];
 			}
 			ArrayAdapter<String> av = new ArrayAdapter<String>(FloatTextSetting.this, android.R.layout.simple_list_item_1, result);
 			lv.setAdapter(av);
 			lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-					public void onItemClick(AdapterView<?> adapter, View v, int i, long l)
-					{
+					public void onItemClick(AdapterView<?> adapter, View v, int i, long l) {
 						atv.getText().insert(atv.getSelectionStart() , "<" + dynamiclist[i] + ">");
 					}
 				});
-		}
-		else
-		{
+		} else {
 			ll.setVisibility(View.GONE);
 		}
 		AlertDialog.Builder textedit = new AlertDialog.Builder(FloatTextSetting.this);
@@ -666,16 +602,12 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 			.setView(layout)
 			.setNegativeButton(R.string.cancel, null)
 			.setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
-				public void onClick(DialogInterface d , int i)
-				{
+				public void onClick(DialogInterface d , int i) {
 					String text = atv.getText().toString();
 					//空文本检测
-					if (text.replaceAll("\\s+", "").equalsIgnoreCase(""))
-					{
+					if (text.replaceAll("\\s+", "").equalsIgnoreCase("")) {
 						Toast.makeText(FloatTextSetting.this, R.string.text_error, Toast.LENGTH_SHORT).show();
-					}
-					else
-					{
+					} else {
 						TextShow = text;
 						spedit.putString("TextShow", text);
 						spedit.commit();
@@ -687,18 +619,15 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		textedit.show();
 	}
 
-	private void FloatMoveSet(LayoutInflater inflater)
-	{
+	private void FloatMoveSet(LayoutInflater inflater) {
 		View layout = inflater.inflate(R.layout.dialog_floatmove, null);
 		move_x = (TextView) layout.findViewById(R.id.textview_floatmove_x);
 		move_y = (TextView) layout.findViewById(R.id.textview_floatmove_y);
 		move_x.setText(String.valueOf(wmParams.x));
 		move_y.setText(String.valueOf(wmParams.y));
 		final Handler handler = new Handler(){
-			public void handleMessage(Message msg)
-			{
-				switch (msg.what)
-				{
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
 					case 0:
 						wmParams.x--;
 						break;
@@ -730,8 +659,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		move.show();
 	}
 
-	private void TextShadowSet(LayoutInflater inflater)
-	{
+	private void TextShadowSet(LayoutInflater inflater) {
 		View layout = inflater.inflate(R.layout.dialog_textshadow_edit, null);
 		final Switch ss = (Switch) layout.findViewById(R.id.switch_textshadow);
 		final TextView sx = (TextView) layout.findViewById(R.id.textview_shadowDx);
@@ -751,8 +679,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 		sy.setText(getString(R.string.xml_set_text_shadow_dy) + (int)TextShadowY);
 		sr.setText(getString(R.string.xml_set_text_shadow_radius) + (int)TextShadowRadius);
 		ss.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-				public void onCheckedChanged(CompoundButton b, boolean c)
-				{
+				public void onCheckedChanged(CompoundButton b, boolean c) {
 					TextShadow = c;
 					spedit.putBoolean("TextShadow", TextShadow);
 					spedit.commit();
@@ -760,45 +687,36 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 				}
 			});
 		bx.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-				public void onStartTrackingTouch(SeekBar bar)
-				{}
-				public void onStopTrackingTouch(SeekBar bar)
-				{
+				public void onStartTrackingTouch(SeekBar bar) {}
+				public void onStopTrackingTouch(SeekBar bar) {
 					spedit.putFloat("TextShadowX", TextShadowX);
 					spedit.commit();
 				}
-				public void onProgressChanged(SeekBar bar , int i , boolean state)
-				{
+				public void onProgressChanged(SeekBar bar , int i , boolean state) {
 					TextShadowX = i;
 					sx.setText(getString(R.string.xml_set_text_shadow_dx) + (int)TextShadowX);
 					updateview();
 				}
 			});
 		by.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-				public void onStartTrackingTouch(SeekBar bar)
-				{}
-				public void onStopTrackingTouch(SeekBar bar)
-				{
+				public void onStartTrackingTouch(SeekBar bar) {}
+				public void onStopTrackingTouch(SeekBar bar) {
 					spedit.putFloat("TextShadowY", TextShadowY);
 					spedit.commit();
 				}
-				public void onProgressChanged(SeekBar bar , int i , boolean state)
-				{
+				public void onProgressChanged(SeekBar bar , int i , boolean state) {
 					TextShadowY = i;
 					sy.setText(getString(R.string.xml_set_text_shadow_dy) + (int)TextShadowY);
 					updateview();
 				}
 			});
 		br.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
-				public void onStartTrackingTouch(SeekBar bar)
-				{}
-				public void onStopTrackingTouch(SeekBar bar)
-				{
+				public void onStartTrackingTouch(SeekBar bar) {}
+				public void onStopTrackingTouch(SeekBar bar) {
 					spedit.putFloat("TextShadowRadius", TextShadowRadius);
 					spedit.commit();
 				}
-				public void onProgressChanged(SeekBar bar , int i , boolean state)
-				{
+				public void onProgressChanged(SeekBar bar , int i , boolean state) {
 					TextShadowRadius = i;
 					sr.setText(getString(R.string.xml_set_text_shadow_radius) + (int)TextShadowRadius);
 					updateview();
@@ -812,40 +730,29 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 	}
 
 	//权限检测
-    private void prepareshow()
-    {
-        if (Build.VERSION.SDK_INT >= 23)
-        {
-            if (!Settings.canDrawOverlays(this))
-            {
+    private void prepareshow() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (!Settings.canDrawOverlays(this)) {
                 FloatTextSettingMethod.askforpermission(this, REQUEST_CODE);
-            }
-            else
-            {
+            } else {
                 startshow();
             }
-        }
-        else
-        {
+        } else {
             startshow();
         }
     }
 
 	//创建新悬浮窗
-    private void startshow()
-    {
+    private void startshow() {
         floatview = FloatTextSettingMethod.CreateFloatView(this, TextShow, TextSize, TextColor, TextThick, TextSpeed, EditID, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, TextShadowColor);
         linearlayout = FloatTextSettingMethod.CreateLayout(this, EditID);
         wmParams = FloatTextSettingMethod.CreateFloatLayout(this, wm, floatview, linearlayout, FloatShow, TextTop, TextMove, BackgroundColor, FloatSize, FloatLong, FloatWide);
     }
 
 	//停止显示
-    private void stopshow()
-    {
-        if (wm != null)
-        {
-            if (linearlayout != null)
-            {
+    private void stopshow() {
+        if (wm != null) {
+            if (linearlayout != null) {
                 wm.removeView(linearlayout);
             }
             wm = null;
@@ -856,18 +763,14 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     }
 
 	//更新视图
-    private void updateview()
-    {
+    private void updateview() {
         App utils = ((App)getApplicationContext());
-        if (wm != null)
-        {
-            if (move_x != null && move_y != null)
-            {
+        if (wm != null) {
+            if (move_x != null && move_y != null) {
                 move_x.setText(String.valueOf(wmParams.x));
                 move_y.setText(String.valueOf(wmParams.y));
             }
-            if (EditMode)
-            {
+            if (EditMode) {
                 ArrayList<String> floattext = utils.getFloatText();
                 floattext.set(EditID, TextShow.toString());
                 utils.setFloatText(floattext);
@@ -877,53 +780,39 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
             floatview.setTextColor(TextColor);
             floatview.setShadow(TextShadow, TextShadowX, TextShadowY, TextShadowRadius, TextShadowColor);
             linearlayout.setFloatLayoutParams(wmParams);
-            if (utils.getMovingMethod())
-            {
+            if (utils.getMovingMethod()) {
                 floatview.setMoving(TextMove, 0);
-            }
-            else
-            {
+            } else {
                 floatview.setMoving(TextMove, 1);
-                if (TextMove)
-                {
+                if (TextMove) {
                     linearlayout.setShowState(false);
                     linearlayout.setShowState(true);
                 }
             }
             floatview.setMoveSpeed(TextSpeed);
-            if (TextThick)
-            {
+            if (TextThick) {
                 floatview.getPaint().setFakeBoldText(true);
-            }
-            else
-            {
+            } else {
                 floatview.getPaint().setFakeBoldText(false);
             }
-            if (TextTop)
-            {
+            if (TextTop) {
                 linearlayout.setTop(AutoTop);
                 wmParams.flags = LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_LAYOUT_IN_SCREEN;
-            }
-            else
-            {
+            } else {
                 linearlayout.setTop(true);
                 wmParams.flags = LayoutParams.FLAG_NOT_FOCUSABLE;
             }
             linearlayout.setLayout_default_flags(wmParams.flags);
             linearlayout.setShowState(FloatShow);
             linearlayout.setBackgroundColor(BackgroundColor);
-			if (FloatSize)
-			{
+			if (FloatSize) {
 				wmParams.width = (int)FloatWide;
 				wmParams.height = (int)FloatLong;
-			}
-			else
-			{
+			} else {
 				wmParams.width = LayoutParams.WRAP_CONTENT;
 				wmParams.height = LayoutParams.WRAP_CONTENT;
 			}
-            if (EditMode)
-            {
+            if (EditMode) {
                 ArrayList<Boolean> sf = utils.getTextutil().getShowFloat();
 				//Flag更新覆盖后重设
 				linearlayout.setTouchable(wmParams, !linearlayout.getPositionLocked());
@@ -935,16 +824,13 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     }
 
 	//保存所有数据
-    private void saveall(String text, boolean savedetails)
-    {
+    private void saveall(String text, boolean savedetails) {
         App utils = ((App)getApplicationContext());
         FloatTextSettingMethod.savedata(this, floatview, linearlayout, text, wmParams);
-        if (!TextTop)
-        {
+        if (!TextTop) {
             AutoTop = true;
         }
-        if (savedetails)
-        {
+        if (savedetails) {
             FloatTextUtils textutils = utils.getTextutil();
 			textutils.addDatas(TextShow, TextColor, TextSize, TextThick, FloatShow, Position, linearlayout.getPositionLocked(), TextTop, AutoTop, TextMove, TextSpeed, TextShadow, TextShadowX, TextShadowY, TextShadowRadius, BackgroundColor, TextShadowColor, FloatSize, FloatLong, FloatWide, NotifyControl);
 			utils.setTextutil(textutils);
@@ -952,8 +838,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     }
 
 	//设置数据
-    private void setall(int i)
-    {
+    private void setall(int i) {
         Position = linearlayout.getPosition();
         App utils = ((App)getApplicationContext());
 		FloatTextUtils textutils = utils.getTextutil();
@@ -965,8 +850,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     }
 
 	//返回消息
-	private void setbackresult(int i)
-	{
+	private void setbackresult(int i) {
 		Intent intent = new Intent();
 		intent.putExtra("RESULT", i);
 		intent.putExtra("POSITION", EditID);
@@ -975,22 +859,16 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 	}
 
 	//返回事件处理
-	private void backpressed()
-	{
-		if (EditMode)
-		{
+	private void backpressed() {
+		if (EditMode) {
 			Toast.makeText(this, R.string.set_save, Toast.LENGTH_SHORT).show();
-		}
-		else
-		{
+		} else {
 			AlertDialog.Builder exit = new AlertDialog.Builder(this)
 				.setTitle(R.string.exit_text_add)
 				.setMessage(R.string.exit_text_add_alert)
 				.setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
-					public void onClick(DialogInterface p1, int p2)
-					{
-						if (!FloatWinSaved && FloatShow)
-						{
+					public void onClick(DialogInterface p1, int p2) {
+						if (!FloatWinSaved && FloatShow) {
 							stopshow();
 						}
 						FloatTextSetting.this.finish();
@@ -1002,19 +880,13 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 	}
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE)
-        {
-            if (Build.VERSION.SDK_INT >= 23)
-            {
-                if (Settings.canDrawOverlays(this))
-                {
+        if (requestCode == REQUEST_CODE) {
+            if (Build.VERSION.SDK_INT >= 23) {
+                if (Settings.canDrawOverlays(this)) {
                     prepareshow();
-                }
-                else
-                {
+                } else {
                     setbackresult(3);
                     this.finish();
                 }
@@ -1023,38 +895,28 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     }
 
     @Override 
-    public boolean onCreateOptionsMenu(Menu menu)
-    {  
+    public boolean onCreateOptionsMenu(Menu menu) {  
         MenuInflater inflater = getMenuInflater();
-        if (EditMode)
-        {
+        if (EditMode) {
             inflater.inflate(R.menu.floatsetting_action_bar_editmode, menu);
-        }
-        else
-        {
+        } else {
             inflater.inflate(R.menu.floatsetting_action_bar, menu);
         }
         return super.onCreateOptionsMenu(menu);  
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
 			case android.R.id.home:
 				backpressed();
 				break;
             case R.id.save_win:
-				if (!FloatWinSaved)
-				{
+				if (!FloatWinSaved) {
 					Position = linearlayout.getPosition();
-					if (EditMode)
-					{
+					if (EditMode) {
 						setall(EditID);
-					}
-					else
-					{
+					} else {
 						saveall(spdata.getString("TextShow", getString(R.string.default_text)), true);
 					}
 					FloatWinSaved = true;
@@ -1063,8 +925,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
 				}
                 break;
             case R.id.delete_win:
-                if (!EditMode)
-                {
+                if (!EditMode) {
                     stopshow();
                     setbackresult(2);
                 }
@@ -1075,22 +936,17 @@ public class FloatTextSetting extends AppCompatPreferenceActivity
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_BACK)
-		{
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             backpressed();
         }
         return false;
     }
 
     @Override
-    protected void onDestroy()
-    {
-        if (!FloatWinSaved && FloatShow)
-        {
-            if (!EditMode)
-            {
+    protected void onDestroy() {
+        if (!FloatWinSaved && FloatShow) {
+            if (!EditMode) {
                 stopshow();
             }
         }

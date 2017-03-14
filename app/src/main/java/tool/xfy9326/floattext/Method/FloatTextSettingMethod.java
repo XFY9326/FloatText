@@ -1,29 +1,37 @@
 package tool.xfy9326.floattext.Method;
 
-import android.app.*;
-import android.content.*;
-import android.graphics.*;
-import android.os.*;
-import android.view.*;
-import tool.xfy9326.floattext.Utils.*;
-import tool.xfy9326.floattext.View.*;
-
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.net.Uri;
+import android.os.Environment;
+import android.os.Handler;
 import android.provider.Settings;
+import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 import tool.xfy9326.floattext.R;
+import tool.xfy9326.floattext.Utils.App;
+import tool.xfy9326.floattext.Utils.FloatTextUtils;
+import tool.xfy9326.floattext.View.FloatLinearLayout;
+import tool.xfy9326.floattext.View.FloatTextView;
 
-public class FloatTextSettingMethod
-{
+public class FloatTextSettingMethod {
     private boolean longClicked;
 
 	//Int数值颜色转16进制
-    public static String IntColortoHex(int color)
-    {
+    public static String IntColortoHex(int color) {
         String R, G, B, C;
         StringBuffer sb = new StringBuffer();
         C = Integer.toHexString(Color.alpha(color));
@@ -43,13 +51,11 @@ public class FloatTextSettingMethod
     }
 
 	//新建悬浮文字控件
-	public static FloatTextView CreateFloatView(Context ctx, FloatTextUtils textutils, int i)
-    {
+	public static FloatTextView CreateFloatView(Context ctx, FloatTextUtils textutils, int i) {
         return CreateFloatView(ctx, textutils.getTextShow().get(i), textutils.getSizeShow().get(i), textutils.getColorShow().get(i), textutils.getThickShow().get(i), textutils.getTextSpeed().get(i), i, textutils.getTextShadow().get(i), textutils.getTextShadowX().get(i), textutils.getTextShadowY().get(i), textutils.getTextShadowRadius().get(i), textutils.getTextShadowColor().get(i));
     }
 
-    public static FloatTextView CreateFloatView(final Context ctx, String Text, Float Size, int Paint, boolean Thick, int speed, int id, boolean shadow, float shadowx, float shadowy, float shadowradius, int shadowcolor)
-    {
+    public static FloatTextView CreateFloatView(final Context ctx, String Text, Float Size, int Paint, boolean Thick, int speed, int id, boolean shadow, float shadowx, float shadowy, float shadowradius, int shadowcolor) {
         FloatTextView floatview = new FloatTextView(ctx, ((App)ctx.getApplicationContext()).getHtmlMode());
         floatview.setText(Text.toString());
         floatview.setTextSize(Size);
@@ -63,26 +69,19 @@ public class FloatTextSettingMethod
     }
 
 	//修复字体不存在问题
-    public static String typeface_fix(Context ctx)
-    {
+    public static String typeface_fix(Context ctx) {
         SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
         String filename = setdata.getString("DefaultTTFName", "Default");
-        if (filename.equalsIgnoreCase("Default"))
-        {
+        if (filename.equalsIgnoreCase("Default")) {
             return filename;
-        }
-        else
-        {
+        } else {
             String typeface_path = Environment.getExternalStorageDirectory().toString() + "/FloatText/TTFs/" + filename + ".ttf";
             String typeface_path2 = Environment.getExternalStorageDirectory().toString() + "/FloatText/TTFs/" + filename + ".TTF";
             File f1 = new File(typeface_path);
             File f2 = new File(typeface_path2);
-            if (f1.exists())
-            {
+            if (f1.exists()) {
                 return f1.getAbsolutePath();
-            }
-            else if (f2.exists())
-            {
+            } else if (f2.exists()) {
                 return f2.getAbsolutePath();
             }
         }
@@ -92,48 +91,38 @@ public class FloatTextSettingMethod
     }
 
 	//新建悬浮线性布局
-    public static FloatLinearLayout CreateLayout(Context ctx, int ID)
-    {
+    public static FloatLinearLayout CreateLayout(Context ctx, int ID) {
         FloatLinearLayout layout = new FloatLinearLayout(ctx, ID);
 		layout.setGravity(Gravity.CENTER_HORIZONTAL);
         return layout;
     }
 
 	//新建悬浮窗布局(固定初始显示位置)
-    public static WindowManager.LayoutParams CreateFloatLayout(Context ctx, WindowManager wm, FloatTextView floatview, FloatLinearLayout layout, boolean show, boolean top, boolean move, int bac, boolean fs, float fl, float fw)
-    {
+    public static WindowManager.LayoutParams CreateFloatLayout(Context ctx, WindowManager wm, FloatTextView floatview, FloatLinearLayout layout, boolean show, boolean top, boolean move, int bac, boolean fs, float fl, float fw) {
         return CreateFloatLayout(ctx, wm, floatview, layout, show, 100, 150, top, move, bac, fs, fl, fw);
     }
 
 	//新建悬浮窗布局
-	public static WindowManager.LayoutParams CreateFloatLayout(Context ctx, WindowManager wm, FloatTextView floatview, FloatLinearLayout layout, float px, float py, FloatTextUtils textutils, int i)
-    {
+	public static WindowManager.LayoutParams CreateFloatLayout(Context ctx, WindowManager wm, FloatTextView floatview, FloatLinearLayout layout, float px, float py, FloatTextUtils textutils, int i) {
 		return CreateFloatLayout(ctx, wm, floatview, layout, textutils.getShowFloat().get(i), px, py, textutils.getTextTop().get(i), textutils.getTextMove().get(i), textutils.getBackgroundColor().get(i), textutils.getFloatSize().get(i), textutils.getFloatLong().get(i), textutils.getFloatWide().get(i));
 	}
 
-    public static WindowManager.LayoutParams CreateFloatLayout(Context ctx, WindowManager wm, FloatTextView floatview, FloatLinearLayout layout, boolean show, float px, float py, boolean top, boolean move, int bac, boolean fs, float fl, float fw)
-    {
+    public static WindowManager.LayoutParams CreateFloatLayout(Context ctx, WindowManager wm, FloatTextView floatview, FloatLinearLayout layout, boolean show, float px, float py, boolean top, boolean move, int bac, boolean fs, float fl, float fw) {
         WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams();
         wmParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
-        if (top)
-        {
+        if (top) {
             wmParams.flags = LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_LAYOUT_IN_SCREEN;
-        }
-        else
-        {
+        } else {
             wmParams.flags = LayoutParams.FLAG_NOT_FOCUSABLE;
         }
         wmParams.gravity = Gravity.LEFT | Gravity.TOP;
         wmParams.x = (int)px;
         wmParams.y = (int)py;
         wmParams.format = PixelFormat.TRANSLUCENT;
-		if (fs)
-		{
+		if (fs) {
 			wmParams.width = (int)fw;
 			wmParams.height = (int)fl;
-		}
-		else
-		{
+		} else {
 			wmParams.width = LayoutParams.WRAP_CONTENT;
 			wmParams.height = LayoutParams.WRAP_CONTENT;
 		}
@@ -145,24 +134,19 @@ public class FloatTextSettingMethod
         layout.setFloatLayoutParams(wmParams);
         layout.changeShowState(show);
         layout.addView(floatview);
-        if (show)
-        {
+        if (show) {
             wm.addView(layout, wmParams);
         }
-        if (((App)ctx.getApplicationContext()).getMovingMethod())
-        {
+        if (((App)ctx.getApplicationContext()).getMovingMethod()) {
             floatview.setMoving(move, 0);
-        }
-        else
-        {
+        } else {
             floatview.setMoving(move, 1);
         }
         return wmParams;
     }
 
 	//请求悬浮窗权限
-    public static void askforpermission(Activity act, int code)
-    {
+    public static void askforpermission(Activity act, int code) {
         final int askcode = code;
         final Activity activity = act;
         final Context ctx = act;
@@ -170,16 +154,14 @@ public class FloatTextSettingMethod
             .setTitle(R.string.ask_for_premission)
             .setMessage(R.string.ask_for_premisdion_msg)
             .setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
-                public void onClick(DialogInterface p1, int p2)
-                {
+                public void onClick(DialogInterface p1, int p2) {
                     Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
                     intent.setData(Uri.parse("package:" + ctx.getPackageName()));
                     activity.startActivityForResult(intent, askcode);
                 }
             })
             .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
-                public void onClick(DialogInterface p1, int p2)
-                {
+                public void onClick(DialogInterface p1, int p2) {
                     activity.finish();
                 }
             })
@@ -188,8 +170,7 @@ public class FloatTextSettingMethod
     }
 
 	//保存悬浮窗数据
-    public static void savedata(Context ctx, FloatTextView fv, FloatLinearLayout fll, String text, WindowManager.LayoutParams layout)
-    {
+    public static void savedata(Context ctx, FloatTextView fv, FloatLinearLayout fll, String text, WindowManager.LayoutParams layout) {
         App utils = ((App)ctx.getApplicationContext());
         ArrayList<FloatTextView> floatdata = utils.getFrameutil().getFloatview();
         ArrayList<String> floattext = utils.getFrameutil().getFloattext();
@@ -202,37 +183,27 @@ public class FloatTextSettingMethod
     }
 
 	//微调悬浮窗位置中长按功能实现
-    public OnTouchListener ButtonOnLongRepeatClickListener(final int Code, final Handler handler)
-    {
+    public OnTouchListener ButtonOnLongRepeatClickListener(final int Code, final Handler handler) {
         OnTouchListener controllisten = new OnTouchListener(){
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                if (event.getAction() == MotionEvent.ACTION_DOWN)
-                {
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     longClicked = true;
                     Thread t = new Thread(){  
                         @Override  
-                        public void run()
-                        {  
+                        public void run() {  
                             super.run();  
-                            while (longClicked)  
-                            {
+                            while (longClicked) {
                                 handler.sendEmptyMessage(Code);
-                                try
-                                {  
+                                try {  
                                     Thread.sleep(100);  
-                                }
-                                catch (InterruptedException e)
-                                {  
+                                } catch (InterruptedException e) {  
                                     e.printStackTrace();  
                                 }  
                             }  
                         }  
                     };  
                     t.start();  
-                }
-                else if (event.getAction() == MotionEvent.ACTION_UP)
-                {  
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {  
                     longClicked = false;
                 }  
                 return false;

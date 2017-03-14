@@ -10,72 +10,59 @@ import android.view.View;
  支持空列表时显示空布局
  */
 
-public class AdvanceRecyclerView extends RecyclerView
-{
+public class AdvanceRecyclerView extends RecyclerView {
     private View emptyView;
 
     final private AdapterDataObserver observer = new AdapterDataObserver() {
         @Override
-        public void onChanged()
-		{
+        public void onChanged() {
             checkIfEmpty();
         }
 
         @Override
-        public void onItemRangeInserted(int positionStart, int itemCount)
-		{
+        public void onItemRangeInserted(int positionStart, int itemCount) {
             checkIfEmpty();
         }
 
         @Override
-        public void onItemRangeRemoved(int positionStart, int itemCount)
-		{
+        public void onItemRangeRemoved(int positionStart, int itemCount) {
             checkIfEmpty();
         }
     };
 
-    public AdvanceRecyclerView(Context context)
-	{
+    public AdvanceRecyclerView(Context context) {
         super(context);
     }
 
-    public AdvanceRecyclerView(Context context, AttributeSet attrs)
-	{
+    public AdvanceRecyclerView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public AdvanceRecyclerView(Context context, AttributeSet attrs, int defStyle)
-	{
+    public AdvanceRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
     @Override
-    public void setAdapter(Adapter adapter)
-	{
+    public void setAdapter(Adapter adapter) {
         final Adapter oldAdapter = getAdapter();
-        if (oldAdapter != null)
-		{
+        if (oldAdapter != null) {
             oldAdapter.unregisterAdapterDataObserver(observer);
         }
         super.setAdapter(adapter);
-        if (adapter != null)
-		{
+        if (adapter != null) {
             adapter.registerAdapterDataObserver(observer);
         }
 
         checkIfEmpty();
     }
 
-    public void setEmptyView(View emptyView)
-	{
+    public void setEmptyView(View emptyView) {
         this.emptyView = emptyView;
         checkIfEmpty();
     }
 
-    void checkIfEmpty()
-	{
-        if (emptyView != null && getAdapter() != null)
-		{
+    void checkIfEmpty() {
+        if (emptyView != null && getAdapter() != null) {
             final boolean emptyViewVisible = getAdapter().getItemCount() == 0;
             emptyView.setVisibility(emptyViewVisible ? VISIBLE : GONE);
             setVisibility(emptyViewVisible ? GONE : VISIBLE);

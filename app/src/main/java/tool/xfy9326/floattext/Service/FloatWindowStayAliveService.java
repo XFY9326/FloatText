@@ -1,60 +1,60 @@
 package tool.xfy9326.floattext.Service;
 
-import android.app.*;
-import android.content.*;
-import android.os.*;
-import java.util.*;
-import tool.xfy9326.floattext.*;
-import tool.xfy9326.floattext.Method.*;
-import tool.xfy9326.floattext.Utils.*;
-
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.os.Build;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v7.app.NotificationCompat;
 import android.widget.RemoteViews;
 import java.lang.reflect.Method;
+import tool.xfy9326.floattext.FloatManage;
+import tool.xfy9326.floattext.Method.FloatManageMethod;
+import tool.xfy9326.floattext.R;
+import tool.xfy9326.floattext.Utils.App;
+import tool.xfy9326.floattext.Utils.StaticNum;
+import tool.xfy9326.floattext.Utils.StaticString;
 
-public class FloatWindowStayAliveService extends Service
-{
+public class FloatWindowStayAliveService extends Service {
 	private ButtonBroadcastReceiver bbr = null;
 	private RemoteViews contentview = null;
 	private NotificationCompat.Builder notification;
 
     @Override
-    public IBinder onBind(Intent p1)
-    {
+    public IBinder onBind(Intent p1) {
         return null;
     }
 
     @Override
-    public void onCreate()
-    {
+    public void onCreate() {
         super.onCreate();
         create_notification();
 		FloatManageMethod.setWinManager(this);
     }
 
-    private void create_notification()
-    {
+    private void create_notification() {
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-		if (sp.getBoolean("FloatNotification", true))
-		{
+		if (sp.getBoolean("FloatNotification", true)) {
 			create_manage_notify(StaticNum.ONGONING_NOTIFICATION_ID);
-		}
-		else
-		{
+		} else {
 			create_run_notify(StaticNum.ONGONING_NOTIFICATION_ID);
 		}
 
     }
 
-	private void create_run_notify(int id)
-	{
+	private void create_run_notify(int id) {
 		Notification notify = new Notification();
 		startForeground(id , notify);
 	}
 
-	private void create_manage_notify(int id)
-	{
+	private void create_manage_notify(int id) {
 		bbr = new ButtonBroadcastReceiver();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(StaticString.NOTIFICATION_BUTTON_ACTION);
@@ -62,6 +62,12 @@ public class FloatWindowStayAliveService extends Service
 
 		notification = new NotificationCompat.Builder(this);
 		notification.setSmallIcon(R.mipmap.ic_notification);
+		
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		if (!sp.getBoolean("FloatNotificationIcon", true))
+		{
+			notification.setPriority(Notification.PRIORITY_MIN);
+		}
 
 		Intent intent = new Intent(this, FloatManage.class);
 		PendingIntent pintent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -92,72 +98,51 @@ public class FloatWindowStayAliveService extends Service
 	}
 
     @Override
-    public void onDestroy()
-    {
-		if (bbr != null)
-		{
+    public void onDestroy() {
+		if (bbr != null) {
 			unregisterReceiver(bbr);
 		}
         stopForeground(true);
         super.onDestroy();
     }
 
-	private static void collapseStatusBar(Context context)
-	{
-		try
-		{
+	private static void collapseStatusBar(Context context) {
+		try {
 			Object statusBarManager = context.getSystemService("statusbar");
 			Method collapse;
-			if (Build.VERSION.SDK_INT <= 16)
-			{
+			if (Build.VERSION.SDK_INT <= 16) {
 				collapse = statusBarManager.getClass().getMethod("collapse");
-			}
-			else
-			{
+			} else {
 				collapse = statusBarManager.getClass().getMethod("collapsePanels");
 			}
 			collapse.invoke(statusBarManager);
-		}
-		catch (Exception localException)
-		{
+		} catch (Exception localException) {
 			localException.printStackTrace();
 		}
 	}
 
-	private class ButtonBroadcastReceiver extends BroadcastReceiver
-	{
+	private class ButtonBroadcastReceiver extends BroadcastReceiver {
 		private boolean WinLock = false;
 		private boolean WinShow = true;
 
 		@Override
-		public void onReceive(Context p1, Intent p2)
-		{
-			if (contentview != null && p2.getAction().equals(StaticString.NOTIFICATION_BUTTON_ACTION))
-			{
+		public void onReceive(Context p1, Intent p2) {
+			if (contentview != null && p2.getAction().equals(StaticString.NOTIFICATION_BUTTON_ACTION)) {
 				int buttonid = p2.getIntExtra("BUTTON_ID", -1);
-				if (buttonid == 0)
-				{
+				if (buttonid == 0) {
 					FloatManageMethod.ShoworHideAllWin(p1, WinShow, true);
 					WinShow = !WinShow;
-					if (WinShow)
-					{
+					if (WinShow) {
 						contentview.setImageViewResource(R.id.button_notification_show, R.drawable.ic_eye_off);
-					}
-					else
-					{
+					} else {
 						contentview.setImageViewResource(R.id.button_notification_show, R.drawable.ic_eye);
 					}
-				}
-				else if (buttonid == 1)
-				{
+				} else if (buttonid == 1) {
 					FloatManageMethod.LockorUnlockAllWin(p1, WinLock, true);
 					WinLock = !WinLock;
-					if (WinLock)
-					{
+					if (WinLock) {
 						contentview.setImageViewResource(R.id.button_notification_unlock, R.drawable.ic_notification_lock_unlocked_outline);
-					}
-					else
-					{
+					} else {
 						contentview.setImageViewResource(R.id.button_notification_unlock, R.drawable.ic_notification_lock_outline);
 					}
 				}

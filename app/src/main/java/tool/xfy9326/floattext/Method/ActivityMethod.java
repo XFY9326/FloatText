@@ -1,77 +1,63 @@
 package tool.xfy9326.floattext.Method;
 
-import android.content.*;
-import android.content.pm.*;
-import android.net.*;
-import java.util.*;
-
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.text.format.Formatter;
 import java.io.File;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
-public class ActivityMethod
-{
+public class ActivityMethod {
 	//文件夹大小获取
-	public static long getFolderSize(File file)
-	{  
+	public static long getFolderSize(File file) {  
         long size = 0;  
-        try
-		{
+        try {
 			File[] fileList = file.listFiles();   
-			for (int i = 0; i < fileList.length; i++)   
-			{   
-			    if (fileList[i].isDirectory())   
-			    {   
+			for (int i = 0; i < fileList.length; i++) {   
+			    if (fileList[i].isDirectory()) {   
 			        size += getFolderSize(fileList[i]);
-			    }
-				else
-				{   
+			    } else {   
 			        size += fileList[i].length();
 			    }   
 			}
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}   
         return size;  
     }  
-	
+
 	//文件大小格式
-	public static String formatSize(Context ctx, String target_size)
-	{
-		if (target_size != null)
-		{
+	public static String formatSize(Context ctx, String target_size) {
+		if (target_size != null) {
 			return Formatter.formatFileSize(ctx, Long.valueOf(target_size));
-		}
-		else
-		{
+		} else {
 			return "0B";
 		}
     }
-	
+
 	//获取后缀名
-	public static String getExtraName(String filename)
-    { 
-        if ((filename != null) && (filename.length() > 0))
-        { 
+	public static String getExtraName(String filename) { 
+        if ((filename != null) && (filename.length() > 0)) { 
             int dot = filename.lastIndexOf('.'); 
-            if ((dot > -1) && (dot < (filename.length() - 1)))
-            { 
+            if ((dot > -1) && (dot < (filename.length() - 1))) { 
                 return filename.substring(dot + 1); 
             } 
         } 
         return "No_Name"; 
     }
-	
+
 	//包名排序
-	public static List<PackageInfo> orderPackageList(final Context ctx, List<PackageInfo> list)
-	{
+	public static List<PackageInfo> orderPackageList(final Context ctx, List<PackageInfo> list) {
 		Collections.sort(list, new Comparator<PackageInfo>() {
                 @Override
-                public int compare(PackageInfo o1, PackageInfo o2)
-                {
+                public int compare(PackageInfo o1, PackageInfo o2) {
 					String str1 = o1.applicationInfo.loadLabel(ctx.getPackageManager()).toString();
 					String str2 = o2.applicationInfo.loadLabel(ctx.getPackageManager()).toString();
                     return str1.compareTo(str2);
@@ -79,24 +65,18 @@ public class ActivityMethod
             });
 		return list;
 	}
-	
+
 	//辅助服务是否打开
-	public static boolean isAccessibilitySettingsOn(Context context)
-	{
+	public static boolean isAccessibilitySettingsOn(Context context) {
         int accessibilityEnabled = 0;
-        try
-		{
+        try {
             accessibilityEnabled = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED);
-        }
-		catch (Settings.SettingNotFoundException e)
-		{
+        } catch (Settings.SettingNotFoundException e) {
 			e.printStackTrace();
         }
-        if (accessibilityEnabled == 1)
-		{
+        if (accessibilityEnabled == 1) {
             String services = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
-            if (services != null)
-			{
+            if (services != null) {
                 return services.toLowerCase().contains(context.getPackageName().toLowerCase());
             }
         }
@@ -104,20 +84,15 @@ public class ActivityMethod
     }
 
 	//通知监听是否打开
-	public static boolean isNotificationListenerEnabled(Context ctx)
-	{  
+	public static boolean isNotificationListenerEnabled(Context ctx) {  
 		String pkgName = ctx.getPackageName();  
 		final String flat = Settings.Secure.getString(ctx.getContentResolver(), "enabled_notification_listeners");  
-		if (!TextUtils.isEmpty(flat))
-		{  
+		if (!TextUtils.isEmpty(flat)) {  
 			final String[] names = flat.split(":");  
-			for (int i = 0; i < names.length; i++)
-			{  
+			for (int i = 0; i < names.length; i++) {  
 				final ComponentName cn = ComponentName.unflattenFromString(names[i]);  
-				if (cn != null)
-				{  
-					if (TextUtils.equals(pkgName, cn.getPackageName()))
-					{  
+				if (cn != null) {  
+					if (TextUtils.equals(pkgName, cn.getPackageName())) {  
 						return true;  
 					}  
 				}  
@@ -127,40 +102,30 @@ public class ActivityMethod
 	}
 
 	//网络是否可用
-	public static boolean isNetworkAvailable(Context ctx)
-	{
+	public static boolean isNetworkAvailable(Context ctx) {
 		ConnectivityManager cm = (ConnectivityManager) ctx.getSystemService(ctx.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = cm.getActiveNetworkInfo();  
-		if (networkInfo == null || !networkInfo.isAvailable())  
-		{  
+		if (networkInfo == null || !networkInfo.isAvailable()) {  
 			return false;
-		}  
-		else   
-		{  
+		} else {  
 			return true;
 		}
 	}
 
 	//获取版本名
-    public static String getVersionName(Context context)
-    {
+    public static String getVersionName(Context context) {
         return getPackageInfo(context).versionName;
     }
 
 	//获取版本号
-    public static int getVersionCode(Context context) 
-    { 
+    public static int getVersionCode(Context context) { 
         return getPackageInfo(context).versionCode; 
     }
 
-	private static PackageInfo getPackageInfo(Context context)
-    { 
+	private static PackageInfo getPackageInfo(Context context) { 
         PackageInfo pi = null;  
-        try
-        {
-            PackageManager pm = context.getPackageManager(); pi = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_CONFIGURATIONS);  return pi; }
-        catch (Exception e)
-        { 
+        try {
+            PackageManager pm = context.getPackageManager(); pi = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_CONFIGURATIONS);  return pi; } catch (Exception e) { 
             e.printStackTrace();
         } 
         return pi; 

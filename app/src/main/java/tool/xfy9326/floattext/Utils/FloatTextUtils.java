@@ -2,8 +2,7 @@ package tool.xfy9326.floattext.Utils;
 
 import java.util.ArrayList;
 
-public class FloatTextUtils
-{
+public class FloatTextUtils {
 	private ArrayList<String> TextShow = new ArrayList<String>();
     private ArrayList<Integer> ColorShow = new ArrayList<Integer>();
     private ArrayList<Float> SizeShow = new ArrayList<Float>();
@@ -26,218 +25,175 @@ public class FloatTextUtils
 	private ArrayList<Float> FloatWide = new ArrayList<Float>();
 	private ArrayList<Boolean> NotifyControl = new ArrayList<Boolean>();
 
-	public void setNotifyControl(ArrayList<Boolean> notifyControl)
-	{
+	public void setNotifyControl(ArrayList<Boolean> notifyControl) {
 		NotifyControl = notifyControl;
 	}
 
-	public ArrayList<Boolean> getNotifyControl()
-	{
+	public ArrayList<Boolean> getNotifyControl() {
 		return NotifyControl;
 	}
 
-	public void setTextShadowRadius(ArrayList<Float> textShadowRadius)
-	{
+	public void setTextShadowRadius(ArrayList<Float> textShadowRadius) {
 		TextShadowRadius = textShadowRadius;
 	}
 
-	public ArrayList<Float> getTextShadowRadius()
-	{
+	public ArrayList<Float> getTextShadowRadius() {
 		return TextShadowRadius;
 	}
 
-	public void setTextShadowColor(ArrayList<Integer> textShadowColor)
-	{
+	public void setTextShadowColor(ArrayList<Integer> textShadowColor) {
 		TextShadowColor = textShadowColor;
 	}
 
-	public ArrayList<Integer> getTextShadowColor()
-	{
+	public ArrayList<Integer> getTextShadowColor() {
 		return TextShadowColor;
 	}
 
-	public void setBackgroundColor(ArrayList<Integer> backgroundColor)
-	{
+	public void setBackgroundColor(ArrayList<Integer> backgroundColor) {
 		BackgroundColor = backgroundColor;
 	}
 
-	public ArrayList<Integer> getBackgroundColor()
-	{
+	public ArrayList<Integer> getBackgroundColor() {
 		return BackgroundColor;
 	}
 
-	public void setFloatSize(ArrayList<Boolean> floatSize)
-	{
+	public void setFloatSize(ArrayList<Boolean> floatSize) {
 		FloatSize = floatSize;
 	}
 
-	public ArrayList<Boolean> getFloatSize()
-	{
+	public ArrayList<Boolean> getFloatSize() {
 		return FloatSize;
 	}
 
-	public void setFloatLong(ArrayList<Float> floatLong)
-	{
+	public void setFloatLong(ArrayList<Float> floatLong) {
 		FloatLong = floatLong;
 	}
 
-	public ArrayList<Float> getFloatLong()
-	{
+	public ArrayList<Float> getFloatLong() {
 		return FloatLong;
 	}
 
-	public void setFloatWide(ArrayList<Float> floatWide)
-	{
+	public void setFloatWide(ArrayList<Float> floatWide) {
 		FloatWide = floatWide;
 	}
 
-	public ArrayList<Float> getFloatWide()
-	{
+	public ArrayList<Float> getFloatWide() {
 		return FloatWide;
 	}
 
-	public void setTextShadowX(ArrayList<Float> textShadowX)
-	{
+	public void setTextShadowX(ArrayList<Float> textShadowX) {
 		TextShadowX = textShadowX;
 	}
 
-	public ArrayList<Float> getTextShadowX()
-	{
+	public ArrayList<Float> getTextShadowX() {
 		return TextShadowX;
 	}
 
-	public void setTextShadowY(ArrayList<Float> textShadowY)
-	{
+	public void setTextShadowY(ArrayList<Float> textShadowY) {
 		TextShadowY = textShadowY;
 	}
 
-	public ArrayList<Float> getTextShadowY()
-	{
+	public ArrayList<Float> getTextShadowY() {
 		return TextShadowY;
 	}
 
-	public void setTextSpeed(ArrayList<Integer> textSpeed)
-	{
+	public void setTextSpeed(ArrayList<Integer> textSpeed) {
 		TextSpeed = textSpeed;
 	}
 
-	public ArrayList<Integer> getTextSpeed()
-	{
+	public ArrayList<Integer> getTextSpeed() {
 		return TextSpeed;
 	}
 
-	public void setTextMove(ArrayList<Boolean> textMove)
-	{
+	public void setTextMove(ArrayList<Boolean> textMove) {
 		TextMove = textMove;
 	}
 
-	public ArrayList<Boolean> getTextMove()
-	{
+	public ArrayList<Boolean> getTextMove() {
 		return TextMove;
 	}
 
-	public void setTextTop(ArrayList<Boolean> textTop)
-	{
+	public void setTextTop(ArrayList<Boolean> textTop) {
 		TextTop = textTop;
 	}
 
-	public ArrayList<Boolean> getTextTop()
-	{
+	public ArrayList<Boolean> getTextTop() {
 		return TextTop;
 	}
 
-	public void setLockPosition(ArrayList<Boolean> lockPosition)
-	{
+	public void setLockPosition(ArrayList<Boolean> lockPosition) {
 		LockPosition = lockPosition;
 	}
 
-	public ArrayList<Boolean> getLockPosition()
-	{
+	public ArrayList<Boolean> getLockPosition() {
 		return LockPosition;
 	}
 
-	public void setAutoTop(ArrayList<Boolean> autoTop)
-	{
+	public void setAutoTop(ArrayList<Boolean> autoTop) {
 		AutoTop = autoTop;
 	}
 
-	public ArrayList<Boolean> getAutoTop()
-	{
+	public ArrayList<Boolean> getAutoTop() {
 		return AutoTop;
 	}
 
-	public void setTextShadow(ArrayList<Boolean> textShadow)
-	{
+	public void setTextShadow(ArrayList<Boolean> textShadow) {
 		TextShadow = textShadow;
 	}
 
-	public ArrayList<Boolean> getTextShadow()
-	{
+	public ArrayList<Boolean> getTextShadow() {
 		return TextShadow;
 	}
 
-	public void setPosition(ArrayList<String> position)
-	{
+	public void setPosition(ArrayList<String> position) {
 		Position = position;
 	}
 
-	public ArrayList<String> getPosition()
-	{
+	public ArrayList<String> getPosition() {
 		return Position;
 	}
 
-	public void setThickShow(ArrayList<Boolean> thickShow)
-	{
+	public void setThickShow(ArrayList<Boolean> thickShow) {
 		ThickShow = thickShow;
 	}
 
-	public ArrayList<Boolean> getThickShow()
-	{
+	public ArrayList<Boolean> getThickShow() {
 		return ThickShow;
 	}
 
-	public void setShowFloat(ArrayList<Boolean> showFloat)
-	{
+	public void setShowFloat(ArrayList<Boolean> showFloat) {
 		ShowFloat = showFloat;
 	}
 
-	public ArrayList<Boolean> getShowFloat()
-	{
+	public ArrayList<Boolean> getShowFloat() {
 		return ShowFloat;
 	}
 
-	public void setSizeShow(ArrayList<Float> sizeShow)
-	{
+	public void setSizeShow(ArrayList<Float> sizeShow) {
 		SizeShow = sizeShow;
 	}
 
-	public ArrayList<Float> getSizeShow()
-	{
+	public ArrayList<Float> getSizeShow() {
 		return SizeShow;
 	}
 
-	public void setColorShow(ArrayList<Integer> colorShow)
-	{
+	public void setColorShow(ArrayList<Integer> colorShow) {
 		ColorShow = colorShow;
 	}
 
-	public ArrayList<Integer> getColorShow()
-	{
+	public ArrayList<Integer> getColorShow() {
 		return ColorShow;
 	}
 
-	public void setTextShow(ArrayList<String> textShow)
-	{
+	public void setTextShow(ArrayList<String> textShow) {
 		TextShow = textShow;
 	}
 
-	public ArrayList<String> getTextShow()
-	{
+	public ArrayList<String> getTextShow() {
 		return TextShow;
 	}
 
-	public void addDatas(String text, int color, float size, boolean thick, boolean show, String position, boolean lp, boolean tp, boolean ap, boolean tm, int sp, boolean sha, float shax, float shay, float shad, int bac, int tsc, boolean fs, float fl, float fw, boolean nc)
-    {
+	public void addDatas(String text, int color, float size, boolean thick, boolean show, String position, boolean lp, boolean tp, boolean ap, boolean tm, int sp, boolean sha, float shax, float shay, float shad, int bac, int tsc, boolean fs, float fl, float fw, boolean nc) {
         TextShow.add(text);
         ColorShow.add(color);
         SizeShow.add(size);
@@ -261,8 +217,7 @@ public class FloatTextUtils
 		NotifyControl.add(nc);
     }
 
-	public void replaceDatas(ArrayList<String> text, ArrayList<Integer> color, ArrayList<Float> size, ArrayList<Boolean> thick, ArrayList<Boolean> show, ArrayList<String> position, ArrayList<Boolean> lp, ArrayList<Boolean> tp, ArrayList<Boolean> ap, ArrayList<Boolean> tm, ArrayList<Integer> sp, ArrayList<Boolean> sha, ArrayList<Float> shax, ArrayList<Float> shay, ArrayList<Float> shad, ArrayList<Integer> bac, ArrayList<Integer> tsc, ArrayList<Boolean> fs, ArrayList<Float> fl, ArrayList<Float> fw, ArrayList<Boolean> nc)
-    {
+	public void replaceDatas(ArrayList<String> text, ArrayList<Integer> color, ArrayList<Float> size, ArrayList<Boolean> thick, ArrayList<Boolean> show, ArrayList<String> position, ArrayList<Boolean> lp, ArrayList<Boolean> tp, ArrayList<Boolean> ap, ArrayList<Boolean> tm, ArrayList<Integer> sp, ArrayList<Boolean> sha, ArrayList<Float> shax, ArrayList<Float> shay, ArrayList<Float> shad, ArrayList<Integer> bac, ArrayList<Integer> tsc, ArrayList<Boolean> fs, ArrayList<Float> fl, ArrayList<Float> fw, ArrayList<Boolean> nc) {
         TextShow = text;
         ColorShow = color;
         SizeShow = size;
@@ -286,8 +241,7 @@ public class FloatTextUtils
 		NotifyControl = nc;
     }
 
-    public void removeDatas(int i)
-    {
+    public void removeDatas(int i) {
         TextShow.remove(i);
         ColorShow.remove(i);
         SizeShow.remove(i);
@@ -311,8 +265,7 @@ public class FloatTextUtils
 		NotifyControl.remove(i);
     }
 
-	public void setDatas(int i, String text, int color, float size, boolean thick, boolean show, String position, boolean lp, boolean tp, boolean ap, boolean tm, int sp, boolean sha, float shax, float shay, float shad, int bac, int tsc, boolean fs, float fl, float fw, boolean nc)
-    {
+	public void setDatas(int i, String text, int color, float size, boolean thick, boolean show, String position, boolean lp, boolean tp, boolean ap, boolean tm, int sp, boolean sha, float shax, float shay, float shad, int bac, int tsc, boolean fs, float fl, float fw, boolean nc) {
         TextShow.set(i, text);
         ColorShow.set(i, color);
         SizeShow.set(i, size);

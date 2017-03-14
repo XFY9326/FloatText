@@ -1,10 +1,9 @@
 package tool.xfy9326.floattext.Method;
 
-import android.content.*;
-import tool.xfy9326.floattext.Utils.*;
-
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -12,33 +11,29 @@ import android.provider.Settings;
 import android.widget.Toast;
 import tool.xfy9326.floattext.R;
 import tool.xfy9326.floattext.Tool.FormatArrayList;
+import tool.xfy9326.floattext.Utils.App;
+import tool.xfy9326.floattext.Utils.FloatData;
+import tool.xfy9326.floattext.Utils.FloatTextUtils;
 
-public class QuickStartMethod
-{
-	public static boolean Launch(Context ctx)
-	{
-		if (Build.VERSION.SDK_INT >= 23)
-		{
-			if (Settings.canDrawOverlays(ctx) && ctx.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-			{
+//迅速启动所有悬浮窗与应用 无须Avtivity
+
+public class QuickStartMethod {
+	public static boolean Launch(Context ctx) {
+		if (Build.VERSION.SDK_INT >= 23) {
+			if (Settings.canDrawOverlays(ctx) && ctx.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
 				FloatStart(ctx);
 				return true;
-			}
-			else
-			{
+			} else {
 				Toast.makeText(ctx, ctx.getString(R.string.app_name) + ctx.getString(R.string.premission_error), Toast.LENGTH_SHORT).show();
 				return false;
 			}
-		}
-		else
-		{
+		} else {
 			FloatStart(ctx);
 			return true;
 		}
 	}
 
-	private static void FloatStart(Context ctx)
-	{
+	private static void FloatStart(Context ctx) {
 		App utils = (App)ctx.getApplicationContext();
 		SharedPreferences spdata = PreferenceManager.getDefaultSharedPreferences(ctx);
 		SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);

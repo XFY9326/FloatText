@@ -1,15 +1,17 @@
 package tool.xfy9326.floattext.FileSelector;
 
-import android.view.*;
-import android.widget.*;
-
 import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 import java.io.File;
 import java.util.ArrayList;
 import tool.xfy9326.floattext.R;
 
-public class ListAdapter extends BaseAdapter
-{
+public class ListAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<String> Filename = new ArrayList<String>();
     private ArrayList<String> Filedata = new ArrayList<String>();
@@ -18,14 +20,12 @@ public class ListAdapter extends BaseAdapter
     private String[] TypeList;
     private int[] IconList;
 
-    public ListAdapter(Context context)
-    {
+    public ListAdapter(Context context) {
         this.context = context;
         setFileIconData();
     }
 
-    public void setListData(String path, ArrayList<String> name, ArrayList<String> data, ArrayList<String> size)
-    {
+    public void setListData(String path, ArrayList<String> name, ArrayList<String> data, ArrayList<String> size) {
         this.Filename = name;
         this.Filedata = data;
 		this.Filesize = size;
@@ -33,12 +33,10 @@ public class ListAdapter extends BaseAdapter
     }
 
     @Override
-    public View getView(int p1, View p2, ViewGroup p3)
-    {
+    public View getView(int p1, View p2, ViewGroup p3) {
         final int index = p1;
         View view = p2;
-        if (view == null)
-        {
+        if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.fileselector_list_layout, null);
         }
@@ -53,89 +51,64 @@ public class ListAdapter extends BaseAdapter
         return view;
     }
 
-    private void iconset(ImageView icon, int index)
-    {
+    private void iconset(ImageView icon, int index) {
         File file = new File(Path + "/" + Filename.get(index));
         String name = Filename.get(index);
-        if (file.isDirectory())
-        {
-            if (name.equalsIgnoreCase("Download"))
-            {
+        if (file.isDirectory()) {
+            if (name.equalsIgnoreCase("Download")) {
                 icon.setImageResource(R.drawable.ic_folder_download);
-            }
-            else if (name.equalsIgnoreCase("DCIM") || name.equalsIgnoreCase("Pictures") || name.equalsIgnoreCase("Camera") || name.equalsIgnoreCase("ScreenShots"))
-            {
+            } else if (name.equalsIgnoreCase("DCIM") || name.equalsIgnoreCase("Pictures") || name.equalsIgnoreCase("Camera") || name.equalsIgnoreCase("ScreenShots")) {
                 icon.setImageResource(R.drawable.ic_folder_image);
-            }
-            else
-            {
+            } else {
                 icon.setImageResource(R.drawable.ic_folder);
             }
-        }
-        else
-        {
-            if (name.substring(0, 1).equalsIgnoreCase("."))
-            {
+        } else {
+            if (name.substring(0, 1).equalsIgnoreCase(".")) {
                 icon.setImageResource(R.drawable.ic_file_hidden);
-            }
-            else
-            {
+            } else {
                 boolean found = false;
                 String extraname = getExtraName(name);
-                if (extraname.equalsIgnoreCase("No_Name"))
-                {
+                if (extraname.equalsIgnoreCase("No_Name")) {
                     icon.setImageResource(R.drawable.ic_file_delimited);
-                }
-                else
-                {
-                    for (int i = 0;i < TypeList.length;i++)
-                    {
-                        if (extraname.equalsIgnoreCase(TypeList[i]))
-                        {
+                } else {
+                    for (int i = 0;i < TypeList.length;i++) {
+                        if (extraname.equalsIgnoreCase(TypeList[i])) {
                             icon.setImageResource(IconList[i]);
                             found = true;
                             break;
                         }
                     }
-                    if (!found)
-                    {
+                    if (!found) {
                         icon.setImageResource(R.drawable.ic_file);
                     }
                 }
             }
         }
-        if (name.equalsIgnoreCase("/..."))
-        {
+        if (name.equalsIgnoreCase("/...")) {
             icon.setImageResource(R.drawable.ic_folder_outline);
         }
     }
 
     @Override
-    public long getItemId(int p1)
-    {
+    public long getItemId(int p1) {
         return p1;
     }
 
     @Override
-    public Object getItem(int p1)
-    {
+    public Object getItem(int p1) {
         return Filename.get(p1);
     }
 
     @Override
-    public int getCount()
-    {
+    public int getCount() {
         return Filename.size();
     }
 
-    private void setFileIconData()
-    {
+    private void setFileIconData() {
         TypeList = context.getResources().getStringArray(R.array.fileselect_types);
         IconList = context.getResources().getIntArray(R.array.fileselect_icons);
-        for (int i = 0;i < IconList.length;i++)
-        {
-            switch (IconList[i])
-            {
+        for (int i = 0;i < IconList.length;i++) {
+            switch (IconList[i]) {
                 case 1:
                     IconList[i] = R.drawable.ic_file_image;
                     break;
@@ -174,13 +147,10 @@ public class ListAdapter extends BaseAdapter
         }
     }
 
-    private String getExtraName(String filename)
-    { 
-        if ((filename != null) && (filename.length() > 0))
-        { 
+    private String getExtraName(String filename) { 
+        if ((filename != null) && (filename.length() > 0)) { 
             int dot = filename.lastIndexOf('.'); 
-            if ((dot > -1) && (dot < (filename.length() - 1)))
-            { 
+            if ((dot > -1) && (dot < (filename.length() - 1))) { 
                 return filename.substring(dot + 1); 
             } 
         } 

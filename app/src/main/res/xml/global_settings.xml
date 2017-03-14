@@ -22,6 +22,12 @@
             android:defaultValue="true"
 			android:dependency="StayAliveService"
         />
+		<CheckBoxPreference 
+            android:key="FloatNotificationIcon"
+            android:title="@string/xml_global_notify_iconshow"
+            android:defaultValue="true"
+			android:dependency="FloatNotification"
+        />
 	</PreferenceCategory>
     <PreferenceCategory android:title="@string/xml_global_manageset"> 
         <CheckBoxPreference 

@@ -180,7 +180,8 @@
     <string name="xml_web_win_height_title">高度设置</string>
 	<string name="xml_global_notify">通知设置</string>
 	<string name="xml_global_notify_manage">通知栏管理悬浮窗</string>
-	<string name="xml_global_notify_manage_sum">通知栏对悬浮窗进行管理，会显示图标\n需要开启进程守护服务</string>
+	<string name="xml_global_notify_manage_sum">通知栏对悬浮窗进行管理\n需要开启进程守护服务</string>
+	<string name="xml_global_notify_iconshow">通知栏管理显示图标</string>
 	<string name="xml_global_system">系统设置</string>
 	<string name="xml_global_system_boot">开机时自动启动悬浮窗</string>
 	<string name="xml_global_system_boot_sum">请在系统管理中允许本软件开机自启\n注：服务启动可能会比较缓慢</string>

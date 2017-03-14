@@ -180,7 +180,8 @@
     <string name="xml_web_win_height_title">高度設定</string>
 	<string name="xml_global_notify">通知管理</string>
 	<string name="xml_global_notify_manage">通知欄管理懸浮視窗</string>
-	<string name="xml_global_notify_manage_sum">通知欄對懸浮視窗進行管理，會顯示圖標\n需要開啟進程守護服務</string>
+	<string name="xml_global_notify_manage_sum">通知欄對懸浮視窗進行管理\n需要開啟進程守護服務</string>
+	<string name="xml_global_notify_iconshow">通知欄管理顯示圖標</string>
 	<string name="xml_global_system">系統設置</string>
 	<string name="xml_global_system_boot">開機時自動啟動懸浮視窗</string>
 	<string name="xml_global_system_boot_sum">請在系統管理中允許本應用程式開機自啟\n注：服務啟動可能會比較緩慢</string>

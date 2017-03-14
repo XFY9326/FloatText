@@ -1,14 +1,13 @@
 package tool.xfy9326.floattext.Utils;
 
-public class StaticNum
-{
+public class StaticNum {
 	public static int FloatDataVersion = 4;
 	public static int DYNAMIC_LIST_VERSION = 12;
 
 	public static int ONGONING_NOTIFICATION_ID = 13;
-	
+
 	public static int FLOATUPDATE_START_DOWNLOAD = 14;
-	
+
 	public static int FLOATTEXT_RESULT_CODE = 0;
     public static int RESHOW_PERMISSION_RESULT_CODE = 1;
     public static int FLOATSET_RESULT_CODE = 2;

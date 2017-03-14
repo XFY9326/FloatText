@@ -1,47 +1,46 @@
 package tool.xfy9326.floattext.Method;
 
-import android.graphics.*;
-import android.view.*;
-import android.webkit.*;
-
 import android.animation.LayoutTransition;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.os.Environment;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.View;
+import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.TableRow;
 import tool.xfy9326.floattext.R;
 import tool.xfy9326.floattext.View.FloatLinearLayout;
 
-public class FloatWebSettingMethod
-{
-	public static int getWinDefaultHeight(WindowManager wm)
-	{
+public class FloatWebSettingMethod {
+	//获取默认窗口高度
+	public static int getWinDefaultHeight(WindowManager wm) {
 		DisplayMetrics dm = new DisplayMetrics();
 		wm.getDefaultDisplay().getMetrics(dm);
-		return Integer.valueOf(dm.heightPixels/3);
+		return Integer.valueOf(dm.heightPixels / 3);
 	}
 
-	public static int getWinDefaultWidth(WindowManager wm)
-	{
+	//获取默认窗口宽度
+	public static int getWinDefaultWidth(WindowManager wm) {
 		DisplayMetrics dm = new DisplayMetrics();
 		wm.getDefaultDisplay().getMetrics(dm);
-		return Integer.valueOf(dm.widthPixels/2);
+		return Integer.valueOf(dm.widthPixels / 2);
 	}
-	
+
 	//URL修复
-	public static String urlfix(String str)
-	{
-		if (!str.contains("://"))
-		{
+	public static String urlfix(String str) {
+		if (!str.contains("://")) {
 			str = "http://" + str;
 		}
 		return str;
 	}
 
 	//新建Web悬浮窗
-    public static WebView CreateFloatWebView(Context ctx, String url)
-    {
+    public static WebView CreateFloatWebView(Context ctx, String url) {
         String cachePath = Environment.getExternalStorageDirectory().getAbsolutePath().toString() + "/FloatText/WebCache/";
         WebView webview = new WebView(ctx);
         webview.setVerticalScrollbarOverlay(true);
@@ -65,8 +64,8 @@ public class FloatWebSettingMethod
         return webview;
     }
 
-    public static WindowManager.LayoutParams CreateFloatLayout(final Context ctx, WindowManager wm, WebView fwv, View tview, FloatLinearLayout layout, float px, float py, boolean show, int width, int height)
-    {
+	//悬浮窗布局设置
+    public static WindowManager.LayoutParams CreateFloatLayout(final Context ctx, WindowManager wm, WebView fwv, View tview, FloatLinearLayout layout, float px, float py, boolean show, int width, int height) {
         WindowManager.LayoutParams wmParams = ParamsSet(px, py, fwv, width, height);
         layout.setLayoutTransition(new LayoutTransition());
         layout.setBackgroundColor(Color.parseColor("#303F9F"));
@@ -80,16 +79,15 @@ public class FloatWebSettingMethod
         layout.changeShowState(show);
         layout.addView(tview);
         layout.addView(fwv);
-        if (show)
-        {
+        if (show) {
             wm.addView(layout, wmParams);
             fwv.reload();
         }
         return wmParams;
     }
 
-	private static WindowManager.LayoutParams ParamsSet(float px, float py, WebView fwv, int width, int height)
-	{
+	//悬浮窗设置
+	private static WindowManager.LayoutParams ParamsSet(float px, float py, WebView fwv, int width, int height) {
 		WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams();
         wmParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
         wmParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;

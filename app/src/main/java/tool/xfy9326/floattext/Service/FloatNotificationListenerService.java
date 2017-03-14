@@ -1,37 +1,33 @@
 package tool.xfy9326.floattext.Service;
 
-import android.service.notification.*;
-import tool.xfy9326.floattext.Utils.*;
-
 import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
+import android.service.notification.NotificationListenerService;
+import android.service.notification.StatusBarNotification;
+import tool.xfy9326.floattext.Utils.App;
+import tool.xfy9326.floattext.Utils.StaticString;
 
-public class FloatNotificationListenerService extends NotificationListenerService
-{
+public class FloatNotificationListenerService extends NotificationListenerService {
 	private String notify;
 	private String pkg;
 	private App utils;
 
 	@Override
-	public void onCreate()
-	{
+	public void onCreate() {
 		utils = ((App)getApplicationContext());
 		super.onCreate();
 	}
 
 	@Override
-	public void onNotificationPosted(StatusBarNotification sbn)
-	{
-		if (utils.StartShowWin)
-		{
+	public void onNotificationPosted(StatusBarNotification sbn) {
+		if (utils.StartShowWin) {
 			Bundle extras = sbn.getNotification().extras;
 			String title = extras.getString(Notification.EXTRA_TITLE);
 			String text = extras.getString(Notification.EXTRA_TEXT);
 			String sum_text = extras.getString(Notification.EXTRA_SUMMARY_TEXT);
 			String sub_text = extras.getString(Notification.EXTRA_SUB_TEXT);
-			if (title != null)
-			{
+			if (title != null) {
 				notify = title  + (text == null ? "" : ":" + text) + (sum_text == null ? "" : " " + sum_text) + (sub_text == null ? "" : " " + sub_text);
 				pkg = sbn.getPackageName().toString();
 				sendmes();
@@ -40,8 +36,7 @@ public class FloatNotificationListenerService extends NotificationListenerServic
 		super.onNotificationPosted(sbn);
 	}
 
-	private void sendmes()
-	{
+	private void sendmes() {
 		Intent intent = new Intent();
 		intent.setAction(StaticString.TEXT_ADVANCE_UPDATE_ACTION);
 		intent.putExtra("NotifyMes", notify);
@@ -50,8 +45,7 @@ public class FloatNotificationListenerService extends NotificationListenerServic
 	}
 
 	@Override
-	public void onDestroy()
-	{
+	public void onDestroy() {
 		super.onDestroy();
 	}
 }

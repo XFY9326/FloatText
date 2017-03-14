@@ -180,7 +180,8 @@
     <string name="xml_web_win_height_title">Height Set</string>
 	<string name="xml_global_notify">Notification Settings</string>
 	<string name="xml_global_notify_manage">Notification Control</string>
-	<string name="xml_global_notify_manage_sum">Use Notification Bar manage Float Windows and show Icon.\nNeed to open Float Window Guard Service.</string>
+	<string name="xml_global_notify_manage_sum">Use Notification Bar manage Float Windows.\nNeed to open Float Window Guard Service.</string>
+	<string name="xml_global_notify_iconshow">Show Icon in Notification Bar</string>
 	<string name="xml_global_system">System Settings</string>
 	<string name="xml_global_system_boot">Show Float Window automatically after boot</string>
 	<string name="xml_global_system_boot_sum">Please allow this application boot in System Manage\nAttention:The Services may start slow!</string>
