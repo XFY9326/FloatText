@@ -54,6 +54,7 @@
 		<item>The latest notification(*)\n[Android 4.3 and above must open Notification Listener Service]</item>
 		<item>The Package Name of latest notification(*)\n[Android 4.3 and above must open Notification Listener Service]</item>
 		<item>The latest toast(*)</item>
+		<item>Show nothing</item>
     </string-array>
     <string-array name="floatmanage_choose">
         <item>Text Floating Window</item>

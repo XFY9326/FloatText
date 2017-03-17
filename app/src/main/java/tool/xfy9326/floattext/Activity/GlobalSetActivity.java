@@ -349,6 +349,7 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity {
 	}
 
 	private void DymanicSet(boolean b) {
+		boolean NotifySdk = Build.VERSION.SDK_INT >= 18;
 		((App)getApplicationContext()).setDynamicNumService(b);
 		Intent service = new Intent(GlobalSetActivity.this, FloatTextUpdateService.class);
 		Intent asservice = new Intent(GlobalSetActivity.this, FloatAdvanceTextUpdateService.class);
@@ -356,11 +357,15 @@ public class GlobalSetActivity extends AppCompatPreferenceActivity {
 		if (b) {
 			startService(service);
 			startService(asservice);
-			startService(notifyservice);
+			if (NotifySdk) {
+				startService(notifyservice);
+			}
 		} else {
 			stopService(service);
 			stopService(asservice);
-			stopService(notifyservice);
+			if (NotifySdk) {
+				stopService(notifyservice);
+			}
 		}
 	}
 

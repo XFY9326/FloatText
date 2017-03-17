@@ -54,6 +54,7 @@
 		<item>Notifications</item>
 		<item>NotificationPkg</item>
 		<item>Toasts</item>
+		<item>Empty</item>
     </string-array>
     <string-array name="floatsetting_dynamic_name">
         <item>日期与时间</item>
@@ -89,6 +90,7 @@
 		<item>最新的通知消息(*)\n[4.3以上系统需开启通知监听服务]</item>
 		<item>最新的通知消息包名(*)\n[4.3以上系统需开启通知监听服务]</item>
 		<item>最新Toast消息(*)</item>
+		<item>空显示</item>
     </string-array>
     <string-array name="floatmanage_choose">
         <item>文本悬浮窗</item>

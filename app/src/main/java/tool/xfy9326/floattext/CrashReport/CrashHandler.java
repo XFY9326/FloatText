@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import tool.xfy9326.floattext.Method.IOMethod;
 import tool.xfy9326.floattext.R;
+import tool.xfy9326.floattext.Utils.StaticNum;
 
 public class CrashHandler implements Thread.UncaughtExceptionHandler {
     private Thread.UncaughtExceptionHandler mDefaultHandler;
@@ -116,6 +117,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 				String lastupdatetime = stampToDate(pi.lastUpdateTime + "");
 				String errortime = stampToDate(new Date().getTime() + "");
                 String result = "VersionName = " + versionName + "\n" + "VersionCode = " + versionCode + "\n" + "ErrorTime = " + errortime + "\n" + "InstallTime = " + installTime + "\n" + "LastUpdateTime = " + lastupdatetime;
+				result += "\n" + "FloatDataVersion = " + StaticNum.FloatDataVersion + "\n" + "DynamicListVersion = " + StaticNum.DYNAMIC_LIST_VERSION;
+				result += "\n" + "SDK = " + Build.VERSION.SDK + "(" + Build.VERSION.SDK_INT + ")";
 				return result;
             }
         } catch (PackageManager.NameNotFoundException e) {

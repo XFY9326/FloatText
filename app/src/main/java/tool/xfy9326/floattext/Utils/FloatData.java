@@ -306,7 +306,16 @@ public class FloatData {
         output.addAll(str);
         if (str.size() > 0) {
             for (int i = 0;i < str.size();i++) {
-                String result = new String(Base64.decode(str.get(i).getBytes(), Base64.NO_WRAP));
+				String result = "";
+				try {
+					result = new String(Base64.decode(str.get(i).toString().getBytes(), Base64.NO_WRAP));
+				} catch (IllegalArgumentException e1) {
+					try {
+						result = new String(Base64.decode(str.get(i).toString(), Base64.DEFAULT));
+					} catch (IllegalArgumentException e2) {
+						result = str.get(i).toString();
+					}
+				}
                 output.set(i, result);
             }
         }

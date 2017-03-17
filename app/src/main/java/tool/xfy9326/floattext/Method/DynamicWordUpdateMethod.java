@@ -66,6 +66,8 @@ public class DynamicWordUpdateMethod {
 	private void UpdateEachText(int i, String[] list, String[] data, int[] info) {
 		if (ShowFloat.get(i)) {
 			String str = floattext.get(i);
+			//空文本
+			str = str.replace("<Empty>", " ");
 			if (info == null) {
 				for (int a = 0;a < list.length;a++) {
 					str = updatetext(str, list[a].toString(), data[a].toString(), 0);
