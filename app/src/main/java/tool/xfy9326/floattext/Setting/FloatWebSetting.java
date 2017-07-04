@@ -44,7 +44,6 @@ import tool.xfy9326.floattext.FileSelector.SelectFile;
 import tool.xfy9326.floattext.Method.FloatTextSettingMethod;
 import tool.xfy9326.floattext.Method.FloatWebSettingMethod;
 import tool.xfy9326.floattext.R;
-import tool.xfy9326.floattext.SafeGuard;
 import tool.xfy9326.floattext.Utils.App;
 import tool.xfy9326.floattext.Utils.StaticNum;
 import tool.xfy9326.floattext.View.FloatLinearLayout;
@@ -76,8 +75,6 @@ public class FloatWebSetting extends AppCompatPreferenceActivity {
         preferenceset();
         defaultkeyget();
         prepareshow();
-        SafeGuard.isSignatureAvailable(this, true);
-        SafeGuard.isPackageNameAvailable(this, true);
     }
 
     private void sethome() {

@@ -48,7 +48,6 @@ import tool.xfy9326.floattext.Method.FloatServiceMethod;
 import tool.xfy9326.floattext.Method.FloatTextSettingMethod;
 import tool.xfy9326.floattext.Method.FloatWebSettingMethod;
 import tool.xfy9326.floattext.R;
-import tool.xfy9326.floattext.SafeGuard;
 import tool.xfy9326.floattext.Utils.App;
 import tool.xfy9326.floattext.Utils.FloatFrameUtils;
 import tool.xfy9326.floattext.Utils.FloatTextUtils;
@@ -100,8 +99,6 @@ public class FloatTextSetting extends AppCompatPreferenceActivity {
         } else {
             setTitle(R.string.float_edit_title);
         }
-        SafeGuard.isSignatureAvailable(this, true);
-        SafeGuard.isPackageNameAvailable(this, true);
     }
 
     //ToolBar设置

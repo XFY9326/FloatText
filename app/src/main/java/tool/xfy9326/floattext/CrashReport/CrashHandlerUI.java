@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.List;
 
 import tool.xfy9326.floattext.R;
-import tool.xfy9326.floattext.SafeGuard;
 
 public class CrashHandlerUI extends AppCompatActivity {
     private String Log = "Report Error";
@@ -44,10 +43,6 @@ public class CrashHandlerUI extends AppCompatActivity {
         AppName = getIntent().getStringExtra("AppName");
         mail = getIntent().getStringExtra("Mail");
         buttonset();
-    }
-
-    private boolean isOfficialVersion() {
-        return SafeGuard.isSignatureAvailable(this, false) && SafeGuard.isPackageNameAvailable(this, false);
     }
 
     private void buttonset() {
@@ -70,8 +65,6 @@ public class CrashHandlerUI extends AppCompatActivity {
     private void sendmail() {
         PackageManager pm = getPackageManager();
         String MailSend = AppName + getString(R.string.crashreport_mail_main) + "\n\n" + getString(R.string.crashreport_mail_report) + ":\n" + Device + "\n\n" + Log;
-        if (!isOfficialVersion()) {
-            MailSend += "\n\nNot Official Release!";
             try {
                 PackageInfo info = pm.getPackageInfo(getPackageName(), 0);
                 Signature[] sg = info.signatures;
@@ -83,7 +76,6 @@ public class CrashHandlerUI extends AppCompatActivity {
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
-        }
         Intent data = new Intent(Intent.ACTION_SENDTO);
         data.setData(Uri.parse("mailto:" + mail));
         data.putExtra(Intent.EXTRA_SUBJECT, AppName + getString(R.string.crashreport_mail_title));

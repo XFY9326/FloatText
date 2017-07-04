@@ -36,7 +36,7 @@ public class FloatTextUpdateService extends Service {
     private final SensorReceiver sreceiver = new SensorReceiver();
     private boolean FloatScreenState = true;
     private int DynamicReloadTime = 1000;
-    private Timer timer = null;
+    private Timer timer, slow_timmer = null;
     private SimpleDateFormat sdf12 = null;
     private SimpleDateFormat sdf24 = null;
     private SimpleDateFormat sdf_clock_12 = null;
@@ -60,7 +60,6 @@ public class FloatTextUpdateService extends Service {
     private long lastTimeStamp = 0;
     private String localip;
     private String clipstr;
-    private int HighCpu_DoubleWaitTime = 0;
     private IntentFilter battery_filter = null;
     private String battery_percent;
     private boolean sensor_use_dynamic_word = false;
@@ -279,6 +278,16 @@ public class FloatTextUpdateService extends Service {
 
     private void timercommon() {
         timer = new Timer();
+        slow_timmer = new Timer();
+        slow_timmer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (high_cpu_use_dynamicword) {
+                    cpurate = FloatServiceMethod.getProcessCpuRate() + "%";
+                    meminfo = FloatServiceMethod.getMeminfo(FloatTextUpdateService.this);
+                }
+            }
+        }, 500, DynamicReloadTime * 2);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -290,14 +299,6 @@ public class FloatTextUpdateService extends Service {
                     clipstr = getClip();
                     localip = FloatServiceMethod.getIP(FloatTextUpdateService.this);
                     wifisignal = FloatServiceMethod.getWifiSignal(FloatTextUpdateService.this);
-                }
-                if (high_cpu_use_dynamicword) {
-                    if (HighCpu_DoubleWaitTime >= 2) {
-                        cpurate = FloatServiceMethod.getProcessCpuRate() + "%";
-                        meminfo = FloatServiceMethod.getMeminfo(FloatTextUpdateService.this);
-                        HighCpu_DoubleWaitTime = 0;
-                    }
-                    HighCpu_DoubleWaitTime++;
                 }
                 orientation = FloatServiceMethod.judgeOrientation(FloatTextUpdateService.this);
                 sendBroadcast();
@@ -321,6 +322,8 @@ public class FloatTextUpdateService extends Service {
         timer_run = false;
         if (timer != null) {
             timer.cancel();
+            slow_timmer.cancel();
+            slow_timmer = null;
             timer = null;
             unregisterReceiver(breceiver);
             msensor.unregisterListener(sreceiver);

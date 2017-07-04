@@ -9,7 +9,6 @@ import android.widget.RemoteViews;
 import java.util.ArrayList;
 
 import tool.xfy9326.floattext.CrashReport.CrashHandler;
-import tool.xfy9326.floattext.SafeGuard;
 import tool.xfy9326.floattext.View.ListViewAdapter;
 
 /*
@@ -51,8 +50,6 @@ public class App extends Application {
     private void init() {
         textutil = new FloatTextUtils();
         frameutil = new FloatFrameUtils();
-        SafeGuard.isSignatureAvailable(this, true);
-        SafeGuard.isPackageNameAvailable(this, true);
     }
 
     public RemoteViews getRemoteview() {
