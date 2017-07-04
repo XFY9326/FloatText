@@ -58,7 +58,7 @@ public class SafeGuard {
         return false;
     }
 
-    public static boolean isApkInDebug(Context context) {
+    private static boolean isApkInDebug(Context context) {
         try {
             ApplicationInfo info = context.getApplicationInfo();
             return (info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;

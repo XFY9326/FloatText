@@ -10,29 +10,11 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.text.format.Formatter;
 
-import java.io.File;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class ActivityMethod {
-    //文件夹大小获取
-    private static long getFolderSize(File file) {
-        long size = 0;
-        try {
-            File[] fileList = file.listFiles();
-            for (File aFileList : fileList) {
-                if (aFileList.isDirectory()) {
-                    size += getFolderSize(aFileList);
-                } else {
-                    size += aFileList.length();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return size;
-    }
 
     //文件大小格式
     public static String formatSize(Context ctx, String target_size) {

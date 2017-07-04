@@ -92,7 +92,7 @@ public class FloatWebSettingMethod {
         WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams();
         wmParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
         wmParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
-        wmParams.gravity = Gravity.LEFT | Gravity.TOP;
+        wmParams.gravity = Gravity.START | Gravity.TOP;
         wmParams.x = (int) px;
         wmParams.y = (int) py;
         wmParams.format = PixelFormat.TRANSLUCENT;

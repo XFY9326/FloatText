@@ -11,7 +11,7 @@
         android:id="@+id/main_navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="left"
+        android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/drawer_float_manage_header"
         app:menu="@menu/drawer_float_manage_menu" />

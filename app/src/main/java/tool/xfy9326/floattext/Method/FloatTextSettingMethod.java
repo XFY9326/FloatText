@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Build;
@@ -34,25 +33,27 @@ import tool.xfy9326.floattext.View.FloatTextView;
 public class FloatTextSettingMethod {
     private boolean longClicked;
 
-    //Int数值颜色转16进制
-    public static String IntColortoHex(int color) {
-        String R, G, B, C;
-        StringBuilder sb = new StringBuilder();
-        C = Integer.toHexString(Color.alpha(color));
-        R = Integer.toHexString(Color.red(color));
-        G = Integer.toHexString(Color.green(color));
-        B = Integer.toHexString(Color.blue(color));
-        C = C.length() == 1 ? "0" + C : C;
-        R = R.length() == 1 ? "0" + R : R;
-        G = G.length() == 1 ? "0" + G : G;
-        B = B.length() == 1 ? "0" + B : B;
-        sb.append("#");
-        sb.append(C.toUpperCase());
-        sb.append(R.toUpperCase());
-        sb.append(G.toUpperCase());
-        sb.append(B.toUpperCase());
-        return sb.toString();
-    }
+// --Commented out by Inspection START (2017/7/4 下午 11:53):
+//    //Int数值颜色转16进制
+//    public static String IntColortoHex(int color) {
+//        String R, G, B, C;
+//        StringBuilder sb = new StringBuilder();
+//        C = Integer.toHexString(Color.alpha(color));
+//        R = Integer.toHexString(Color.red(color));
+//        G = Integer.toHexString(Color.green(color));
+//        B = Integer.toHexString(Color.blue(color));
+//        C = C.length() == 1 ? "0" + C : C;
+//        R = R.length() == 1 ? "0" + R : R;
+//        G = G.length() == 1 ? "0" + G : G;
+//        B = B.length() == 1 ? "0" + B : B;
+//        sb.append("#");
+//        sb.append(C.toUpperCase());
+//        sb.append(R.toUpperCase());
+//        sb.append(G.toUpperCase());
+//        sb.append(B.toUpperCase());
+//        return sb.toString();
+//    }
+// --Commented out by Inspection STOP (2017/7/4 下午 11:53)
 
     //新建悬浮文字控件
     public static FloatTextView CreateFloatView(Context ctx, FloatTextUtils textutils, int i) {
@@ -118,7 +119,7 @@ public class FloatTextSettingMethod {
         } else {
             wmParams.flags = LayoutParams.FLAG_NOT_FOCUSABLE;
         }
-        wmParams.gravity = Gravity.LEFT | Gravity.TOP;
+        wmParams.gravity = Gravity.START | Gravity.TOP;
         wmParams.x = (int) px;
         wmParams.y = (int) py;
         wmParams.format = PixelFormat.TRANSLUCENT;

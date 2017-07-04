@@ -26,10 +26,10 @@
                 android:id="@+id/textview_titleshow_floatmanage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
                 android:layout_centerInParent="true"
-                android:layout_marginRight="105dp"
+                android:layout_marginEnd="105dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="20sp" />
 
@@ -37,16 +37,16 @@
                 android:id="@+id/button_edit_floatmanage"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerInParent="true"
-                android:layout_marginRight="35dp"
+                android:layout_marginEnd="35dp"
                 android:background="@drawable/ic_pencil" />
 
             <Button
                 android:id="@+id/button_delete_floatmanage"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerInParent="true"
                 android:background="@drawable/ic_delete" />
 
@@ -54,9 +54,9 @@
                 android:id="@+id/button_lock_floatmanage"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerInParent="true"
-                android:layout_marginRight="70dp"
+                android:layout_marginEnd="70dp"
                 android:background="@drawable/ic_lock_unlocked" />
 
         </RelativeLayout>

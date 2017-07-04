@@ -21,16 +21,16 @@
             android:id="@+id/textsize_button_minus"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="23dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="23dp"
             android:background="@drawable/ic_minus" />
 
         <Button
             android:id="@+id/textsize_button_plus"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="23dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="23dp"
             android:background="@drawable/ic_plus_black" />
 
     </RelativeLayout>

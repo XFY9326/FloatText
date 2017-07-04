@@ -1,5 +1,6 @@
 package tool.xfy9326.floattext.View;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -16,6 +17,7 @@ import tool.xfy9326.floattext.Utils.App;
  主要用于对悬浮窗内文字进行修改
  */
 
+@SuppressLint("ViewConstructor")
 public class FloatTextView extends android.support.v7.widget.AppCompatTextView implements Runnable {
     private final WindowManager wm;
     private int currentScrollX;

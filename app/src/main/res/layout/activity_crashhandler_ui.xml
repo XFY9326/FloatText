@@ -45,7 +45,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
+        android:paddingEnd="5dp"
+        android:paddingStart="5dp"
         android:text="@string/crashreport_err_report"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 

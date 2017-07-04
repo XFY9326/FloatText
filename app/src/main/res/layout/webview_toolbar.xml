@@ -13,7 +13,7 @@
             android:id="@+id/webview_hide"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerInParent="true"
             android:background="@drawable/ic_chevron_double_right" />
 
@@ -21,25 +21,25 @@
             android:id="@+id/webview_previous"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
-            android:layout_marginRight="105dp"
+            android:layout_marginEnd="105dp"
             android:background="@drawable/ic_skip_previous" />
 
         <Button
             android:id="@+id/webview_next"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
-            android:layout_marginRight="70dp"
+            android:layout_marginEnd="70dp"
             android:background="@drawable/ic_skip_next" />
 
         <Button
             android:id="@+id/webview_close"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
             android:background="@drawable/ic_cancel" />
 
@@ -47,9 +47,9 @@
             android:id="@+id/webview_reload"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
-            android:layout_marginRight="35dp"
+            android:layout_marginEnd="35dp"
             android:background="@drawable/ic_refresh" />
 
     </RelativeLayout>
@@ -64,12 +64,12 @@
             android:id="@+id/webviewtoolbar_url"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="25dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="25dp"
             android:background="@color/colorWebUrlBackground"
             android:ellipsize="end"
-            android:gravity="left|center"
+            android:gravity="start|center"
             android:imeOptions="actionDone"
             android:maxLines="1"
             android:padding="5dp"
@@ -80,13 +80,13 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp" />
+            android:layout_marginStart="5dp" />
 
         <Button
             android:id="@+id/webviewtoolbar_enter"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="@drawable/ic_keyboard_return" />
 

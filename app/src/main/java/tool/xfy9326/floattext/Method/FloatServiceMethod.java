@@ -93,7 +93,7 @@ public class FloatServiceMethod {
             list_editor.putInt("Version", StaticNum.DYNAMIC_LIST_VERSION);
             list_editor.putString("LIST", KeyList.toString());
             list_editor.putString("INFO", InfoList.toString());
-            list_editor.commit();
+            list_editor.apply();
         }
         return list;
     }

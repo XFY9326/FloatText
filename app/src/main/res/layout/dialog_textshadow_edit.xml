@@ -18,14 +18,14 @@
             android:id="@+id/switch_textshadow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
-            android:layout_marginRight="10dp" />
+            android:layout_marginEnd="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerInParent="true"
             android:text="@string/xml_set_text_shadow_use"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -45,7 +45,7 @@
             android:id="@+id/textview_shadowDx"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerInParent="true"
             android:text="@string/xml_set_text_shadow_dx"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -55,10 +55,10 @@
             android:id="@+id/seekbar_shadowDx"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@id/textview_shadowDx" />
+            android:layout_marginEnd="5dp"
+            android:layout_toEndOf="@id/textview_shadowDx" />
 
     </RelativeLayout>
 
@@ -74,7 +74,7 @@
             android:id="@+id/textview_shadowDy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerInParent="true"
             android:text="@string/xml_set_text_shadow_dy"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -84,10 +84,10 @@
             android:id="@+id/seekbar_shadowDy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@id/textview_shadowDy" />
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@id/textview_shadowDy" />
 
     </RelativeLayout>
 
@@ -103,7 +103,7 @@
             android:id="@+id/textview_radius"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerInParent="true"
             android:text="@string/xml_set_text_shadow_radius"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -113,10 +113,10 @@
             android:id="@+id/seekbar_radius"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@id/textview_radius" />
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@id/textview_radius" />
 
     </RelativeLayout>
 

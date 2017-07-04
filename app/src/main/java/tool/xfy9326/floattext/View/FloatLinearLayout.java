@@ -1,5 +1,6 @@
 package tool.xfy9326.floattext.View;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
@@ -21,6 +22,7 @@ import tool.xfy9326.floattext.Utils.App;
  比如锁定，移动，显示在通知栏等
  */
 
+@SuppressLint("ViewConstructor")
 public class FloatLinearLayout extends LinearLayout {
     private final Context ctx;
     private final WindowManager wm;
@@ -61,10 +63,6 @@ public class FloatLinearLayout extends LinearLayout {
         this.ctx = context.getApplicationContext();
         this.FLOAT_ID = ID;
         this.wm = ((App) context.getApplicationContext()).getFloatwinmanager();
-    }
-
-    public boolean getAllowlongclick() {
-        return allowlongclick;
     }
 
     public void setAllowlongclick(boolean allowlongclick) {

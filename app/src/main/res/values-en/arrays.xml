@@ -51,8 +51,8 @@
         <item>Screen Orientation</item>
         <item>ClipBoard</item>
         <item>Current Activity(*)</item>
-        <item>The latest notification(*)\n[Android 4.3 and above must open Notification Listener Service]</item>
-        <item>The Package Name of latest notification(*)\n[Android 4.3 and above must open Notification Listener Service]</item>
+        <item>The latest notification(*)</item>
+        <item>The Package Name of latest notification(*)</item>
         <item>The latest toast(*)</item>
         <item>Show nothing</item>
     </string-array>

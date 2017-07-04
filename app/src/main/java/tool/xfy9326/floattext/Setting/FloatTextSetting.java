@@ -701,9 +701,9 @@ public class FloatTextSetting extends AppCompatPreferenceActivity {
         bx.setProgress((int) TextShadowX);
         by.setProgress((int) TextShadowY);
         br.setProgress((int) TextShadowRadius);
-        sx.setText(getString(R.string.xml_set_text_shadow_dx) + (int) TextShadowX);
-        sy.setText(getString(R.string.xml_set_text_shadow_dy) + (int) TextShadowY);
-        sr.setText(getString(R.string.xml_set_text_shadow_radius) + (int) TextShadowRadius);
+        sx.setText(String.valueOf(getString(R.string.xml_set_text_shadow_dx) + (int) TextShadowX));
+        sy.setText(String.valueOf(getString(R.string.xml_set_text_shadow_dy) + (int) TextShadowY));
+        sr.setText(String.valueOf(getString(R.string.xml_set_text_shadow_radius) + (int) TextShadowRadius));
         ss.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton b, boolean c) {
                 TextShadow = c;
@@ -723,7 +723,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity {
 
             public void onProgressChanged(SeekBar bar, int i, boolean state) {
                 TextShadowX = i;
-                sx.setText(getString(R.string.xml_set_text_shadow_dx) + (int) TextShadowX);
+                sx.setText(String.valueOf(getString(R.string.xml_set_text_shadow_dx) + (int) TextShadowX));
                 updateview();
             }
         });
@@ -738,7 +738,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity {
 
             public void onProgressChanged(SeekBar bar, int i, boolean state) {
                 TextShadowY = i;
-                sy.setText(getString(R.string.xml_set_text_shadow_dy) + (int) TextShadowY);
+                sy.setText(String.valueOf(getString(R.string.xml_set_text_shadow_dy) + (int) TextShadowY));
                 updateview();
             }
         });
@@ -753,7 +753,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity {
 
             public void onProgressChanged(SeekBar bar, int i, boolean state) {
                 TextShadowRadius = i;
-                sr.setText(getString(R.string.xml_set_text_shadow_radius) + (int) TextShadowRadius);
+                sr.setText(String.valueOf(getString(R.string.xml_set_text_shadow_radius) + (int) TextShadowRadius));
                 updateview();
             }
         });

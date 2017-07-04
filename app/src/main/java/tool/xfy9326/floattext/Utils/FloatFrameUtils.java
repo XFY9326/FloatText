@@ -18,10 +18,6 @@ public class FloatFrameUtils {
         return floatview;
     }
 
-    public void setFloatview(ArrayList<FloatTextView> floatview) {
-        this.floatview = floatview;
-    }
-
     public ArrayList<String> getFloattext() {
         return floattext;
     }
@@ -34,16 +30,8 @@ public class FloatFrameUtils {
         return floatlayout;
     }
 
-    public void setFloatlayout(ArrayList<WindowManager.LayoutParams> floatlayout) {
-        this.floatlayout = floatlayout;
-    }
-
     public ArrayList<FloatLinearLayout> getFloatlinearlayout() {
         return floatlinearlayout;
-    }
-
-    public void setFloatlinearlayout(ArrayList<FloatLinearLayout> floatlinearlayout) {
-        this.floatlinearlayout = floatlinearlayout;
     }
 
     public ArrayList<String> getFilterApplication() {
