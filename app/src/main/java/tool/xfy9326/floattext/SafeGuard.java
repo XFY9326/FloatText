@@ -1,6 +1,7 @@
 package tool.xfy9326.floattext;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.Signature;
 import android.util.Base64;
@@ -12,10 +13,9 @@ import tool.xfy9326.floattext.Utils.StaticString;
 //包名签名验证
 
 public class SafeGuard {
-    private static final boolean SAFE_GUARD = false;
 
     public static boolean isPackageNameAvailable(Context ctx, boolean exit) {
-        if (SAFE_GUARD) {
+        if (isApkInDebug(ctx)) {
             String name = ctx.getPackageName();
             if (!name.equals(StaticString.DEFAULT_PACKAGE_NAME)) {
                 if (exit) {
@@ -30,7 +30,7 @@ public class SafeGuard {
     }
 
     public static boolean isSignatureAvailable(Context ctx, boolean exit) {
-        if (SAFE_GUARD) {
+        if (isApkInDebug(ctx)) {
             try {
                 PackageInfo pi = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0);
                 Signature[] st = pi.signatures;
@@ -56,5 +56,14 @@ public class SafeGuard {
             }
         }
         return false;
+    }
+
+    public static boolean isApkInDebug(Context context) {
+        try {
+            ApplicationInfo info = context.getApplicationInfo();
+            return (info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
