@@ -15,19 +15,20 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.io.ByteArrayInputStream;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Collections;
 import java.util.List;
+
 import tool.xfy9326.floattext.R;
 import tool.xfy9326.floattext.SafeGuard;
 
 public class CrashHandlerUI extends AppCompatActivity {
     private String Log = "Report Error";
     private String Device = "Device Unknown";
-    private String clsname;
     private String mail;
     private String AppName;
 
@@ -35,59 +36,55 @@ public class CrashHandlerUI extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crashhandler_ui);
-		Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
-		setSupportActionBar(tb);
+        Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(tb);
         Log = getIntent().getStringExtra("CrashLog");
         Device = getIntent().getStringExtra("DeviceInfo");
-        clsname = getIntent().getStringExtra("ClassName");
+        //String clsname = getIntent().getStringExtra("ClassName");
         AppName = getIntent().getStringExtra("AppName");
         mail = getIntent().getStringExtra("Mail");
         buttonset();
     }
 
-	private boolean isOfficialVersion() {
-		if (SafeGuard.isSignatureAvailable(this, false) && SafeGuard.isPackageNameAvailable(this, false)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+    private boolean isOfficialVersion() {
+        return SafeGuard.isSignatureAvailable(this, false) && SafeGuard.isPackageNameAvailable(this, false);
+    }
 
     private void buttonset() {
         TextView logshow = (TextView) findViewById(R.id.textview_crashlog);
         logshow.setText(Log);
         Button exit = (Button) findViewById(R.id.button_nosendcrashlog);
-        exit.setOnClickListener(new OnClickListener(){
-                public void onClick(View v) {
-                    exit();
-                }
-            });
+        exit.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                exit();
+            }
+        });
         Button send = (Button) findViewById(R.id.button_sendcrashlog);
-        send.setOnClickListener(new OnClickListener(){
-                public void onClick(View v) {
-                    sendmail();
-                }
-            });
+        send.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                sendmail();
+            }
+        });
     }
 
     private void sendmail() {
-		PackageManager pm = getPackageManager();
+        PackageManager pm = getPackageManager();
         String MailSend = AppName + getString(R.string.crashreport_mail_main) + "\n\n" + getString(R.string.crashreport_mail_report) + ":\n" + Device + "\n\n" + Log;
-		if (!isOfficialVersion()) {
-			MailSend += "\n\nNot Official Release!";
-			try {
-				PackageInfo info = pm.getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
-				Signature[] sg = info.signatures;
-				String sgdata = "";
-				for (Signature sginfo : sg) {
-					sgdata += parseSignature(sginfo.toByteArray()) + "\n";
-				}
-				MailSend += "\n\n" + "SignatureInfo:" + "\n\n" + sgdata;
-			} catch (PackageManager.NameNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-        Intent data=new Intent(Intent.ACTION_SENDTO);
+        if (!isOfficialVersion()) {
+            MailSend += "\n\nNot Official Release!";
+            try {
+                PackageInfo info = pm.getPackageInfo(getPackageName(), 0);
+                Signature[] sg = info.signatures;
+                String sgdata = "";
+                for (Signature sginfo : sg) {
+                    sgdata += parseSignature(sginfo.toByteArray()) + "\n";
+                }
+                MailSend += "\n\n" + "SignatureInfo:" + "\n\n" + sgdata;
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        Intent data = new Intent(Intent.ACTION_SENDTO);
         data.setData(Uri.parse("mailto:" + mail));
         data.putExtra(Intent.EXTRA_SUBJECT, AppName + getString(R.string.crashreport_mail_title));
         data.putExtra(Intent.EXTRA_TEXT, MailSend);
@@ -100,25 +97,25 @@ public class CrashHandlerUI extends AppCompatActivity {
         }
     }
 
-	private String parseSignature(byte[] signature) {
-		try {
-			CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
-			X509Certificate cert = (X509Certificate) certFactory.generateCertificate(new ByteArrayInputStream(signature));
-			String pubkey = cert.getPublicKey().toString();
-			String info = cert.getSubjectX500Principal().getName().toString();
-			if (info.contains(",")) {
-				String[] infolist = info.split(",");
-				info = "";
-				for (String listitem : infolist) {
-					info += listitem + "\n";
-				}
-			}
-			return "PublicKey:" + "\n" + pubkey + "\n\n" + "Information:" + "\n" + info;
-		} catch (CertificateException e) {
-			e.printStackTrace();
-		}
-		return "";
-	}
+    private String parseSignature(byte[] signature) {
+        try {
+            CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+            X509Certificate cert = (X509Certificate) certFactory.generateCertificate(new ByteArrayInputStream(signature));
+            String pubkey = cert.getPublicKey().toString();
+            String info = cert.getSubjectX500Principal().getName();
+            if (info.contains(",")) {
+                String[] infolist = info.split(",");
+                info = "";
+                for (String listitem : infolist) {
+                    info += listitem + "\n";
+                }
+            }
+            return "PublicKey:" + "\n" + pubkey + "\n\n" + "Information:" + "\n" + info;
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 
     private void exit() {
         this.finish();

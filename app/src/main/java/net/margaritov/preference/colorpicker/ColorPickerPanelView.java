@@ -16,9 +16,10 @@
 
 package net.margaritov.preference.colorpicker;
 
-import android.graphics.*;
-
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -29,8 +30,7 @@ import android.view.View;
  *
  * @author Daniel Nilsson
  */
-public class ColorPickerPanelView extends View
-{
+public class ColorPickerPanelView extends View {
 
     /**
      * The width in pixels of the border
@@ -52,24 +52,20 @@ public class ColorPickerPanelView extends View
     private AlphaPatternDrawable mAlphaPattern;
 
 
-    public ColorPickerPanelView(Context context)
-	{
+    public ColorPickerPanelView(Context context) {
         this(context, null);
     }
 
-    public ColorPickerPanelView(Context context, AttributeSet attrs)
-	{
+    public ColorPickerPanelView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ColorPickerPanelView(Context context, AttributeSet attrs, int defStyle)
-	{
+    public ColorPickerPanelView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
 
-    private void init()
-	{
+    private void init() {
         mBorderPaint = new Paint();
         mColorPaint = new Paint();
         mDensity = getContext().getResources().getDisplayMetrics().density;
@@ -77,19 +73,14 @@ public class ColorPickerPanelView extends View
 
 
     @Override
-    protected void onDraw(Canvas canvas)
-	{
+    protected void onDraw(Canvas canvas) {
 
         final RectF rect = mColorRect;
 
-        if (BORDER_WIDTH_PX > 0)
-		{
-            mBorderPaint.setColor(mBorderColor);
-            canvas.drawRect(mDrawingRect, mBorderPaint);
-        }
+        mBorderPaint.setColor(mBorderColor);
+        canvas.drawRect(mDrawingRect, mBorderPaint);
 
-        if (mAlphaPattern != null)
-		{
+        if (mAlphaPattern != null) {
             mAlphaPattern.draw(canvas);
         }
 
@@ -99,8 +90,7 @@ public class ColorPickerPanelView extends View
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
-	{
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
@@ -109,8 +99,7 @@ public class ColorPickerPanelView extends View
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh)
-	{
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
         mDrawingRect = new RectF();
@@ -123,8 +112,7 @@ public class ColorPickerPanelView extends View
 
     }
 
-    private void setUpColorRect()
-	{
+    private void setUpColorRect() {
         final RectF dRect = mDrawingRect;
 
         float left = dRect.left + BORDER_WIDTH_PX;
@@ -137,23 +125,12 @@ public class ColorPickerPanelView extends View
         mAlphaPattern = new AlphaPatternDrawable((int) (5 * mDensity));
 
         mAlphaPattern.setBounds(
-			Math.round(mColorRect.left),
-			Math.round(mColorRect.top),
-			Math.round(mColorRect.right),
-			Math.round(mColorRect.bottom)
+                Math.round(mColorRect.left),
+                Math.round(mColorRect.top),
+                Math.round(mColorRect.right),
+                Math.round(mColorRect.bottom)
         );
 
-    }
-
-    /**
-     * Set the color that should be shown by this view.
-     *
-     * @param color
-     */
-    public void setColor(int color)
-	{
-        mColor = color;
-        invalidate();
     }
 
     /**
@@ -161,9 +138,25 @@ public class ColorPickerPanelView extends View
      *
      * @return
      */
-    public int getColor()
-	{
+    public int getColor() {
         return mColor;
+    }
+
+    /**
+     * Set the color that should be shown by this view.
+     *
+     * @param color
+     */
+    public void setColor(int color) {
+        mColor = color;
+        invalidate();
+    }
+
+    /**
+     * Get the color of the border surrounding the panel.
+     */
+    public int getBorderColor() {
+        return mBorderColor;
     }
 
     /**
@@ -171,18 +164,9 @@ public class ColorPickerPanelView extends View
      *
      * @param color
      */
-    public void setBorderColor(int color)
-	{
+    public void setBorderColor(int color) {
         mBorderColor = color;
         invalidate();
-    }
-
-    /**
-     * Get the color of the border surrounding the panel.
-     */
-    public int getBorderColor()
-	{
-        return mBorderColor;
     }
 
 }

@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import tool.xfy9326.floattext.Method.FloatManageMethod;
 import tool.xfy9326.floattext.R;
 import tool.xfy9326.floattext.Utils.App;
@@ -21,73 +22,72 @@ import tool.xfy9326.floattext.Utils.App;
  */
 
 public class FloatLinearLayout extends LinearLayout {
-    private Context ctx;
+    private final Context ctx;
+    private final WindowManager wm;
+    private final double longclicksecond = 1;
     private int FLOAT_ID = -1;
     private boolean lockposition = false;
     private boolean top = false;
-    private WindowManager wm;
     private WindowManager.LayoutParams wmParams;
     private boolean ShowState = true;
     private int layout_default_flags;
-    private float mStartX, mStartY, mTouchX, mTouchY, LastX, LastY, x, y;
-    private float px = 0;
-    private float py = 0;
-    private int statusBarHeight = 0;
-    private long startlongclicktime = 0;
-    private long nowlongclicktime = 0;
-    private double longclicksecond = 1;
-    private boolean longclickmove = false;
-	private boolean allowlongclick = true;
-	//长按处理
-    private Handler mHandler = new Handler() {
+    //长按处理
+    private final Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
                     if (FLOAT_ID != -1) {
-						if (FloatManageMethod.LockorUnlockWin(ctx, FLOAT_ID)) {
-                        	Toast.makeText(ctx, R.string.text_lock, Toast.LENGTH_SHORT).show();
-						} else if (FLOAT_ID == FloatManageMethod.getWinCount(ctx)) {
-							setPositionLocked(true);
-							Toast.makeText(ctx, R.string.text_lock, Toast.LENGTH_SHORT).show();
-						}
+                        if (FloatManageMethod.LockorUnlockWin(ctx, FLOAT_ID)) {
+                            Toast.makeText(ctx, R.string.text_lock, Toast.LENGTH_SHORT).show();
+                        } else if (FLOAT_ID == FloatManageMethod.getWinCount(ctx)) {
+                            setPositionLocked(true);
+                            Toast.makeText(ctx, R.string.text_lock, Toast.LENGTH_SHORT).show();
+                        }
                     }
                     break;
             }
         }
-	};
+    };
+    private float mStartX, mStartY, mTouchX, mTouchY, LastX, LastY, x, y;
+    private float px = 0;
+    private float py = 0;
+    private long startlongclicktime = 0;
+    private long nowlongclicktime = 0;
+    private boolean longclickmove = false;
+    private boolean allowlongclick = true;
 
     public FloatLinearLayout(Context context, int ID) {
         super(context);
         this.ctx = context.getApplicationContext();
         this.FLOAT_ID = ID;
-        this.wm = ((App)context.getApplicationContext()).getFloatwinmanager();
+        this.wm = ((App) context.getApplicationContext()).getFloatwinmanager();
     }
 
-	public void setAllowlongclick(boolean allowlongclick) {
-		this.allowlongclick = allowlongclick;
-	}
+    public boolean getAllowlongclick() {
+        return allowlongclick;
+    }
 
-	public boolean getAllowlongclick() {
-		return allowlongclick;
-	}
+    public void setAllowlongclick(boolean allowlongclick) {
+        this.allowlongclick = allowlongclick;
+    }
 
-	public void setFloatID(int id) {
-		FLOAT_ID = id;
-	}
+    public int getFloatID() {
+        return FLOAT_ID;
+    }
 
-	public int getFloatID() {
-		return FLOAT_ID;
-	}
+    public void setFloatID(int id) {
+        FLOAT_ID = id;
+    }
 
-	//窗体移动
+    //窗体移动
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (!lockposition) {
             x = event.getRawX() + px;
             if (top) {
-                Rect frame = new Rect(); 
+                Rect frame = new Rect();
                 getWindowVisibleDisplayFrame(frame);
-                statusBarHeight = frame.top;
+                int statusBarHeight = frame.top;
                 y = event.getRawY() + py - statusBarHeight;
             } else {
                 y = event.getRawY() + py;
@@ -118,13 +118,13 @@ public class FloatLinearLayout extends LinearLayout {
         return true;
     }
 
-	//长按判断
+    //长按判断
     private void setlongclick() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
         if (sp.getBoolean("WinLongClickLock", true) && allowlongclick) {
             longclickmove = false;
             startlongclicktime = System.currentTimeMillis();
-            Thread longclick = new Thread(){
+            Thread longclick = new Thread() {
                 @Override
                 public void run() {
                     super.run();
@@ -149,12 +149,12 @@ public class FloatLinearLayout extends LinearLayout {
         }
     }
 
-	//窗口在通知栏上显示
+    //窗口在通知栏上显示
     public void setTop(boolean bool) {
         this.top = bool;
     }
 
-	//设置初始位置
+    //设置初始位置
     public void setAddPosition(float sx, float sy) {
         this.px = sx;
         this.py = sy;
@@ -162,7 +162,7 @@ public class FloatLinearLayout extends LinearLayout {
         this.LastY = sy;
     }
 
-	//设置窗体状态
+    //设置窗体状态
     public void setShowState(boolean bool) {
         if (bool) {
             if (!ShowState) {
@@ -177,17 +177,17 @@ public class FloatLinearLayout extends LinearLayout {
         }
     }
 
-	//修正改变窗体状态
+    //修正改变窗体状态
     public void changeShowState(boolean bool) {
         this.ShowState = bool;
     }
 
-	//设置窗体布局
+    //设置窗体布局
     public void setFloatLayoutParams(WindowManager.LayoutParams wmLayoutParams) {
         this.wmParams = wmLayoutParams;
     }
 
-	//设置可触摸
+    //设置可触摸
     public void setTouchable(WindowManager.LayoutParams layout, boolean bool) {
         if (bool) {
             layout.flags = layout_default_flags;
@@ -199,36 +199,36 @@ public class FloatLinearLayout extends LinearLayout {
         }
     }
 
-	//设置默认Flag
+    //设置默认Flag
     public void setLayout_default_flags(int layout_default_flags) {
         this.layout_default_flags = layout_default_flags;
     }
 
-	//锁定窗口
+    //获取锁定状态
+    public boolean getPositionLocked() {
+        return lockposition;
+    }
+
+    //锁定窗口
     public void setPositionLocked(boolean bool) {
         this.lockposition = bool;
         setTouchable(wmParams, !bool);
     }
 
-	//获取锁定状态
-    public boolean getPositionLocked() {
-        return lockposition;
-    }
-
-	//更新位置
+    //更新位置
     private void updateViewPosition() {
         LastX = x - mTouchX;
         LastY = y - mTouchY;
-        wmParams.x = (int)LastX;
-        wmParams.y = (int)LastY;
+        wmParams.x = (int) LastX;
+        wmParams.y = (int) LastY;
         wm.updateViewLayout(this, wmParams);
     }
 
-	//获取位置
+    //获取位置
     public String getPosition() {
         LastX = wmParams.x;
         LastY = wmParams.y;
-        return ((LastX) + "_" + (LastY)).toString();
+        return ((LastX) + "_" + (LastY));
     }
 
 }

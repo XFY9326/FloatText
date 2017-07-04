@@ -1,129 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_height="match_parent"
-	android:layout_width="match_parent"
-	android:orientation="vertical"
-	android:gravity="center"
-	android:padding="10dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="10dp">
 
-	<View
-		android:layout_height="15dp"
-		android:layout_width="match_parent"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
 
-	<RelativeLayout
-		android:layout_height="wrap_content"
-		android:layout_width="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-		<Switch
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:layout_alignParentRight="true"
-			android:id="@+id/switch_textshadow"
-			android:layout_marginRight="10dp"
-			android:layout_centerInParent="true"/>
+        <Switch
+            android:id="@+id/switch_textshadow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="10dp" />
 
-		<TextView
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceLarge"
-			android:layout_width="wrap_content"
-			android:layout_centerInParent="true"
-			android:layout_alignParentLeft="true"
-			android:text="@string/xml_set_text_shadow_use"
-			android:textSize="17sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:text="@string/xml_set_text_shadow_use"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="17sp" />
 
-	</RelativeLayout>
+    </RelativeLayout>
 
-	<View
-		android:layout_height="20dp"
-		android:layout_width="match_parent"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
 
-	<RelativeLayout
-		android:layout_height="wrap_content"
-		android:layout_width="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-		<TextView
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:layout_width="wrap_content"
-			android:id="@+id/textview_shadowDx"
-			android:layout_alignParentLeft="true"
-			android:layout_centerInParent="true"
-			android:text="@string/xml_set_text_shadow_dx"
-			android:textSize="16sp"/>
+        <TextView
+            android:id="@+id/textview_shadowDx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:text="@string/xml_set_text_shadow_dx"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="16sp" />
 
-		<SeekBar
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:layout_alignParentRight="true"
-			android:layout_centerInParent="true"
-			android:id="@+id/seekbar_shadowDx"
-			android:layout_toRightOf="@id/textview_shadowDx"
-			android:layout_marginLeft="5dp"/>
+        <SeekBar
+            android:id="@+id/seekbar_shadowDx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/textview_shadowDx" />
 
-	</RelativeLayout>
+    </RelativeLayout>
 
-	<View
-		android:layout_height="20dp"
-		android:layout_width="match_parent"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
 
-	<RelativeLayout
-		android:layout_height="wrap_content"
-		android:layout_width="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-		<TextView
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:layout_width="wrap_content"
-			android:id="@+id/textview_shadowDy"
-			android:layout_alignParentLeft="true"
-			android:layout_centerInParent="true"
-			android:text="@string/xml_set_text_shadow_dy"
-			android:textSize="16sp"/>
+        <TextView
+            android:id="@+id/textview_shadowDy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:text="@string/xml_set_text_shadow_dy"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="16sp" />
 
-		<SeekBar
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:layout_toRightOf="@id/textview_shadowDy"
-			android:layout_alignParentRight="true"
-			android:layout_centerInParent="true"
-			android:id="@+id/seekbar_shadowDy"
-			android:layout_marginLeft="5dp"/>
+        <SeekBar
+            android:id="@+id/seekbar_shadowDy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/textview_shadowDy" />
 
-	</RelativeLayout>
+    </RelativeLayout>
 
-	<View
-		android:layout_height="20dp"
-		android:layout_width="match_parent"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
 
-	<RelativeLayout
-		android:layout_height="wrap_content"
-		android:layout_width="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-		<TextView
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:layout_width="wrap_content"
-			android:id="@+id/textview_radius"
-			android:layout_alignParentLeft="true"
-			android:layout_centerInParent="true"
-			android:text="@string/xml_set_text_shadow_radius"
-			android:textSize="16sp"/>
+        <TextView
+            android:id="@+id/textview_radius"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:text="@string/xml_set_text_shadow_radius"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="16sp" />
 
-		<SeekBar
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:layout_toRightOf="@id/textview_radius"
-			android:layout_alignParentRight="true"
-			android:layout_centerInParent="true"
-			android:id="@+id/seekbar_radius"
-			android:layout_marginLeft="5dp"/>
+        <SeekBar
+            android:id="@+id/seekbar_radius"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/textview_radius" />
 
-	</RelativeLayout>
+    </RelativeLayout>
 
-	<View
-		android:layout_height="10dp"
-		android:layout_width="match_parent"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
 
 </LinearLayout>
 

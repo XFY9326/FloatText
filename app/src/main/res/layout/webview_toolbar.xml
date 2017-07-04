@@ -1,98 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_height="wrap_content"
-	android:layout_width="match_parent"
-	android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-	<RelativeLayout
-		android:layout_height="wrap_content"
-		android:layout_width="match_parent"
-		android:background="@color/colorWebBackground">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWebBackground">
 
-		<Button
-			android:layout_height="25dp"
-			android:layout_width="25dp"
-			android:background="@drawable/ic_chevron_double_right"
-			android:layout_centerInParent="true"
-			android:layout_alignParentLeft="true"
-			android:id="@+id/webview_hide"/>
+        <Button
+            android:id="@+id/webview_hide"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/ic_chevron_double_right" />
 
-		<Button
-			android:layout_height="25dp"
-			android:layout_width="25dp"
-			android:layout_centerInParent="true"
-			android:background="@drawable/ic_skip_previous"
-			android:id="@+id/webview_previous"
-			android:layout_marginRight="105dp"
-			android:layout_alignParentRight="true"/>
+        <Button
+            android:id="@+id/webview_previous"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="105dp"
+            android:background="@drawable/ic_skip_previous" />
 
-		<Button
-			android:layout_height="25dp"
-			android:layout_width="25dp"
-			android:background="@drawable/ic_skip_next"
-			android:layout_centerInParent="true"
-			android:layout_alignParentRight="true"
-			android:layout_marginRight="70dp"
-			android:id="@+id/webview_next"/>
+        <Button
+            android:id="@+id/webview_next"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="70dp"
+            android:background="@drawable/ic_skip_next" />
 
-		<Button
-			android:layout_height="25dp"
-			android:layout_width="25dp"
-			android:background="@drawable/ic_cancel"
-			android:layout_alignParentRight="true"
-			android:layout_centerInParent="true"
-			android:id="@+id/webview_close"/>
+        <Button
+            android:id="@+id/webview_close"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/ic_cancel" />
 
-		<Button
-			android:layout_height="25dp"
-			android:layout_width="25dp"
-			android:background="@drawable/ic_refresh"
-			android:layout_centerInParent="true"
-			android:layout_alignParentRight="true"
-			android:layout_marginRight="35dp"
-			android:id="@+id/webview_reload"/>
+        <Button
+            android:id="@+id/webview_reload"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="35dp"
+            android:background="@drawable/ic_refresh" />
 
-	</RelativeLayout>
+    </RelativeLayout>
 
-	<RelativeLayout
-		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:orientation="horizontal"
-		android:background="@color/colorWebUrlBackground">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWebUrlBackground"
+        android:orientation="horizontal">
 
-		<EditText
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:layout_alignParentLeft="true"
-			android:layout_alignParentRight="true"
-			android:id="@+id/webviewtoolbar_url"
-			android:background="@color/colorWebUrlBackground"
-			android:imeOptions="actionDone"
-			android:singleLine="true"
-			android:gravity="left|center"
-			android:layout_marginRight="25dp"
-			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:ellipsize="end"
-			android:maxLines="1"
-			android:padding="5dp"/>
+        <EditText
+            android:id="@+id/webviewtoolbar_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="25dp"
+            android:background="@color/colorWebUrlBackground"
+            android:ellipsize="end"
+            android:gravity="left|center"
+            android:imeOptions="actionDone"
+            android:maxLines="1"
+            android:padding="5dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-		<ProgressBar
-			android:layout_height="20dp"
-			android:layout_width="20dp"
-			android:id="@+id/webviewtoolbar_loading"
-			android:layout_centerVertical="true"
-			android:layout_marginLeft="5dp"/>
+        <ProgressBar
+            android:id="@+id/webviewtoolbar_loading"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp" />
 
-		<Button
-			android:layout_height="25dp"
-			android:layout_width="25dp"
-			android:background="@drawable/ic_keyboard_return"
-			android:id="@+id/webviewtoolbar_enter"
-			android:layout_alignParentRight="true"
-			android:layout_centerVertical="true"/>
+        <Button
+            android:id="@+id/webviewtoolbar_enter"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_keyboard_return" />
 
-	</RelativeLayout>
+    </RelativeLayout>
 
 </LinearLayout>
 

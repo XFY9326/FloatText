@@ -8,6 +8,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.view.WindowManager;
 import android.widget.TextView;
+
 import tool.xfy9326.floattext.Utils.App;
 
 /*
@@ -15,22 +16,19 @@ import tool.xfy9326.floattext.Utils.App;
  主要用于对悬浮窗内文字进行修改
  */
 
-public class FloatTextView extends TextView implements Runnable {
-    private Context ctx;
-    private WindowManager wm;
+public class FloatTextView extends android.support.v7.widget.AppCompatTextView implements Runnable {
+    private final WindowManager wm;
     private int currentScrollX;
-    private boolean isStop = true; 
-    private int textWidth; 
-    private boolean isMeasure = false; 
+    private boolean isStop = true;
+    private int textWidth;
+    private boolean isMeasure = false;
     private int movespeed = 5;
-    private int ID = 0;
     private boolean htmlmode = true;
 
     public FloatTextView(Context context, boolean htmlmode) {
         super(context);
-        this.ctx = context.getApplicationContext();
         this.htmlmode = htmlmode;
-        this.wm = ((App)context.getApplicationContext()).getFloatwinmanager();
+        this.wm = ((App) context.getApplicationContext()).getFloatwinmanager();
         setFocusable(false);
         setFocusableInTouchMode(false);
     }
@@ -43,7 +41,7 @@ public class FloatTextView extends TextView implements Runnable {
         invalidate();
     }
 
-	//HTML模式判断
+    //HTML模式判断
     private CharSequence htmlcodefix(CharSequence text) {
         if (htmlmode) {
             if (text.toString().matches("^#(\\[HTML\\])")) {
@@ -54,66 +52,61 @@ public class FloatTextView extends TextView implements Runnable {
         return text;
     }
 
-	//跑马灯移动速度
+    //跑马灯移动速度
     public void setMoveSpeed(int i) {
         this.movespeed = i;
         invalidate();
     }
 
-    @Override 
+    @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas); 
+        super.onDraw(canvas);
         if (!isMeasure) {
-            getTextWidth(); 
-            isMeasure = true; 
+            getTextWidth();
+            isMeasure = true;
         }
         invalidate();
     }
 
-	//获取文字宽度
-    private void getTextWidth() { 
-        Paint paint = this.getPaint(); 
-        String str = this.getText().toString(); 
-        textWidth = (int) paint.measureText(str); 
+    //获取文字宽度
+    private void getTextWidth() {
+        Paint paint = this.getPaint();
+        String str = this.getText().toString();
+        textWidth = (int) paint.measureText(str);
     }
 
-	//高级跑马灯实现
-    @Override 
-    public void run() { 
+    //高级跑马灯实现
+    @Override
+    public void run() {
         currentScrollX += movespeed;
-        scrollTo(currentScrollX, 0); 
-        if (isStop) { 
-            return; 
-        } 
-        if (getScrollX() >= textWidth) { 
+        scrollTo(currentScrollX, 0);
+        if (isStop) {
+            return;
+        }
+        if (getScrollX() >= textWidth) {
             scrollTo(textWidth, 0);
             currentScrollX = -wm.getDefaultDisplay().getWidth();
         }
         postDelayed(this, 10);
         invalidate();
-    } 
+    }
 
-	//跑马灯控制
-    public void startScroll() {
+    //跑马灯控制
+    private void startScroll() {
         this.removeCallbacks(this);
         post(this);
         isStop = false;
         invalidate();
-    } 
+    }
 
-    public void stopScroll() {
+    private void stopScroll() {
         scrollTo(textWidth, 0);
         currentScrollX = 0;
         isStop = true;
         invalidate();
     }
 
-	//悬浮窗序号设置
-    public void setID(int i) {
-        ID = i;
-    }
-
-	//设置字体文件
+    //设置字体文件
     public void setTypefaceFile(String ttf) {
         if (!ttf.equalsIgnoreCase("Default")) {
             Typeface tf = Typeface.createFromFile(ttf);
@@ -121,7 +114,7 @@ public class FloatTextView extends TextView implements Runnable {
         }
     }
 
-	//设置阴影
+    //设置阴影
     public void setShadow(boolean shadow, float x, float y, float r, int color) {
         if (shadow) {
             setShadowLayer(r, x, y, color);
@@ -130,7 +123,7 @@ public class FloatTextView extends TextView implements Runnable {
         }
     }
 
-	//跑马灯主控制
+    //跑马灯主控制
     public void setMoving(boolean bool, int mode) {
         switch (mode) {
             case 0:

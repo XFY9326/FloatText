@@ -18,7 +18,7 @@
         <item>不使用動態變量時可以在整體設定裡關閉它的服務</item>
         <item>進入整體設定可以為懸浮的文字設定定義的字體</item>
         <item>長按文字懸浮窗也可以鎖定它！</item>
-		<item>更多功能可以在整體設定中查看相應的幫助文檔</item>
+        <item>更多功能可以在整體設定中查看相應的幫助文檔</item>
     </string-array>
     <string-array name="floatsetting_dynamic_name">
         <item>日期與時間</item>
@@ -26,7 +26,7 @@
         <item>時鐘</item>
         <item>時鐘(24小時制)</item>
         <item>日期</item>
-		<item>秒</item>
+        <item>秒</item>
         <item>CPU使用率</item>
         <item>網路速度</item>
         <item>記憶體使用率</item>
@@ -34,13 +34,13 @@
         <item>日期倒數計時(自訂日期)</item>
         <item>日期倒數計時(自訂日期)</item>
         <item>日期倒數計時(自訂日期)</item>
-		<item>日期正數計時(自訂日期)</item>
         <item>日期正數計時(自訂日期)</item>
         <item>日期正數計時(自訂日期)</item>
         <item>日期正數計時(自訂日期)</item>
-		<item>星期</item>
+        <item>日期正數計時(自訂日期)</item>
+        <item>星期</item>
         <item>區域網路的 IP地址</item>
-		<item>Wifi信號</item>
+        <item>Wifi信號</item>
         <item>電量</item>
         <item>傳感器_光線強度</item>
         <item>傳感器_重力加速度</item>
@@ -48,13 +48,13 @@
         <item>傳感器_CPU温度</item>
         <item>傳感器_距離</item>
         <item>傳感器_計步器</item>
-		<item>屏幕方向狀態</item>
+        <item>屏幕方向狀態</item>
         <item>剪切板</item>
-		<item>當前運行的Activity(*)</item>
-		<item>最新的通知消息(*)\n[4.3以上系統需開啟通知監聽服務]</item>
-		<item>最新的通知消息包名(*)\n[4.3以上系統需開啟通知監聽服務]</item>
-		<item>最新的Toast(*)</item>
-		<item>空顯示</item>
+        <item>當前運行的Activity(*)</item>
+        <item>最新的通知消息(*)\n[4.3以上系統需開啟通知監聽服務]</item>
+        <item>最新的通知消息包名(*)\n[4.3以上系統需開啟通知監聽服務]</item>
+        <item>最新的Toast(*)</item>
+        <item>空顯示</item>
     </string-array>
     <string-array name="floatmanage_choose">
         <item>文字懸浮視窗</item>
@@ -66,12 +66,12 @@
         <item>繁體中文(孟武.尼德霍格.龍 官方繁體中文化)</item>
         <item>English</item>
     </string-array>
-	<string-array name="donate_list">
+    <string-array name="donate_list">
         <item>支付寶</item>
         <item>微信錢包</item>
         <item>QQ錢包</item>
     </string-array>
-	<string-array name="update_list">
+    <string-array name="update_list">
         <item>從應用市場獲取更新</item>
         <item>從Github獲取更新</item>
     </string-array>

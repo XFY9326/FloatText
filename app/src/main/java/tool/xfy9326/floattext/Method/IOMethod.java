@@ -1,6 +1,7 @@
 package tool.xfy9326.floattext.Method;
 
 import android.content.Context;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,25 +13,25 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class IOMethod {
-	//读取资源文件
-	public static String readAssets(Context ctx, String path) {
-		String result="";
+    //读取资源文件
+    public static String readAssets(Context ctx, String path) {
+        String result = "";
         try {
             InputStreamReader inputReader = new InputStreamReader(ctx.getResources().getAssets().open(path));
             BufferedReader bufReader = new BufferedReader(inputReader);
-            String line="";
+            String line;
             while ((line = bufReader.readLine()) != null) {
                 result += line + "\n";
             }
         } catch (IOException e) {
             result = "No Found";
-			e.printStackTrace();
+            e.printStackTrace();
         }
-		return result;
-	}
+        return result;
+    }
 
-	//复制文件
-	public static boolean CopyFile(File fromFile, File toFile) {
+    //复制文件
+    public static boolean CopyFile(File fromFile, File toFile) {
         try {
             InputStream fosfrom = new FileInputStream(fromFile);
             OutputStream fosto = new FileOutputStream(toFile);
@@ -48,32 +49,30 @@ public class IOMethod {
         }
     }
 
-	//读取文件
+    //读取文件
     public static String[] readfile(File file) {
-        ArrayList<String> output = new ArrayList<String>();
+        ArrayList<String> output = new ArrayList<>();
         try {
             InputStream file_stream = new FileInputStream(file);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(file_stream)); 
-            String line = ""; 
-            while ((line = reader.readLine()) != null) { 
+            BufferedReader reader = new BufferedReader(new InputStreamReader(file_stream));
+            String line;
+            while ((line = reader.readLine()) != null) {
                 output.add(line);
             }
             reader.close();
-            String[] result = output.toArray(new String[output.size()]);
-            return result;
+            return output.toArray(new String[output.size()]);
         } catch (IOException e) {
             output.add("Failed");
-            String[] result = output.toArray(new String[output.size()]);
-            return result;
+            return output.toArray(new String[output.size()]);
         }
     }
 
-	//写入文件
+    //写入文件
     public static boolean writefile(String path, String data) {
         try {
             File file = new File(path);
             pathset(path);
-            byte[] Bytes = new String(data).getBytes();
+            byte[] Bytes = data.getBytes();
             if (file.exists()) {
                 if (file.isFile()) {
                     OutputStream writer = new FileOutputStream(file);
@@ -91,16 +90,16 @@ public class IOMethod {
                 return true;
             }
         } catch (IOException e) {
-			e.printStackTrace();
+            e.printStackTrace();
             return false;
         }
     }
 
-	//设置文件夹
-    public static void pathset(String path) {
+    //设置文件夹
+    private static void pathset(String path) {
         String[] dirs = path.split("/");
         String pth = "";
-        for (int i = 0;i < dirs.length;i++) {
+        for (int i = 0; i < dirs.length; i++) {
             if (i != dirs.length - 1) {
                 pth += "/" + dirs[i];
             }

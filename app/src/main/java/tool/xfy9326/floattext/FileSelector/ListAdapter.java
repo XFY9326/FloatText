@@ -7,15 +7,17 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import java.io.File;
 import java.util.ArrayList;
+
 import tool.xfy9326.floattext.R;
 
-public class ListAdapter extends BaseAdapter {
-    private Context context;
-    private ArrayList<String> Filename = new ArrayList<String>();
-    private ArrayList<String> Filedata = new ArrayList<String>();
-	private ArrayList<String> Filesize = new ArrayList<String>();
+class ListAdapter extends BaseAdapter {
+    private final Context context;
+    private ArrayList<String> Filename = new ArrayList<>();
+    private ArrayList<String> Filedata = new ArrayList<>();
+    private ArrayList<String> Filesize = new ArrayList<>();
     private String Path;
     private String[] TypeList;
     private int[] IconList;
@@ -28,26 +30,25 @@ public class ListAdapter extends BaseAdapter {
     public void setListData(String path, ArrayList<String> name, ArrayList<String> data, ArrayList<String> size) {
         this.Filename = name;
         this.Filedata = data;
-		this.Filesize = size;
+        this.Filesize = size;
         this.Path = path;
     }
 
     @Override
     public View getView(int p1, View p2, ViewGroup p3) {
-        final int index = p1;
         View view = p2;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.fileselector_list_layout, null);
         }
-        final TextView name = (TextView) view.findViewById(R.id.fileselector_filelist_filename);
-        name.setText(Filename.get(index));
-        final TextView data = (TextView) view.findViewById(R.id.fileselector_filelist_filedata);
-        data.setText(Filedata.get(index));
-		final TextView size = (TextView) view.findViewById(R.id.fileselector_filelist_filesize);
-		size.setText(Filesize.get(index));
-        final ImageView icon = (ImageView) view.findViewById(R.id.fileselector_filelist_icon);
-        iconset(icon, index);
+        final TextView name = view.findViewById(R.id.fileselector_filelist_filename);
+        name.setText(Filename.get(p1));
+        final TextView data = view.findViewById(R.id.fileselector_filelist_filedata);
+        data.setText(Filedata.get(p1));
+        final TextView size = view.findViewById(R.id.fileselector_filelist_filesize);
+        size.setText(Filesize.get(p1));
+        final ImageView icon = view.findViewById(R.id.fileselector_filelist_icon);
+        iconset(icon, p1);
         return view;
     }
 
@@ -71,7 +72,7 @@ public class ListAdapter extends BaseAdapter {
                 if (extraname.equalsIgnoreCase("No_Name")) {
                     icon.setImageResource(R.drawable.ic_file_delimited);
                 } else {
-                    for (int i = 0;i < TypeList.length;i++) {
+                    for (int i = 0; i < TypeList.length; i++) {
                         if (extraname.equalsIgnoreCase(TypeList[i])) {
                             icon.setImageResource(IconList[i]);
                             found = true;
@@ -107,7 +108,7 @@ public class ListAdapter extends BaseAdapter {
     private void setFileIconData() {
         TypeList = context.getResources().getStringArray(R.array.fileselect_types);
         IconList = context.getResources().getIntArray(R.array.fileselect_icons);
-        for (int i = 0;i < IconList.length;i++) {
+        for (int i = 0; i < IconList.length; i++) {
             switch (IconList[i]) {
                 case 1:
                     IconList[i] = R.drawable.ic_file_image;
@@ -147,14 +148,14 @@ public class ListAdapter extends BaseAdapter {
         }
     }
 
-    private String getExtraName(String filename) { 
-        if ((filename != null) && (filename.length() > 0)) { 
-            int dot = filename.lastIndexOf('.'); 
-            if ((dot > -1) && (dot < (filename.length() - 1))) { 
-                return filename.substring(dot + 1); 
-            } 
-        } 
-        return "No_Name"; 
+    private String getExtraName(String filename) {
+        if ((filename != null) && (filename.length() > 0)) {
+            int dot = filename.lastIndexOf('.');
+            if ((dot > -1) && (dot < (filename.length() - 1))) {
+                return filename.substring(dot + 1);
+            }
+        }
+        return "No_Name";
     }
 
 }

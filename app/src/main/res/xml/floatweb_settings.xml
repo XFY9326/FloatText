@@ -1,39 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen 
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/xml_set_tip"> 
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/xml_set_tip">
         <Preference
             android:key="tips"
-            android:title="@string/xml_web_defaulttip"
             android:summary="@string/xml_web_defaulttip_sum"
-        /> 
-		<Preference
-            android:title="@string/xml_web_usetip"
-			android:summary="@string/xml_web_usetip_sum"
-        /> 
+            android:title="@string/xml_web_defaulttip" />
+        <Preference
+            android:summary="@string/xml_web_usetip_sum"
+            android:title="@string/xml_web_usetip" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/xml_web_webset"> 
-		<Preference
+    <PreferenceCategory android:title="@string/xml_web_webset">
+        <Preference
             android:key="WebFileLoad"
-            android:title="@string/xml_web_fileload"
             android:summary="@string/xml_web_fileload_sum"
-        /> 
+            android:title="@string/xml_web_fileload" />
         <Preference
             android:key="WebReload"
-            android:title="@string/xml_web_reload"
             android:summary="@string/xml_web_reload_sum"
-        /> 
+            android:title="@string/xml_web_reload" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/xml_set_win"> 
-        <Preference 
+    <PreferenceCategory android:title="@string/xml_set_win">
+        <Preference
             android:key="WebWidth"
-            android:title="@string/xml_web_win_width"
             android:summary="@string/xml_web_win_width_sum"
-        />
-        <Preference 
+            android:title="@string/xml_web_win_width" />
+        <Preference
             android:key="WebHeight"
-            android:title="@string/xml_web_win_height"
             android:summary="@string/xml_web_win_height_sum"
-        />
+            android:title="@string/xml_web_win_height" />
     </PreferenceCategory>
 </PreferenceScreen>

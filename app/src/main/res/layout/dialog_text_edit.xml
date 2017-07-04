@@ -1,46 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical"
-	android:padding="10dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
 
-	<EditText
-		android:id="@+id/textview_addnewtext"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:ems="10">
+    <EditText
+        android:id="@+id/textview_addnewtext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10">
 
-	</EditText>
+    </EditText>
 
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:orientation="vertical"
-		android:gravity="top|center"
-		android:id="@+id/layout_textedit">
+    <LinearLayout
+        android:id="@+id/layout_textedit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="top|center"
+        android:orientation="vertical">
 
-		<View
-			android:layout_height="5dp"
-			android:layout_width="match_parent"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp" />
 
-		<TextView
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:layout_width="wrap_content"
-			android:text="@string/xml_set_dynamiclist"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/xml_set_dynamiclist"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-		<View
-			android:layout_height="5dp"
-			android:layout_width="match_parent"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp" />
 
-		<ListView
-			android:layout_height="150dp"
-			android:layout_width="match_parent"
-			android:id="@+id/listview_textedit"/>
+        <ListView
+            android:id="@+id/listview_textedit"
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
 
-	</LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
 

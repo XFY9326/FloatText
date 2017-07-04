@@ -1,67 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical"
-	android:gravity="top">
-	
-	<include layout="@layout/widget_toolbar" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="top"
+    android:orientation="vertical">
 
-	<View
-		android:layout_height="1dp"
-		android:layout_width="match_parent"/>
+    <include layout="@layout/widget_toolbar" />
 
-	<TextView
-		android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceSmall"
-		android:layout_width="match_parent"
-		android:text="@string/crashreport_ask_for_report"
-		android:padding="5dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
 
-	<LinearLayout
-		android:layout_height="wrap_content"
-		android:layout_width="match_parent"
-		android:orientation="horizontal"
-		android:gravity="center">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="@string/crashreport_ask_for_report"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
-		<Button
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:text="@string/crashreport_nosend_report"
-			android:id="@+id/button_nosendcrashlog"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-		<View
-			android:layout_height="1dp"
-			android:layout_width="50dp"/>
+        <Button
+            android:id="@+id/button_nosendcrashlog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/crashreport_nosend_report" />
 
-		<Button
-			android:layout_height="wrap_content"
-			android:layout_width="140dp"
-			android:text="@string/crashreport_send_report"
-			android:id="@+id/button_sendcrashlog"/>
+        <View
+            android:layout_width="50dp"
+            android:layout_height="1dp" />
 
-	</LinearLayout>
+        <Button
+            android:id="@+id/button_sendcrashlog"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="@string/crashreport_send_report" />
 
-	<TextView
-		android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceSmall"
-		android:layout_width="match_parent"
-		android:text="@string/crashreport_err_report"
-		android:paddingLeft="5dp"/>
+    </LinearLayout>
 
-	<ScrollView
-		android:layout_height="match_parent"
-		android:layout_width="match_parent"
-		android:padding="8dp">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:text="@string/crashreport_err_report"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
-		<TextView
-			android:layout_height="match_parent"
-			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:layout_width="match_parent"
-			android:id="@+id/textview_crashlog"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp">
 
-	</ScrollView>
+        <TextView
+            android:id="@+id/textview_crashlog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    </ScrollView>
 
 </LinearLayout>
 

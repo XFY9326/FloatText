@@ -1,58 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen 
-    xmlns:android="http://schemas.android.com/apk/res/android">
-	<PreferenceCategory android:title="@string/xml_about_update">
-		<Preference
-			android:key="CheckUpdate"
-			android:title="@string/xml_about_update_checknow"
-		/>
-		<CheckBoxPreference 
-            android:key="AutoCheckUpdate" 
-            android:title="@string/xml_about_update_autocheck" 
-            android:summary="@string/xml_about_update_autocheck_sum" 
-            android:defaultValue="true" 
-        />
-	</PreferenceCategory>
-	<PreferenceCategory android:title="@string/about">
-		<PreferenceScreen
-			android:title="@string/license"
-			android:summary="@string/license_sum">
-			<intent
-				android:action="android.intent.action.MAIN"  
-				android:targetPackage="tool.xfy9326.floattext"  
-				android:targetClass="tool.xfy9326.floattext.Activity.LicenseActivity" />
-		</PreferenceScreen>
-		<Preference
-			android:title="@string/xml_about_thanklist"
-			android:summary="@string/xml_about_thanklist_sum"
-			android:key="ThankList"
-		/>
-		<PreferenceScreen
-			android:title="@string/xml_about_indexurl"
-			android:summary="https://xfy9326.github.io/FloatText/">
-			<intent
-				android:action="android.intent.action.VIEW"
-				android:data="https://xfy9326.github.io/FloatText/" />
-		</PreferenceScreen>
-		<PreferenceScreen
-			android:title="@string/xml_about_feedback"
-			android:summary="QQ：542664202">
-			<intent
-				android:action="android.intent.action.VIEW"
-				android:data="https://jq.qq.com/?_wv=1027&amp;k=42PEzhi" />
-		</PreferenceScreen>
-		<Preference
-			android:key="Donate"
-			android:title="@string/xml_about_donate"
-			android:summary="@string/xml_about_donate_sum"
-		/>
-		<Preference
-			android:title="@string/xml_about_author"
-			android:summary="Main Author:XFY9326\nCooperator:酷安基友\nEmail:1069665464@qq.com" 
-		/>
-		<Preference
-			android:title="@string/xml_about_version"
-			android:key="Version"
-		/>
-	</PreferenceCategory>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/xml_about_update">
+        <Preference
+            android:key="CheckUpdate"
+            android:title="@string/xml_about_update_checknow" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="AutoCheckUpdate"
+            android:summary="@string/xml_about_update_autocheck_sum"
+            android:title="@string/xml_about_update_autocheck" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/about">
+        <PreferenceScreen
+            android:summary="@string/license_sum"
+            android:title="@string/license">
+            <intent
+                android:action="android.intent.action.MAIN"
+                android:targetClass="tool.xfy9326.floattext.Activity.LicenseActivity"
+                android:targetPackage="tool.xfy9326.floattext" />
+        </PreferenceScreen>
+        <Preference
+            android:key="ThankList"
+            android:summary="@string/xml_about_thanklist_sum"
+            android:title="@string/xml_about_thanklist" />
+        <PreferenceScreen
+            android:summary="https://xfy9326.github.io/FloatText/"
+            android:title="@string/xml_about_indexurl">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://xfy9326.github.io/FloatText/" />
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:summary="QQ：542664202"
+            android:title="@string/xml_about_feedback">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://jq.qq.com/?_wv=1027&amp;k=42PEzhi" />
+        </PreferenceScreen>
+        <Preference
+            android:key="Donate"
+            android:summary="@string/xml_about_donate_sum"
+            android:title="@string/xml_about_donate" />
+        <Preference
+            android:summary="Main Author:XFY9326\nCooperator:酷安基友\nEmail:1069665464@qq.com"
+            android:title="@string/xml_about_author" />
+        <Preference
+            android:key="Version"
+            android:title="@string/xml_about_version" />
+    </PreferenceCategory>
 </PreferenceScreen>

@@ -5,18 +5,18 @@ import android.content.Intent;
 import android.os.Environment;
 
 public class SelectFile {
-    public static int TYPE_ChooseFile = 0;
-    public static int TYPE_ChooseFolder = 1;
+    public static final int TYPE_ChooseFile = 0;
+    public static final int TYPE_ChooseFolder = 1;
 
-    private String DefaultPath;
-    private int resultcode;
-    private int type;
+    private final String DefaultPath;
+    private final int resultcode;
+    private final int type;
     private String FileType = null;
 
     public SelectFile(int resultcode, int choosetype) {
         this.resultcode = resultcode;
         this.type = choosetype;
-        this.DefaultPath = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
+        this.DefaultPath = Environment.getExternalStorageDirectory().getAbsolutePath();
     }
 
     public SelectFile(int resultcode, int choosetype, String path) {

@@ -5,7 +5,9 @@ import android.os.Environment;
 import android.support.v7.app.NotificationCompat;
 import android.view.WindowManager;
 import android.widget.RemoteViews;
+
 import java.util.ArrayList;
+
 import tool.xfy9326.floattext.CrashReport.CrashHandler;
 import tool.xfy9326.floattext.SafeGuard;
 import tool.xfy9326.floattext.View.ListViewAdapter;
@@ -15,131 +17,130 @@ import tool.xfy9326.floattext.View.ListViewAdapter;
  */
 
 public class App extends Application {
-	private FloatTextUtils textutil;
-	private FloatFrameUtils frameutil;
-    private ListViewAdapter listviewadapter = null;
-    private WindowManager floatwinmanager = null;
-	private NotificationCompat.Builder notification = null;
-	private RemoteViews remoteview = null;
-    public boolean MovingMethod = false;
     public boolean FloatWinReshow = true;
-    public boolean StayAliveService = true;
     public boolean DynamicNumService = false;
-    public boolean DevelopMode = false;
     public boolean HtmlMode = false;
     public boolean ListTextHide = false;
     public boolean GetSave = false;
-	public boolean TextFilter = false;
-	public boolean StartShowWin = false;
-	public boolean OutPutCrashReport = false;
+    public boolean TextFilter = false;
+    public boolean StartShowWin = false;
+    private boolean MovingMethod = false;
+    private boolean StayAliveService = true;
+    private boolean DevelopMode = false;
+    private FloatTextUtils textutil;
+    private FloatFrameUtils frameutil;
+    private ListViewAdapter listviewadapter = null;
+    private WindowManager floatwinmanager = null;
+    private NotificationCompat.Builder notification = null;
+    private RemoteViews remoteview = null;
 
     @Override
     public void onCreate() {
         super.onCreate();
-		CrashCatch();
-		init();
+        CrashCatch();
+        init();
     }
 
-	private void CrashCatch() {
-		//错误报告
+    private void CrashCatch() {
+        //错误报告
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(this, "FloatText", "tool.xfy9326.floattext.FloatManage", "1069665464@qq.com");
-		crashHandler.setOutPutError(OutPutCrashReport, Environment.getExternalStorageDirectory().getAbsolutePath() + "/FloatText/CrashLog/");
-	}
+        crashHandler.setOutPutError(false, Environment.getExternalStorageDirectory().getAbsolutePath() + "/FloatText/CrashLog/");
+    }
 
     private void init() {
-		textutil = new FloatTextUtils();
-		frameutil = new FloatFrameUtils();
+        textutil = new FloatTextUtils();
+        frameutil = new FloatFrameUtils();
         SafeGuard.isSignatureAvailable(this, true);
         SafeGuard.isPackageNameAvailable(this, true);
     }
 
-	public void setRemoteview(RemoteViews remoteview) {
-		this.remoteview = remoteview;
-	}
+    public RemoteViews getRemoteview() {
+        return remoteview;
+    }
 
-	public RemoteViews getRemoteview() {
-		return remoteview;
-	}
+    public void setRemoteview(RemoteViews remoteview) {
+        this.remoteview = remoteview;
+    }
 
-	public void setNotification(NotificationCompat.Builder notification) {
-		this.notification = notification;
-	}
+    public NotificationCompat.Builder getNotification() {
+        return notification;
+    }
 
-	public NotificationCompat.Builder getNotification() {
-		return notification;
-	}
+    public void setNotification(NotificationCompat.Builder notification) {
+        this.notification = notification;
+    }
 
-	public void setStartShowWin(boolean startShowWin) {
-		StartShowWin = startShowWin;
-	}
+    public void setStartShowWin(boolean startShowWin) {
+        StartShowWin = startShowWin;
+    }
 
-	public void setTextFilter(boolean textFilter) {
-		TextFilter = textFilter;
-	}
+    public void setTextFilter(boolean textFilter) {
+        TextFilter = textFilter;
+    }
 
     public void setGetSave(boolean b) {
         this.GetSave = b;
-    }
-
-    public void setListviewadapter(ListViewAdapter listviewadapter) {
-        this.listviewadapter = listviewadapter;
     }
 
     public ListViewAdapter getListviewadapter() {
         return listviewadapter;
     }
 
-    public void setFloatwinmanager(WindowManager floatwinmanager) {
-        this.floatwinmanager = floatwinmanager;
+    public void setListviewadapter(ListViewAdapter listviewadapter) {
+        this.listviewadapter = listviewadapter;
     }
 
     public WindowManager getFloatwinmanager() {
         return floatwinmanager;
     }
 
-    public void setListTextHide(boolean listTextHide) {
-        ListTextHide = listTextHide;
+    public void setFloatwinmanager(WindowManager floatwinmanager) {
+        this.floatwinmanager = floatwinmanager;
     }
 
-    public void setHtmlMode(boolean htmlMode) {
-        HtmlMode = htmlMode;
+    public void setListTextHide(boolean listTextHide) {
+        ListTextHide = listTextHide;
     }
 
     public boolean getHtmlMode() {
         return HtmlMode;
     }
 
-    public void setDevelopMode(boolean developMode) {
-        DevelopMode = developMode;
+    public void setHtmlMode(boolean htmlMode) {
+        HtmlMode = htmlMode;
     }
 
     public boolean getDevelopMode() {
         return DevelopMode;
     }
 
-    public void setDynamicNumService(boolean DynamicNumService) {
-        this.DynamicNumService = DynamicNumService;
+    public void setDevelopMode(boolean developMode) {
+        DevelopMode = developMode;
     }
 
     public boolean getDynamicNumService() {
         return DynamicNumService;
     }
 
-    public void setStayAliveService(boolean stayAliveService) {
-        StayAliveService = stayAliveService;
+    public void setDynamicNumService(boolean DynamicNumService) {
+        this.DynamicNumService = DynamicNumService;
     }
 
     public boolean getStayAliveService() {
         return StayAliveService;
     }
 
-    public void setMovingMethod(boolean movingMethod) {
-        MovingMethod = movingMethod;
+    public void setStayAliveService(boolean stayAliveService) {
+        StayAliveService = stayAliveService;
     }
 
     public boolean getMovingMethod() {
         return MovingMethod;
+    }
+
+    public void setMovingMethod(boolean movingMethod) {
+        MovingMethod = movingMethod;
     }
 
     public void setFloatReshow(boolean bool) {
@@ -158,20 +159,20 @@ public class App extends Application {
         return textutil.getTextShow();
     }
 
-	public void setTextutil(FloatTextUtils textutil) {
-		this.textutil = textutil;
-	}
+    public FloatTextUtils getTextutil() {
+        return textutil;
+    }
 
-	public FloatTextUtils getTextutil() {
-		return textutil;
-	}
+    public void setTextutil(FloatTextUtils textutil) {
+        this.textutil = textutil;
+    }
 
-	public void setFrameutil(FloatFrameUtils frameutil) {
-		this.frameutil = frameutil;
-	}
+    public FloatFrameUtils getFrameutil() {
+        return frameutil;
+    }
 
-	public FloatFrameUtils getFrameutil() {
-		return frameutil;
-	}
+    public void setFrameutil(FloatFrameUtils frameutil) {
+        this.frameutil = frameutil;
+    }
 
 }

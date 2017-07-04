@@ -6,6 +6,7 @@
         android:id="@+id/save_win"
         android:icon="@drawable/ic_floppy"
         android:orderInCategory="100"
-        app:showAsAction="always"/>
+        android:title="@string/floatsetting_action_bar_savewin"
+        app:showAsAction="always" />
 
 </menu>

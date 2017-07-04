@@ -5,12 +5,14 @@
         android:id="@+id/delete_win"
         android:icon="@drawable/ic_close"
         android:orderInCategory="150"
-        app:showAsAction="always"/>
-    
+        android:title="@string/floatsetting_action_bar_delwin"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/save_win"
         android:icon="@drawable/ic_floppy"
         android:orderInCategory="100"
-        app:showAsAction="always"/>
+        android:title="@string/floatsetting_action_bar_savewin"
+        app:showAsAction="ifRoom" />
 
 </menu>

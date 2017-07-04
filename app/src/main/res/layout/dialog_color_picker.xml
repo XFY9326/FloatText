@@ -30,7 +30,6 @@
         android:tag="portrait" />
 
     <LinearLayout
-        android:id="@+id/text_hex_wrapper"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
@@ -51,10 +50,10 @@
             android:layout_weight="1"
             android:hint="HEX"
             android:imeOptions="actionDone"
-            android:maxLength="7"
-            android:singleLine="true"
             android:inputType="textCapCharacters"
-            android:visibility="gone"></EditText>
+            android:maxLength="7"
+            android:maxLines="1"
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout

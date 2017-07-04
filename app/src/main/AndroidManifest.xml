@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="tool.xfy9326.floattext" >
+    xmlns:tools="http://schemas.android.com/tools"
+    package="tool.xfy9326.floattext">
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -15,16 +16,18 @@
 	
     <application
         android:name=".Utils.App"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-		android:roundIcon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:roundIcon="@mipmap/ic_launcher"
+        android:theme="@style/AppTheme"
+        tools:ignore="InnerclassSeparator">
         <activity
             android:name=".FloatManage"
-            android:label="@string/app_name"
-			android:theme="@style/AppTheme.DrawerUse"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:launchMode="singleTop">
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.DrawerUse">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -35,36 +38,43 @@
         </activity>
         <activity
             android:name=".Setting.FloatTextSetting"
-            android:label="@string/text_add_title">
+            android:label="@string/text_add_title"
+            tools:ignore="InnerclassSeparator">
         </activity>
         <activity
             android:name=".Setting.FloatWebSetting"
-            android:label="@string/web_add_title">
+            android:label="@string/web_add_title"
+            tools:ignore="InnerclassSeparator">
         </activity>
 		<activity
             android:name=".Activity.GlobalSetActivity"
-            android:label="@string/settings">
+            android:label="@string/settings"
+            tools:ignore="InnerclassSeparator">
         </activity>
         <activity
             android:name=".Activity.AboutActivity"
-            android:label="@string/about">
+            android:label="@string/about"
+            tools:ignore="InnerclassSeparator">
         </activity>
         <activity
             android:name=".Activity.LicenseActivity"
             android:label="@string/license"
-			android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="InnerclassSeparator">
         </activity>
 		<activity
 			android:name=".Activity.ShortCutActivity"
-			android:theme="@android:style/Theme.Translucent"
-			android:taskAffinity=""
             android:excludeFromRecents="true"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent"
+            tools:ignore="InnerclassSeparator">
 		</activity>
         <activity
             android:name=".API.ImportTTF"
             android:label="@string/ttf_import_title"
-			android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="InnerclassSeparator">
             <intent-filter> 
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -74,53 +84,61 @@
 		<activity
             android:name=".API.ImportBackupFile"
             android:label="@string/xml_global_data_recover"
-			android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="InnerclassSeparator">
             <intent-filter> 
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data
-                    android:mimeType="*/*"
-                    android:scheme="file"
                     android:host="*"
-                    android:pathPattern=".*\.ftbak"/>
+                    android:mimeType="*/*"
+                    android:pathPattern=".*\.ftbak"
+                    android:scheme="file" />
             </intent-filter>
         </activity>
 		<activity
             android:name=".FileSelector.FileList"
             android:label="@string/fileselect_activity_title"
-			android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="InnerclassSeparator">
         </activity>
 		<activity
             android:name=".CrashReport.CrashHandlerUI"
+            android:label="@string/crashreport_lib_name"
             android:noHistory="true"
-			android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/crashreport_lib_name" >
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="InnerclassSeparator">
 		</activity>
 		<service
             android:name=".Service.FloatUpdateService"
-            android:persistent="true">
+            android:persistent="true"
+            tools:ignore="InnerclassSeparator">
         </service>
         <service
             android:name=".Service.FloatWindowStayAliveService"
-            android:persistent="true">
+            android:persistent="true"
+            tools:ignore="InnerclassSeparator">
         </service>
         <service
             android:name=".Service.FloatTextUpdateService"
-            android:persistent="true">
+            android:persistent="true"
+            tools:ignore="InnerclassSeparator">
         </service>
 		<service
-			android:name=".Service.FloatNotificationListenerService"  
-			android:label="@string/floatnotification_service_label"  
-			android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">  
+            android:name=".Service.FloatNotificationListenerService"
+			android:label="@string/floatnotification_service_label"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            tools:ignore="InnerclassSeparator">
 			<intent-filter>  
 				<action android:name="android.service.notification.NotificationListenerService" />  
 			</intent-filter>  
 		</service>
 		<service
 			android:name=".Service.QuickSettingService"
-			android:label="@string/app_name"
 			android:icon="@mipmap/ic_notification"
-			android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            tools:ignore="InnerclassSeparator">
 			<intent-filter>
 				<action android:name="android.service.quicksettings.action.QS_TILE" />
 			</intent-filter>
@@ -128,7 +146,8 @@
 		<service
 			android:name=".Service.FloatAdvanceTextUpdateService"
 			android:label="@string/advancetext_service_label"
-			android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            tools:ignore="InnerclassSeparator">
 			<intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
@@ -137,15 +156,16 @@
 				android:resource="@xml/advancetext_service_config" >
 			</meta-data>
 		</service>
-		<receiver 
-			android:name=".Receiver.FloatTextBootReceiver">
+		<receiver
+            android:name=".Receiver.FloatTextBootReceiver"
+            tools:ignore="InnerclassSeparator">
 			<intent-filter>
 				<action android:name="android.intent.action.BOOT_COMPLETED"/>
 			</intent-filter>.
 		</receiver>
-        <receiver 
-            android:name=".Receiver.FloatTextUpdateReceiver">
-			android:exported="true"
+        <receiver
+            android:name=".Receiver.FloatTextUpdateReceiver"
+            tools:ignore="InnerclassSeparator">
             <intent-filter>
 				<action android:name="tool.xfy9326.floattext.DYNAMIC_WORD_ADDON_ACTION"/>
                 <action android:name="tool.xfy9326.floattext.Service.FloatTextUpdateService.action.TEXT_UPDATE_ACTION"/>
@@ -155,8 +175,8 @@
 		<provider
 			android:name="android.support.v4.content.FileProvider"
 			android:authorities="tool.xfy9326.floattext.fileprovider"
-			android:grantUriPermissions="true"
-			android:exported="false">
+            android:exported="false"
+            android:grantUriPermissions="true">
 			<meta-data
 				android:name="android.support.FILE_PROVIDER_PATHS"
 				android:resource="@xml/fileprovider_config" />

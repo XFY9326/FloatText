@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_power"
+        android:shortcutDisabledMessage="@string/shortcuts_disabled"
+        android:shortcutId="launch"
+        android:shortcutLongLabel="@string/shortcuts_launchwin_long"
+        android:shortcutShortLabel="@string/shortcuts_launchwin_short">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="tool.xfy9326.floattext.Activity.ShortCutActivity"
+            android:targetPackage="tool.xfy9326.floattext" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+</shortcuts>
+ 

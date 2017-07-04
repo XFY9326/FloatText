@@ -18,14 +18,14 @@
         <item>If you do not use Dynamic Word, you can close its service in Global Settings</item>
         <item>You can set your own font in Global Settings.</item>
         <item>You can also lock the float text by long click at it</item>
-		<item>To use more function, you can see help doc in Global setting.</item>
+        <item>To use more function, you can see help doc in Global setting.</item>
     </string-array>
     <string-array name="floatsetting_dynamic_name">
         <item>Date &amp; Time</item>
         <item>Date &amp; Time(24 hours system)</item>
         <item>Clock</item>
         <item>Clock(24 hours system)</item>
-		<item>Seconds</item>
+        <item>Seconds</item>
         <item>Date</item>
         <item>Cpu utilization</item>
         <item>Network speed</item>
@@ -34,13 +34,13 @@
         <item>The date of the countdown(custom date)</item>
         <item>The date of the countdown(custom date)</item>
         <item>The date of the countdown(custom date)</item>
-		<item>The date of the count(custom date)</item>
         <item>The date of the count(custom date)</item>
         <item>The date of the count(custom date)</item>
         <item>The date of the count(custom date)</item>
-		<item>Week</item>
+        <item>The date of the count(custom date)</item>
+        <item>Week</item>
         <item>Local IP Address</item>
-		<item>Wifi Signal</item>
+        <item>Wifi Signal</item>
         <item>Battery Percent</item>
         <item>Light Sensor</item>
         <item>Gravity Sensor</item>
@@ -48,13 +48,13 @@
         <item>CPU Temperature Sensor</item>
         <item>Distance Sensor</item>
         <item>Walk Step Sensor</item>
-		<item>Screen Orientation</item>
+        <item>Screen Orientation</item>
         <item>ClipBoard</item>
-		<item>Current Activity(*)</item>
-		<item>The latest notification(*)\n[Android 4.3 and above must open Notification Listener Service]</item>
-		<item>The Package Name of latest notification(*)\n[Android 4.3 and above must open Notification Listener Service]</item>
-		<item>The latest toast(*)</item>
-		<item>Show nothing</item>
+        <item>Current Activity(*)</item>
+        <item>The latest notification(*)\n[Android 4.3 and above must open Notification Listener Service]</item>
+        <item>The Package Name of latest notification(*)\n[Android 4.3 and above must open Notification Listener Service]</item>
+        <item>The latest toast(*)</item>
+        <item>Show nothing</item>
     </string-array>
     <string-array name="floatmanage_choose">
         <item>Text Floating Window</item>
@@ -66,12 +66,12 @@
         <item>繁體中文</item>
         <item>English (Unknown Group translate)</item>
     </string-array>
-	<string-array name="donate_list">
+    <string-array name="donate_list">
         <item>AliPay</item>
         <item>WeChat Purse</item>
         <item>QQ Purse</item>
     </string-array>
-	<string-array name="update_list">
+    <string-array name="update_list">
         <item>Update from app market</item>
         <item>Update from Github</item>
     </string-array>

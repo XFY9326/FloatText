@@ -5,32 +5,32 @@ import java.util.ArrayList;
 //ArrayList与String转换
 
 public class FormatArrayList {
-	public final static ArrayList<String> StringToStringArrayList(String str) {
-        ArrayList<String> arr = new ArrayList<String>();
+    public static ArrayList<String> StringToStringArrayList(String str) {
+        ArrayList<String> arr = new ArrayList<>();
         if (str.contains("[") && str.length() >= 3) {
             str = str.substring(1, str.length() - 1);
             if (str.contains(",")) {
                 String[] temp = str.split(",");
-                for (int i = 0;i < temp.length;i++) {
+                for (int i = 0; i < temp.length; i++) {
                     if (i != 0) {
                         temp[i] = temp[i].substring(1, temp[i].length());
                     }
-                    arr.add(temp[i].toString());
+                    arr.add(temp[i]);
                 }
             } else {
-                arr.add(str.toString());
+                arr.add(str);
             }
         }
         return arr;
     }
 
-    public final static ArrayList<Float> StringToFloatArrayList(String str) {
-        ArrayList<Float> arr = new ArrayList<Float>();
+    public static ArrayList<Float> StringToFloatArrayList(String str) {
+        ArrayList<Float> arr = new ArrayList<>();
         if (str.contains("[") && str.length() >= 3) {
             str = str.substring(1, str.length() - 1);
             if (str.contains(",")) {
                 String[] temp = str.split(",");
-                for (int i = 0;i < temp.length;i++) {
+                for (int i = 0; i < temp.length; i++) {
                     temp[i] = temp[i].replaceAll("\\s+", "");
                     arr.add(Float.parseFloat(temp[i]));
                 }
@@ -41,13 +41,13 @@ public class FormatArrayList {
         return arr;
     }
 
-    public final static ArrayList<Integer> StringToIntegerArrayList(String str) {
-        ArrayList<Integer> arr = new ArrayList<Integer>();
+    public static ArrayList<Integer> StringToIntegerArrayList(String str) {
+        ArrayList<Integer> arr = new ArrayList<>();
         if (str.contains("[") && str.length() >= 3) {
             str = str.substring(1, str.length() - 1);
             if (str.contains(",")) {
                 String[] temp = str.split(",");
-                for (int i = 0;i < temp.length;i++) {
+                for (int i = 0; i < temp.length; i++) {
                     temp[i] = temp[i].replaceAll("\\s+", "");
                     arr.add(Integer.parseInt(temp[i]));
                 }
@@ -58,13 +58,13 @@ public class FormatArrayList {
         return arr;
     }
 
-    public final static ArrayList<Boolean> StringToBooleanArrayList(String str) {
-        ArrayList<Boolean> arr = new ArrayList<Boolean>();
+    public static ArrayList<Boolean> StringToBooleanArrayList(String str) {
+        ArrayList<Boolean> arr = new ArrayList<>();
         if (str.contains("[") && str.length() >= 3) {
             str = str.substring(1, str.length() - 1);
             if (str.contains(",")) {
                 String[] temp = str.split(",");
-                for (int i = 0;i < temp.length;i++) {
+                for (int i = 0; i < temp.length; i++) {
                     temp[i] = temp[i].replaceAll("\\s+", "");
                     arr.add(Boolean.parseBoolean(temp[i]));
                 }

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/FloatManage_MainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-	android:id="@+id/FloatManage_MainLayout"
     android:fitsSystemWindows="true">
-	
-	<include layout="@layout/widget_toolbar" />
+
+    <include layout="@layout/widget_toolbar" />
 
     <include layout="@layout/activity_float_manage_content" />
 
@@ -17,10 +16,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="22dp"
-		app:fabSize="normal"
-		app:backgroundTint="@color/colorFloatingActionButtonBackGround"
-		app:elevation="12dp"
-		app:pressedTranslationZ="15dp"
+        app:backgroundTint="@color/colorFloatingActionButtonBackGround"
+        app:elevation="12dp"
+        app:fabSize="normal"
+        app:pressedTranslationZ="15dp"
         app:srcCompat="@drawable/ic_plus" />
 
 </android.support.design.widget.CoordinatorLayout>

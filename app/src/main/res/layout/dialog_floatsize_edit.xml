@@ -1,53 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical"
-	android:gravity="center"
-	android:padding="8dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="8dp">
 
-	<RelativeLayout
-		android:layout_height="wrap_content"
-		android:layout_width="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-		<TextView
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:textSize="20sp"
-			android:id="@+id/textview_size_now"
-			android:layout_centerInParent="true"/>
+        <TextView
+            android:id="@+id/textview_size_now"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="20sp" />
 
-		<Button
-			android:layout_height="30dp"
-			android:layout_width="30dp"
-			android:background="@drawable/ic_minus"
-			android:layout_alignParentLeft="true"
-			android:layout_marginLeft="23dp"
-			android:id="@+id/floatsize_button_minus"/>
+        <Button
+            android:id="@+id/floatsize_button_minus"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="23dp"
+            android:background="@drawable/ic_minus" />
 
-		<Button
-			android:layout_height="30dp"
-			android:layout_width="30dp"
-			android:background="@drawable/ic_plus_black"
-			android:layout_alignParentRight="true"
-			android:layout_marginRight="23dp"
-			android:id="@+id/floatsize_button_plus"/>
+        <Button
+            android:id="@+id/floatsize_button_plus"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="23dp"
+            android:background="@drawable/ic_plus_black" />
 
-	</RelativeLayout>
+    </RelativeLayout>
 
-	<View
-		android:layout_height="15dp"
-		android:layout_width="match_parent"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
 
-	<SeekBar
-		android:layout_height="wrap_content"
-		android:layout_width="match_parent"
-		android:id="@+id/seekbar_size"/>
+    <SeekBar
+        android:id="@+id/seekbar_size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-	<View
-		android:layout_height="15dp"
-		android:layout_width="match_parent"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
 
 </LinearLayout>
 
