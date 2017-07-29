@@ -395,13 +395,13 @@ public class FloatTextSetting extends AppCompatPreferenceActivity {
         View layout = inflater.inflate(R.layout.dialog_textsize_edit, null);
         AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
         dialog.setTitle(R.string.text_size_set);
-        final TextView text = layout.findViewById(R.id.textview_textsize_now);
-        final SeekBar bar = layout.findViewById(R.id.seekbar_textsize);
+        final TextView text = (TextView) layout.findViewById(R.id.textview_textsize_now);
+        final SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_textsize);
         text.setText(getString(R.string.text_size_now) + "：" + TextSize.intValue());
         final DisplayMetrics dm = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(dm);
-        Button minus = layout.findViewById(R.id.textsize_button_minus);
-        Button plus = layout.findViewById(R.id.textsize_button_plus);
+        Button minus = (Button) layout.findViewById(R.id.textsize_button_minus);
+        Button plus = (Button) layout.findViewById(R.id.textsize_button_plus);
         minus.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 if (TextSize > 0) {
@@ -452,8 +452,8 @@ public class FloatTextSetting extends AppCompatPreferenceActivity {
         View layout = inflater.inflate(R.layout.dialog_textspeed_edit, null);
         AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
         dialog.setTitle(R.string.text_speed_set);
-        final TextView text = layout.findViewById(R.id.textview_textspeed_now);
-        SeekBar bar = layout.findViewById(R.id.seekbar_textspeed);
+        final TextView text = (TextView) layout.findViewById(R.id.textview_textspeed_now);
+        SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_textspeed);
         text.setText(getString(R.string.text_speed_now) + "：" + TextSpeed);
         bar.setMax(10);
         bar.setProgress(TextSpeed);
@@ -483,11 +483,11 @@ public class FloatTextSetting extends AppCompatPreferenceActivity {
         View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
         AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
         dialog.setTitle(R.string.xml_set_win_long);
-        final TextView text = layout.findViewById(R.id.textview_size_now);
-        final SeekBar bar = layout.findViewById(R.id.seekbar_size);
+        final TextView text = (TextView) layout.findViewById(R.id.textview_size_now);
+        final SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_size);
         text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
-        Button minus = layout.findViewById(R.id.floatsize_button_minus);
-        Button plus = layout.findViewById(R.id.floatsize_button_plus);
+        Button minus = (Button) layout.findViewById(R.id.floatsize_button_minus);
+        Button plus = (Button) layout.findViewById(R.id.floatsize_button_plus);
         minus.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 if (FloatLong > 0) {
@@ -540,11 +540,11 @@ public class FloatTextSetting extends AppCompatPreferenceActivity {
         View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
         AlertDialog.Builder dialog = new AlertDialog.Builder(FloatTextSetting.this);
         dialog.setTitle(R.string.xml_set_win_wide);
-        final TextView text = layout.findViewById(R.id.textview_size_now);
-        final SeekBar bar = layout.findViewById(R.id.seekbar_size);
+        final TextView text = (TextView) layout.findViewById(R.id.textview_size_now);
+        final SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_size);
         text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
-        Button minus = layout.findViewById(R.id.floatsize_button_minus);
-        Button plus = layout.findViewById(R.id.floatsize_button_plus);
+        Button minus = (Button) layout.findViewById(R.id.floatsize_button_minus);
+        Button plus = (Button) layout.findViewById(R.id.floatsize_button_plus);
         minus.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 if (FloatWide > 0) {
@@ -593,7 +593,7 @@ public class FloatTextSetting extends AppCompatPreferenceActivity {
 
     private void FloatTextShowSet(LayoutInflater inflater) {
         View layout = inflater.inflate(R.layout.dialog_text_edit, null);
-        final EditText atv = layout.findViewById(R.id.textview_addnewtext);
+        final EditText atv = (EditText) layout.findViewById(R.id.textview_addnewtext);
         //自动清空输入
         if (spdata.getBoolean("TextAutoClear", false)) {
             atv.setText("");
@@ -601,8 +601,8 @@ public class FloatTextSetting extends AppCompatPreferenceActivity {
             atv.setText(spdata.getString("TextShow", getString(R.string.default_text)));
         }
         //动态变量列表显示
-        final ListView lv = layout.findViewById(R.id.listview_textedit);
-        final LinearLayout ll = layout.findViewById(R.id.layout_textedit);
+        final ListView lv = (ListView) layout.findViewById(R.id.listview_textedit);
+        final LinearLayout ll = (LinearLayout) layout.findViewById(R.id.layout_textedit);
         if (((App) getApplicationContext()).DynamicNumService) {
             final String[] dynamiclist = getResources().getStringArray(R.array.floatsetting_dynamic_list);
             String[] dynamicname = getResources().getStringArray(R.array.floatsetting_dynamic_name);
@@ -644,8 +644,8 @@ public class FloatTextSetting extends AppCompatPreferenceActivity {
 
     private void FloatMoveSet(LayoutInflater inflater) {
         View layout = inflater.inflate(R.layout.dialog_floatmove, null);
-        move_x = layout.findViewById(R.id.textview_floatmove_x);
-        move_y = layout.findViewById(R.id.textview_floatmove_y);
+        move_x = (TextView) layout.findViewById(R.id.textview_floatmove_x);
+        move_y = (TextView) layout.findViewById(R.id.textview_floatmove_y);
         move_x.setText(String.valueOf(wmParams.x));
         move_y.setText(String.valueOf(wmParams.y));
         final Handler handler = new Handler() {
@@ -668,13 +668,13 @@ public class FloatTextSetting extends AppCompatPreferenceActivity {
             }
         };
         FloatTextSettingMethod method = new FloatTextSettingMethod();
-        final Button control_left = layout.findViewById(R.id.button_floatmove_left);
+        final Button control_left = (Button) layout.findViewById(R.id.button_floatmove_left);
         control_left.setOnTouchListener(method.ButtonOnLongRepeatClickListener(0, handler));
-        final Button control_right = layout.findViewById(R.id.button_floatmove_right);
+        final Button control_right = (Button) layout.findViewById(R.id.button_floatmove_right);
         control_right.setOnTouchListener(method.ButtonOnLongRepeatClickListener(1, handler));
-        final Button control_up = layout.findViewById(R.id.button_floatmove_up);
+        final Button control_up = (Button) layout.findViewById(R.id.button_floatmove_up);
         control_up.setOnTouchListener(method.ButtonOnLongRepeatClickListener(2, handler));
-        final Button control_down = layout.findViewById(R.id.button_floatmove_down);
+        final Button control_down = (Button) layout.findViewById(R.id.button_floatmove_down);
         control_down.setOnTouchListener(method.ButtonOnLongRepeatClickListener(3, handler));
         AlertDialog.Builder move = new AlertDialog.Builder(FloatTextSetting.this)
                 .setTitle(R.string.float_move_title)
@@ -684,13 +684,13 @@ public class FloatTextSetting extends AppCompatPreferenceActivity {
 
     private void TextShadowSet(LayoutInflater inflater) {
         View layout = inflater.inflate(R.layout.dialog_textshadow_edit, null);
-        final Switch ss = layout.findViewById(R.id.switch_textshadow);
-        final TextView sx = layout.findViewById(R.id.textview_shadowDx);
-        final TextView sy = layout.findViewById(R.id.textview_shadowDy);
-        final TextView sr = layout.findViewById(R.id.textview_radius);
-        final SeekBar bx = layout.findViewById(R.id.seekbar_shadowDx);
-        final SeekBar by = layout.findViewById(R.id.seekbar_shadowDy);
-        final SeekBar br = layout.findViewById(R.id.seekbar_radius);
+        final Switch ss = (Switch) layout.findViewById(R.id.switch_textshadow);
+        final TextView sx = (TextView) layout.findViewById(R.id.textview_shadowDx);
+        final TextView sy = (TextView) layout.findViewById(R.id.textview_shadowDy);
+        final TextView sr = (TextView) layout.findViewById(R.id.textview_radius);
+        final SeekBar bx = (SeekBar) layout.findViewById(R.id.seekbar_shadowDx);
+        final SeekBar by = (SeekBar) layout.findViewById(R.id.seekbar_shadowDy);
+        final SeekBar br = (SeekBar) layout.findViewById(R.id.seekbar_radius);
         bx.setMax(30);
         by.setMax(30);
         br.setMax(25);

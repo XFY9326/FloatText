@@ -65,17 +65,17 @@ public class CrashHandlerUI extends AppCompatActivity {
     private void sendmail() {
         PackageManager pm = getPackageManager();
         String MailSend = AppName + getString(R.string.crashreport_mail_main) + "\n\n" + getString(R.string.crashreport_mail_report) + ":\n" + Device + "\n\n" + Log;
-            try {
-                PackageInfo info = pm.getPackageInfo(getPackageName(), 0);
-                Signature[] sg = info.signatures;
-                String sgdata = "";
-                for (Signature sginfo : sg) {
-                    sgdata += parseSignature(sginfo.toByteArray()) + "\n";
-                }
-                MailSend += "\n\n" + "SignatureInfo:" + "\n\n" + sgdata;
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
+        try {
+            PackageInfo info = pm.getPackageInfo(getPackageName(), 0);
+            Signature[] sg = info.signatures;
+            String sgdata = "";
+            for (Signature sginfo : sg) {
+                sgdata += parseSignature(sginfo.toByteArray()) + "\n";
             }
+            MailSend += "\n\n" + "SignatureInfo:" + "\n\n" + sgdata;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
         Intent data = new Intent(Intent.ACTION_SENDTO);
         data.setData(Uri.parse("mailto:" + mail));
         data.putExtra(Intent.EXTRA_SUBJECT, AppName + getString(R.string.crashreport_mail_title));

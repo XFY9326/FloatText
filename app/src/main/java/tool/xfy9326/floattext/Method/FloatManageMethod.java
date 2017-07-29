@@ -69,6 +69,7 @@ public class FloatManageMethod {
             File[] apks = file.listFiles();
             for (File apk : apks) {
                 if (time - apk.lastModified() > 1000 * 60 * 60 * 24) {
+                    //noinspection ResultOfMethodCallIgnored
                     apk.delete();
                 }
             }
@@ -80,7 +81,7 @@ public class FloatManageMethod {
         if (ActivityMethod.isNetworkAvailable(ctx)) {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
             SharedPreferences spa = ctx.getSharedPreferences("ApplicationSettings", Context.MODE_PRIVATE);
-            if (sp.getBoolean("AutoCheckUpdate", true)) {
+            if (sp.getBoolean("AutoCheckUpdate", false)) {
                 if ((System.currentTimeMillis() - spa.getLong("LastUpdateCheckTime", 0) >= 1000 * 60 * 60)) {
                     spa.edit().putLong("LastUpdateCheckTime", System.currentTimeMillis()).apply();
                     GithubUpdateCheck gu = new GithubUpdateCheck(ctx);
@@ -137,6 +138,7 @@ public class FloatManageMethod {
 
     //隐藏和显示单个窗口
     //显示返回true
+    @SuppressWarnings("UnusedReturnValue")
     public static boolean ShoworHideWin(Context ctx, int index) {
         boolean result = true;
         App utils = (App) ctx.getApplicationContext();
@@ -368,7 +370,7 @@ public class FloatManageMethod {
         if (!Settings.canDrawOverlays(ctx)) {
             ctx.runOnUiThread(new Runnable() {
                 public void run() {
-                    CoordinatorLayout cl = ctx.findViewById(R.id.FloatManage_MainLayout);
+                    CoordinatorLayout cl = (CoordinatorLayout) ctx.findViewById(R.id.FloatManage_MainLayout);
                     Snackbar.make(cl, R.string.no_premission, Snackbar.LENGTH_SHORT).setAction(R.string.get_premission, new OnClickListener() {
                         public void onClick(View v) {
                             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
@@ -429,7 +431,7 @@ public class FloatManageMethod {
             ctx.finish();
             ShutDown(ctx);
         } else {
-            CoordinatorLayout cl = ctx.findViewById(R.id.FloatManage_MainLayout);
+            CoordinatorLayout cl = (CoordinatorLayout) ctx.findViewById(R.id.FloatManage_MainLayout);
             Snackbar.make(cl, R.string.exit_title, Snackbar.LENGTH_LONG).setAction(R.string.back_to_launcher, new OnClickListener() {
                 public void onClick(View v) {
                     ctx.moveTaskToBack(true);
@@ -491,6 +493,7 @@ public class FloatManageMethod {
         String typeface_path = Environment.getExternalStorageDirectory().toString() + "/FloatText/TTFs";
         File typeface = new File(typeface_path);
         if (!typeface.exists()) {
+            //noinspection ResultOfMethodCallIgnored
             typeface.mkdirs();
         }
     }

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <group
+        android:id="@+id/drawer_g1"
+        tools:ignore="UnusedIds">
         <item
             android:id="@+id/menu_import"
             android:icon="@drawable/ic_import"
@@ -10,7 +13,9 @@
             android:icon="@drawable/ic_export"
             android:title="@string/export_txt" />
     </group>
-    <group>
+    <group
+        android:id="@+id/drawer_g2"
+        tools:ignore="UnusedIds">
         <item
             android:id="@+id/menu_wordlist"
             android:icon="@drawable/ic_document"
@@ -24,7 +29,9 @@
             android:icon="@drawable/ic_information_outline"
             android:title="@string/about" />
     </group>
-    <group>
+    <group
+        android:id="@+id/drawer_g3"
+        tools:ignore="UnusedIds">
         <item
             android:id="@+id/menu_back"
             android:icon="@drawable/ic_exit_to_app"

@@ -56,11 +56,11 @@ public class LicenseActivity extends AppCompatActivity {
     private void addlicense(String title, String html, String data, LinearLayout ll) {
         LayoutInflater inflater = LayoutInflater.from(LicenseActivity.this);
         View layout = inflater.inflate(R.layout.layout_each_licence, null);
-        TextView tit = layout.findViewById(R.id.licence_title);
+        TextView tit = (TextView) layout.findViewById(R.id.licence_title);
         tit.setText(title);
-        TextView str = layout.findViewById(R.id.licence_data);
+        TextView str = (TextView) layout.findViewById(R.id.licence_data);
         str.setText(data);
-        TextView url = layout.findViewById(R.id.licence_url);
+        TextView url = (TextView) layout.findViewById(R.id.licence_url);
         url.setText(Html.fromHtml("<a href='" + html + "'>" + html + "</a>"));
         url.setMovementMethod(LinkMovementMethod.getInstance());
         ll.addView(layout);

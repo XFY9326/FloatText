@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:gravity="start|center"
-	android:padding="5dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="start|center"
+    android:padding="5dp">
 
-	<TextView
-		android:id="@+id/fileselector_filelist_filename"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginStart="50dp"
-		android:textSize="20sp" />
+    <TextView
+        android:id="@+id/fileselector_filelist_filename"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:textSize="20sp" />
 
-	<TextView
-		android:id="@+id/fileselector_filelist_filedata"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/fileselector_filelist_filename"
-		android:layout_marginStart="55dp"
-		android:textSize="13sp" />
+    <TextView
+        android:id="@+id/fileselector_filelist_filedata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fileselector_filelist_filename"
+        android:layout_marginStart="55dp"
+        android:textSize="13sp" />
 
-	<ImageView
-		android:id="@+id/fileselector_filelist_icon"
-		android:layout_width="40dp"
-		android:layout_height="40dp"
-		android:layout_centerVertical="true"
-		android:contentDescription="@string/fileselector_filelist_icon_describe"
-		android:src="@drawable/ic_file" />
+    <ImageView
+        android:id="@+id/fileselector_filelist_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/fileselector_filelist_icon_describe"
+        android:src="@drawable/ic_file" />
 
-	<TextView
-		android:id="@+id/fileselector_filelist_filesize"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentEnd="true"
-		android:layout_below="@id/fileselector_filelist_filename"
-		android:layout_marginEnd="15dp"
-		android:textSize="13sp" />
+    <TextView
+        android:id="@+id/fileselector_filelist_filesize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/fileselector_filelist_filename"
+        android:layout_marginEnd="15dp"
+        android:textSize="13sp" />
 
 </RelativeLayout>
 

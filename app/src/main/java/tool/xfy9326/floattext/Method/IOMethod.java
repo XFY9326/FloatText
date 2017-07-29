@@ -83,6 +83,7 @@ public class IOMethod {
                     return false;
                 }
             } else {
+                //noinspection ResultOfMethodCallIgnored
                 file.createNewFile();
                 OutputStream writer = new FileOutputStream(file);
                 writer.write(Bytes);
@@ -106,6 +107,7 @@ public class IOMethod {
         }
         File dir = new File(pth);
         if (!dir.exists()) {
+            //noinspection ResultOfMethodCallIgnored
             dir.mkdirs();
         }
     }

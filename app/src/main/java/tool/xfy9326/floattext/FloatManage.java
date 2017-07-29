@@ -20,6 +20,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -56,7 +57,7 @@ public class FloatManage extends AppCompatActivity {
 
     //显示SnackBar
     public static void snackshow(Activity ctx, String str) {
-        CoordinatorLayout cl = ctx.findViewById(R.id.FloatManage_MainLayout);
+        CoordinatorLayout cl = (CoordinatorLayout) ctx.findViewById(R.id.FloatManage_MainLayout);
         Snackbar sb = Snackbar.make(cl, str, Snackbar.LENGTH_SHORT);
         sb.show();
         System.gc();
@@ -101,10 +102,13 @@ public class FloatManage extends AppCompatActivity {
         });
         final DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.main_navigation_view);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actbar = getSupportActionBar();
+        if (actbar != null) {
+            actbar.setHomeButtonEnabled(true);
+            actbar.setDisplayHomeAsUpEnabled(true);
+        }
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, tb, R.string.on, R.string.off);
-        mDrawerLayout.setDrawerListener(toggle);
+        mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {

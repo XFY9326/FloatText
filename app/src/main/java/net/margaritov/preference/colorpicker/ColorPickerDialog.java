@@ -94,11 +94,11 @@ public class ColorPickerDialog extends Dialog implements ColorPickerView.OnColor
 
         setTitle(R.string.dialog_color_picker);
 
-        mColorPicker = mLayout.findViewById(R.id.color_picker_view);
-        mOldColor = mLayout.findViewById(R.id.old_color_panel);
-        mNewColor = mLayout.findViewById(R.id.new_color_panel);
+        mColorPicker = (ColorPickerView) mLayout.findViewById(R.id.color_picker_view);
+        mOldColor = (ColorPickerPanelView) mLayout.findViewById(R.id.old_color_panel);
+        mNewColor = (ColorPickerPanelView) mLayout.findViewById(R.id.new_color_panel);
 
-        mHexVal = mLayout.findViewById(R.id.hex_val);
+        mHexVal = (EditText) mLayout.findViewById(R.id.hex_val);
         mHexVal.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         mHexDefaultTextColor = mHexVal.getTextColors();
 

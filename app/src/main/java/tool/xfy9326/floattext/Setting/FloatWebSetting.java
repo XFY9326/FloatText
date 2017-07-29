@@ -143,11 +143,11 @@ public class FloatWebSetting extends AppCompatPreferenceActivity {
         View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
         AlertDialog.Builder dialog = new AlertDialog.Builder(FloatWebSetting.this);
         dialog.setTitle(R.string.xml_web_win_width);
-        final TextView text = layout.findViewById(R.id.textview_size_now);
-        final SeekBar bar = layout.findViewById(R.id.seekbar_size);
+        final TextView text = (TextView) layout.findViewById(R.id.textview_size_now);
+        final SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_size);
         text.setText(getString(R.string.xml_set_win_wide) + "：" + FloatWide);
-        Button minus = layout.findViewById(R.id.floatsize_button_minus);
-        Button plus = layout.findViewById(R.id.floatsize_button_plus);
+        Button minus = (Button) layout.findViewById(R.id.floatsize_button_minus);
+        Button plus = (Button) layout.findViewById(R.id.floatsize_button_plus);
         minus.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 if (FloatWide > 0) {
@@ -202,11 +202,11 @@ public class FloatWebSetting extends AppCompatPreferenceActivity {
         View layout = inflater.inflate(R.layout.dialog_floatsize_edit, null);
         AlertDialog.Builder dialog = new AlertDialog.Builder(FloatWebSetting.this);
         dialog.setTitle(R.string.xml_web_win_height);
-        final TextView text = layout.findViewById(R.id.textview_size_now);
-        final SeekBar bar = layout.findViewById(R.id.seekbar_size);
+        final TextView text = (TextView) layout.findViewById(R.id.textview_size_now);
+        final SeekBar bar = (SeekBar) layout.findViewById(R.id.seekbar_size);
         text.setText(getString(R.string.xml_set_win_long) + "：" + FloatLong);
-        Button minus = layout.findViewById(R.id.floatsize_button_minus);
-        Button plus = layout.findViewById(R.id.floatsize_button_plus);
+        Button minus = (Button) layout.findViewById(R.id.floatsize_button_minus);
+        Button plus = (Button) layout.findViewById(R.id.floatsize_button_plus);
         minus.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 if (FloatLong > 0) {
@@ -282,9 +282,9 @@ public class FloatWebSetting extends AppCompatPreferenceActivity {
     private void CreateView() {
         LayoutInflater inflater = LayoutInflater.from(this);
         toolbar = inflater.inflate(R.layout.webview_toolbar, null);
-        urltext = toolbar.findViewById(R.id.webviewtoolbar_url);
+        urltext = (EditText) toolbar.findViewById(R.id.webviewtoolbar_url);
         urltext.clearFocus();
-        urlloading = toolbar.findViewById(R.id.webviewtoolbar_loading);
+        urlloading = (ProgressBar) toolbar.findViewById(R.id.webviewtoolbar_loading);
         urlloading.setVisibility(View.GONE);
         webview = FloatWebSettingMethod.CreateFloatWebView(this, WebUrl);
         webview.setWebViewClient(new WebViewClient() {
@@ -312,12 +312,12 @@ public class FloatWebSetting extends AppCompatPreferenceActivity {
     }
 
     private void toolbar_set(final WebView webview, final View view) {
-        Button hide = view.findViewById(R.id.webview_hide);
-        Button previous = view.findViewById(R.id.webview_previous);
-        Button next = view.findViewById(R.id.webview_next);
-        Button reload = view.findViewById(R.id.webview_reload);
-        Button close = view.findViewById(R.id.webview_close);
-        Button urlenter = view.findViewById(R.id.webviewtoolbar_enter);
+        Button hide = (Button) view.findViewById(R.id.webview_hide);
+        Button previous = (Button) view.findViewById(R.id.webview_previous);
+        Button next = (Button) view.findViewById(R.id.webview_next);
+        Button reload = (Button) view.findViewById(R.id.webview_reload);
+        Button close = (Button) view.findViewById(R.id.webview_close);
+        Button urlenter = (Button) view.findViewById(R.id.webviewtoolbar_enter);
         urltext.setOnEditorActionListener(new OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEND || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) || actionId == EditorInfo.IME_ACTION_DONE) {
@@ -370,7 +370,7 @@ public class FloatWebSetting extends AppCompatPreferenceActivity {
         layout.removeView(view);
         LayoutInflater inflater = LayoutInflater.from(this);
         final View toolbar_hide = inflater.inflate(R.layout.webview_toolbar_hide, null);
-        Button back = toolbar_hide.findViewById(R.id.webview_show);
+        Button back = (Button) toolbar_hide.findViewById(R.id.webview_show);
         back.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 backbigwin(toolbar_hide, layout);
@@ -417,6 +417,7 @@ public class FloatWebSetting extends AppCompatPreferenceActivity {
                 webview.clearAnimation();
                 webview.clearSslPreferences();
                 webview.destroy();
+                //noinspection ResultOfMethodCallIgnored
                 ctx.getCacheDir().delete();
             }
             wm = null;

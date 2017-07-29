@@ -41,13 +41,13 @@ class ListAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.fileselector_list_layout, null);
         }
-        final TextView name = view.findViewById(R.id.fileselector_filelist_filename);
+        final TextView name = (TextView) view.findViewById(R.id.fileselector_filelist_filename);
         name.setText(Filename.get(p1));
-        final TextView data = view.findViewById(R.id.fileselector_filelist_filedata);
+        final TextView data = (TextView) view.findViewById(R.id.fileselector_filelist_filedata);
         data.setText(Filedata.get(p1));
-        final TextView size = view.findViewById(R.id.fileselector_filelist_filesize);
+        final TextView size = (TextView) view.findViewById(R.id.fileselector_filelist_filesize);
         size.setText(Filesize.get(p1));
-        final ImageView icon = view.findViewById(R.id.fileselector_filelist_icon);
+        final ImageView icon = (ImageView) view.findViewById(R.id.fileselector_filelist_icon);
         iconset(icon, p1);
         return view;
     }

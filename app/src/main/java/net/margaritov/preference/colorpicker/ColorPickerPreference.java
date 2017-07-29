@@ -182,7 +182,7 @@ public class ColorPickerPreference extends Preference implements Preference.OnPr
     private void setPreviewColor() {
         if (mView == null) return;
         ImageView iView = new ImageView(getContext());
-        LinearLayout widgetFrameView = mView.findViewById(android.R.id.widget_frame);
+        LinearLayout widgetFrameView = (LinearLayout) mView.findViewById(android.R.id.widget_frame);
         if (widgetFrameView == null) return;
         widgetFrameView.setVisibility(View.VISIBLE);
         widgetFrameView.setPadding(

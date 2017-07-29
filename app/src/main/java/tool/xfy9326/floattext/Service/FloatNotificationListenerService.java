@@ -40,6 +40,7 @@ public class FloatNotificationListenerService extends NotificationListenerServic
         super.onNotificationPosted(sbn);
     }
 
+    @SuppressWarnings("EmptyMethod")
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn) {
         super.onNotificationRemoved(sbn);

@@ -76,31 +76,30 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final ViewHolder view, int p2) {
-        final int index = view.getLayoutPosition();
         final App utils = ((App) context.getApplicationContext());
         ArrayList<Boolean> Show = utils.getTextutil().getShowFloat();
         if (Show.size() != textshow.size()) {
             FloatManageMethod.restartApplication(context, context.getPackageManager().getLaunchIntentForPackage(context.getPackageName()));
         }
-        String listtext = textshow.get(index);
+        String listtext = textshow.get(view.getLayoutPosition());
         //保持显示的文字和悬浮窗内样式一致
-        TextReshow(index, utils, view, Show.get(index), listtext);
+        TextReshow(view.getLayoutPosition(), utils, view, Show.get(view.getLayoutPosition()), listtext);
         //单行显示
         view.textView.setSingleLine(utils.ListTextHide);
         //锁定图标设置
-        LockViewSet(index, view);
+        LockViewSet(view.getLayoutPosition(), view);
         //点击文字隐藏和显示悬浮窗
         view.textView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                FloatManageMethod.ShoworHideWin(context, index);
+                FloatManageMethod.ShoworHideWin(context, view.getLayoutPosition());
             }
         });
 
         //锁定监听设置
         view.lock_button.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                if (FloatManageMethod.LockorUnlockWin(context, index)) {
+                if (FloatManageMethod.LockorUnlockWin(context, view.getLayoutPosition())) {
                     FloatManage.snackshow((Activity) context, context.getString(R.string.text_lock));
                 } else {
                     FloatManage.snackshow((Activity) context, context.getString(R.string.text_unlock));
@@ -110,13 +109,13 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
         //删除按钮监听
         view.del_button.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                DelViewSet(index);
+                DelViewSet(view.getLayoutPosition());
             }
         });
         //编辑按钮监听
         view.edit_button.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                EditViewSet(index);
+                EditViewSet(view.getLayoutPosition());
             }
         });
     }
@@ -245,18 +244,18 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
      */
 
     //控件获取
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView textView;
-        public final Button del_button;
-        public final Button edit_button;
-        public final Button lock_button;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        final TextView textView;
+        final Button del_button;
+        final Button edit_button;
+        final Button lock_button;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
-            textView = view.findViewById(R.id.textview_titleshow_floatmanage);
-            del_button = view.findViewById(R.id.button_delete_floatmanage);
-            edit_button = view.findViewById(R.id.button_edit_floatmanage);
-            lock_button = view.findViewById(R.id.button_lock_floatmanage);
+            textView = (TextView) view.findViewById(R.id.textview_titleshow_floatmanage);
+            del_button = (Button) view.findViewById(R.id.button_delete_floatmanage);
+            edit_button = (Button) view.findViewById(R.id.button_edit_floatmanage);
+            lock_button = (Button) view.findViewById(R.id.button_lock_floatmanage);
         }
     }
 

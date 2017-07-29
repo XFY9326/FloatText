@@ -1,6 +1,7 @@
 package tool.xfy9326.floattext.Method;
 
 import android.animation.LayoutTransition;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
@@ -41,6 +42,7 @@ public class FloatWebSettingMethod {
     }
 
     //新建Web悬浮窗
+    @SuppressLint("SetJavaScriptEnabled")
     public static WebView CreateFloatWebView(Context ctx, String url) {
         String cachePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/FloatText/WebCache/";
         WebView webview = new WebView(ctx);

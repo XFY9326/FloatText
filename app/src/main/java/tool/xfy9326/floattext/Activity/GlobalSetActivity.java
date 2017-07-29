@@ -332,7 +332,7 @@ public class GlobalSetActivity extends AppCompatActivity {
             View view = inflater.inflate(R.layout.dialog_text, null);
             AlertDialog.Builder set = new AlertDialog.Builder(getActivity());
             set.setTitle(R.string.xml_global_dynamicword_reload_time);
-            final EditText et = view.findViewById(R.id.dialog_text_edittext);
+            final EditText et = (EditText) view.findViewById(R.id.dialog_text_edittext);
             et.setText(String.valueOf(num));
             et.setKeyListener(new DigitsKeyListener(false, true));
             set.setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
@@ -515,6 +515,7 @@ public class GlobalSetActivity extends AppCompatActivity {
         public void getTypeFace(final Preference pre) {
             File path = new File(Environment.getExternalStorageDirectory().toString() + "/FloatText/TTFs");
             if (!path.exists()) {
+                //noinspection ResultOfMethodCallIgnored
                 path.mkdirs();
             }
             File[] files = path.listFiles();

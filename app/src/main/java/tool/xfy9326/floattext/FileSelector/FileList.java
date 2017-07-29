@@ -312,18 +312,21 @@ public class FileList extends AppCompatActivity {
 
     private void deletefile(File file) {
         if (file.isFile()) {
+            //noinspection ResultOfMethodCallIgnored
             file.delete();
             return;
         }
         if (file.isDirectory()) {
             File[] childFile = file.listFiles();
             if (childFile == null || childFile.length == 0) {
+                //noinspection ResultOfMethodCallIgnored
                 file.delete();
                 return;
             }
             for (File f : childFile) {
                 deletefile(f);
             }
+            //noinspection ResultOfMethodCallIgnored
             file.delete();
         }
     }
@@ -339,6 +342,7 @@ public class FileList extends AppCompatActivity {
                         if (newFile.exists()) {
                             Show(R.string.fileselect_file_rename_found);
                         } else {
+                            //noinspection ResultOfMethodCallIgnored
                             oldFile.renameTo(newFile);
                             if (!newFile.exists()) {
                                 Show(R.string.fileselect_file_rename_error);
@@ -365,6 +369,7 @@ public class FileList extends AppCompatActivity {
                         if (file.exists()) {
                             Show(R.string.fileselect_file_rename_found);
                         } else {
+                            //noinspection ResultOfMethodCallIgnored
                             file.mkdirs();
                             if (!file.exists()) {
                                 Show(R.string.fileselect_file_rename_error);
