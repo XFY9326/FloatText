@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,8 +23,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -49,8 +47,6 @@ import tool.xfy9326.floattext.View.ListViewAdapter;
 
 public class FloatManage extends AppCompatActivity {
     private ListViewAdapter listadapter = null;
-    private SharedPreferences spdata;
-    private SharedPreferences.Editor spedit;
     private ArrayList<String> FloatDataName;
     private AlertDialog ag_loading;
     private Handler mHandler;
@@ -79,13 +75,10 @@ public class FloatManage extends AppCompatActivity {
     private void ListViewSet() {
         App utils = (App) getApplicationContext();
         FloatDataName = utils.getFloatText();
-        AdvanceRecyclerView listview = (AdvanceRecyclerView) findViewById(R.id.listview_floatmanage);
-        listview.setHasFixedSize(true);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mLayoutManager.setOrientation(OrientationHelper.VERTICAL);
-        listview.setLayoutManager(mLayoutManager);
-        listview.setEmptyView(findViewById(R.id.textview_floatmanage_empty));
         listadapter = new ListViewAdapter(this, FloatDataName);
+        AdvanceRecyclerView listview = (AdvanceRecyclerView) findViewById(R.id.listview_floatmanage);
+        listview.setItemAnimator(new DefaultItemAnimator());
+        listview.setEmptyView(findViewById(R.id.layout_widget_empty_view));
         listview.setAdapter(listadapter);
         utils.setListviewadapter(listadapter);
     }
@@ -176,8 +169,8 @@ public class FloatManage extends AppCompatActivity {
         App utils = (App) getApplicationContext();
         SharedPreferences setdata = ctx.getSharedPreferences("ApplicationSettings", Activity.MODE_PRIVATE);
         utils.getFrameutil().setFilterApplication(FormatArrayList.StringToStringArrayList(setdata.getString("Filter_Application", "[]")));
-        spdata = PreferenceManager.getDefaultSharedPreferences(ctx);
-        spedit = spdata.edit();
+        SharedPreferences spdata = PreferenceManager.getDefaultSharedPreferences(ctx);
+        SharedPreferences.Editor spedit = spdata.edit();
         spedit.apply();
         if (!utils.GetSave) {
             runOnUiThread(new Runnable() {
@@ -414,15 +407,6 @@ public class FloatManage extends AppCompatActivity {
             }
         }
         return false;
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        spdata = PreferenceManager.getDefaultSharedPreferences(this);
-        spedit = spdata.edit();
-        spedit.apply();
-        ListViewSet();
     }
 
     @Override

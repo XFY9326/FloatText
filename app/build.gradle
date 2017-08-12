@@ -2,15 +2,15 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
 
     defaultConfig {
         applicationId "tool.xfy9326.floattext"
         minSdkVersion 19
         //noinspection OldTargetApi
         targetSdkVersion 25
-        versionCode 61
-        versionName "4.1"
+        versionCode 62
+        versionName "4.2_Fin"
     }
 
     buildTypes {
